@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.howmuch.ui.onboarding
+package io.github.amanshuraikwar.howmuch.ui.onboarding.signin
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +13,7 @@ import io.github.amanshuraikwar.howmuch.util.asEvent
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class OnboardingViewModel @Inject constructor(
+class SignInViewModel @Inject constructor(
     private val getUserStateUseCase: GetUserStateUseCase,
     private val signOutUseCase: SignOutUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
@@ -29,7 +29,7 @@ class OnboardingViewModel @Inject constructor(
         checkUserState()
     }
 
-    fun checkUserState() = viewModelScope.launch(dispatcherProvider.io) {
+    private fun checkUserState() = viewModelScope.launch(dispatcherProvider.io) {
         _userState.postValue(getUserStateUseCase.invoke())
     }
 

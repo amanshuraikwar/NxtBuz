@@ -44,7 +44,8 @@ buildscript {
             'threeten'           : '1.0.5',
             'playServices'       : '16.0.1',
             'googleApiClient'    : '1.23.0',
-            'googleSheetsApi'    : 'v4-rev516-1.23.0'
+            'googleSheetsApi'    : 'v4-rev516-1.23.0',
+            'navigation'         : '2.0.0'
     ]
 
     ext.names = [
