@@ -26,7 +26,8 @@
         app:layout_constraintTop_toBottomOf="@id/iconIv"
         android:gravity="center_horizontal"
         android:paddingTop="@dimen/padding_very_large"
-        android:textAppearance="?textAppearanceHeadline5"
+        android:textAppearance="?textAppearanceHeadline4"
+        android:textColor="?colorPrimary"
         android:text="@string/app_name" />
 
     <TextView
@@ -35,22 +36,50 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/titleTv"
         android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_very_large"
+        android:paddingTop="@dimen/padding_large"
         android:paddingStart="@dimen/padding_large"
         android:paddingEnd="@dimen/padding_large"
-        android:text="@string/subtitle_sign_in"
-        android:textAppearance="?textAppearanceSubtitle2"/>
+        android:text="@string/subtitle_app"
+        android:textAppearance="?textAppearanceHeadline6"
+        android:textStyle="bold"/>
 
-    <ProgressBar
-        android:id="@+id/signInLoadingPb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/userPicCv"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        app:layout_constraintBottom_toTopOf="@id/userEmailTv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="@dimen/margin_very_large"
-        android:indeterminate="true"
+        android:layout_marginBottom="@dimen/margin_small"
+        app:cardCornerRadius="20dp"
+        app:strokeWidth="2dp"
+        app:strokeColor="?colorPrimary"
+        app:cardElevation="0dp"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/userPicIv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/userEmailTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/barrier1"
+        android:gravity="center_horizontal"
+        android:paddingBottom="@dimen/padding_large"
+        android:textAppearance="?textAppearanceBody1"
+        tools:text="amanshu@gmail.com"
         android:visibility="gone"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="signInBtn,setupBtn" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signInBtn"
@@ -62,5 +91,31 @@
         android:layout_marginBottom="@dimen/margin_very_large"
         android:paddingTop="@dimen/padding_sign_in_btn"
         android:paddingBottom="@dimen/padding_sign_in_btn"
-        android:text="@string/btn_txt_sign_in"/>
+        android:text="@string/btn_txt_sign_in"
+        android:visibility="visible"/>
+
+    <com.google.android.material.button.MaterialButton
+    android:id="@+id/setupBtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toTopOf="@id/switchBtn"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginEnd="@dimen/margin_large"
+    android:layout_marginStart="@dimen/margin_large"
+    android:layout_marginBottom="@dimen/margin_small"
+    tools:text="continue as amanshu raikwar"
+    android:visibility="gone" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/switchBtn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:text="@string/btn_txt_switch_account"
+        android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

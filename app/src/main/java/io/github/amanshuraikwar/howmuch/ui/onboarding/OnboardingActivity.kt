@@ -2,14 +2,17 @@ package io.github.amanshuraikwar.howmuch.ui.onboarding
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.howmuch.R
 import io.github.amanshuraikwar.howmuch.domain.result.EventObserver
+import io.github.amanshuraikwar.howmuch.domain.userstate.UserState
+import io.github.amanshuraikwar.howmuch.ui.main.MainActivity
 import io.github.amanshuraikwar.howmuch.util.showSnackbar
 import io.github.amanshuraikwar.howmuch.util.viewModelProvider
 import kotlinx.android.synthetic.main.activity_onboarding.*
@@ -52,25 +55,31 @@ class OnboardingActivity : DaggerAppCompatActivity() {
             }
         )
 
-        viewModel.loading.observe(
+        viewModel.userState.observe(
             this,
-            EventObserver {
+            Observer {
                 when (it) {
-                    Loading.SignIn -> {
+                    is UserState.NotSignedIn -> {
+                        userPicCv.hide()
+                        userEmailTv.hide()
+                        setupBtn.hide()
+                        switchBtn.hide()
+                        signInBtn.show()
+                    }
+                    is UserState.SignedIn -> {
                         signInBtn.hide()
-                        signInLoadingPb.show()
+                        userEmailTv.text = it.user.email
+                        setupBtn.text = getString(R.string.btn_txt_setup, it.user.name)
+                        Glide.with(this).load(it.user.userPicUrl).into(userPicIv)
+                        userEmailTv.show()
+                        setupBtn.show()
+                        userPicCv.show()
+                        switchBtn.show()
                     }
-                    Loading.Setup -> {
-
-                    }
-                    is Loading.NoLoading -> {
-                        when (it.from) {
-                            Loading.SignIn -> {
-                                signInBtn.show()
-                                signInLoadingPb.hide()
-                            }
-                            Loading.Setup -> {}
-                        }
+                    is UserState.SpreadSheetCreated -> {
+                        parentCl.showSnackbar(R.string.msg_sign_in_success)
+                        finish()
+                        startActivity(Intent(this, MainActivity::class.java))
                     }
                 }
             }
@@ -94,10 +103,10 @@ class OnboardingActivity : DaggerAppCompatActivity() {
     }
 }
 
-private fun View.hide() {
+fun View.hide() {
     visibility = View.GONE
 }
 
-private fun View.show() {
+fun View.show() {
     visibility = View.VISIBLE
 }

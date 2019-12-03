@@ -70,7 +70,7 @@
     </style>
 
     <style name="TextAppearance.MyTheme.Body1" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">@font/cabin</item>
+        <item name="fontFamily">@font/open_sans</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Body2" parent="TextAppearance.MaterialComponents.Body2">
