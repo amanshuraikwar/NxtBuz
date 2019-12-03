@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.howmuch.data.signin
+package io.github.amanshuraikwar.howmuch.data.user.di
 
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn

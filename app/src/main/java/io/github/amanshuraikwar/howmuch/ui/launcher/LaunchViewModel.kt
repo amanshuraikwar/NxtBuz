@@ -1,11 +1,9 @@
 package io.github.amanshuraikwar.howmuch.ui.launcher
 
-import android.util.Log
 import androidx.lifecycle.*
 import io.github.amanshuraikwar.howmuch.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.howmuch.domain.prefs.IsOnboardingCompleteUseCase
-import io.github.amanshuraikwar.howmuch.domain.userstate.GetUserStateUseCase
-import io.github.amanshuraikwar.howmuch.domain.userstate.UserState
+import io.github.amanshuraikwar.howmuch.domain.user.GetUserStateUseCase
+import io.github.amanshuraikwar.howmuch.domain.user.UserState
 import io.github.amanshuraikwar.howmuch.util.asEvent
 import kotlinx.coroutines.launch
 import javax.inject.Inject

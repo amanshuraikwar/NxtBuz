@@ -5,57 +5,56 @@
     android:id="@+id/parentCl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.onboarding.OnboardingActivity"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    tools:context=".ui.onboarding.OnboardingActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iconIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/margin_very_large"
         android:src="@drawable/ic_round_bubble_chart_72"
-        android:tint="?colorPrimary" />
+        android:tint="?colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/titleTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/iconIv"
         android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_very_large"
-        android:textAppearance="?textAppearanceHeadline4"
+        android:paddingTop="@dimen/padding_large"
+        android:text="@string/app_name"
+        android:textAppearance="?textAppearanceHeadline5"
         android:textColor="?colorPrimary"
-        android:text="@string/app_name" />
+        app:layout_constraintTop_toBottomOf="@id/iconIv" />
 
     <TextView
         android:id="@+id/subtitleTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/titleTv"
         android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_large"
         android:paddingStart="@dimen/padding_large"
+        android:paddingTop="@dimen/padding_normal"
         android:paddingEnd="@dimen/padding_large"
         android:text="@string/subtitle_app"
-        android:textAppearance="?textAppearanceHeadline6"
-        android:textStyle="bold"/>
+        android:textAppearance="?textAppearanceBody1"
+        app:layout_constraintTop_toBottomOf="@id/titleTv" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/userPicCv"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
-        app:layout_constraintBottom_toTopOf="@id/userEmailTv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="@dimen/margin_small"
+        android:visibility="gone"
         app:cardCornerRadius="20dp"
-        app:strokeWidth="2dp"
-        app:strokeColor="?colorPrimary"
         app:cardElevation="0dp"
-        android:visibility="gone">
+        app:layout_constraintBottom_toTopOf="@id/userEmailTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="?colorPrimary"
+        app:strokeWidth="2dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/userPicIv"
@@ -65,14 +64,18 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/userEmailTv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/barrier1"
+        android:drawableEnd="@drawable/ic_round_arrow_drop_down_24"
         android:gravity="center_horizontal"
         android:paddingBottom="@dimen/padding_large"
         android:textAppearance="?textAppearanceBody1"
-        tools:text="amanshu@gmail.com"
-        android:visibility="gone"/>
+        android:background="?selectableItemBackgroundBorderless"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/barrier1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="amanshu@gmail.com" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier1"
@@ -85,37 +88,27 @@
         android:id="@+id/signInBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="@dimen/margin_very_large"
         android:paddingTop="@dimen/padding_sign_in_btn"
         android:paddingBottom="@dimen/padding_sign_in_btn"
         android:text="@string/btn_txt_sign_in"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-    android:id="@+id/setupBtn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:layout_constraintBottom_toTopOf="@id/switchBtn"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginEnd="@dimen/margin_large"
-    android:layout_marginStart="@dimen/margin_large"
-    android:layout_marginBottom="@dimen/margin_small"
-    tools:text="continue as amanshu raikwar"
-    android:visibility="gone" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/switchBtn"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:id="@+id/setupBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginBottom="@dimen/margin_very_large"
+        android:paddingTop="@dimen/padding_sign_in_btn"
+        android:paddingBottom="@dimen/padding_sign_in_btn"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="@dimen/margin_normal"
-        android:text="@string/btn_txt_switch_account"
-        android:visibility="gone" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="continue as amanshu raikwar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@ package io.github.amanshuraikwar.howmuch.di
 import io.github.amanshuraikwar.howmuch.ui.launcher.LaunchModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import io.github.amanshuraikwar.howmuch.data.signin.GoogleSignInProvides
+import io.github.amanshuraikwar.howmuch.data.user.di.GoogleSignInProvides
 import io.github.amanshuraikwar.howmuch.ui.launcher.LauncherActivity
 import io.github.amanshuraikwar.howmuch.ui.onboarding.OnboardingActivity
 import io.github.amanshuraikwar.howmuch.ui.onboarding.OnboardingModule

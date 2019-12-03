@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.howmuch.domain.userstate
+package io.github.amanshuraikwar.howmuch.domain.user
 
 import io.github.amanshuraikwar.howmuch.data.user.model.User
 

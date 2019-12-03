@@ -1,15 +1,15 @@
-package io.github.amanshuraikwar.howmuch.domain.userstate
+package io.github.amanshuraikwar.howmuch.domain.user
 
-import io.github.amanshuraikwar.howmuch.data.prefs.SourcesRepository
+import io.github.amanshuraikwar.howmuch.data.user.UserRepository
 import javax.inject.Inject
 
 class GetUserStateUseCase @Inject constructor(
-    private val sourcesRepository: SourcesRepository
+    private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(): UserState {
-        val user = sourcesRepository.getUser() ?: return UserState.NotSignedIn
+        val user = userRepository.getSignedInUser() ?: return UserState.NotSignedIn
         val spreadSheetId =
-            sourcesRepository.getSpreadSheetId(user) ?: return UserState.SignedIn(user)
+            userRepository.getSpreadSheetId(user) ?: return UserState.SignedIn(user)
         return UserState.SpreadSheetCreated(user, spreadSheetId)
     }
 }

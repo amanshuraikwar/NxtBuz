@@ -8,10 +8,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.tasks.Tasks
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.howmuch.R
 import io.github.amanshuraikwar.howmuch.domain.result.EventObserver
-import io.github.amanshuraikwar.howmuch.domain.userstate.UserState
+import io.github.amanshuraikwar.howmuch.domain.user.UserState
 import io.github.amanshuraikwar.howmuch.ui.main.MainActivity
 import io.github.amanshuraikwar.howmuch.util.showSnackbar
 import io.github.amanshuraikwar.howmuch.util.viewModelProvider
@@ -34,7 +35,8 @@ class OnboardingActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
         setupViewModel()
-        signInBtn.setOnClickListener { viewModel.onSignInClicked() }
+        signInBtn.setOnClickListener { initiateSignIn() }
+        userEmailTv.setOnClickListener { initiateSignOut() }
     }
 
     private fun setupViewModel() {
@@ -48,13 +50,6 @@ class OnboardingActivity : DaggerAppCompatActivity() {
             }
         )
 
-        viewModel.initiateSignIn.observe(
-            this,
-            EventObserver {
-                initiateSignIn()
-            }
-        )
-
         viewModel.userState.observe(
             this,
             Observer {
@@ -63,7 +58,6 @@ class OnboardingActivity : DaggerAppCompatActivity() {
                         userPicCv.hide()
                         userEmailTv.hide()
                         setupBtn.hide()
-                        switchBtn.hide()
                         signInBtn.show()
                     }
                     is UserState.SignedIn -> {
@@ -74,7 +68,6 @@ class OnboardingActivity : DaggerAppCompatActivity() {
                         userEmailTv.show()
                         setupBtn.show()
                         userPicCv.show()
-                        switchBtn.show()
                     }
                     is UserState.SpreadSheetCreated -> {
                         parentCl.showSnackbar(R.string.msg_sign_in_success)
@@ -100,6 +93,10 @@ class OnboardingActivity : DaggerAppCompatActivity() {
                 GoogleSignIn.getSignedInAccountFromIntent(data).isSuccessful
             )
         }
+    }
+
+    private fun initiateSignOut() {
+        googleSignInClient.signOut().addOnCompleteListener { viewModel.onSignedOut() }
     }
 }
 

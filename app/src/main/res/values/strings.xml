@@ -5,9 +5,9 @@
 
     <string name="error_sign_in_failed">Sign in failed! Please try again.</string>
     <string name="msg_sign_in_success">Signed in successfully.</string>
-    <string name="subtitle_app">Your minimal expense tracker.</string>
-    <string name="msg_loading">Loading...</string>
-    <string name="msg_signing_in">Signing in...</string>
+    <string name="subtitle_app">Your minimal expense tracker</string>
+    <string name="msg_loading">Loading…</string>
+    <string name="msg_signing_in">Signing in…</string>
     <string name="btn_txt_switch_account">switch account</string>
 
     <string name="btn_txt_setup">Continue as %s</string>

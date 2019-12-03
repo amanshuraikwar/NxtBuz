@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.howmuch.domain.model
+package io.github.amanshuraikwar.howmuch.data.user.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
