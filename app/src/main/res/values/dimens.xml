@@ -12,4 +12,8 @@
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_normal">16dp</dimen>
     <dimen name="padding_small">8dp</dimen>
+    <dimen name="avatar_size_large">72dp</dimen>
+    <dimen name="avatar_radius">20dp</dimen>
+    <dimen name="avatar_stroke_width">2dp</dimen>
+    <dimen name="avatar_radius_large">36dp</dimen>
 </resources>

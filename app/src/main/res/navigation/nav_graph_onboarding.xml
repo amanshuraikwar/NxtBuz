@@ -12,13 +12,12 @@
         tools:layout="@layout/fragment_signin" >
         <action
             android:id="@+id/action_SignInFragment_to_setupFragment"
-            app:destination="@id/setupFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"/>
+            app:destination="@id/setupFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/setupFragment"
         android:name="io.github.amanshuraikwar.howmuch.ui.onboarding.setup.SetupFragment"
-        android:label="SetupFragment" />
+        android:label="SetupFragment"
+        tools:layout="@layout/fragment_setup" />
 </navigation>

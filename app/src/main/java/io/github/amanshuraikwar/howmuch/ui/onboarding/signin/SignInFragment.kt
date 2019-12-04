@@ -32,7 +32,7 @@ class SignInFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var viewModel: SignInViewModel
+    private lateinit var viewModel: SignInViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -74,7 +74,7 @@
     </style>
 
     <style name="TextAppearance.MyTheme.Body2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="fontFamily">@font/cabin</item>
+        <item name="fontFamily">@font/open_sans</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Button" parent="TextAppearance.MaterialComponents.Button">
