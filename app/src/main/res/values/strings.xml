@@ -13,4 +13,5 @@
     <string name="btn_txt_setup">Continue as %s</string>
     <string name="txt_welcome">Welcome, %s</string>
     <string name="subtitle_setup">We are setting things up for you...</string>
+    <string name="btn_txt_retry">RETRY</string>
 </resources>

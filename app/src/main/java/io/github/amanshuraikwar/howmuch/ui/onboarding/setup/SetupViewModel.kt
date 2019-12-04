@@ -38,7 +38,7 @@ class SetupViewModel @Inject constructor(
         initiateSetup()
     }
 
-    private fun initiateSetup() = viewModelScope.launch(dispatcherProvider.io) {
+    fun initiateSetup() = viewModelScope.launch(dispatcherProvider.io) {
         safeLaunch(_error) {
             var userState = getUserStateUseCase.invoke()
             _userState.postValue(userState)

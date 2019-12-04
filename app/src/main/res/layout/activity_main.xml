@@ -4,49 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.onboarding.OnboardingActivity">
+    tools:context=".ui.main.MainActivity">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iconIv"
-        android:layout_width="wrap_content"
+    <include
+        layout="@layout/item_overview_last_7_days"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_very_large"
-        android:src="@drawable/ic_round_bubble_chart_72"
-        android:tint="?colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bnv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/titleTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_very_large"
-        android:text="Main"
-        android:textAppearance="?textAppearanceHeadline5"
-        app:layout_constraintTop_toBottomOf="@id/iconIv" />
-
-    <TextView
-        android:id="@+id/subtitleTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingStart="@dimen/padding_large"
-        android:paddingTop="@dimen/padding_very_large"
-        android:paddingEnd="@dimen/padding_large"
-        android:text="@string/subtitle_sign_in"
-        android:textAppearance="?textAppearanceSubtitle2"
-        app:layout_constraintTop_toBottomOf="@id/titleTv" />
-
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_very_large"
-        android:paddingTop="@dimen/padding_sign_in_btn"
-        android:paddingBottom="@dimen/padding_sign_in_btn"
-        android:text="@string/btn_txt_sign_in"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:itemIconTint="@color/color_selector_bnv_icon"
+        app:menu="@menu/main_navigation"
+        app:labelVisibilityMode="auto"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

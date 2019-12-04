@@ -40,7 +40,7 @@
 
     <!--Shape Appearance for medium components like cards, alert dialogs-->
     <style name="ShapeAppearance.MyTheme.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <!--Your custom shape here-->
+        <item name="cornerSize">@dimen/shape_corner_size_medium_component</item>
     </style>
 
     <!--Shape Appearance for large components like side and bottom navigation drawers-->

@@ -56,5 +56,6 @@
     <color name="color_on_error">#ffffff</color>
 
     <color name="white">#fff</color>
+    <color name="green">#4CAF50</color>
 
 </resources>

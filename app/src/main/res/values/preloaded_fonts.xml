@@ -2,6 +2,8 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/cabin</item>
+        <item>@font/eczar_medium</item>
         <item>@font/open_sans</item>
+        <item>@font/rubik_medium</item>
     </array>
 </resources>
