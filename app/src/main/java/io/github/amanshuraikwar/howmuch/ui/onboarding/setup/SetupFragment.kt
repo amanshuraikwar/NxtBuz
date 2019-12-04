@@ -10,13 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.howmuch.R
+import io.github.amanshuraikwar.howmuch.domain.result.EventObserver
 import io.github.amanshuraikwar.howmuch.domain.user.UserState
 import io.github.amanshuraikwar.howmuch.ui.main.MainActivity
-import io.github.amanshuraikwar.howmuch.ui.onboarding.signin.hide
-import io.github.amanshuraikwar.howmuch.ui.onboarding.signin.show
 import io.github.amanshuraikwar.howmuch.util.showSnackbar
 import io.github.amanshuraikwar.howmuch.util.viewModelProvider
 import kotlinx.android.synthetic.main.fragment_setup.*
+import kotlinx.android.synthetic.main.fragment_setup.parentCl
+import kotlinx.android.synthetic.main.fragment_setup.userPicIv
+import kotlinx.android.synthetic.main.fragment_signin.*
 import javax.inject.Inject
 
 class SetupFragment : DaggerFragment() {
@@ -58,8 +60,16 @@ class SetupFragment : DaggerFragment() {
                         }
                         is UserState.SpreadSheetCreated -> {
                             startActivity(Intent(activity, MainActivity::class.java))
+                            activity.finish()
                         }
                     }
+                }
+            )
+
+            viewModel.error.observe(
+                this,
+                EventObserver {
+                    parentCl.showSnackbar(it)
                 }
             )
         }

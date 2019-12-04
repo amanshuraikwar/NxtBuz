@@ -12,8 +12,10 @@ import io.github.amanshuraikwar.howmuch.BuildConfig
 import javax.inject.Inject
 import javax.inject.Singleton
 
+const val VALUE_INPUT_OPTION = "RAW"
+
 @Singleton
-class SheetsApiDataSource @Inject constructor(
+class GoogleSheetsApiService @Inject constructor(
     private val transport: HttpTransport,
     private val jsonFactory: JsonFactory
 ) {
@@ -59,25 +61,25 @@ class SheetsApiDataSource @Inject constructor(
                 .setApplicationName(BuildConfig.APPLICATION_ID)
                 .build()
 
-        return Observable.fromCallable {
+        val body = ValueRange().setValues(values)
 
-            val body = ValueRange().setValues(values)
-            sheetsAPI.spreadsheets().values()
-                .append(spreadsheetId, spreadsheetRange, body)
-                .setValueInputOption(valueInputOption)
-                .execute()
-            spreadsheetId
-        }
+        sheetsAPI
+            .spreadsheets()
+            .values()
+            .append(spreadsheetId, spreadsheetRange, body)
+            .setValueInputOption(valueInputOption)
+            .execute()
+
+        return spreadsheetId
     }
 
-    override fun updateSpreadSheet(
+    fun updateSpreadSheet(
         spreadsheetId: String,
         spreadsheetRange: String,
-        valueInputOption: String,
+        valueInputOption: String = VALUE_INPUT_OPTION,
         values: List<List<Any>>,
         googleAccountCredential: GoogleAccountCredential
-    )
-            : Observable<String> {
+    ): String {
 
         val sheetsAPI =
             Sheets
@@ -86,31 +88,28 @@ class SheetsApiDataSource @Inject constructor(
                     jsonFactory,
                     googleAccountCredential
                 )
-                .setApplicationName("test")
+                .setApplicationName(BuildConfig.APPLICATION_ID)
                 .build()
 
-        return Observable.fromCallable {
 
 
-            val body = ValueRange().setValues(values)
+        val body = ValueRange().setValues(values)
 
-            sheetsAPI
-                .spreadsheets()
-                .values()
-                .update(spreadsheetId, spreadsheetRange, body)
-                .setValueInputOption(valueInputOption)
-                .execute()
+        sheetsAPI
+            .spreadsheets()
+            .values()
+            .update(spreadsheetId, spreadsheetRange, body)
+            .setValueInputOption(valueInputOption)
+            .execute()
 
-            spreadsheetId
-        }
+        return spreadsheetId
     }
 
-    override fun createSpreadSheet(
+    fun createSpreadSheet(
         spreadSheetTitle: String,
         sheetTitles: List<String>,
         googleAccountCredential: GoogleAccountCredential
-    )
-            : Observable<String> {
+    ): String {
 
         val sheetsAPI =
             Sheets
@@ -119,46 +118,41 @@ class SheetsApiDataSource @Inject constructor(
                     jsonFactory,
                     googleAccountCredential
                 )
-                .setApplicationName("test")
+                .setApplicationName(BuildConfig.APPLICATION_ID)
                 .build()
 
-        return Observable
-            .fromCallable {
+        val newSpreadSheet = Spreadsheet()
+        newSpreadSheet.properties = SpreadsheetProperties().setTitle(spreadSheetTitle)
 
-                val newSpreadSheet = Spreadsheet()
-                newSpreadSheet.properties = SpreadsheetProperties().setTitle(spreadSheetTitle)
+        val sheetProperties = SheetProperties()
+        sheetProperties.title = "hello hello"
 
-                val sheetProperties = SheetProperties()
-                sheetProperties.title = "hello hello"
+        val sheets = mutableListOf<Sheet>()
 
-                val sheets = mutableListOf<Sheet>()
+        sheetTitles.forEach { sheetTitle ->
+            val sheet = Sheet()
+            sheet.properties = SheetProperties().setTitle(sheetTitle)
+            sheets.add(sheet)
+        }
 
-                sheetTitles.forEach { sheetTitle ->
-                    val sheet = Sheet()
-                    sheet.properties = SheetProperties().setTitle(sheetTitle)
-                    sheets.add(sheet)
-                }
+        newSpreadSheet.sheets = sheets
 
-                newSpreadSheet.sheets = sheets
+        val response =
+            sheetsAPI
+                .spreadsheets()
+                .create(newSpreadSheet)
+                .execute()
 
-                val response =
-                    sheetsAPI
-                        .spreadsheets()
-                        .create(newSpreadSheet)
-                        .execute()
-
-                response.spreadsheetId
-            }
+        return response.spreadsheetId
     }
 
-    override fun deleteRows(
+    fun deleteRows(
         spreadsheetId: String,
         sheetTitle: String,
         startIndex: Int,
         endIndex: Int,
         googleAccountCredential: GoogleAccountCredential
-    )
-            : Observable<String> {
+    ): String {
 
         val sheetsAPI =
             Sheets
@@ -167,44 +161,42 @@ class SheetsApiDataSource @Inject constructor(
                     jsonFactory,
                     googleAccountCredential
                 )
-                .setApplicationName("test")
+                .setApplicationName(BuildConfig.APPLICATION_ID)
                 .build()
 
-        return Observable.fromCallable {
 
-            val spreadsheet = sheetsAPI.spreadsheets().get(spreadsheetId).execute()
 
-            val content = BatchUpdateSpreadsheetRequest()
-            val request = Request()
-            val deleteDimensionRequest = DeleteDimensionRequest()
-            val dimensionRange = DimensionRange()
-            dimensionRange.dimension = "ROWS"
-            dimensionRange.startIndex = startIndex
-            dimensionRange.endIndex = endIndex
+        val spreadsheet = sheetsAPI.spreadsheets().get(spreadsheetId).execute()
 
-            dimensionRange.sheetId =
-                spreadsheet
-                    .sheets
-                    .find { it.properties.title == sheetTitle }!!
-                    .properties.sheetId
+        val content = BatchUpdateSpreadsheetRequest()
+        val request = Request()
+        val deleteDimensionRequest = DeleteDimensionRequest()
+        val dimensionRange = DimensionRange()
+        dimensionRange.dimension = "ROWS"
+        dimensionRange.startIndex = startIndex
+        dimensionRange.endIndex = endIndex
 
-            deleteDimensionRequest.range = dimensionRange
+        dimensionRange.sheetId =
+            spreadsheet
+                .sheets
+                .find { it.properties.title == sheetTitle }!!
+                .properties.sheetId
 
-            request.deleteDimension = deleteDimensionRequest
+        deleteDimensionRequest.range = dimensionRange
 
-            content.requests = listOf(request)
+        request.deleteDimension = deleteDimensionRequest
 
-            sheetsAPI.spreadsheets().batchUpdate(spreadsheetId, content).execute()
+        content.requests = listOf(request)
 
-            spreadsheetId
-        }
+        sheetsAPI.spreadsheets().batchUpdate(spreadsheetId, content).execute()
+
+        return spreadsheetId
     }
 
-    override fun getSheetTitles(
+    fun getSheetTitles(
         spreadsheetId: String,
         googleAccountCredential: GoogleAccountCredential
-    )
-            : Observable<List<String>> {
+    ): List<String> {
 
         val sheetsAPI =
             Sheets
@@ -216,13 +208,11 @@ class SheetsApiDataSource @Inject constructor(
                 .setApplicationName("test")
                 .build()
 
-        return Observable.fromCallable {
-            sheetsAPI
+        return sheetsAPI
                 .spreadsheets()
                 .get(spreadsheetId)
                 .execute()
                 .sheets
                 .map { it.properties.title }
-        }
     }
 }

@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingTop="@dimen/padding_very_large"
-        android:text="@string/app_name"
+        android:text="Main"
         android:textAppearance="?textAppearanceHeadline5"
         app:layout_constraintTop_toBottomOf="@id/iconIv" />
 

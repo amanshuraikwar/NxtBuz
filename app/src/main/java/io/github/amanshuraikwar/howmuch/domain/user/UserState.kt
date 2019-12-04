@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.howmuch.domain.user
 
-import io.github.amanshuraikwar.howmuch.data.user.model.User
+import io.github.amanshuraikwar.howmuch.data.model.User
 
 sealed class UserState {
     object NotSignedIn : UserState()

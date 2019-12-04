@@ -1,15 +1,18 @@
 package io.github.amanshuraikwar.howmuch.util
 
 import android.app.Activity
+import android.content.Context
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.map
+import androidx.lifecycle.*
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.snackbar.Snackbar
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.util.ExponentialBackOff
+import com.google.api.services.sheets.v4.SheetsScopes
 import io.github.amanshuraikwar.howmuch.domain.result.Event
+import kotlinx.coroutines.CoroutineScope
 
 // region ViewModels
 
@@ -72,6 +75,25 @@ fun View.showSnackbar(msg: Int) {
 
 fun View.showSnackbar(msg: String) {
     Snackbar.make(this, msg, Snackbar.LENGTH_SHORT).show()
+}
+
+//endregion
+
+//region model
+
+fun String.money(): Double = "%.2f".format(this.toDouble()).toDouble()
+
+//endregion
+
+//region coroutines
+
+suspend fun <U : CoroutineScope> U.safeLaunch(error: MutableLiveData<Exception>,
+                                              block: suspend U.() -> Unit) {
+    try {
+        block()
+    } catch (e: Exception) {
+        error.postValue(e)
+    }
 }
 
 //endregion

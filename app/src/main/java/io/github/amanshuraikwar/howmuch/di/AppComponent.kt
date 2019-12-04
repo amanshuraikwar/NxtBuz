@@ -6,6 +6,7 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import io.github.amanshuraikwar.howmuch.MainApplication
 import io.github.amanshuraikwar.howmuch.data.DataModuleBinds
+import io.github.amanshuraikwar.howmuch.data.DataModuleProvides
 import javax.inject.Singleton
 
 /**
@@ -22,7 +23,8 @@ import javax.inject.Singleton
         AppModule::class,
         ActivityBindingModule::class,
         ViewModelModule::class,
-        DataModuleBinds::class
+        DataModuleBinds::class,
+        DataModuleProvides::class
     ]
 )
 interface AppComponent : AndroidInjector<MainApplication> {

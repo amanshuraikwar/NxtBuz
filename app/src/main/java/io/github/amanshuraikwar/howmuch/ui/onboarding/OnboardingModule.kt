@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import io.github.amanshuraikwar.howmuch.di.ViewModelKey
+import io.github.amanshuraikwar.howmuch.ui.onboarding.setup.SetupFragment
+import io.github.amanshuraikwar.howmuch.ui.onboarding.setup.SetupViewModel
 import io.github.amanshuraikwar.howmuch.ui.onboarding.signin.SignInFragment
 import io.github.amanshuraikwar.howmuch.ui.onboarding.signin.SignInViewModel
 
@@ -23,4 +25,12 @@ internal abstract class OnboardingModule {
 
     @ContributesAndroidInjector
     internal abstract fun c(): SignInFragment
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SetupViewModel::class)
+    internal abstract fun d(a: SetupViewModel): ViewModel
+
+    @ContributesAndroidInjector
+    internal abstract fun e(): SetupFragment
 }
