@@ -1,9 +1,8 @@
 package io.github.amanshuraikwar.howmuch.data.model
 
 data class SpreadSheetTransaction(
-    val id: String,
-    var date: String,
-    var time: String,
+    val cell: SpreadSheetCell,
+    var datetime: Long,
     var amount: Money,
     var title: String,
     val categoryId: String

@@ -8,7 +8,9 @@ import io.github.amanshuraikwar.howmuch.data.room.RoomDataSource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import org.threeten.bp.Instant
 import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.ZoneId
 import java.lang.IllegalStateException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,12 +35,6 @@ class TransactionRepository @Inject constructor(
             )
         }
 
-        val walletMeta = async {
-            remoteTransactionDataManager.initWalletMetadata(
-                spreadSheetId, googleAccountCredential
-            )
-        }
-
         val transactions = async {
             remoteTransactionDataManager.initTransactions(
                 spreadSheetId, googleAccountCredential
@@ -46,7 +42,6 @@ class TransactionRepository @Inject constructor(
         }
 
         categoriesMeta.await()
-        walletMeta.await()
         transactions.await()
 
         return@withContext spreadSheetId
@@ -95,8 +90,12 @@ class TransactionRepository @Inject constructor(
             .map { spreadSheetTransaction ->
                 async {
                     Transaction(
-                        spreadSheetTransaction.id,
-                        OffsetDateTime.now(), // todo convert date
+                        spreadSheetTransaction.cell,
+                        // todo fix bug
+                        OffsetDateTime.ofInstant(
+                            Instant.ofEpochMilli(spreadSheetTransaction.datetime),
+                            ZoneId.systemDefault()
+                        ),
                         spreadSheetTransaction.amount,
                         spreadSheetTransaction.title,
                         categories[spreadSheetTransaction.categoryId]

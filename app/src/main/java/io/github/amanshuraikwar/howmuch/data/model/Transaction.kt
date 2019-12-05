@@ -6,9 +6,10 @@ import org.threeten.bp.OffsetDateTime
 
 @Parcelize
 data class Transaction(
-    val id: String,
+    val cell: SpreadSheetCell,
     var datetime: OffsetDateTime,
     var amount: Money,
     var title: String,
-    val category: Category
+    val category: Category,
+    val id: String = cell.toString()
 ) : Parcelable

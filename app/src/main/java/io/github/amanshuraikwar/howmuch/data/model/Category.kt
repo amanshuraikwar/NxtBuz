@@ -5,7 +5,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Category(
-    val id: String,
+    val cell: SpreadSheetCell,
     var name: String,
-    val monthlyLimit: Money
+    val monthlyLimit: Money,
+    val id: String = cell.toString()
 ) : Parcelable
