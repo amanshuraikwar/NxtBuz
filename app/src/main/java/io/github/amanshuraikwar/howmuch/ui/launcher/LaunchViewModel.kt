@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.howmuch.ui.launcher
 
 import androidx.lifecycle.*
-import io.github.amanshuraikwar.howmuch.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.howmuch.domain.user.GetUserStateUseCase
 import io.github.amanshuraikwar.howmuch.domain.user.UserState
 import io.github.amanshuraikwar.howmuch.util.asEvent

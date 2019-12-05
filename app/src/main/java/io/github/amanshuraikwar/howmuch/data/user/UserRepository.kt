@@ -1,8 +1,9 @@
 package io.github.amanshuraikwar.howmuch.data.user
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
-import io.github.amanshuraikwar.howmuch.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.howmuch.data.model.User
+import io.github.amanshuraikwar.howmuch.data.room.RoomDataSource
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -10,6 +11,7 @@ import javax.inject.Singleton
 @Singleton
 class UserRepository @Inject constructor(
     private val googleAuthUserDataSource: GoogleAuthUserDataSource,
+    private val roomDataSource: RoomDataSource,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
 
@@ -29,7 +31,7 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun getSpreadSheetId(user: User): String? =  withContext(dispatcherProvider.io) {
-        return@withContext getSpreadSheetIdForEmail(user.email)
+        return@withContext roomDataSource.getSpreadsheetIdForEmail(user.email)
     }
 
     suspend fun getGoogleAccountCredential(): GoogleAccountCredential?
@@ -42,15 +44,10 @@ class UserRepository @Inject constructor(
                     }
             }
 
-    var id: String? = null
-
-    suspend fun setSpreadSheetId(user: User, spreadSheetId: String) =  withContext(dispatcherProvider.io) {
-        id = spreadSheetId
-    }
-
-    private fun getSpreadSheetIdForEmail(email: String): String? {
-        return id
-    }
+    suspend fun setSpreadSheetId(user: User, spreadSheetId: String) =
+        withContext(dispatcherProvider.io) {
+            return@withContext roomDataSource.addSpreadsheetIdForEmail(spreadSheetId, user.email)
+        }
 
     suspend fun signOut() = withContext(dispatcherProvider.io) {
         user = null

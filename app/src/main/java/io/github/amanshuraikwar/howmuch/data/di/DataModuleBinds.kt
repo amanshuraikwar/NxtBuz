@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.howmuch.data
+package io.github.amanshuraikwar.howmuch.data.di
 
 import dagger.Binds
 import dagger.Module

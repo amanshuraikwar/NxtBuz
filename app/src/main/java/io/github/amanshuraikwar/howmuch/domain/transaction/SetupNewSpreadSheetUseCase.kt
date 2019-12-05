@@ -32,8 +32,10 @@ class SetupNewSpreadSheetUseCase @Inject constructor(
 
 const val USER_NOT_SIGNED_IN = "User not signed in"
 const val USER_SPREAD_SHEET_EXISTS = "User already has a spreadsheet"
+const val USER_SPREAD_SHEET_NOT_EXISTS = "User already does not have a spreadsheet"
 
 sealed class InvalidUserStateException(msg: String): IllegalStateException(msg) {
     object NotSignedIn : InvalidUserStateException(USER_NOT_SIGNED_IN)
     object SpreadSheetExists : InvalidUserStateException(USER_SPREAD_SHEET_EXISTS)
+    object SpreadSheetNotExists : InvalidUserStateException(USER_SPREAD_SHEET_NOT_EXISTS)
 }

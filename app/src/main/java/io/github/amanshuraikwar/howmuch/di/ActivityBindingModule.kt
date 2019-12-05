@@ -5,6 +5,8 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import io.github.amanshuraikwar.howmuch.data.user.di.GoogleSignInProvides
 import io.github.amanshuraikwar.howmuch.ui.launcher.LauncherActivity
+import io.github.amanshuraikwar.howmuch.ui.main.MainActivity
+import io.github.amanshuraikwar.howmuch.ui.main.MainModule
 import io.github.amanshuraikwar.howmuch.ui.onboarding.OnboardingActivity
 import io.github.amanshuraikwar.howmuch.ui.onboarding.OnboardingModule
 
@@ -28,5 +30,9 @@ abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = [OnboardingModule::class, GoogleSignInProvides::class])
     internal abstract fun b(): OnboardingActivity
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = [MainModule::class, GoogleSignInProvides::class])
+    internal abstract fun c(): MainActivity
 
 }

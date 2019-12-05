@@ -6,14 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
-    <include
-        layout="@layout/item_overview_last_7_days"
+    <fragment
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:id="@+id/navHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginEnd="@dimen/margin_small"/>
+        app:layout_constraintBottom_toTopOf="@id/bnv"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph_main" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv"

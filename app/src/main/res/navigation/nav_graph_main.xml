@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/overview">
+
+    <fragment
+        android:id="@+id/overview"
+        android:name="io.github.amanshuraikwar.howmuch.ui.main.overview.OverviewFragment"
+        android:label="OverviewFragment"
+        tools:layout="@layout/fragment_overview"/>
+    <fragment
+        android:id="@+id/budget"
+        android:name="io.github.amanshuraikwar.howmuch.ui.main.budget.BudgetFragment"
+        android:label="BudgetFragment"
+        tools:layout="@layout/fragment_budget"/>
+    <fragment
+        android:id="@+id/profile"
+        android:name="io.github.amanshuraikwar.howmuch.ui.main.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+</navigation>

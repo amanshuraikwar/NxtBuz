@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_overview"
+        android:id="@+id/overview"
         android:icon="@drawable/ic_round_pie_chart_24"
         android:title="Overview" />
 
     <item
-        android:id="@+id/navigation_budget"
+        android:id="@+id/budget"
         android:icon="@drawable/ic_round_bar_chart_24"
         android:title="Budget" />
 
     <item
-        android:id="@+id/navigation_profile"
+        android:id="@+id/profile"
         android:icon="@drawable/ic_round_person_24"
         android:title="Profile" />
 </menu>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.amanshuraikwar.howmuch.data
+package io.github.amanshuraikwar.howmuch.data.di
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers.Default

@@ -5,8 +5,8 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import io.github.amanshuraikwar.howmuch.MainApplication
-import io.github.amanshuraikwar.howmuch.data.DataModuleBinds
-import io.github.amanshuraikwar.howmuch.data.DataModuleProvides
+import io.github.amanshuraikwar.howmuch.data.di.DataModuleBinds
+import io.github.amanshuraikwar.howmuch.data.di.DataModuleProvides
 import javax.inject.Singleton
 
 /**
