@@ -3,14 +3,15 @@ package io.github.amanshuraikwar.howmuch.data.transaction
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.howmuch.data.model.Category
+import io.github.amanshuraikwar.howmuch.data.model.Transaction
 import io.github.amanshuraikwar.howmuch.data.room.RoomDataSource
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import org.threeten.bp.OffsetDateTime
 import java.lang.IllegalStateException
 import javax.inject.Inject
 import javax.inject.Singleton
-
-private const val TAG = "TransactionRepository"
 
 @Singleton
 class TransactionRepository @Inject constructor(
@@ -74,5 +75,38 @@ class TransactionRepository @Inject constructor(
         }
 
         return@withContext localCategories
+    }
+
+    suspend fun getTransactions(
+        spreadSheetId: String,
+        googleAccountCredential: GoogleAccountCredential
+    ): List<Transaction> = withContext(dispatcherProvider.io) {
+
+        val categoriesDef = async { getCategories(spreadSheetId, googleAccountCredential) }
+
+        val transactionsDef = async {
+            remoteTransactionDataManager.fetchTransactions(spreadSheetId, googleAccountCredential)
+        }
+
+        val transactions = transactionsDef.await()
+        val categories = categoriesDef.await().groupBy { it.id }.mapValues { (_, v) -> v[0] }
+
+        return@withContext transactions
+            .map { spreadSheetTransaction ->
+                async {
+                    Transaction(
+                        spreadSheetTransaction.id,
+                        OffsetDateTime.now(), // todo convert date
+                        spreadSheetTransaction.amount,
+                        spreadSheetTransaction.title,
+                        categories[spreadSheetTransaction.categoryId]
+                            // todo custom exception
+                            ?: throw IllegalStateException(
+                                "No category found with id = ${spreadSheetTransaction.categoryId}."
+                            )
+                    )
+                }
+            }
+            .awaitAll()
     }
 }

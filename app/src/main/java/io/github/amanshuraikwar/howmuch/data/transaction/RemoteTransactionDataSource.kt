@@ -6,6 +6,7 @@ import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.howmuch.data.googlesheetsapi.GoogleSheetsApiService
 import io.github.amanshuraikwar.howmuch.data.model.Category
 import io.github.amanshuraikwar.howmuch.data.model.Money
+import io.github.amanshuraikwar.howmuch.data.model.SpreadSheetTransaction
 import kotlinx.coroutines.*
 import org.threeten.bp.OffsetDateTime
 import java.lang.IllegalStateException
@@ -110,22 +111,99 @@ class RemoteTransactionDataManager @Inject constructor(
             }
             ?.mapIndexed { i, item ->
                 async {
-                    try {
-                        item.asCategory(i)
-                    } catch (e: IndexOutOfBoundsException) {
-                        throw SpreadSheetException.InvalidCategoryException(spreadsheetId)
-                    }
+                    item.asCategory(i, spreadsheetId)
                 }
             }
             ?.awaitAll()
             ?: throw SpreadSheetException.NoCategoriesFound(spreadsheetId)
     }
 
-    private fun List<Any>.asCategory(index: Int): Category {
-        return Category(
-            id = "${Constants.METADATA_SHEET_TITLE}!${Constants.CATEGORIES_START_COL}${Constants.CATEGORIES_START_ROW_WITHOUT_HEADING + index}:${Constants.CATEGORIES_END_COL}",
-            name = this[0].toString(),
-            monthlyLimit = Money(this[3].toString())
+    private fun List<Any>.asCategory(index: Int, spreadsheetId: String): Category {
+        val id = "${Constants.METADATA_SHEET_TITLE}!${Constants.CATEGORIES_START_COL}${Constants.CATEGORIES_START_ROW_WITHOUT_HEADING + index}:${Constants.CATEGORIES_END_COL}"
+        return try {
+            Category(
+                id = id,
+                name = this[0].toString(),
+                monthlyLimit = Money(this[3].toString())
+            )
+        } catch (e: IndexOutOfBoundsException) {
+            throw SpreadSheetException.InvalidCategoryException(spreadsheetId, id)
+        }
+    }
+
+    suspend fun fetchTransactions(
+        spreadsheetId: String,
+        googleAccountCredential: GoogleAccountCredential,
+        sheetTitle: String = Constants.TRANSACTIONS_SHEET_TITLE
+    ): List<SpreadSheetTransaction> = withContext(dispatcherProvider.io) {
+
+        return@withContext googleSheetsApiService
+            .readSpreadSheet(
+                spreadsheetId = spreadsheetId,
+                spreadsheetRange =
+                "$sheetTitle!${Constants.TRANSACTIONS_CELL_RANGE_WITHOUT_HEADING}",
+                googleAccountCredential = googleAccountCredential
+            )
+            .mapIndexed { i, item ->
+                async {
+                    item.toTransaction(
+                        Constants.TRANSACTION_START_ROW_WITHOUT_HEADING + i,
+                        sheetTitle,
+                        spreadsheetId
+                    )
+                }
+            }
+            .awaitAll()
+    }
+
+    private fun List<Any>.toTransaction(cellPosition: Int,
+                                        sheetTitle: String,
+                                        spreadsheetId: String)
+            : SpreadSheetTransaction {
+
+        val cellRange = "$sheetTitle!" +
+                "${Constants.TRANSACTION_START_COL}$cellPosition" +
+                ":${Constants.TRANSACTION_END_COL}"
+
+        if (this.size != Constants.TRANSACTION_ROW_COLUMN_COUNT) {
+
+            val errorMessage = "Transaction entry at cell position $cellPosition" +
+                    " has only ${this.size} column entries" +
+                    " instead of ${Constants.TRANSACTION_ROW_COLUMN_COUNT}."
+
+            throw SpreadSheetException.InvalidTransactionException(
+                cellRange,
+                spreadsheetId,
+                errorMessage
+            )
+        }
+
+        val amount: Double
+
+        try {
+
+            amount = this[2].toString().toDouble()
+
+        } catch (e: NumberFormatException) {
+
+            val errorMessage = "Transaction entry at $cellRange" +
+                    " of sheet $sheetTitle" +
+                    " has invalid amount ${this[2]}."
+
+            throw SpreadSheetException.InvalidTransactionException(
+                cellRange,
+                spreadsheetId,
+                errorMessage
+            )
+        }
+
+        return SpreadSheetTransaction(
+            id = cellRange,
+            date = this[0].toString(),
+            time = this[1].toString(),
+            amount = Money(amount.toString()),
+            title = this[3].toString(),
+            categoryId = this[5].toString()
         )
     }
 
@@ -151,6 +229,13 @@ sealed class SpreadSheetException(
     ) : SpreadSheetException(spreadsheetId, "No categories found in the spread sheet.")
 
     class InvalidCategoryException(
+        val cellPosition: String,
         spreadsheetId: String
     ) : SpreadSheetException(spreadsheetId, "Invalid category found in the spread sheet.")
+
+    class InvalidTransactionException(
+        val cellPosition: String,
+        spreadsheetId: String,
+        msg: String
+    ) : SpreadSheetException(spreadsheetId, msg)
 }

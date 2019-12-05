@@ -96,4 +96,17 @@ suspend fun <U : CoroutineScope> U.safeLaunch(error: MutableLiveData<Exception>,
     }
 }
 
+suspend fun <U : CoroutineScope> U.safeLaunchWithLoading(
+    error: MutableLiveData<Exception>,
+    loading: MutableLiveData<Int>,
+    block: suspend U.(loading: MutableLiveData<Int>) -> Unit
+) {
+    try {
+        loading.postValue(0)
+        block(loading)
+    } catch (e: Exception) {
+        error.postValue(e)
+    }
+}
+
 //endregion

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import io.github.amanshuraikwar.howmuch.R
 import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.howmuch.domain.transaction.GetCategoriesUseCase
+import io.github.amanshuraikwar.howmuch.domain.transaction.GetOverviewTransactionsUseCase
 import io.github.amanshuraikwar.howmuch.domain.user.GetUserStateUseCase
 import io.github.amanshuraikwar.howmuch.domain.user.SignOutUseCase
 import io.github.amanshuraikwar.howmuch.domain.user.UserState
@@ -20,6 +21,7 @@ private const val TAG = "OverviewViewModel"
 
 class OverviewViewModel @Inject constructor(
     private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getOverviewTransactionsUseCase: GetOverviewTransactionsUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -37,8 +39,7 @@ class OverviewViewModel @Inject constructor(
 
     fun fetchCategories() = viewModelScope.launch(dispatcherProvider.io) {
         safeLaunch(_error) {
-            
-            Log.i(TAG, "fetchCategories: ${getCategoriesUseCase.invoke()}")
+            Log.i(TAG, "fetchCategories: ${getOverviewTransactionsUseCase.invoke()}")
         }
     }
 }
