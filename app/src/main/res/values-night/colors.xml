@@ -36,5 +36,13 @@
     <color name="color_on_surface">#ffffff</color>
     <color name="color_on_error">#000000</color>
 
+    <color name="orange">#FFB74D</color>
+    <color name="pink">#F06292</color>
     <color name="green">#AED581</color>
+    <color name="blue">#64B5F6</color>
+    <color name="purple">#9575CD</color>
+    <color name="navy_blue">#7986CB</color>
+    <color name="teal">#4DB6AC</color>
+
+    <color name="red">#E57373</color>
 </resources>

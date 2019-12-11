@@ -10,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.howmuch.data.room.AppDatabase
 import io.github.amanshuraikwar.howmuch.data.room.categories.CategoryDao
+import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionDao
 import io.github.amanshuraikwar.howmuch.data.room.userspreadsheet.UserSpreadSheetDao
 
 @Module
@@ -41,5 +42,10 @@ class DataModuleProvides {
     @Provides
     fun e(appDatabase: AppDatabase): CategoryDao {
         return appDatabase.categoryDao
+    }
+
+    @Provides
+    fun f(appDatabase: AppDatabase): TransactionDao {
+        return appDatabase.transactionDao
     }
 }

@@ -27,16 +27,16 @@ public interface Constants {
     String DEFAULT_MONTHLY_LIMIT = "1000.00";
 
     List<List<String>> DEFAULT_CATEGORIES_WITH_HEADING = Arrays.asList(
-            Collections.singletonList("Categories"),// 2
-                          // B              // C
-            Arrays.asList("Name",           DEFAULT_MONTHLY_LIMIT),// 3
-            Arrays.asList("Food",           DEFAULT_MONTHLY_LIMIT), // 4
-            Arrays.asList("Health/Medical", DEFAULT_MONTHLY_LIMIT),
-            Arrays.asList("Home",           DEFAULT_MONTHLY_LIMIT),
-            Arrays.asList("Transportation", DEFAULT_MONTHLY_LIMIT),
-            Arrays.asList("Personal",       DEFAULT_MONTHLY_LIMIT),
-            Arrays.asList("Utilities",      DEFAULT_MONTHLY_LIMIT),
-            Arrays.asList("Travel",         DEFAULT_MONTHLY_LIMIT)
+                                      // B              // C
+            Collections.singletonList("Categories"                           ),// 2
+            Arrays.asList(            "Name",           "MonthlyLimit"       ),// 3
+            Arrays.asList(            "Food",           DEFAULT_MONTHLY_LIMIT),// 4
+            Arrays.asList(            "Health/Medical", DEFAULT_MONTHLY_LIMIT),
+            Arrays.asList(            "Home",           DEFAULT_MONTHLY_LIMIT),
+            Arrays.asList(            "Transportation", DEFAULT_MONTHLY_LIMIT),
+            Arrays.asList(            "Personal",       DEFAULT_MONTHLY_LIMIT),
+            Arrays.asList(            "Utilities",      DEFAULT_MONTHLY_LIMIT),
+            Arrays.asList(            "Travel",         DEFAULT_MONTHLY_LIMIT)
     );
 
     int CATEGORIES_START_ROW_WITH_HEADING = 2;
@@ -66,13 +66,8 @@ public interface Constants {
     String TRANSACTIONS_SHEET_TITLE = "Transactions-1";
 
     List<List<String>> TRANSACTIONS_HEADING = Arrays.asList(
-            Collections.singletonList("Transactions"),
-            Arrays.asList(
-                    "DateTime",
-                    "Amount",
-                    "Title",
-                    "CategoryId"
-            )
+            Collections.singletonList("Transactions"                                   ),
+            Arrays.asList(            "DateTime",       "Amount", "Title", "CategoryId")
     );
 
     int TRANSACTION_START_ROW_WITH_HEADING = 2;

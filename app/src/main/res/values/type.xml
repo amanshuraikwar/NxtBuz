@@ -46,7 +46,7 @@
     </style>
 
     <style name="TextAppearance.MyTheme.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
-        <item name="fontFamily">@font/cabin</item>
+        <item name="fontFamily">@font/rubik_medium</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
@@ -87,6 +87,10 @@
 
     <style name="TextAppearance.MyTheme.Overline" parent="TextAppearance.MaterialComponents.Overline">
         <item name="fontFamily">@font/cabin</item>
+    </style>
+
+    <style name="TextAppearance.MyTheme.Amount" parent="TextAppearance.MyTheme.Subtitle1">
+        <item name="fontFamily">@font/rubik_medium</item>
     </style>
 
 </resources>
