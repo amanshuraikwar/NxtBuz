@@ -8,4 +8,7 @@ import kotlinx.android.parcel.Parcelize
 data class Money(
     private val amountStr: String,
     val amount: Double = amountStr.money()
-) : Parcelable
+) : Parcelable {
+    constructor(inputAmount: Double) : this(inputAmount.toString())
+    constructor(inputAmount: Float) : this(inputAmount.toString())
+}

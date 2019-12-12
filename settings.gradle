@@ -1,2 +1,5 @@
 rootProject.name='HowMuch'
 include ':app'
+include ':multiitemadapter'
+include ':annotations'
+include ':annotationProcessors'

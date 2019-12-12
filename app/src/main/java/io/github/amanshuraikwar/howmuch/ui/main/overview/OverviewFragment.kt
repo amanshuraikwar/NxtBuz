@@ -1,8 +1,10 @@
 package io.github.amanshuraikwar.howmuch.ui.main.overview
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +13,23 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.howmuch.R
 import io.github.amanshuraikwar.howmuch.data.model.Transaction
 import io.github.amanshuraikwar.howmuch.domain.result.EventObserver
+import io.github.amanshuraikwar.howmuch.ui.list.Last7DaysItem
+import io.github.amanshuraikwar.howmuch.ui.list.MonthlyBudgetItem
+import io.github.amanshuraikwar.howmuch.ui.list.RecyclerViewTypeFactoryGenerated
 import io.github.amanshuraikwar.howmuch.util.ModelUtil
 import io.github.amanshuraikwar.howmuch.util.dpToPx
 import io.github.amanshuraikwar.howmuch.util.toDisplayDate
 import io.github.amanshuraikwar.howmuch.util.viewModelProvider
+import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
+import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
+import kotlinx.android.synthetic.main.fragment_overview.*
 import kotlinx.android.synthetic.main.item_overview_last_7_days.*
 import javax.inject.Inject
 
@@ -53,7 +62,12 @@ class OverviewFragment : DaggerFragment() {
 
         requireActivity().let { activity ->
 
-            viewModel = viewModelProvider(viewModelFactory)
+            viewModel = viewModelProvider(viewModelFactory) {
+                colorControlNormalResId = TypedValue().let {
+                    activity.theme.resolveAttribute(R.attr.colorControlNormal, it, true)
+                    ContextCompat.getColor(activity, it.resourceId)
+                }
+            }
 
             viewModel.error.observe(
                 this,
@@ -71,62 +85,17 @@ class OverviewFragment : DaggerFragment() {
                 }
             )
 
-            viewModel.last7Days.observe(
+            viewModel.overviewData.observe(
                 this,
                 Observer {
 
-                    divider1.distributionBarData = it.distributionBarData
+                    val listItems = mutableListOf<RecyclerViewListItem>()
+                    listItems.add(Last7DaysItem(it.last7DaysData, {}))
+                    listItems.add(MonthlyBudgetItem(it.monthlyBudgetData, {}))
 
-                    amountTv.text = "$${it.distributionBarData.maxValue}"
-
-                    it.recentTransactions.forEach { txn ->
-
-                        transactionsLl.addView(
-                            layoutInflater.inflate(
-                                R.layout.item_overview_transaction,
-                                null
-                            ).apply {
-                                findViewById<View>(R.id.view1).setBackgroundColor(
-                                    ContextCompat.getColor(
-                                        activity, ModelUtil.getCategoryColor(txn.category.name)
-                                    )
-                                )
-                                findViewById<TextView>(R.id.txnTitleTv).text = txn.title
-                                findViewById<TextView>(R.id.amountTv).text = "$${txn.amount.amount}"
-                                findViewById<View>(R.id.parentCl).setOnClickListener { onTransactionClicked(txn) }
-                            }
-                        )
-
-                        transactionsLl.addView(
-                            layoutInflater.inflate(R.layout.item_divider, null).apply {
-                                layoutParams = LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    activity.dpToPx(1f).toInt()
-                                )
-                            }
-                        )
-
-                    }
-
-                    transactionsLl.addView(
-                        layoutInflater.inflate(R.layout.item_text_button, null)
-                    )
-
-                    trendIv.setImageResource(
-                        when (it.trend) {
-                            Trend.UP -> R.drawable.ic_round_trending_up_24
-                            Trend.DOWN -> R.drawable.ic_round_trending_down_24
-                            Trend.FLAT -> R.drawable.ic_round_trending_flat_24
-                        }
-                    )
-
-                    trendIv.imageTintList = ColorStateList.valueOf(
-                        when (it.trend) {
-                            Trend.UP -> ContextCompat.getColor(activity, R.color.green)
-                            Trend.DOWN -> ContextCompat.getColor(activity, R.color.red)
-                            Trend.FLAT -> ContextCompat.getColor(activity, R.color.color_primary)
-                        }
-                    )
+                    val adapter = MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
+                    itemsRv.layoutManager = LinearLayoutManager(activity)
+                    itemsRv.adapter = adapter
                 }
             )
         }

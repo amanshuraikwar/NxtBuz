@@ -121,9 +121,11 @@ class TransactionRepository @Inject constructor(
         spreadSheetId: String,
         googleAccountCredential: GoogleAccountCredential,
         dateTimeMillisec: Long
-    ): List<Transaction> = withContext(dispatcherProvider.io) {
+    ): List<Transaction> = withContext(dispatcherProvider.computation) {
 
-        val categoriesDef = async { getCategories(spreadSheetId, googleAccountCredential) }
+        val categoriesDef = async {
+            getCategories(spreadSheetId, googleAccountCredential)
+        }
 
         val transactionsDef = async {
             roomDataSource.getTransactionsAfter(dateTimeMillisec)
@@ -134,24 +136,21 @@ class TransactionRepository @Inject constructor(
 
         return@withContext transactions
             .map { transactionEntity ->
-                async {
-                    Transaction(
-                        OffsetDateTime.ofInstant(
-                            Instant.ofEpochMilli(transactionEntity.datetime),
-                            preferenceStorage.zoneId
-                        ),
-                        Money(transactionEntity.amount.toString()),
-                        transactionEntity.title,
-                        categories[transactionEntity.categoryId]
+                Transaction(
+                    OffsetDateTime.ofInstant(
+                        Instant.ofEpochMilli(transactionEntity.datetime),
+                        preferenceStorage.zoneId
+                    ),
+                    Money(transactionEntity.amount.toString()),
+                    transactionEntity.title,
+                    categories[transactionEntity.categoryId]
                         // todo custom exception
-                            ?: throw IllegalStateException(
-                                "No category found with id = ${transactionEntity.categoryId}."
-                            ),
-                        transactionEntity.spreadSheetSyncStatus
-                    )
-                }
+                        ?: throw IllegalStateException(
+                            "No category found with id = ${transactionEntity.categoryId}."
+                        ),
+                    transactionEntity.spreadSheetSyncStatus
+                )
             }
-            .awaitAll()
     }
 
     suspend fun addTransaction(transaction: Transaction) = withContext(dispatcherProvider.io) {
