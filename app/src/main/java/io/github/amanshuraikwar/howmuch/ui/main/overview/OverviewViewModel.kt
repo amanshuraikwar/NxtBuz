@@ -53,19 +53,29 @@ class OverviewViewModel @Inject constructor(
     private fun fetchData() = viewModelScope.launch(dispatcherProvider.main) {
         safeLaunch(_error) {
 
-            val last7DaysDef = async {
-                last7Days()
-            }
+            Log.d(TAG, "fetchData: About to suspend... ${Thread.currentThread().name}")
 
-            val monthlyBudget = async {
-                monthlyBudget()
-            }
+            last7Days()
 
-            _overviewData.value = OverViewData(last7DaysDef.await(), monthlyBudget.await())
+            Log.d(TAG, "fetchData: Resumed... ${Thread.currentThread().name}")
+
+//            val last7DaysDef = async {
+//                last7Days()
+//            }
+//
+//            val monthlyBudget = async {
+//                monthlyBudget()
+//            }
+
+            //_overviewData.value = OverViewData(last7DaysDef.await(), monthlyBudget.await())
         }
     }
 
     private suspend fun last7Days(): Last7DaysData = withContext(dispatcherProvider.computation) {
+
+        Log.d(TAG, "last7Days: In suspend... ${Thread.currentThread().name}")
+
+        Thread.sleep(10000)
 
         val transactions = getLast7DaysTransactionsUseCase()
 

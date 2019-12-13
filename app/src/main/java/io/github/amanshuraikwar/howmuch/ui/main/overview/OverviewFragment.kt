@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,8 @@ import kotlinx.android.synthetic.main.fragment_overview.*
 import kotlinx.android.synthetic.main.item_overview_last_7_days.*
 import javax.inject.Inject
 
+private const val TAG = "OverviewFragment"
+
 class OverviewFragment : DaggerFragment() {
 
     @Inject
@@ -59,6 +62,8 @@ class OverviewFragment : DaggerFragment() {
 
     @SuppressLint("SetTextI18n", "InflateParams")
     private fun setupViewModel() {
+
+        Log.d(TAG, "setupViewModel: UI is in thread ${Thread.currentThread().name}")
 
         requireActivity().let { activity ->
 
