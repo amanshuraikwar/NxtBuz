@@ -1,7 +1,6 @@
 package io.github.amanshuraikwar.howmuch.ui.main.overview
 
 import android.util.Log
-import androidx.annotation.ColorInt
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
@@ -15,14 +14,13 @@ import io.github.amanshuraikwar.howmuch.domain.transaction.GetLast7DaysTransacti
 import io.github.amanshuraikwar.howmuch.domain.transaction.GetThisMonthTransactionsUseCase
 import io.github.amanshuraikwar.howmuch.ui.widget.DistributionBarData
 import io.github.amanshuraikwar.howmuch.ui.widget.DistributionBarPortion
-import io.github.amanshuraikwar.howmuch.util.ModelUtil
+import io.github.amanshuraikwar.howmuch.util.ColorUtil
 import io.github.amanshuraikwar.howmuch.util.asEvent
-import io.github.amanshuraikwar.howmuch.util.safeLaunch
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import io.github.amanshuraikwar.howmuch.util.getDistributionsBy
+import io.github.amanshuraikwar.howmuch.util.getTrendBy
+import kotlinx.coroutines.*
 import javax.inject.Inject
+import kotlin.math.abs
 
 private const val TAG = "OverviewViewModel"
 
@@ -43,6 +41,10 @@ class OverviewViewModel @Inject constructor(
         }
         .asEvent()
 
+    private val errorHandler = CoroutineExceptionHandler { _, error ->
+        _error.postValue(error as Exception)
+    }
+
     private val _overviewData = MutableLiveData<OverViewData>()
     val overviewData = _overviewData.map { it }
 
@@ -50,59 +52,50 @@ class OverviewViewModel @Inject constructor(
         fetchData()
     }
 
-    private fun fetchData() = viewModelScope.launch(dispatcherProvider.main) {
-        safeLaunch(_error) {
+    private fun fetchData() = viewModelScope.launch(dispatcherProvider.main + errorHandler) {
 
-            Log.d(TAG, "fetchData: About to suspend... ${Thread.currentThread().name}")
-
+        val last7DaysDef = async {
             last7Days()
-
-            Log.d(TAG, "fetchData: Resumed... ${Thread.currentThread().name}")
-
-//            val last7DaysDef = async {
-//                last7Days()
-//            }
-//
-//            val monthlyBudget = async {
-//                monthlyBudget()
-//            }
-
-            //_overviewData.value = OverViewData(last7DaysDef.await(), monthlyBudget.await())
         }
+
+        val monthlyBudgetDef = async {
+            monthlyBudget()
+        }
+
+        _overviewData.value = OverViewData(
+            last7DaysDef.await(),
+            monthlyBudgetDef.await(),
+            if (last7DaysDef.await().recentTransactions.isEmpty())
+                Alert(
+                    "You have not done any transactions in last 7 days!"
+                )
+            else
+                null
+        )
     }
 
     private suspend fun last7Days(): Last7DaysData = withContext(dispatcherProvider.computation) {
 
-        Log.d(TAG, "last7Days: In suspend... ${Thread.currentThread().name}")
-
-        Thread.sleep(10000)
-
         val transactions = getLast7DaysTransactionsUseCase()
 
         val distributionsDef = async {
-            transactions
-                .groupBy { it.category }
-                .map { (k, v) ->
-                    DistributionBarPortion(
-                        k.name,
-                        v.fold(0.0) { r, t -> r + t.amount.amount }.toFloat(),
-                        ModelUtil.getCategoryColor(k.name)
-                    )
+            transactions.getDistributionsBy(
+                by = {
+                    it.category
+                },
+                name = {
+                    it.name
+                },
+                color = {
+                    it.color
                 }
+            )
         }
 
         val trendDef = async {
-            transactions
-                .groupBy {
-                    it.datetime.dayOfMonth
-                }
-                .mapValues { (_, v) ->
-                    v.fold(0.0) { r, t -> r + t.amount.amount }.toFloat()
-                }
-                .toSortedMap()
-                .let {
-                    it.lastKey() - it.firstKey()
-                }
+            transactions.getTrendBy {
+                it.datetime.dayOfMonth
+            }
         }
 
         val recentTransactionsDef = async {
@@ -134,73 +127,82 @@ class OverviewViewModel @Inject constructor(
         )
     }
 
-    private suspend fun monthlyBudget(): MonthlyBudgetData = withContext(dispatcherProvider.computation) {
+    private suspend fun monthlyBudget(): MonthlyBudgetData =
+        withContext(dispatcherProvider.computation) {
 
-        val transactions = getThisMonthTransactionsUseCase()
+            val transactions = getThisMonthTransactionsUseCase()
 
-        val categoryAmountMap = transactions
-            .groupBy { it.category }
-            .mapValues { (_, v) ->
-                v.fold(0.0) { r, t -> r + t.amount.amount }
-            }
+            val categoryAmountMap = transactions
+                .groupBy { it.category }
+                .mapValues { (_, v) ->
+                    v.fold(0.0) { r, t -> r + t.amount.amount }
+                }
 
-        val categories = getCategoriesUseCase()
-
-        val distributionsDef = async {
+            val categories = getCategoriesUseCase()
 
             val totalAmountSpent = categoryAmountMap
                 .map { (_, v) -> v }
                 .fold(0.0) { r, t -> r + t }
 
-            val totalBudgetAmount = categories.fold(0.0) { r, t -> r + t.monthlyLimit.amount }
+            val totalBudgetAmount =
+                categories.fold(0.0) { r, t -> r + t.monthlyLimit.amount }
 
-            val distributionMaxValue = totalBudgetAmount.coerceAtLeast(totalAmountSpent)
 
-            val distributionList = categoryAmountMap
-                .map { (k, v) ->
-                    DistributionBarPortion(
-                        k.name,
-                        v.toFloat(),
-                        ModelUtil.getCategoryColor(k.name)
+
+            val distributionsDef = async {
+
+                val distributionMaxValue = totalBudgetAmount.coerceAtLeast(totalAmountSpent)
+
+                val distributionList = categoryAmountMap
+                    .map { (k, v) ->
+                        DistributionBarPortion(
+                            k.name,
+                            v.toFloat(),
+                            k.color
+                        )
+                    }
+                    .toMutableList()
+
+                if (totalBudgetAmount > totalAmountSpent) {
+                    distributionList.add(
+                        DistributionBarPortion(
+                            "Budget Left",
+                            (totalBudgetAmount - totalAmountSpent).toFloat(),
+                            colorControlNormalResId
+                        )
                     )
                 }
-                .toMutableList()
 
-            if (totalBudgetAmount > totalAmountSpent) {
-                distributionList.add(
-                    DistributionBarPortion(
-                        "Budget Left",
-                        (totalBudgetAmount - totalAmountSpent).toFloat(),
-                        colorControlNormalResId
-                    )
+                DistributionBarData(
+                    distributionList,
+                    distributionMaxValue.toFloat()
                 )
             }
-            
-            DistributionBarData(
-                distributionList,
-                distributionMaxValue.toFloat()
+
+            // returning
+
+            MonthlyBudgetData(
+                distributionsDef.await(),
+                categoryAmountMap
+                    .map { (k, v) -> BudgetAwareCategory(k, Money(v)) }
+                    .sortedByDescending { it.amount.amount }
+                    .let {
+                        when {
+                            it.isNotEmpty() -> {
+                                it.subList(0, 3.coerceAtMost(it.size))
+                            }
+                            else -> {
+                                listOf()
+                            }
+                        }
+                    },
+                if (totalAmountSpent > totalBudgetAmount)
+                    BudgetStatus.OVER_BUDGET
+                else
+                    BudgetStatus.IN_BUDGET,
+                Money(abs(totalAmountSpent - totalBudgetAmount))
             )
         }
-
-        // returning
-
-        MonthlyBudgetData(
-            distributionsDef.await(),
-            categoryAmountMap
-                .map { (k, v) -> BudgetAwareCategory(k, Money(v)) }
-                .sortedByDescending { it.amount.amount }
-                .let {
-                    when {
-                        it.isNotEmpty() -> {
-                            it.subList(0, 3.coerceAtMost(it.size))
-                        }
-                        else -> {
-                            listOf()
-                        }
-                    }
-                }
-        )
-    }
 }
 
 data class Last7DaysData(
@@ -211,7 +213,9 @@ data class Last7DaysData(
 
 data class MonthlyBudgetData(
     val distributionBarData: DistributionBarData,
-    val minBudgetRemainingCategories: List<BudgetAwareCategory>
+    val minBudgetRemainingCategories: List<BudgetAwareCategory>,
+    val budgetStatus: BudgetStatus,
+    val budgetDifference: Money
 )
 
 data class BudgetAwareCategory(
@@ -219,13 +223,23 @@ data class BudgetAwareCategory(
     val amount: Money
 )
 
+data class Alert(
+    val msg: String
+)
+
 data class OverViewData(
     val last7DaysData: Last7DaysData,
-    val monthlyBudgetData: MonthlyBudgetData
+    val monthlyBudgetData: MonthlyBudgetData,
+    val alert: Alert? = null
 )
 
 enum class Trend {
     UP,
     DOWN,
     FLAT
+}
+
+enum class BudgetStatus {
+    IN_BUDGET,
+    OVER_BUDGET
 }

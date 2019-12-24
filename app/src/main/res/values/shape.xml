@@ -48,4 +48,18 @@
         <!--Your custom shape here-->
     </style>
 
+    <style name="ShapeAppearanceOverlay.BottomFlat">
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.TopFlat">
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Flat">
+        <item name="cornerSize">0dp</item>
+    </style>
+
 </resources>

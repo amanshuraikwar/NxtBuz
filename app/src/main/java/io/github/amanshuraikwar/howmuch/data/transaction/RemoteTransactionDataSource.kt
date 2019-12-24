@@ -5,6 +5,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.howmuch.data.googlesheetsapi.GoogleSheetsApiService
 import io.github.amanshuraikwar.howmuch.data.model.*
+import io.github.amanshuraikwar.howmuch.util.ColorUtil
 import kotlinx.coroutines.*
 import org.threeten.bp.OffsetDateTime
 import javax.inject.Inject
@@ -15,7 +16,8 @@ private const val TAG = "LocalTransactionDataMan"
 @Singleton
 class RemoteTransactionDataManager @Inject constructor(
     private val googleSheetsApiService: GoogleSheetsApiService,
-    private val dispatcherProvider: CoroutinesDispatcherProvider
+    private val dispatcherProvider: CoroutinesDispatcherProvider,
+    private val colorUtil: ColorUtil
 ) {
 
     // creates a new spreadsheet & metadata and transaction sheet
@@ -108,7 +110,8 @@ class RemoteTransactionDataManager @Inject constructor(
             Category(
                 cell = cell,
                 name = this[0].toString(),
-                monthlyLimit = Money(this[1].toString())
+                monthlyLimit = Money(this[1].toString()),
+                color = colorUtil.getCategoryColor(this[0].toString())
             )
         } catch (e: IndexOutOfBoundsException) {
             throw SpreadSheetException.InvalidCategory(cell, spreadsheetId)

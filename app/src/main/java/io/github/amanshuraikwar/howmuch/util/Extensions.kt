@@ -21,6 +21,7 @@ import io.github.amanshuraikwar.howmuch.data.room.categories.CategoryEntity
 import io.github.amanshuraikwar.howmuch.data.room.transactions.SpreadSheetSyncStatus
 import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionEntity
 import io.github.amanshuraikwar.howmuch.domain.result.Event
+import io.github.amanshuraikwar.howmuch.ui.widget.DistributionBarPortion
 import kotlinx.coroutines.CoroutineScope
 import org.threeten.bp.Instant
 import org.threeten.bp.OffsetDateTime
@@ -140,8 +141,11 @@ suspend fun <U : CoroutineScope> U.safeLaunchWithLoading(
 
 //region category
 
-fun CategoryEntity.asCategory() : Category = Category(
-    id.asSpreadSheetCell(), name, Money(monthlyLimit.toString())
+fun CategoryEntity.asCategory(colorUtil: ColorUtil) : Category = Category(
+    id.asSpreadSheetCell(),
+    name,
+    Money(monthlyLimit.toString()),
+    colorUtil.getCategoryColor(name)
 )
 
 fun Category.asCategoryEntity() : CategoryEntity = CategoryEntity(
@@ -160,6 +164,42 @@ fun Transaction.asTransactionEntity(): TransactionEntity = TransactionEntity(
     category.id,
     SpreadSheetSyncStatus.PENDING // todo
 )
+
+fun <K : Comparable<K>> List<Transaction>.getTrendBy(
+    by: (Transaction) -> K
+): Int {
+
+    if (isEmpty()) {
+        return 0
+    }
+
+    return groupBy {
+        by(it)
+    }
+        .mapValues { (_, v) ->
+            v.fold(0.0) { r, t -> r + t.amount.amount }.toFloat()
+        }
+        .toSortedMap()
+        .let {
+            it.lastKey().compareTo(it.firstKey())
+        }
+}
+
+fun <K> List<Transaction>.getDistributionsBy(
+    by: (Transaction) -> K,
+    name: (K) -> String,
+    color: (K) -> Int
+): List<DistributionBarPortion> {
+
+    return groupBy { by(it) }
+        .map { (k, v) ->
+            DistributionBarPortion(
+                name(k),
+                v.fold(0.0) { r, t -> r + t.amount.amount }.toFloat(),
+                color(k)
+            )
+        }
+}
 
 //endregion
 

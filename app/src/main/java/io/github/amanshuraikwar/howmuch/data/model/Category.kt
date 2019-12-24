@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.howmuch.data.model
 
 import android.os.Parcelable
+import androidx.annotation.ColorInt
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -8,6 +9,7 @@ data class Category(
     val cell: SpreadSheetCell,
     var name: String,
     val monthlyLimit: Money,
+    @ColorInt val color: Int,
     val id: String = cell.toString()
 ) : Parcelable {
     override fun equals(other: Any?): Boolean {

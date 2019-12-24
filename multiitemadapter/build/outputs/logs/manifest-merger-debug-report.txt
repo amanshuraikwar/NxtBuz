@@ -1,37 +1,37 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
-INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
-INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
-INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
-INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
-INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
-INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
+ADDED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
+INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
+INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
+INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
+INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
+INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
+INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
 	package
-		ADDED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml:2:5-56
-		INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
-		INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
+		ADDED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml:2:5-56
+		INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
+		INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
 	android:versionName
-		INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
-		ADDED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
-		INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
+		INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
+		ADDED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
+		INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
 	android:versionCode
-		INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
-		ADDED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
-		INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
+		INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
+		ADDED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml:1:1-2:59
+		INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
 	xmlns:android
-		ADDED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml:1:11-69
+		ADDED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml:1:11-69
 uses-sdk
-INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
-INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
-INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
-INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
+INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
+INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
+INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
+INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
-		ADDED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
-		INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
+		INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
+		ADDED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
+		INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
-		ADDED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
-		INJECTED from /Volumes/USER/personal/howmuchnew/multiitemadapter/src/main/AndroidManifest.xml
+		INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
+		ADDED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml
+		INJECTED from /Users/amanshuraikwar/projects/HowMuchNew/multiitemadapter/src/main/AndroidManifest.xml

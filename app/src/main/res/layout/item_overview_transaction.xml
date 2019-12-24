@@ -4,7 +4,10 @@
     android:id="@+id/parentCl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?selectableItemBackground">
+    android:background="?selectableItemBackground"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginEnd="@dimen/margin_small"
+    android:layout_marginTop="1dp">
 
     <View
         android:id="@+id/view1"

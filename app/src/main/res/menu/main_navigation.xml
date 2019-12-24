@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/overview"
         android:icon="@drawable/ic_round_pie_chart_24"
-        android:title="Overview" />
+        android:title="Overview"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/budget"
         android:icon="@drawable/ic_round_bar_chart_24"
-        android:title="Budget" />
+        android:title="Budget"
+        app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/profile"
-        android:icon="@drawable/ic_round_person_24"
-        android:title="Profile" />
+<!--    <item-->
+<!--        android:id="@+id/profile"-->
+<!--        android:icon="@drawable/ic_round_person_24"-->
+<!--        android:title="Profile" />-->
 </menu>

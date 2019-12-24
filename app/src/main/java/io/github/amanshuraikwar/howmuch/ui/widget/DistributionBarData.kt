@@ -27,7 +27,7 @@ fun List<DistributionBarPortion>.toRenderData(maxValue: Float, context: Context)
 
         val endX = startX + it.value / maxValue
 
-        renderDataList.add(DistributionBarRenderData(it.name, startX, endX, context.getColor(it.colorInt)))
+        renderDataList.add(DistributionBarRenderData(it.name, startX, endX, it.colorInt))
     }
 
     return renderDataList

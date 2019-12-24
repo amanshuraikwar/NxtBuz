@@ -1,15 +1,11 @@
 package io.github.amanshuraikwar.howmuch.ui.main.overview
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -21,17 +17,11 @@ import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.howmuch.R
 import io.github.amanshuraikwar.howmuch.data.model.Transaction
 import io.github.amanshuraikwar.howmuch.domain.result.EventObserver
-import io.github.amanshuraikwar.howmuch.ui.list.Last7DaysItem
-import io.github.amanshuraikwar.howmuch.ui.list.MonthlyBudgetItem
-import io.github.amanshuraikwar.howmuch.ui.list.RecyclerViewTypeFactoryGenerated
-import io.github.amanshuraikwar.howmuch.util.ModelUtil
-import io.github.amanshuraikwar.howmuch.util.dpToPx
-import io.github.amanshuraikwar.howmuch.util.toDisplayDate
+import io.github.amanshuraikwar.howmuch.ui.list.*
 import io.github.amanshuraikwar.howmuch.util.viewModelProvider
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import kotlinx.android.synthetic.main.fragment_overview.*
-import kotlinx.android.synthetic.main.item_overview_last_7_days.*
 import javax.inject.Inject
 
 private const val TAG = "OverviewFragment"
@@ -63,14 +53,12 @@ class OverviewFragment : DaggerFragment() {
     @SuppressLint("SetTextI18n", "InflateParams")
     private fun setupViewModel() {
 
-        Log.d(TAG, "setupViewModel: UI is in thread ${Thread.currentThread().name}")
-
         requireActivity().let { activity ->
 
             viewModel = viewModelProvider(viewModelFactory) {
                 colorControlNormalResId = TypedValue().let {
-                    activity.theme.resolveAttribute(R.attr.colorControlNormal, it, true)
-                    ContextCompat.getColor(activity, it.resourceId)
+                    //activity.theme.resolveAttribute(R.attr.colorControlHighlight, it, true)
+                    ContextCompat.getColor(activity, R.color.color_distribution_bar_def)
                 }
             }
 
@@ -95,10 +83,62 @@ class OverviewFragment : DaggerFragment() {
                 Observer {
 
                     val listItems = mutableListOf<RecyclerViewListItem>()
-                    listItems.add(Last7DaysItem(it.last7DaysData, {}))
-                    listItems.add(MonthlyBudgetItem(it.monthlyBudgetData, {}))
 
-                    val adapter = MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
+                    it.alert?.run {
+                        listItems.add(
+                            HeaderItem("Alert")
+                        )
+                        listItems.add(
+                            InfoItem(this.msg, R.drawable.ic_round_access_time_24)
+                        )
+                    }
+
+                    listItems.add(
+                        HeaderItem("Last 7 Days")
+                    )
+
+                    listItems.add(Last7DaysItem(it.last7DaysData))
+
+                    it.last7DaysData.recentTransactions.forEach {
+                        listItems.add(
+                            OverviewTransactionItem(
+                                it,
+                                {}
+                            )
+                        )
+                    }
+
+                    listItems.add(
+                        OverviewButtonItem(
+                            if (it.last7DaysData.recentTransactions.isEmpty())
+                                "See Older Transactions"
+                            else
+                                "See All",
+                            {}
+                        )
+                    )
+
+                    listItems.add(
+                        HeaderItem("Monthly Budget")
+                    )
+
+                    listItems.add(MonthlyBudgetItem(it.monthlyBudgetData))
+
+                    it.monthlyBudgetData.minBudgetRemainingCategories.forEach {
+                        listItems.add(
+                            OverviewBudgetCategoryItem(
+                                it,
+                                {}
+                            )
+                        )
+                    }
+
+                    listItems.add(
+                        OverviewButtonItem("See Monthly Budget", {})
+                    )
+
+                    val adapter =
+                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
                     itemsRv.layoutManager = LinearLayoutManager(activity)
                     itemsRv.adapter = adapter
                 }

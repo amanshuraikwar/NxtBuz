@@ -7,6 +7,7 @@ import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionDao
 import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionEntity
 import io.github.amanshuraikwar.howmuch.data.room.userspreadsheet.UserSpreadSheetDao
 import io.github.amanshuraikwar.howmuch.data.room.userspreadsheet.UserSpreadSheetEntity
+import io.github.amanshuraikwar.howmuch.util.ColorUtil
 import io.github.amanshuraikwar.howmuch.util.asCategory
 import io.github.amanshuraikwar.howmuch.util.asCategoryEntity
 import javax.inject.Inject
@@ -16,7 +17,8 @@ import javax.inject.Singleton
 class RoomDataSource @Inject constructor(
     private val spreadSheetDao: UserSpreadSheetDao,
     private val categoryDao: CategoryDao,
-    private val transactionDao: TransactionDao
+    private val transactionDao: TransactionDao,
+    private val colorUtil: ColorUtil
 ) {
 
     fun getSpreadsheetIdForEmail(email: String): String? =
@@ -42,7 +44,7 @@ class RoomDataSource @Inject constructor(
     }
 
     fun getCategories(): List<Category> {
-        return categoryDao.findAll().map { it.asCategory() }
+        return categoryDao.findAll().map { it.asCategory(colorUtil) }
     }
 
     fun refreshCategories(categories: List<Category>) {

@@ -26,24 +26,23 @@
             android:text="$0"
             android:textAppearance="?textAppearanceHeadline3"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/trendIv"
+            app:layout_constraintEnd_toStartOf="@id/leftTv"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintHorizontal_bias="0"/>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/trendIv"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:src="@drawable/ic_round_trending_up_24"
-            app:layout_constraintBottom_toBottomOf="@id/amountTv"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/leftTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Left"
+            android:textAppearance="?textAppearanceBody2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@id/amountTv"
-            app:layout_constraintTop_toTopOf="@id/amountTv"
-            app:tint="@color/green" />
+            app:layout_constraintBottom_toBottomOf="@id/amountTv"
+            android:paddingBottom="@dimen/padding_large"
+            android:paddingStart="@dimen/padding_small"/>
 
         <io.github.amanshuraikwar.howmuch.ui.widget.RoundedDistributionBar
             android:id="@+id/distributionBar"
