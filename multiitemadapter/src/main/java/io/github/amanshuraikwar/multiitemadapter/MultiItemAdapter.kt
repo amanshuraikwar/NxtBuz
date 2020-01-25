@@ -22,6 +22,7 @@ class MultiItemAdapter<T : RecyclerViewTypeFactory>(
                 parent,
                 false
             )
+
         return typeFactory.createViewHolder(contactView, viewType) ?: throw RuntimeException()
     }
 
