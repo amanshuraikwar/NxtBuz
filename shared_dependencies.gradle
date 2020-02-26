@@ -19,6 +19,7 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:${versions.dagger}"
     implementation "androidx.core:core-ktx:${versions.coreKtx}"
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation("com.squareup.okhttp3:logging-interceptor:4.3.1")
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
     implementation "androidx.lifecycle:lifecycle-viewmodel:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}"

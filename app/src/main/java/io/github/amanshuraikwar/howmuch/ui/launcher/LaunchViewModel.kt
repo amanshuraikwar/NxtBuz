@@ -3,7 +3,7 @@ package io.github.amanshuraikwar.howmuch.ui.launcher
 import androidx.lifecycle.*
 import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.howmuch.domain.user.GetUserStateUseCase
-import io.github.amanshuraikwar.howmuch.domain.user.UserState
+import io.github.amanshuraikwar.howmuch.data.user.UserState
 import io.github.amanshuraikwar.howmuch.util.asEvent
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,7 +26,7 @@ class LaunchViewModel @Inject constructor(
     private fun checkOnboarding() {
         viewModelScope.launch(dispatcherProvider.main) {
             _launchDestination.value =
-                if (getUserStateUseCase.invoke() is UserState.SpreadSheetCreated)
+                if (getUserStateUseCase() is UserState.SetupComplete)
                     LaunchDestination.MAIN_ACTIVITY
                 else
                     LaunchDestination.ONBOARDING

@@ -8,45 +8,15 @@
     android:animateLayoutChanges="true"
     tools:context=".ui.onboarding.OnboardingActivity">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/userPicCv"
-        android:layout_width="@dimen/avatar_size_large"
-        android:layout_height="@dimen/avatar_size_large"
-        android:layout_marginTop="@dimen/margin_very_large"
-        app:cardCornerRadius="@dimen/avatar_radius_large"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="?colorPrimary"
-        app:strokeWidth="@dimen/avatar_stroke_width">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/userPicIv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.google.android.material.card.MaterialCardView>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/userNameTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_large"
-        android:textAppearance="?textAppearanceHeadline5"
-        android:textColor="?colorPrimary"
-        app:layout_constraintTop_toBottomOf="@id/userPicCv"
-        tools:text="Welcome, Amanshu Raikwar" />
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/helpTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_normal"
+        android:paddingTop="@dimen/padding_very_large"
         android:textAppearance="?textAppearanceBody1"
         android:text="@string/subtitle_setup"
-        app:layout_constraintTop_toBottomOf="@id/userNameTv" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"

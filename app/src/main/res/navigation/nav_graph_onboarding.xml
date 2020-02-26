@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_onboarding"
-    app:startDestination="@id/SignInFragment">
+    app:startDestination="@id/welcomeFragment">
 
     <fragment
-        android:id="@+id/SignInFragment"
-        android:name="io.github.amanshuraikwar.howmuch.ui.onboarding.signin.SignInFragment"
+        android:id="@+id/welcomeFragment"
+        android:name="io.github.amanshuraikwar.howmuch.ui.onboarding.welcome.WelcomeFragment"
         android:label="SignInFragment"
-        tools:layout="@layout/fragment_signin" >
+        tools:layout="@layout/fragment_welcome" >
         <action
-            android:id="@+id/action_SignInFragment_to_setupFragment"
+            android:id="@+id/action_welcomeFragment_to_setupFragment"
             app:destination="@id/setupFragment" />
     </fragment>
 

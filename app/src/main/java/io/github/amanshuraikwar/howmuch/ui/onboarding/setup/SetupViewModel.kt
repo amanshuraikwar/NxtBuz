@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.howmuch.domain.transaction.SetupNewSpreadSheetUseCase
 import io.github.amanshuraikwar.howmuch.domain.user.GetUserStateUseCase
-import io.github.amanshuraikwar.howmuch.domain.user.UserState
+import io.github.amanshuraikwar.howmuch.data.user.UserState
+import io.github.amanshuraikwar.howmuch.domain.setup.SetupUseCase
 import io.github.amanshuraikwar.howmuch.util.asEvent
 import io.github.amanshuraikwar.howmuch.util.safeLaunch
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ private const val TAG = "SetupViewModel"
 
 class SetupViewModel @Inject constructor(
     private val getUserStateUseCase: GetUserStateUseCase,
-    private val setupNewSpreadSheetUseCase: SetupNewSpreadSheetUseCase,
+    private val setupUseCase: SetupUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -40,10 +40,10 @@ class SetupViewModel @Inject constructor(
 
     fun initiateSetup() = viewModelScope.launch(dispatcherProvider.io) {
         safeLaunch(_error) {
-            var userState = getUserStateUseCase.invoke()
+            var userState = getUserStateUseCase()
             _userState.postValue(userState)
-            if (userState is UserState.SignedIn) {
-                setupNewSpreadSheetUseCase.invoke()
+            if (userState is UserState.New) {
+                setupUseCase()
                 userState = getUserStateUseCase.invoke()
                 _userState.postValue(userState)
             }

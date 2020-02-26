@@ -3,7 +3,8 @@ package io.github.amanshuraikwar.howmuch.di
 import io.github.amanshuraikwar.howmuch.ui.launcher.LaunchModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import io.github.amanshuraikwar.howmuch.data.user.di.GoogleSignInProvides
+import io.github.amanshuraikwar.howmuch.ui.busstop.BusStopActivity
+import io.github.amanshuraikwar.howmuch.ui.busstop.BusStopModule
 import io.github.amanshuraikwar.howmuch.ui.launcher.LauncherActivity
 import io.github.amanshuraikwar.howmuch.ui.main.MainActivity
 import io.github.amanshuraikwar.howmuch.ui.main.MainModule
@@ -28,11 +29,15 @@ abstract class ActivityBindingModule {
     internal abstract fun a(): LauncherActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [OnboardingModule::class, GoogleSignInProvides::class])
+    @ContributesAndroidInjector(modules = [OnboardingModule::class])
     internal abstract fun b(): OnboardingActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [MainModule::class, GoogleSignInProvides::class])
+    @ContributesAndroidInjector(modules = [MainModule::class])
     internal abstract fun c(): MainActivity
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = [BusStopModule::class])
+    internal abstract fun d(): BusStopActivity
 
 }

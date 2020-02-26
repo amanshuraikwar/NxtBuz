@@ -1,8 +1,14 @@
 package io.github.amanshuraikwar.howmuch.data.room
 
+import io.github.amanshuraikwar.howmuch.data.model.BusStop
 import io.github.amanshuraikwar.howmuch.data.model.Category
-import io.github.amanshuraikwar.howmuch.data.model.Transaction
+import io.github.amanshuraikwar.howmuch.data.room.busroute.BusRouteDao
+import io.github.amanshuraikwar.howmuch.data.room.busroute.BusRouteEntity
+import io.github.amanshuraikwar.howmuch.data.room.busstops.BusStopEntity
+import io.github.amanshuraikwar.howmuch.data.room.busstops.BusStopDao
 import io.github.amanshuraikwar.howmuch.data.room.categories.CategoryDao
+import io.github.amanshuraikwar.howmuch.data.room.operatingbus.OperatingBusDao
+import io.github.amanshuraikwar.howmuch.data.room.operatingbus.OperatingBusEntity
 import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionDao
 import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionEntity
 import io.github.amanshuraikwar.howmuch.data.room.userspreadsheet.UserSpreadSheetDao
@@ -18,6 +24,9 @@ class RoomDataSource @Inject constructor(
     private val spreadSheetDao: UserSpreadSheetDao,
     private val categoryDao: CategoryDao,
     private val transactionDao: TransactionDao,
+    val busStopDao: BusStopDao,
+    val busRouteDao: BusRouteDao,
+    val operatingBusDao: OperatingBusDao,
     private val colorUtil: ColorUtil
 ) {
 
@@ -62,5 +71,35 @@ class RoomDataSource @Inject constructor(
 
     fun addTransaction(transactionEntity: TransactionEntity) {
         transactionDao.insertAll(listOf(transactionEntity))
+    }
+
+    fun deleteAllBusStops() {
+        busStopDao.deleteAll()
+    }
+
+    fun deleteAllData() {
+        busStopDao.deleteAll()
+        busRouteDao.deleteAll()
+        operatingBusDao.deleteAll()
+    }
+
+    fun addBusStops(busStopEntityList: List<BusStopEntity>) {
+        busStopDao.insertAll(busStopEntityList)
+    }
+
+    fun addOperatingBus(operatingBusEntityList: List<OperatingBusEntity>) {
+        operatingBusDao.insertAll(operatingBusEntityList)
+    }
+
+    fun addBusRoute(busRouteEntityList: List<BusRouteEntity>) {
+        busRouteDao.insertAll(busRouteEntityList)
+    }
+
+    fun getCloseBusStops(
+        latitude: Double,
+        longitude: Double,
+        limit: Int
+    ): List<BusStopEntity> {
+        return busStopDao.findClose(latitude, longitude, limit)
     }
 }

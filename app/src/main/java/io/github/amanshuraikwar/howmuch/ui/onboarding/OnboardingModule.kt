@@ -9,22 +9,16 @@ import dagger.multibindings.IntoMap
 import io.github.amanshuraikwar.howmuch.di.ViewModelKey
 import io.github.amanshuraikwar.howmuch.ui.onboarding.setup.SetupFragment
 import io.github.amanshuraikwar.howmuch.ui.onboarding.setup.SetupViewModel
-import io.github.amanshuraikwar.howmuch.ui.onboarding.signin.SignInFragment
-import io.github.amanshuraikwar.howmuch.ui.onboarding.signin.SignInViewModel
+import io.github.amanshuraikwar.howmuch.ui.onboarding.welcome.WelcomeFragment
 
 @Module
 internal abstract class OnboardingModule {
 
     @Binds
-    @IntoMap
-    @ViewModelKey(SignInViewModel::class)
-    internal abstract fun a(a: SignInViewModel): ViewModel
-
-    @Binds
     internal abstract fun b(a: OnboardingActivity): AppCompatActivity
 
     @ContributesAndroidInjector
-    internal abstract fun c(): SignInFragment
+    internal abstract fun c(): WelcomeFragment
 
     @Binds
     @IntoMap

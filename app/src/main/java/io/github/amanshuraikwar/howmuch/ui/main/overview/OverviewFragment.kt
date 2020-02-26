@@ -1,6 +1,8 @@
 package io.github.amanshuraikwar.howmuch.ui.main.overview
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -15,14 +17,18 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.howmuch.R
+import io.github.amanshuraikwar.howmuch.data.model.BusStop
 import io.github.amanshuraikwar.howmuch.data.model.Transaction
 import io.github.amanshuraikwar.howmuch.domain.result.EventObserver
-import io.github.amanshuraikwar.howmuch.ui.list.*
+import io.github.amanshuraikwar.howmuch.ui.busstop.BusStopActivity
+import io.github.amanshuraikwar.howmuch.ui.list.BusStopItem
+import io.github.amanshuraikwar.howmuch.ui.list.RecyclerViewTypeFactoryGenerated
 import io.github.amanshuraikwar.howmuch.util.viewModelProvider
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import kotlinx.android.synthetic.main.fragment_overview.*
 import javax.inject.Inject
+
 
 private const val TAG = "OverviewFragment"
 
@@ -57,7 +63,6 @@ class OverviewFragment : DaggerFragment() {
 
             viewModel = viewModelProvider(viewModelFactory) {
                 colorControlNormalResId = TypedValue().let {
-                    //activity.theme.resolveAttribute(R.attr.colorControlHighlight, it, true)
                     ContextCompat.getColor(activity, R.color.color_distribution_bar_def)
                 }
             }
@@ -78,64 +83,21 @@ class OverviewFragment : DaggerFragment() {
                 }
             )
 
-            viewModel.overviewData.observe(
+            viewModel.busStops.observe(
                 this,
                 Observer {
 
                     val listItems = mutableListOf<RecyclerViewListItem>()
-
-                    it.alert?.run {
+                    it.forEach {
                         listItems.add(
-                            HeaderItem("Alert")
-                        )
-                        listItems.add(
-                            InfoItem(this.msg, R.drawable.ic_round_access_time_24)
-                        )
-                    }
-
-                    listItems.add(
-                        HeaderItem("Last 7 Days")
-                    )
-
-                    listItems.add(Last7DaysItem(it.last7DaysData))
-
-                    it.last7DaysData.recentTransactions.forEach {
-                        listItems.add(
-                            OverviewTransactionItem(
+                            BusStopItem(
                                 it,
-                                {}
+                                R.drawable.ic_round_directions_bus_72,
+                                ::onBusStopClicked,
+                                ::onGotoClicked
                             )
                         )
                     }
-
-                    listItems.add(
-                        OverviewButtonItem(
-                            if (it.last7DaysData.recentTransactions.isEmpty())
-                                "See Older Transactions"
-                            else
-                                "See All",
-                            {}
-                        )
-                    )
-
-                    listItems.add(
-                        HeaderItem("Monthly Budget")
-                    )
-
-                    listItems.add(MonthlyBudgetItem(it.monthlyBudgetData))
-
-                    it.monthlyBudgetData.minBudgetRemainingCategories.forEach {
-                        listItems.add(
-                            OverviewBudgetCategoryItem(
-                                it,
-                                {}
-                            )
-                        )
-                    }
-
-                    listItems.add(
-                        OverviewButtonItem("See Monthly Budget", {})
-                    )
 
                     val adapter =
                         MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
@@ -144,5 +106,27 @@ class OverviewFragment : DaggerFragment() {
                 }
             )
         }
+    }
+
+    private fun onBusStopClicked(busStop: BusStop) {
+        startActivity(Intent(activity, BusStopActivity::class.java).putExtra("busStop", busStop))
+    }
+
+    private fun onGotoClicked(busStop: BusStop) {
+        // todo: think control via settings
+//        val gmmIntentUri: Uri = Uri.parse("google.navigation:q=${busStop.latitude},${busStop.longitude}&mode=w")
+//        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+//        mapIntent.setPackage("com.google.android.apps.maps")
+//        startActivity(mapIntent)
+        val browserIntent =
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(
+                    "https://www.google.com/maps/dir/" +
+                            "?api=1" +
+                            "&destination=${busStop.latitude},${busStop.longitude}&travelmode=walking"
+                )
+            )
+        startActivity(browserIntent)
     }
 }

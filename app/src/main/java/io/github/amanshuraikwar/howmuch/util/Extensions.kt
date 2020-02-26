@@ -55,6 +55,12 @@ inline fun <reified VM : ViewModel> Fragment.viewModelProvider(
 ) =
     ViewModelProvider(this, provider).get(VM::class.java).apply { init() }
 
+inline fun <reified VM : ViewModel> FragmentActivity.viewModelProvider(
+    provider: ViewModelProvider.Factory,
+    init: VM.() -> Unit = {}
+) =
+    ViewModelProvider(this, provider).get(VM::class.java).apply { init() }
+
 //endregion
 
 /**

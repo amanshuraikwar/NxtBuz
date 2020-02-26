@@ -34,9 +34,12 @@
     <!--colorPrimary colors map to components and elements, such as app bars and buttons. -->
     <!--colorSecondary colors are most often used as accents on components, such as FABs and -->
     <!--selection controls.-->
-    <color name="color_primary">#1a73e8</color>
+
+<!--    <color name="color_primary">#1a73e8</color>-->
+    <color name="color_primary">@color/blue</color>
     <color name="color_primary_variant">#3700b3</color>
-    <color name="color_secondary">#03dac6</color>
+<!--    <color name="color_secondary">#03dac6</color>-->
+    <color name="color_secondary">@color/blue</color>
     <color name="color_secondary_variant">#018786</color>
 
     <!--colorBackground appears behind scrollable content and is used for the default window-->
@@ -69,5 +72,7 @@
     <color name="teal">#009688</color>
 
     <color name="red">#F44336</color>
+
+    <color name="divider">#1e000000</color>
 
 </resources>

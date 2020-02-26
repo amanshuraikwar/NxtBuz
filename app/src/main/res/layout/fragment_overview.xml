@@ -10,57 +10,15 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:gravity="center_horizontal"
-                android:layout_gravity="center_vertical"
-                android:text="@string/app_name"
-                android:textAppearance="?textAppearanceHeadline6" />
-
-            <!-- todo -->
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_round_search_24"
-                android:background="?selectableItemBackgroundBorderless"
-                android:padding="@dimen/padding_small"
-                android:layout_gravity="center_vertical"
-                android:visibility="gone"/>
-
-            <!-- todo -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/userPicCv"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeColor="?colorPrimary"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="20dp"
-                app:strokeWidth="@dimen/avatar_stroke_width"
-                android:visibility="gone">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/userPicIv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </com.google.android.material.card.MaterialCardView>
-
-        </FrameLayout>
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_search"
+        app:title="@string/app_name">
         <ProgressBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:indeterminate="true"/>
+            android:indeterminate="true"
+            android:visibility="gone"/>
     </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.recyclerview.widget.RecyclerView

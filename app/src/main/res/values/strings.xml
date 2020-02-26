@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">HowMuch</string>
+    <string name="app_name">Bus Lah</string>
     <string name="subtitle_sign_in">HowMuch uses Google SpreadSheets to store your data</string>
-    <string name="btn_txt_sign_in">Sign In</string>
+    <string name="btn_txt_sign_in">Get Started</string>
 
     <string name="error_sign_in_failed">Sign in failed! Please try again.</string>
     <string name="msg_sign_in_success">Signed in successfully.</string>
-    <string name="subtitle_app">Your minimal expense tracker</string>
+    <string name="subtitle_app">Your minimal bus transport companion</string>
     <string name="msg_loading">Loading…</string>
     <string name="msg_signing_in">Signing in…</string>
     <string name="btn_txt_switch_account">switch account</string>

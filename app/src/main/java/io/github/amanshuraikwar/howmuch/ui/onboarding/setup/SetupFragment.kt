@@ -8,19 +8,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.howmuch.R
+import io.github.amanshuraikwar.howmuch.data.user.UserState
 import io.github.amanshuraikwar.howmuch.domain.result.EventObserver
-import io.github.amanshuraikwar.howmuch.domain.user.UserState
 import io.github.amanshuraikwar.howmuch.ui.main.MainActivity
-import io.github.amanshuraikwar.howmuch.util.showSnackbar
 import io.github.amanshuraikwar.howmuch.util.viewModelProvider
-import kotlinx.android.synthetic.main.fragment_setup.*
-import kotlinx.android.synthetic.main.fragment_setup.parentCl
-import kotlinx.android.synthetic.main.fragment_setup.userPicIv
 import javax.inject.Inject
 
 class SetupFragment : DaggerFragment() {
@@ -51,16 +46,12 @@ class SetupFragment : DaggerFragment() {
 
             viewModel.userState.observe(
                 this,
-                Observer {
-                    when (it) {
-                        is UserState.NotSignedIn -> {
-                            activity.finish()
+                Observer { userState ->
+                    when (userState) {
+                        is UserState.New -> {
+                            // do nothing
                         }
-                        is UserState.SignedIn -> {
-                            userNameTv.text = getString(R.string.txt_welcome, it.user.name)
-                            Glide.with(this).load(it.user.userPicUrl).into(userPicIv)
-                        }
-                        is UserState.SpreadSheetCreated -> {
+                        is UserState.SetupComplete -> {
                             startActivity(Intent(activity, MainActivity::class.java))
                             activity.finish()
                         }
@@ -70,14 +61,22 @@ class SetupFragment : DaggerFragment() {
 
             viewModel.error.observe(
                 this,
-                EventObserver {
+                EventObserver { errorMsg ->
+
                     val view = activity.layoutInflater.inflate(R.layout.dialog_error, null)
-                    val dialog = MaterialAlertDialogBuilder(activity).setCancelable(false).setView(view).create()
-                    view.findViewById<TextView>(R.id.errorMessageTv).text = it
+
+                    val dialog =
+                        MaterialAlertDialogBuilder(activity)
+                            .setCancelable(false)
+                            .setView(view)
+                            .create()
+
+                    view.findViewById<TextView>(R.id.errorMessageTv).text = errorMsg
                     view.findViewById<MaterialButton>(R.id.retryBtn).setOnClickListener {
                         viewModel.initiateSetup()
                         dialog.dismiss()
                     }
+
                     dialog.show()
                 }
             )

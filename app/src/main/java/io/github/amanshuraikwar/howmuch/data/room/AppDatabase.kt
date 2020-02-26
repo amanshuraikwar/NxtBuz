@@ -2,11 +2,17 @@ package io.github.amanshuraikwar.howmuch.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import io.github.amanshuraikwar.howmuch.data.room.busroute.BusRouteDao
+import io.github.amanshuraikwar.howmuch.data.room.busroute.BusRouteEntity
+import io.github.amanshuraikwar.howmuch.data.room.busstops.BusStopEntity
+import io.github.amanshuraikwar.howmuch.data.room.busstops.BusStopDao
 import io.github.amanshuraikwar.howmuch.data.room.categories.CategoryDao
 import io.github.amanshuraikwar.howmuch.data.room.categories.CategoryEntity
-import io.github.amanshuraikwar.howmuch.data.room.transactions.SpreadSheetSyncStatus
+import io.github.amanshuraikwar.howmuch.data.room.operatingbus.OperatingBusDao
+import io.github.amanshuraikwar.howmuch.data.room.operatingbus.OperatingBusEntity
+import io.github.amanshuraikwar.howmuch.data.room.operatingbus.TimeTypeConverters
+import io.github.amanshuraikwar.howmuch.data.room.transactions.SpreadSheetSyncStatusTypeConverters
 import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionDao
 import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionEntity
 import io.github.amanshuraikwar.howmuch.data.room.userspreadsheet.UserSpreadSheetEntity
@@ -16,15 +22,18 @@ import io.github.amanshuraikwar.howmuch.data.room.userspreadsheet.UserSpreadShee
     entities = [
         UserSpreadSheetEntity::class,
         CategoryEntity::class,
-        TransactionEntity::class
+        TransactionEntity::class,
+        BusStopEntity::class,
+        OperatingBusEntity::class,
+        BusRouteEntity::class
     ],
-    version = 3
+    version = 4
 )
-@TypeConverters(RoomTypeConverters::class)
+@TypeConverters(SpreadSheetSyncStatusTypeConverters::class, TimeTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     companion object {
-        const val DATABASE_NAME = "howmuch"
+        const val DATABASE_NAME = "buslah"
     }
 
     abstract val transactionDao: TransactionDao
@@ -32,13 +41,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract val userSpreadSheetDao: UserSpreadSheetDao
 
     abstract val categoryDao: CategoryDao
-}
 
-class RoomTypeConverters {
+    abstract val busStopDao: BusStopDao
 
-    @TypeConverter
-    fun toSpreadSheetSyncStatus(ordinal: Int) = SpreadSheetSyncStatus.values()[ordinal]
+    abstract val operatingBusDao: OperatingBusDao
 
-    @TypeConverter
-    fun toOrdinal(spreadSheetSyncStatus: SpreadSheetSyncStatus) = spreadSheetSyncStatus.ordinal
+    abstract val busRouteDao: BusRouteDao
 }
