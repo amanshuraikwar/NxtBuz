@@ -1,12 +1,16 @@
 package io.github.amanshuraikwar.howmuch.data.model
 
-import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
-
-@Parcelize
 data class BusArrival(
-    @SerializedName("ServiceNo") val serviceNumber: String,
-    @SerializedName("Operator") val operator: String,
-    val arrivals: List<ArrivingBus>
-) : Parcelable
+    val serviceNumber: String,
+    val operator: String,
+    val destinationStopDescription: String,
+    val direction: Int,
+    val stopSequence: Int,
+    val distance: Double,
+    val arrivals: Arrivals
+)
+
+sealed class Arrivals {
+    object NotOperating : Arrivals()
+    data class Arriving(val arrivingBusList: List<ArrivingBus>) : Arrivals()
+}

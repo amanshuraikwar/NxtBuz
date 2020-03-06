@@ -65,15 +65,18 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/busInfoTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/padding_normal"
             android:paddingTop="10dp"
-            android:paddingEnd="0dp"
+            android:paddingEnd="@dimen/padding_normal"
+            android:lines="1"
+            android:ellipsize="end"
             android:textAppearance="?textAppearanceOverline"
             app:layout_constraintStart_toEndOf="@id/iconIv"
+            app:layout_constraintEnd_toStartOf="@id/verticalDivider"
             app:layout_constraintTop_toBottomOf="@id/serviceNumberTv"
-            android:text="SMRT • Marina Ctr Ter" />
+            android:text="SMRT  •  Marina Ctr Ter" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/busRouteTv"
@@ -90,13 +93,6 @@
             android:drawableTint="?colorControlActivated"
             android:text="10th  •  8.7KM" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="end"
-            app:constraint_referenced_ids="busInfoTv,serviceNumberTv" />
-
         <View
             android:id="@+id/verticalDivider"
             android:layout_width="1dp"
@@ -106,25 +102,27 @@
             android:layout_marginBottom="@dimen/padding_small"
             android:background="@color/divider"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/barrier1"
+            app:layout_constraintEnd_toStartOf="@id/nextDepartureTv"
+            app:layout_constraintHorizontal_bias="1"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/nextDepartureTitleTv"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/padding_small"
             android:paddingEnd="@dimen/padding_normal"
             android:textAppearance="?textAppearanceCaption"
+            app:layout_constraintStart_toStartOf="@id/nextDepartureTv"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/verticalDivider"
             app:layout_constraintTop_toTopOf="parent"
             android:text="Next departure" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/nextDepartureTv"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_medium"
             android:paddingStart="@dimen/padding_normal"
@@ -133,7 +131,6 @@
             android:textAppearance="?textAppearanceHeadline5"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/verticalDivider"
             app:layout_constraintTop_toBottomOf="@id/nextDepartureTitleTv"
             android:text="04 min" />
 
@@ -141,13 +138,13 @@
             android:id="@+id/crowdedIv1"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_normal"
             android:padding="4dp"
             android:tint="?colorControlActivated"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/verticalDivider"
+            app:layout_constraintStart_toStartOf="@id/nextDepartureTv"
             app:layout_constraintTop_toBottomOf="@id/nextDepartureTv"
             app:srcCompat="@drawable/ic_round_wc_24" />
 
@@ -185,13 +182,5 @@
             app:layout_constraintTop_toBottomOf="@id/nextDepartureTv"
             app:srcCompat="@drawable/ic_round_accessible_24"
             android:tint="?colorControlActivated"/>
-
-<!--        <View-->
-<!--            android:id="@+id/view2"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_marginStart="56dp"-->
-<!--            android:background="@color/divider"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

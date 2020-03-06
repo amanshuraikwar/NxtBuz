@@ -19,5 +19,8 @@ interface BusRouteDao {
     fun findAll(): List<BusRouteEntity>
 
     @Query("SELECT * FROM BusRouteEntity WHERE busServiceNumber = :busServiceNumber")
-    fun findByBusServiceNumber(busServiceNumber: String): BusRouteEntity?
+    fun findByBusServiceNumber(busServiceNumber: String): List<BusRouteEntity>
+
+    @Query("SELECT * FROM BusRouteEntity WHERE busServiceNumber = :busServiceNumber AND busStopCode = :busStopCode")
+    fun findByBusServiceNumberAndBusStopCode(busServiceNumber: String, busStopCode: String): List<BusRouteEntity>
 }

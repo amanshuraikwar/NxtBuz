@@ -1,8 +1,6 @@
 package io.github.amanshuraikwar.howmuch.data.busapi
 
 import com.google.gson.annotations.SerializedName
-import io.github.amanshuraikwar.howmuch.data.model.BusArrivalBridge
-import io.github.amanshuraikwar.howmuch.data.model.BusStop
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -35,7 +33,27 @@ data class BusStopItem(
 data class BusArrivalsResponse(
     @SerializedName("odata.metadata") val metadata: String,
     @SerializedName("BusStopCode") val busStopCode: Int,
-    @SerializedName("Services") val busArrivals: List<BusArrivalBridge>
+    @SerializedName("Services") val busArrivals: List<BusArrivalItem>
+)
+
+data class BusArrivalItem(
+    @SerializedName("ServiceNo") val serviceNumber: String,
+    @SerializedName("Operator") val operator: String,
+    @SerializedName("NextBus") val arrivingBus: ArrivingBusItem?,
+    @SerializedName("NextBus1") val arrivingBus1: ArrivingBusItem?,
+    @SerializedName("NextBus2") val arrivingBus2: ArrivingBusItem?
+)
+
+data class ArrivingBusItem(
+    @SerializedName("OriginCode") val originCode: String,
+    @SerializedName("DestinationCode") val destinationCode: String,
+    @SerializedName("EstimatedArrival") val estimatedArrival: String,
+    @SerializedName("Latitude") val latitude: String,
+    @SerializedName("Longitude") val longitude: String,
+    @SerializedName("VisitNumber") val visitNumber: String,
+    @SerializedName("Load") val load: String,
+    @SerializedName("Feature") val feature: String,
+    @SerializedName("Type") val type: String
 )
 
 data class BusRoutesResponse(

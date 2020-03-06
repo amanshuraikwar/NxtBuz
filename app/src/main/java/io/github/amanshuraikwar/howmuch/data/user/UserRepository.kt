@@ -3,14 +3,9 @@ package io.github.amanshuraikwar.howmuch.data.user
 import android.util.Log
 import io.github.amanshuraikwar.howmuch.data.BusServiceNumber
 import io.github.amanshuraikwar.howmuch.data.BusStopCode
-import io.github.amanshuraikwar.howmuch.data.busapi.BusRouteItem
-import io.github.amanshuraikwar.howmuch.data.busapi.BusStopItem
-import io.github.amanshuraikwar.howmuch.data.busapi.SgBusApi
+import io.github.amanshuraikwar.howmuch.data.busapi.*
 import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.howmuch.data.model.Bus
-import io.github.amanshuraikwar.howmuch.data.model.BusArrival
-import io.github.amanshuraikwar.howmuch.data.model.BusStop
-import io.github.amanshuraikwar.howmuch.data.model.asBusArrival
+import io.github.amanshuraikwar.howmuch.data.model.*
 import io.github.amanshuraikwar.howmuch.data.prefs.PreferenceStorage
 import io.github.amanshuraikwar.howmuch.data.room.RoomDataSource
 import io.github.amanshuraikwar.howmuch.data.room.busroute.BusRouteEntity
@@ -18,7 +13,9 @@ import io.github.amanshuraikwar.howmuch.data.room.busstops.BusStopEntity
 import io.github.amanshuraikwar.howmuch.data.room.operatingbus.OperatingBusEntity
 import io.github.amanshuraikwar.howmuch.util.TimeUtil
 import kotlinx.coroutines.*
+import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetTime
+import org.threeten.bp.temporal.ChronoUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -123,7 +120,7 @@ class UserRepository @Inject constructor(
         )
 
         fun String.toTime() =
-            substring(0..1).let { if(it == "24") "00" else it } +
+            substring(0..1).let { if (it == "24") "00" else it } +
                     ":" +
                     substring(2..3).let { if (it == "0`") "00" else it } +
                     ":00+08:00"
@@ -233,7 +230,119 @@ class UserRepository @Inject constructor(
 
     suspend fun getBusArrivals(busStopCode: String): List<BusArrival> =
         withContext(dispatcherProvider.io) {
-            return@withContext sgBusApi.getBusArrivals(busStopCode)
-                .busArrivals.map { it.asBusArrival() }
+
+            return@withContext sgBusApi
+                .getBusArrivals(busStopCode)
+                .busArrivals
+                .map { busArrivalItem ->
+
+                    val (_, _, direction, stopSequence, distance) =
+                        roomDataSource
+                            .busRouteDao
+                            .findByBusServiceNumberAndBusStopCode(
+                                busArrivalItem.serviceNumber,
+                                busStopCode
+                            )
+                            .takeIf { it.isNotEmpty() }
+                            ?.get(0)
+                            ?: throw Exception(
+                                "No bus route node found for service number ${busArrivalItem.serviceNumber} and stop code $busStopCode."
+                            )
+
+                    val arrivals = busArrivalItem.toArrivals()
+
+                    val destinationStopDescription: String =
+                        when(arrivals) {
+                            is Arrivals.NotOperating -> "N/A"
+                            is Arrivals.Arriving -> arrivals.arrivingBusList[0].destination.busStopDescription
+                        }
+
+                    BusArrival(
+                        busArrivalItem.serviceNumber,
+                        busArrivalItem.operator,
+                        destinationStopDescription,
+                        direction,
+                        stopSequence,
+                        distance,
+                        arrivals
+                    )
+                }
         }
+
+    private fun BusArrivalItem.toArrivals(): Arrivals {
+
+        if (arrivingBus == null || arrivingBus.estimatedArrival == "") {
+            return Arrivals.NotOperating
+        }
+
+        val arrivingBusList = mutableListOf<ArrivingBus>()
+
+        arrivingBusList.add(arrivingBus.asArrivingBus())
+
+        if (arrivingBus1 != null) {
+            if (arrivingBus1.estimatedArrival != "") {
+                arrivingBusList.add(arrivingBus1.asArrivingBus())
+            }
+        }
+
+
+        if (arrivingBus2 != null) {
+            if (arrivingBus2.estimatedArrival != "") {
+                arrivingBusList.add(arrivingBus2.asArrivingBus())
+            }
+        }
+
+        return Arrivals.Arriving(arrivingBusList)
+    }
+
+    private fun ArrivingBusItem.asArrivingBus(): ArrivingBus {
+
+        val time =
+            ChronoUnit.MINUTES.between(OffsetDateTime.now(), OffsetDateTime.parse(estimatedArrival))
+
+        val origin: ArrivingBusStop =
+            roomDataSource
+                .busStopDao
+                .findByCode(originCode)
+                .takeIf { it.isNotEmpty() }
+                ?.get(0)
+                ?.let {
+                    ArrivingBusStop(
+                        busStopCode = it.code,
+                        roadName = it.roadName,
+                        busStopDescription = it.description
+                    )
+                }
+                ?: throw Exception(
+                    "No bus stop found for stop code $originCode (origin)."
+                )
+
+        val destination: ArrivingBusStop =
+            roomDataSource
+                .busStopDao
+                .findByCode(destinationCode)
+                .takeIf { it.isNotEmpty() }
+                ?.get(0)
+                ?.let {
+                    ArrivingBusStop(
+                        busStopCode = it.code,
+                        roadName = it.roadName,
+                        busStopDescription = it.description
+                    )
+                }
+                ?: throw Exception(
+                    "No bus stop found for stop code $destinationCode (destination)."
+                )
+
+        return ArrivingBus(
+            origin,
+            destination,
+            if (time >= 60) "01 hrs+" else if (time > 0) "${String.format("%02d", time)} mins" else "Arr now",
+            latitude.toDouble(),
+            longitude.toDouble(),
+            visitNumber.toInt(),
+            BusLoad.valueOf(load),
+            feature
+        )
+    }
 }

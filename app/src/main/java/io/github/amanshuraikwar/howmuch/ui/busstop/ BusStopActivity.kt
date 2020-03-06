@@ -1,8 +1,10 @@
 package io.github.amanshuraikwar.howmuch.ui.busstop
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.widget.TextView
-import android.widget.Toast
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +14,6 @@ import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.howmuch.R
 import io.github.amanshuraikwar.howmuch.domain.result.EventObserver
 import io.github.amanshuraikwar.howmuch.ui.list.BusArrivalItem
-import io.github.amanshuraikwar.howmuch.ui.list.BusStopItem
 import io.github.amanshuraikwar.howmuch.ui.list.RecyclerViewTypeFactoryGenerated
 import io.github.amanshuraikwar.howmuch.util.viewModelProvider
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
@@ -27,11 +28,21 @@ class BusStopActivity : DaggerAppCompatActivity() {
 
     private lateinit var viewModel: BusStopViewModel
 
+    @ColorInt
+    private var colorControlNormal: Int = 0
+
+    @ColorInt
+    private var colorControlActivated: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bus_stop)
+        setContentView( R.layout.activity_bus_stop)
         setupViewModel()
         itemsRv.layoutManager = LinearLayoutManager(this)
+        val typedValue = TypedValue()
+        theme.resolveAttribute(R.attr.colorControlNormal, typedValue, true)
+        colorControlNormal = ContextCompat.getColor(this, typedValue.resourceId)
+        colorControlActivated = ContextCompat.getColor(this, R.color.blue)
     }
 
     private fun setupViewModel() {
@@ -47,13 +58,16 @@ class BusStopActivity : DaggerAppCompatActivity() {
                     listItems.add(
                         BusArrivalItem(
                             it,
-                            R.drawable.ic_round_directions_bus_72
+                            colorControlNormal,
+                            colorControlActivated
                         )
                     )
                 }
+                val x = itemsRv.layoutManager?.onSaveInstanceState()
                 val adapter =
                     MultiItemAdapter(this, RecyclerViewTypeFactoryGenerated(), listItems)
                 itemsRv.adapter = adapter
+                itemsRv.layoutManager?.onRestoreInstanceState(x)
             }
         )
 
