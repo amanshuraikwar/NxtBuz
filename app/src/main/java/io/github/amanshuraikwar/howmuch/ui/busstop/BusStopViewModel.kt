@@ -46,7 +46,7 @@ class BusStopViewModel @Inject constructor(
         start()
     }
 
-    private fun start() = viewModelScope.launch(dispatcherProvider.computation + errorHandler) {
+    internal fun start() = viewModelScope.launch(dispatcherProvider.computation + errorHandler) {
         while (isActive) {
             _arrivals.postValue(getArrivalsUseCase(busStop?.code ?: continue))
             delay(10000)

@@ -40,8 +40,8 @@ data class BusArrivalItem(
     @SerializedName("ServiceNo") val serviceNumber: String,
     @SerializedName("Operator") val operator: String,
     @SerializedName("NextBus") val arrivingBus: ArrivingBusItem?,
-    @SerializedName("NextBus1") val arrivingBus1: ArrivingBusItem?,
-    @SerializedName("NextBus2") val arrivingBus2: ArrivingBusItem?
+    @SerializedName("NextBus2") val arrivingBus1: ArrivingBusItem?,
+    @SerializedName("NextBus3") val arrivingBus2: ArrivingBusItem?
 )
 
 data class ArrivingBusItem(

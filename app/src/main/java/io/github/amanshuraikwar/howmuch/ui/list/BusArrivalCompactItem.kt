@@ -1,6 +1,5 @@
 package io.github.amanshuraikwar.howmuch.ui.list
 
-import android.content.res.ColorStateList
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.fragment.app.FragmentActivity
@@ -11,21 +10,17 @@ import io.github.amanshuraikwar.howmuch.data.model.BusArrival
 import io.github.amanshuraikwar.howmuch.data.model.BusLoad
 import io.github.amanshuraikwar.howmuch.data.model.BusType
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
-import kotlinx.android.synthetic.main.item_bus_arrival.view.*
+import kotlinx.android.synthetic.main.item_bus_arrival_compact.view.*
 
-@ListItem(layoutResId = R.layout.item_bus_arrival)
-class BusArrivalItem(
-    private val busArrival: BusArrival,
-    @ColorInt private val colorControlNormal: Int,
-    @ColorInt private val colorControlActivated: Int
+@ListItem(layoutResId = R.layout.item_bus_arrival_compact)
+class BusArrivalCompactItem(
+    private val busArrival: BusArrival
 ) : RecyclerViewListItem {
 
     override fun bind(view: View, activity: FragmentActivity) {
         view.serviceNumberTv.text = busArrival.serviceNumber
         view.busInfoTv.text =
-            "${busArrival.operator}\n${busArrival.stopSequence} • ${busArrival.distance}KM"
-        view.busRouteOriginTv.text = "${busArrival.originStopDescription}"
-        view.busRouteDestinationTv.text = "${busArrival.destinationStopDescription}"
+            "${busArrival.operator}  •  ${busArrival.stopSequence}  •  ${busArrival.distance}KM  •  ${busArrival.direction}\n${busArrival.originStopDescription}"
         when (busArrival.arrivals) {
             is Arrivals.Arriving -> {
                 busArrival.arrivals.arrivingBusList[0].let {
@@ -90,7 +85,10 @@ class BusArrivalItem(
                         )
                     }
                 } else {
-                    // todo
+                    view.nextDeparture2Tv.text = "N/A"
+                    view.crowdedIv2.setImageResource(R.drawable.ic_round_cloud_off_24)
+                    view.wheelChairAccessIv2.setImageResource(R.drawable.ic_round_cloud_off_24)
+                    view.busTypeIv2.setImageResource(R.drawable.ic_round_cloud_off_24)
                 }
                 if (busArrival.arrivals.arrivingBusList.size >= 3) {
                     busArrival.arrivals.arrivingBusList[2].let {
@@ -124,7 +122,10 @@ class BusArrivalItem(
                         )
                     }
                 } else {
-                    // todo
+                    view.nextDeparture3Tv.text = "N/A"
+                    view.crowdedIv3.setImageResource(R.drawable.ic_round_cloud_off_24)
+                    view.wheelChairAccessIv3.setImageResource(R.drawable.ic_round_cloud_off_24)
+                    view.busTypeIv3.setImageResource(R.drawable.ic_round_cloud_off_24)
                 }
             }
             is Arrivals.NotOperating -> {

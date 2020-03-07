@@ -257,9 +257,16 @@ class UserRepository @Inject constructor(
                             is Arrivals.Arriving -> arrivals.arrivingBusList[0].destination.busStopDescription
                         }
 
+                    val originStopDescription: String =
+                        when(arrivals) {
+                            is Arrivals.NotOperating -> "N/A"
+                            is Arrivals.Arriving -> arrivals.arrivingBusList[0].origin.busStopDescription
+                        }
+
                     BusArrival(
                         busArrivalItem.serviceNumber,
                         busArrivalItem.operator,
+                        originStopDescription,
                         destinationStopDescription,
                         direction,
                         stopSequence,
@@ -337,12 +344,13 @@ class UserRepository @Inject constructor(
         return ArrivingBus(
             origin,
             destination,
-            if (time >= 60) "01 hrs+" else if (time > 0) "${String.format("%02d", time)} mins" else "Arr now",
+            if (time >= 60) "60+" else if (time > 0) "${String.format("%02d", time)}" else "Arr",
             latitude.toDouble(),
             longitude.toDouble(),
             visitNumber.toInt(),
             BusLoad.valueOf(load),
-            feature
+            feature,
+            BusType.valueOf(type)
         )
     }
 }

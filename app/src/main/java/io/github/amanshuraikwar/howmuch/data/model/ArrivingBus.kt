@@ -8,8 +8,8 @@ data class ArrivingBus(
     val longitude: Double,
     val visitNumber: Int,
     val load: BusLoad,
-    val feature: String
-    //val type: BusType
+    val feature: String,
+    val type: BusType
 )
 
 data class ArrivingBusStop(
