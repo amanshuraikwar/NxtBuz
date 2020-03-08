@@ -64,6 +64,8 @@ class BusStopActivity : DaggerAppCompatActivity() {
         viewModel.arrivals.observe(
             this,
             Observer {
+                errorTv.visibility = View.GONE
+                errorCl.visibility = View.GONE
                 val listItems = mutableListOf<RecyclerViewListItem>()
                 it.forEach {
                     listItems.add(
@@ -82,13 +84,25 @@ class BusStopActivity : DaggerAppCompatActivity() {
 
         viewModel.error.observe(
             this,
-            EventObserver {
+            EventObserver { errorMsg ->
+
                 updateIv.imageTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(
                         this@BusStopActivity,
                         R.color.color_error
                     )
                 )
+
+                if (itemsRv.adapter == null) {
+                    errorMessageTv.text = errorMsg
+                    retryBtn.setOnClickListener {
+                        viewModel.start()
+                    }
+                    errorCl.visibility = View.VISIBLE
+                } else {
+                    errorTv.text = errorMsg
+                    errorTv.visibility = View.VISIBLE
+                }
             }
         )
     }
