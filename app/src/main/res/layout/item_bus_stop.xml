@@ -40,7 +40,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0"
-            app:srcCompat="@drawable/ic_round_directions_24"
+            app:srcCompat="@drawable/ic_round_directions_walk_24"
             android:clickable="true"
             android:focusable="true"
             android:background="?selectableItemBackgroundBorderless"/>

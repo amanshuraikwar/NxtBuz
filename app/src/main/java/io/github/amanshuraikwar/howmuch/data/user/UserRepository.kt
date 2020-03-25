@@ -1,6 +1,10 @@
 package io.github.amanshuraikwar.howmuch.data.user
 
+import android.annotation.SuppressLint
+import android.location.Location
 import android.util.Log
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.tasks.Tasks
 import io.github.amanshuraikwar.howmuch.data.BusServiceNumber
 import io.github.amanshuraikwar.howmuch.data.BusStopCode
 import io.github.amanshuraikwar.howmuch.data.busapi.*
@@ -26,7 +30,8 @@ class UserRepository @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     private val roomDataSource: RoomDataSource,
     private val sgBusApi: SgBusApi,
-    private val dispatcherProvider: CoroutinesDispatcherProvider
+    private val dispatcherProvider: CoroutinesDispatcherProvider,
+    private val fusedLocationProviderClient: FusedLocationProviderClient
 ) {
 
     suspend fun getUserState(): UserState = withContext(dispatcherProvider.io) {
@@ -352,5 +357,12 @@ class UserRepository @Inject constructor(
             feature,
             BusType.valueOf(type)
         )
+    }
+
+    @Suppress("BlockingMethodInNonBlockingContext")
+    @SuppressLint("MissingPermission")
+    suspend fun getLastKnownLocation(): Location?
+            = withContext(dispatcherProvider.io) {
+        Tasks.await(fusedLocationProviderClient.lastLocation)
     }
 }

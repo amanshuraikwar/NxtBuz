@@ -72,6 +72,9 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
     kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
 
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
     implementation project(':multiitemadapter')
     kapt project(':annotationProcessors')
     compileOnly project(':annotations')

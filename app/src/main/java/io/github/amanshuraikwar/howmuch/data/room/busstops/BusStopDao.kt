@@ -21,5 +21,8 @@ interface BusStopDao {
     fun findByCode(code: String): List<BusStopEntity>
 
     @Query("SELECT * FROM BusStopEntity ORDER BY (((latitude-:latitude)*(latitude-:latitude))+((longitude-:longitude)*(longitude-:longitude))) ASC LIMIT :limit")
-    fun findClose(latitude: Double, longitude: Double, limit: Int): List<BusStopEntity>
+    fun findCloseLimit(latitude: Double, longitude: Double, limit: Int): List<BusStopEntity>
+
+    @Query("SELECT * FROM BusStopEntity WHERE (((latitude-:latitude)*(latitude-:latitude))+((longitude-:longitude)*(longitude-:longitude))) < :distance")
+    fun findCloseDistance(latitude: Double, longitude: Double, distance: Double): List<BusStopEntity>
 }

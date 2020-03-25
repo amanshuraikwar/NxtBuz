@@ -1,6 +1,5 @@
 package io.github.amanshuraikwar.howmuch.data.room
 
-import io.github.amanshuraikwar.howmuch.data.model.BusStop
 import io.github.amanshuraikwar.howmuch.data.model.Category
 import io.github.amanshuraikwar.howmuch.data.room.busroute.BusRouteDao
 import io.github.amanshuraikwar.howmuch.data.room.busroute.BusRouteEntity
@@ -100,6 +99,6 @@ class RoomDataSource @Inject constructor(
         longitude: Double,
         limit: Int
     ): List<BusStopEntity> {
-        return busStopDao.findClose(latitude, longitude, limit)
+        return busStopDao.findCloseLimit(latitude, longitude, limit)
     }
 }

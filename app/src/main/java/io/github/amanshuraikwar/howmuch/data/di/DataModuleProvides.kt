@@ -2,6 +2,8 @@ package io.github.amanshuraikwar.howmuch.data.di
 
 import android.content.Context
 import androidx.room.Room
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
@@ -100,5 +102,10 @@ class DataModuleProvides {
     @Provides
     fun j(appDatabase: AppDatabase): OperatingBusDao {
         return appDatabase.operatingBusDao
+    }
+
+    @Provides
+    fun k(context: Context): FusedLocationProviderClient {
+        return LocationServices.getFusedLocationProviderClient(context)
     }
 }

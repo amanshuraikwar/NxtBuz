@@ -4,6 +4,7 @@
     package="io.github.amanshuraikwar.howmuch">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:name=".MainApplication"
@@ -15,6 +16,10 @@
         android:theme="@style/AppTheme.DayNight"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
 
         <activity
             android:name=".ui.launcher.LauncherActivity"
