@@ -1,6 +1,5 @@
 package io.github.amanshuraikwar.howmuch.ui.main.overview
 
-import android.net.Uri
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
@@ -10,26 +9,29 @@ import androidx.lifecycle.viewModelScope
 import io.github.amanshuraikwar.howmuch.R
 import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.howmuch.data.model.BusStop
-import io.github.amanshuraikwar.howmuch.domain.busstop.BusStopsOutput
-import io.github.amanshuraikwar.howmuch.domain.busstop.GetBusStopsUseCase
-import io.github.amanshuraikwar.howmuch.ui.busstop.BusStopActivity
+import io.github.amanshuraikwar.howmuch.domain.busstop.*
 import io.github.amanshuraikwar.howmuch.ui.list.BusStopItem
-import io.github.amanshuraikwar.howmuch.util.PermissionUtil
+import io.github.amanshuraikwar.howmuch.ui.list.HeaderItem
 import io.github.amanshuraikwar.howmuch.util.asEvent
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.math.pow
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
 import kotlin.math.sqrt
 
 private const val TAG = "OverviewViewModel"
 
 class OverviewViewModel @Inject constructor(
     private val getBusStopsUseCase: GetBusStopsUseCase,
-    private val dispatcherProvider: CoroutinesDispatcherProvider,
-    private val permissionUtil: PermissionUtil
+    private val getLocationUseCase: GetLocationUseCase,
+    private val getBusStopsLimitUseCase: GetBusStopsLimitUseCase,
+    private val getDefaultLocationUseCase: GetDefaultLocationUseCase,
+    private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
     var colorControlNormalResId: Int = 0
@@ -59,71 +61,184 @@ class OverviewViewModel @Inject constructor(
     private val _loading = MutableLiveData<Boolean>()
     val loading = _loading.asEvent()
 
+    private val _locationStatus = MutableLiveData<Boolean>()
+    val locationStatus = _locationStatus.asEvent()
+
     var mapReady = false
 
     private val _mapCenter = MutableLiveData<Pair<Double, Double>>()
-    val mapCenter = _mapCenter.map { it }
+    val mapCenter = _mapCenter.asEvent()
 
-    private val _mapMarker = MutableLiveData<Pair<Pair<Double, Double>, List<BusStop>>>()
-    val mapMarker = _mapMarker.map { it }
+    private val _busStopMarker = MutableLiveData<List<BusStop>>()
+    val busStopMarker = _busStopMarker.asEvent()
+
+    private val _clearMap = MutableLiveData<Unit>()
+    val clearMap = _clearMap.asEvent()
+
+    private val _mapCircle = MutableLiveData<Pair<Pair<Double, Double>, Double>>()
+    val mapCircle = _mapCircle.asEvent()
+
+    private val _initMap = MutableLiveData<Pair<Double, Double>>()
+    val initMap = _initMap.asEvent()
+
+    private var lastLat: Double = 0.0
+    private var lastLon: Double = 0.0
 
     init {
-        fetchData()
+        fetchDefaultLocationInit()
+        fetchDataInit()
     }
 
-    var lastLat: Double = 0.0
-    var lastLon: Double = 0.0
-
-    fun shouldFetch(lat: Double, lon: Double): Boolean {
-        return sqrt((lastLat - lat).pow(2.0) + (lastLon - lon).pow(2.0)) > 0.004
-    }
-
-    fun fetchData(lat: Double, lon: Double) = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
-        if (!shouldFetch(lat, lon)) {
-            return@launch
+    private fun fetchDefaultLocationInit() =
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            _initMap.postValue(getDefaultLocationUseCase())
         }
-        _loading.postValue(true)
-        handleBusStopOutput(getBusStopsUseCase(lat = lat, lon =  lon, limit = 30))
-        lastLat = lat
-        lastLon = lon
-    }
 
-    private fun fetchData() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
-        _loading.postValue(true)
-        handleBusStopOutput(getBusStopsUseCase(limit = 30))
-    }
+    fun fetchBusStopsForLatLon(lat: Double, lon: Double) =
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            _loading.postValue(true)
+            lastLat = lat
+            lastLon = lon
+            _mapCenter.postValue(lat to lon)
+            val busStopList =
+                getBusStopsUseCase(lat = lat, lon = lon, limit = getBusStopsLimitUseCase())
+            _mapCircle.postValue(
+                lat to lon to measureDistanceMetres(
+                    lat,
+                    lon,
+                    busStopList.last().latitude,
+                    busStopList.last().longitude
+                )
+            )
+            _busStops.postValue(getListItems(busStopList))
+            _busStopMarker.postValue(busStopList)
+        }
 
-    private suspend fun handleBusStopOutput(busStopsOutput: BusStopsOutput) {
-        when (busStopsOutput) {
-            BusStopsOutput.PermissionsNotGranted -> {
-                _error.postValue(Alert(msg = "Permissions not granted."))
-            }
-            BusStopsOutput.CouldNotGetLocation -> {
-                _error.postValue(Alert(msg = "Location not enabled."))
-            }
-            is BusStopsOutput.Success -> {
-                val listItems = mutableListOf<RecyclerViewListItem>()
-                busStopsOutput.busStopList.forEach {
-                    listItems.add(
-                        BusStopItem(
-                            it,
-                            R.drawable.ic_round_directions_bus_72,
-                            ::onBusStopClicked,
-                            ::onGotoClicked
+    fun onRecenterClicked() =
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            when (val locationOutput = getLocationUseCase()) {
+                is LocationOutput.PermissionsNotGranted,
+                LocationOutput.CouldNotGetLocation -> {
+                    _locationStatus.postValue(false)
+                }
+                is LocationOutput.Success -> {
+                    _locationStatus.postValue(true)
+                    lastLat = locationOutput.latitude
+                    lastLon = locationOutput.longitude
+                    _mapCenter.postValue(
+                        locationOutput.latitude to locationOutput.longitude
+                    )
+                    _loading.postValue(true)
+                    val busStopList = getBusStopsUseCase(
+                        lat = locationOutput.latitude,
+                        lon = locationOutput.longitude,
+                        limit = getBusStopsLimitUseCase()
+                    )
+                    _mapCircle.postValue(
+                        locationOutput.latitude to locationOutput.longitude
+                                to measureDistanceMetres(
+                            locationOutput.latitude,
+                            locationOutput.longitude,
+                            busStopList.last().latitude,
+                            busStopList.last().longitude
                         )
                     )
+                    _busStops.postValue(getListItems(busStopList))
+                    _busStopMarker.postValue(busStopList)
                 }
-                // wait for map to be ready
-                while (!mapReady) {
-                    delay(1000)
-                }
-                _mapCenter.postValue(busStopsOutput.latLon)
-                _mapMarker.postValue(busStopsOutput.latLon to busStopsOutput.busStopList)
-                _busStops.postValue(listItems)
-                _loading.postValue(false)
             }
         }
+
+    private fun measureDistanceMetres(
+        lat1: Double, lon1: Double, lat2: Double, lon2: Double
+    ): Double {
+        val r = 6378.137; // Radius of earth in KM
+        val dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+        val dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+        val a = sin(dLat / 2) * sin(dLat / 2) +
+                cos(lat1 * Math.PI / 180) * cos(lat2 * Math.PI / 180) *
+                sin(dLon / 2) * sin(dLon / 2);
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a));
+        val d = r * c;
+        return d * 1000; // meters
     }
+
+    private fun fetchDataInit() =
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            _loading.postValue(true)
+            // wait for map to be ready
+            while (!mapReady) {
+                delay(1000)
+            }
+            when (val locationOutput = getLocationUseCase()) {
+                is LocationOutput.PermissionsNotGranted,
+                is LocationOutput.CouldNotGetLocation -> {
+                    _locationStatus.postValue(false)
+                    val (lat, lon) = getDefaultLocationUseCase()
+                    lastLat = lat
+                    lastLon = lon
+                    _mapCenter.postValue(lat to lon)
+                    val busStopList = getBusStopsUseCase(
+                        lat = lat,
+                        lon = lon,
+                        limit = getBusStopsLimitUseCase()
+                    )
+                    _mapCircle.postValue(
+                        lat to lon
+                                to measureDistanceMetres(
+                            lat,
+                            lon,
+                            busStopList.last().latitude,
+                            busStopList.last().longitude
+                        )
+                    )
+                    _busStops.postValue(getListItems(busStopList))
+                    _busStopMarker.postValue(busStopList)
+                }
+                is LocationOutput.Success -> {
+                    _locationStatus.postValue(true)
+                    lastLat = locationOutput.latitude
+                    lastLon = locationOutput.longitude
+                    _mapCenter.postValue(
+                        locationOutput.latitude to locationOutput.longitude
+                    )
+                    val busStopList = getBusStopsUseCase(
+                        lat = locationOutput.latitude,
+                        lon = locationOutput.longitude,
+                        limit = getBusStopsLimitUseCase()
+                    )
+                    _mapCircle.postValue(
+                        locationOutput.latitude to locationOutput.longitude
+                                to measureDistanceMetres(
+                            locationOutput.latitude,
+                            locationOutput.longitude,
+                            busStopList.last().latitude,
+                            busStopList.last().longitude
+                        )
+                    )
+                    _busStops.postValue(getListItems(busStopList))
+                    _busStopMarker.postValue(busStopList)
+                }
+            }
+            _loading.postValue(false)
+        }
+
+    private suspend fun getListItems(busStopList: List<BusStop>): MutableList<RecyclerViewListItem> =
+        withContext(dispatcherProvider.computation) {
+            val listItems = mutableListOf<RecyclerViewListItem>()
+            listItems.add(HeaderItem("Nearby Bus Stops"))
+            busStopList.forEach {
+                listItems.add(
+                    BusStopItem(
+                        it,
+                        R.drawable.ic_bus_stop_24,
+                        ::onBusStopClicked,
+                        ::onGotoClicked
+                    )
+                )
+            }
+            listItems
+        }
 
     private fun onBusStopClicked(busStop: BusStop) {
         _busStopActivity.postValue(busStop)

@@ -1,38 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/mapFragment"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
+    <View
+        android:id="@+id/searchBg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?colorSurface"
+        android:paddingBottom="@dimen/padding_normal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/bottomSheetCl"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/searchCv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
         android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_normal">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:drawableStart="@drawable/ic_round_search_24"
-            android:drawablePadding="@dimen/padding_normal"
-            android:hint="Search bus stops..."
-            android:padding="@dimen/padding_normal" />
+            android:layout_height="wrap_content">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchTiet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="Search bus stops..."
+                android:paddingStart="@dimen/padding_normal"
+                android:paddingTop="12dp"
+                android:paddingEnd="@dimen/padding_normal"
+                android:paddingBottom="12dp" />
+
+            <ImageButton
+                android:id="@+id/searchIb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="12dp"
+                android:src="@drawable/avd_anim_settings_to_clear_24"
+                android:tag="0"
+                android:tint="?colorControlNormal" />
+        </FrameLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <include
-        android:id="@+id/bottomSheet"
-        layout="@layout/bus_stops_bottom_sheet"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/recenterFab"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:behavior_hideable="true"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:src="@drawable/ic_round_my_location_24"
+        app:backgroundTint="?colorSurface"
+        app:fabSize="mini"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchBg" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/bottomSheetCl"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchCv">
+
+        <include
+            android:id="@+id/bottomSheet"
+            layout="@layout/bus_stops_bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:behavior_hideable="true"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

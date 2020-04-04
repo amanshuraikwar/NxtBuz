@@ -75,4 +75,6 @@
 
     <color name="divider">#1e000000</color>
 
+    <color name="orange_transparent">#22FF9800</color>
+
 </resources>

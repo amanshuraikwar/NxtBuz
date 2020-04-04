@@ -52,4 +52,6 @@
     <color name="red">#E57373</color>
 
     <color name="divider">#1effffff</color>
+
+    <color name="orange_transparent">#22FFB74D</color>
 </resources>

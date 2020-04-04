@@ -23,7 +23,8 @@
     </aapt:attr>
     <target android:name="path_1">
         <aapt:attr name="android:animation">
-            <set>
+            <set
+                android:repeatCount="infinite">
                 <objectAnimator
                     android:propertyName="pathData"
                     android:duration="250"

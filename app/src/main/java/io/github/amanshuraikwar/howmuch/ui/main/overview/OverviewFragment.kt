@@ -7,28 +7,20 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Point
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.howmuch.R
@@ -68,11 +60,32 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (childFragmentManager.fragments.find { it is SupportMapFragment } as? SupportMapFragment)?.getMapAsync(
-            this
-        )
         setupViewModel()
         setUpBottomSheet()
+        searchTiet.addTextChangedListener after@{
+            if (it?.length == 1) {
+                if (searchIb.tag == "1") {
+                    return@after
+                }
+                val animated =
+                    AnimatedVectorDrawableCompat.create(
+                        activity!!,
+                        R.drawable.avd_anim_settings_to_clear_24
+                    )
+                searchIb.setImageDrawable(animated)
+                animated?.start()
+                searchIb.tag = "1"
+            } else if (it?.length == 0) {
+                val animated =
+                    AnimatedVectorDrawableCompat.create(
+                        activity!!,
+                        R.drawable.avd_anim_clear_to_settings_24
+                    )
+                searchIb.setImageDrawable(animated)
+                animated?.start()
+                searchIb.tag = "0"
+            }
+        }
     }
 
     private fun setUpBottomSheet() {
@@ -81,18 +94,36 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
         bottomSheetBehavior.peekHeight =
             Point().let { activity!!.windowManager.defaultDisplay.getSize(it); it.y } / 3
         bottomSheetBehavior.isHideable = false
+        bottomSheetBehavior.setBottomSheetCallback(
+            object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+                }
+
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                        searchBg.visibility = View.VISIBLE
+                        recenterFab.hide()
+                    } else {
+                        searchBg.visibility = View.INVISIBLE
+                        recenterFab.show()
+                    }
+                }
+
+            }
+        )
     }
 
     private fun showLoading() {
         val animated =
             AnimatedVectorDrawableCompat.create(activity!!, R.drawable.avd_anim_get_nearby)
-        animated?.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
-            override fun onAnimationEnd(drawable: Drawable?) {
-                Log.d(TAG, "onAnimationEnd: Animation end.")
-                runCatching { loadingIv.postDelayed({ animated.start() }, 1000) }
-            }
-
-        })
+//        animated?.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
+//            override fun onAnimationEnd(drawable: Drawable?) {
+//                Log.d(TAG, "onAnimationEnd: Animation end.")
+//                runCatching { loadingIv.postDelayed({ animated.start() }, 1000) }
+//            }
+//
+//        })
         loadingIv.setImageDrawable(animated)
         animated?.start()
     }
@@ -107,6 +138,23 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                     ContextCompat.getColor(activity, R.color.color_distribution_bar_def)
                 }
             }
+
+            viewModel.initMap.observe(
+                this,
+                EventObserver {
+                    val fragment = SupportMapFragment.newInstance(
+                        GoogleMapOptions()
+                            .camera(
+                                CameraPosition.Builder().target(LatLng(it.first, it.second))
+                                    .zoom(14f)
+                                    .build()
+                            )
+                    )
+                    fragment.getMapAsync(this)
+                    childFragmentManager.beginTransaction().replace(R.id.mapFragment, fragment)
+                        .commit()
+                }
+            )
 
             viewModel.error.observe(
                 this,
@@ -153,26 +201,63 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
             viewModel.mapCenter.observe(
                 this,
-                Observer {
-//                    animateLatLngZoom(
-//                        LatLng(it.first, it.second),
-//                        14f,
-//                        0,
-//                        Point().let { activity!!.windowManager.defaultDisplay.getSize(it); it.y } / 3
-//                    )
-                    googleMap?.moveCamera(
-                        CameraUpdateFactory.newLatLng(LatLng(it.first, it.second))
+                EventObserver {
+                    googleMap?.animateCamera(
+                        CameraUpdateFactory.newLatLng(
+                            LatLng(it.first, it.second)
+                        )
                     )
-//                    googleMap?.animateCamera(
-//                        CameraUpdateFactory.zoomTo(14f)
-//                    )
                 }
             )
 
-            viewModel.mapMarker.observe(
+            viewModel.busStopMarker.observe(
                 this,
-                Observer {
-                    this.googleMap?.clear()
+                EventObserver {
+                    it.forEach {
+                        googleMap?.addMarker(
+                            MarkerOptions()
+                                .position(
+                                    LatLng(
+                                        it.latitude,
+                                        it.longitude
+                                    )
+                                )
+                                .icon(
+                                    bitmapDescriptorFromVector(
+                                        activity,
+                                        R.drawable.ic_marker_bus_stop_48
+                                    )
+                                )
+                                .title(it.description)
+                        )
+                    }
+                }
+            )
+
+            viewModel.locationStatus.observe(
+                this,
+                EventObserver {
+                    recenterFab.setImageResource(
+                        if (it) {
+                            R.drawable.ic_round_my_location_24
+                        } else {
+                            R.drawable.ic_round_gps_off_24
+                        }
+                    )
+                }
+            )
+
+            viewModel.clearMap.observe(
+                this,
+                EventObserver {
+                    googleMap?.clear()
+                }
+            )
+
+            viewModel.mapCircle.observe(
+                this,
+                EventObserver {
+                    googleMap?.clear()
                     googleMap?.addMarker(
                         MarkerOptions()
                             .position(
@@ -189,26 +274,20 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                             )
                             .title("center")
                     )
-                    it.second.forEach {
-                        googleMap?.addMarker(
-                            MarkerOptions()
-                                .position(
-                                    LatLng(
-                                        it.latitude,
-                                        it.longitude
-                                    )
-                                )
-                                .icon(
-                                    bitmapDescriptorFromVector(
-                                        activity,
-                                        R.drawable.ic_bus_stop_marker_stroke_24
-                                    )
-                                )
-                                .title(it.description)
-                        )
-                    }
+                    googleMap?.addCircle(
+                        CircleOptions()
+                            .center(LatLng(it.first.first, it.first.second))
+                            .radius(it.second)
+                            .fillColor(ContextCompat.getColor(activity, R.color.orange_transparent))
+                            .strokeWidth(4f)
+                            .strokeColor(ContextCompat.getColor(activity, R.color.orange))
+                    )
                 }
             )
+
+            recenterFab.setOnClickListener {
+                viewModel.onRecenterClicked()
+            }
         }
     }
 
@@ -278,8 +357,6 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
         }
     }
 
-    var firstTime = true
-
     override fun onMapReady(googleMap: GoogleMap?) {
         viewModel.mapReady = googleMap != null
         this.googleMap = googleMap
@@ -290,52 +367,12 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                 Point().let { activity!!.windowManager.defaultDisplay.getSize(it); it.y } / 3f
             )
         )
-        this.googleMap?.setOnCameraIdleListener {
-            Log.d(TAG, "onMapReady: setOnCameraIdleListener")
-            if (firstTime) {
-                firstTime = false
-                return@setOnCameraIdleListener
-            }
-            this.googleMap?.cameraPosition?.target?.run {
-                viewModel.fetchData(latitude, longitude)
-            }
-        }
         this.googleMap?.setOnMarkerClickListener {
             it.showInfoWindow()
             true
         }
-    }
-
-    private fun animateLatLngZoom(
-        latlng: LatLng,
-        reqZoom: Float,
-        offsetX: Int,
-        offsetY: Int
-    ) {
-
-        this.googleMap?.let { mMap ->
-
-            // Save current zoom
-            val originalZoom: Float = mMap.getCameraPosition().zoom
-
-            // Move temporarily camera zoom
-            mMap.moveCamera(CameraUpdateFactory.zoomTo(reqZoom.toFloat()))
-            val pointInScreen: Point = mMap.getProjection().toScreenLocation(latlng)
-            val newPoint = Point()
-            newPoint.x = pointInScreen.x + offsetX
-            newPoint.y = pointInScreen.y + offsetY
-            val newCenterLatLng: LatLng = mMap.getProjection().fromScreenLocation(newPoint)
-
-            // Restore original zoom
-            mMap.moveCamera(CameraUpdateFactory.zoomTo(originalZoom))
-
-            // Animate a camera with new latlng center and required zoom.
-            mMap.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    newCenterLatLng,
-                    reqZoom.toFloat()
-                )
-            )
+        this.googleMap?.setOnMapLongClickListener {
+            viewModel.fetchBusStopsForLatLon(it.latitude, it.longitude)
         }
     }
 }
