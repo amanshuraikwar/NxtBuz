@@ -3,7 +3,6 @@ package io.github.amanshuraikwar.howmuch.ui.main.overview
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Point
@@ -13,7 +12,11 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView.OnEditorActionListener
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -28,13 +31,15 @@ import io.github.amanshuraikwar.howmuch.data.model.BusStop
 import io.github.amanshuraikwar.howmuch.domain.result.EventObserver
 import io.github.amanshuraikwar.howmuch.ui.busstop.BusStopActivity
 import io.github.amanshuraikwar.howmuch.ui.list.RecyclerViewTypeFactoryGenerated
-import io.github.amanshuraikwar.howmuch.util.MY_PERMISSIONS_REQUEST_FINE_LOCATION
+import io.github.amanshuraikwar.howmuch.ui.search.SearchActivity
 import io.github.amanshuraikwar.howmuch.util.PermissionUtil
+import io.github.amanshuraikwar.howmuch.util.lerp
 import io.github.amanshuraikwar.howmuch.util.viewModelProvider
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
 import kotlinx.android.synthetic.main.fragment_overview.*
 import javax.inject.Inject
+
 
 private const val TAG = "OverviewFragment"
 
@@ -58,34 +63,54 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
         return inflater.inflate(R.layout.fragment_overview, container, false)
     }
 
+    fun View.setMarginTop(marginTop: Int) {
+        val menuLayoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
+        menuLayoutParams.setMargins(0, marginTop, 0, 0)
+        this.layoutParams = menuLayoutParams
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { _, insets ->
+            //searchBg.setMarginTop(insets.systemWindowInsetTop)
+            screenTopGuideline.setMarginTop(insets.systemWindowInsetTop)
+            insets.consumeSystemWindowInsets()
+        }
+
         setupViewModel()
         setUpBottomSheet()
-        searchTiet.addTextChangedListener after@{
-            if (it?.length == 1) {
-                if (searchIb.tag == "1") {
-                    return@after
-                }
-                val animated =
-                    AnimatedVectorDrawableCompat.create(
-                        activity!!,
-                        R.drawable.avd_anim_settings_to_clear_24
-                    )
-                searchIb.setImageDrawable(animated)
-                animated?.start()
-                searchIb.tag = "1"
-            } else if (it?.length == 0) {
-                val animated =
-                    AnimatedVectorDrawableCompat.create(
-                        activity!!,
-                        R.drawable.avd_anim_clear_to_settings_24
-                    )
-                searchIb.setImageDrawable(animated)
-                animated?.start()
-                searchIb.tag = "0"
-            }
-        }
+//        searchIb.setOnClickListener {
+//            if (searchTiet.text?.isEmpty() == true) {
+//                // TODO: 5/4/20
+//            } else {
+//                searchTiet.setText("")
+//            }
+//        }
+//        searchTiet.addTextChangedListener after@{
+//            if (it?.length == 1) {
+//                if (searchIb.tag == "1") {
+//                    return@after
+//                }
+//                val animated =
+//                    AnimatedVectorDrawableCompat.create(
+//                        activity!!,
+//                        R.drawable.avd_anim_settings_to_clear_24
+//                    )
+//                searchIb.setImageDrawable(animated)
+//                animated?.start()
+//                searchIb.tag = "1"
+//            } else if (it?.length == 0) {
+//                val animated =
+//                    AnimatedVectorDrawableCompat.create(
+//                        activity!!,
+//                        R.drawable.avd_anim_clear_to_settings_24
+//                    )
+//                searchIb.setImageDrawable(animated)
+//                animated?.start()
+//                searchIb.tag = "0"
+//            }
+//        }
     }
 
     private fun setUpBottomSheet() {
@@ -97,16 +122,26 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
         bottomSheetBehavior.setBottomSheetCallback(
             object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
+                    searchBg.alpha =
+                        lerp(
+                            0f, 1f, 0f, 1f, slideOffset
+                        )
+                    bottomSheetHandle.alpha =
+                        lerp(
+                            1f, 0f, 0f, 1f, slideOffset
+                        )
+                    recenterFab.alpha =
+                        lerp(
+                            1f, 0f, 0f, 1f, slideOffset
+                        )
+                    bottomSheetBgView.update(slideOffset)
                 }
 
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                        searchBg.visibility = View.VISIBLE
-                        recenterFab.hide()
+                        recenterFab.visibility = View.INVISIBLE
                     } else {
-                        searchBg.visibility = View.INVISIBLE
-                        recenterFab.show()
+                        recenterFab.visibility = View.VISIBLE
                     }
                 }
 
@@ -114,18 +149,20 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
         )
     }
 
+    private fun hideLoading() {
+        loadingIv.visibility = View.INVISIBLE
+        loadingTv.visibility = View.INVISIBLE
+        itemsRv.visibility = View.VISIBLE
+    }
+
     private fun showLoading() {
         val animated =
             AnimatedVectorDrawableCompat.create(activity!!, R.drawable.avd_anim_get_nearby)
-//        animated?.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
-//            override fun onAnimationEnd(drawable: Drawable?) {
-//                Log.d(TAG, "onAnimationEnd: Animation end.")
-//                runCatching { loadingIv.postDelayed({ animated.start() }, 1000) }
-//            }
-//
-//        })
         loadingIv.setImageDrawable(animated)
         animated?.start()
+        itemsRv.visibility = View.GONE
+        loadingIv.visibility = View.VISIBLE
+        loadingTv.visibility = View.VISIBLE
     }
 
     @SuppressLint("SetTextI18n", "InflateParams")
@@ -133,11 +170,7 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
         requireActivity().let { activity ->
 
-            viewModel = viewModelProvider(viewModelFactory) {
-                colorControlNormalResId = TypedValue().let {
-                    ContextCompat.getColor(activity, R.color.color_distribution_bar_def)
-                }
-            }
+            viewModel = viewModelProvider(viewModelFactory)
 
             viewModel.initMap.observe(
                 this,
@@ -159,6 +192,9 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
             viewModel.error.observe(
                 this,
                 EventObserver {
+                    itemsRv.visibility = View.GONE
+                    loadingIv.visibility = View.VISIBLE
+                    loadingTv.visibility = View.VISIBLE
                     loadingIv.setImageResource(it.iconResId)
                     loadingTv.text = it.msg
                 }
@@ -184,7 +220,7 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
             viewModel.goto.observe(
                 this,
                 EventObserver { busStop ->
-                    onGotoClicked(busStop)
+                    gotoBusStop(busStop)
                 }
             )
 
@@ -210,26 +246,14 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                 }
             )
 
-            viewModel.busStopMarker.observe(
+            viewModel.mapMarker.observe(
                 this,
                 EventObserver {
-                    it.forEach {
-                        googleMap?.addMarker(
-                            MarkerOptions()
-                                .position(
-                                    LatLng(
-                                        it.latitude,
-                                        it.longitude
-                                    )
-                                )
-                                .icon(
-                                    bitmapDescriptorFromVector(
-                                        activity,
-                                        R.drawable.ic_marker_bus_stop_48
-                                    )
-                                )
-                                .title(it.description)
-                        )
+                    if (it.second) {
+                        googleMap?.clear()
+                    }
+                    it.first.forEach {
+                        googleMap?.addMarker(it)
                     }
                 }
             )
@@ -288,37 +312,48 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
             recenterFab.setOnClickListener {
                 viewModel.onRecenterClicked()
             }
+
+            searchMtv.setOnClickListener {
+                startActivity(Intent(activity, SearchActivity::class.java))
+            }
+
+//            searchTiet.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
+//                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                    viewModel.searchBusStops(searchTiet.text.toString())
+//                    searchTiet.clearFocus()
+//                    val imm =
+//                        activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                    imm.hideSoftInputFromWindow(searchTiet.windowToken, 0)
+//                    return@OnEditorActionListener true
+//                }
+//                false
+//            })
         }
     }
 
     private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
-        var vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        val vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
         vectorDrawable!!.setBounds(
             0,
             0,
-            vectorDrawable.getIntrinsicWidth(),
-            vectorDrawable.getIntrinsicHeight()
-        );
-        var bitmap = Bitmap.createBitmap(
-            vectorDrawable.getIntrinsicWidth(),
-            vectorDrawable.getIntrinsicHeight(),
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight
+        )
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
             Bitmap.Config.ARGB_8888
         );
-        var canvas = Canvas(bitmap);
+        val canvas = Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
-
-    private fun hideLoading() {
-        loadingIv.visibility = View.INVISIBLE
-        loadingTv.visibility = View.INVISIBLE
     }
 
     private fun startBusStopActivity(busStop: BusStop) {
         startActivity(Intent(activity, BusStopActivity::class.java).putExtra("busStop", busStop))
     }
 
-    private fun onGotoClicked(busStop: BusStop) {
+    private fun gotoBusStop(busStop: BusStop) {
         val browserIntent =
             Intent(
                 Intent.ACTION_VIEW,
@@ -329,32 +364,6 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                 )
             )
         startActivity(browserIntent)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            MY_PERMISSIONS_REQUEST_FINE_LOCATION -> {
-                // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return
-            }
-
-            // Add other 'when' lines to check for other
-            // permissions this app might request.
-            else -> {
-                // Ignore all other requests.
-            }
-        }
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {

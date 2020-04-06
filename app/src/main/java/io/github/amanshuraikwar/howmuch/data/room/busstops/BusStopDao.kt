@@ -25,4 +25,7 @@ interface BusStopDao {
 
     @Query("SELECT * FROM BusStopEntity WHERE (((latitude-:latitude)*(latitude-:latitude))+((longitude-:longitude)*(longitude-:longitude))) < :distance")
     fun findCloseDistance(latitude: Double, longitude: Double, distance: Double): List<BusStopEntity>
+
+    @Query("SELECT * FROM BusStopEntity WHERE description like '%' || :description || '%' limit :limit")
+    fun searchLikeDescription(description: String, limit: Int): List<BusStopEntity>
 }

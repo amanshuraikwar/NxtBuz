@@ -257,13 +257,13 @@ class UserRepository @Inject constructor(
                     val arrivals = busArrivalItem.toArrivals()
 
                     val destinationStopDescription: String =
-                        when(arrivals) {
+                        when (arrivals) {
                             is Arrivals.NotOperating -> "N/A"
                             is Arrivals.Arriving -> arrivals.arrivingBusList[0].destination.busStopDescription
                         }
 
                     val originStopDescription: String =
-                        when(arrivals) {
+                        when (arrivals) {
                             is Arrivals.NotOperating -> "N/A"
                             is Arrivals.Arriving -> arrivals.arrivingBusList[0].origin.busStopDescription
                         }
@@ -361,8 +361,30 @@ class UserRepository @Inject constructor(
 
     @Suppress("BlockingMethodInNonBlockingContext")
     @SuppressLint("MissingPermission")
-    suspend fun getLastKnownLocation(): Location?
-            = withContext(dispatcherProvider.io) {
+    suspend fun getLastKnownLocation(): Location? = withContext(dispatcherProvider.io) {
         Tasks.await(fusedLocationProviderClient.lastLocation)
     }
+
+    suspend fun searchBusStops(query: String, limit: Int): List<BusStop> =
+        withContext(dispatcherProvider.io) {
+            roomDataSource.busStopDao
+                .searchLikeDescription(query, limit)
+                .map { busStopEntity ->
+                    async(dispatcherProvider.pool8) {
+                        BusStop(
+                            /*BusStopCode(*/busStopEntity.code/*)*/,
+                            busStopEntity.roadName,
+                            busStopEntity.description,
+                            busStopEntity.latitude,
+                            busStopEntity.longitude,
+                            roomDataSource
+                                .operatingBusDao
+                                .findByBusStopCode(busStopEntity.code)
+                                .map {
+                                    Bus(/*BusServiceNumber(*/it.busServiceNumber/*)*/)
+                                }
+                        )
+                    }
+                }.awaitAll()
+        }
 }

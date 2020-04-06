@@ -36,11 +36,11 @@
             android:background="@drawable/bg_icon"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
             android:text="961"
             android:textAppearance="?textAppearanceHeadline6"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            app:fontFamily="@font/cabin_bold"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

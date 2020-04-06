@@ -2,9 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_bottom_sheet"
-    android:elevation="4dp">
+    android:layout_height="match_parent">
+
+    <io.github.amanshuraikwar.howmuch.ui.main.overview.BottomSheetBgView
+        android:id="@+id/bottomSheetBgView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,6 +16,7 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/bottomSheetHandle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -26,7 +30,8 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/padding_large"
             app:srcCompat="@drawable/avd_anim_get_nearby"
-            app:tint="?colorControlActivated" />
+            app:tint="?colorControlActivated"
+            android:visibility="invisible"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/loadingTv"
@@ -35,7 +40,8 @@
             android:gravity="center_horizontal"
             android:paddingBottom="@dimen/padding_very_large"
             android:text="Finding bus stops nearby..."
-            android:textAppearance="?textAppearanceBody1" />
+            android:textAppearance="?textAppearanceBody1"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -43,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingTop="20dp"
-        android:paddingBottom="128dp" />
+        android:paddingTop="28dp"
+        android:paddingBottom="128dp"
+        android:visibility="gone"/>
 </FrameLayout>

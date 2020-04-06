@@ -10,4 +10,8 @@ class GetBusStopsUseCase @Inject constructor(
     suspend operator fun invoke(lat: Double, lon: Double, limit: Int): List<BusStop> {
         return userRepository.getCloseBusStops(lat, lon, limit)
     }
+
+    suspend operator fun invoke(query: String, limit: Int): List<BusStop> {
+        return userRepository.searchBusStops(query, limit)
+    }
 }

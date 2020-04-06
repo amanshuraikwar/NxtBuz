@@ -6,12 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.MarkerOptions
 import io.github.amanshuraikwar.howmuch.R
 import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.howmuch.data.model.BusStop
 import io.github.amanshuraikwar.howmuch.domain.busstop.*
 import io.github.amanshuraikwar.howmuch.ui.list.BusStopItem
 import io.github.amanshuraikwar.howmuch.ui.list.HeaderItem
+import io.github.amanshuraikwar.howmuch.util.MapUtil
 import io.github.amanshuraikwar.howmuch.util.asEvent
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -31,10 +33,10 @@ class OverviewViewModel @Inject constructor(
     private val getLocationUseCase: GetLocationUseCase,
     private val getBusStopsLimitUseCase: GetBusStopsLimitUseCase,
     private val getDefaultLocationUseCase: GetDefaultLocationUseCase,
-    private val dispatcherProvider: CoroutinesDispatcherProvider
+    private val getMaxDistanceOfClosesBusStopUseCase: GetMaxDistanceOfClosesBusStopUseCase,
+    private val dispatcherProvider: CoroutinesDispatcherProvider,
+    private val mapUtil: MapUtil
 ) : ViewModel() {
-
-    var colorControlNormalResId: Int = 0
 
     private val _error = MutableLiveData<Alert>()
     val error = _error
@@ -69,8 +71,8 @@ class OverviewViewModel @Inject constructor(
     private val _mapCenter = MutableLiveData<Pair<Double, Double>>()
     val mapCenter = _mapCenter.asEvent()
 
-    private val _busStopMarker = MutableLiveData<List<BusStop>>()
-    val busStopMarker = _busStopMarker.asEvent()
+    private val _mapMarker = MutableLiveData<Pair<List<MarkerOptions>, Boolean>>()
+    val mapMarker = _mapMarker.asEvent()
 
     private val _clearMap = MutableLiveData<Unit>()
     val clearMap = _clearMap.asEvent()
@@ -102,16 +104,45 @@ class OverviewViewModel @Inject constructor(
             _mapCenter.postValue(lat to lon)
             val busStopList =
                 getBusStopsUseCase(lat = lat, lon = lon, limit = getBusStopsLimitUseCase())
-            _mapCircle.postValue(
-                lat to lon to measureDistanceMetres(
+
+            if (mapUtil.measureDistanceMetres(
                     lat,
                     lon,
-                    busStopList.last().latitude,
-                    busStopList.last().longitude
-                )
+                    busStopList.first().latitude,
+                    busStopList.first().longitude
+                ) > getMaxDistanceOfClosesBusStopUseCase()
+            ) {
+                _error.postValue(Alert("You are too far away."))
+                return@launch
+            }
+
+            val radius = mapUtil.measureDistanceMetres(
+                lat,
+                lon,
+                busStopList.last().latitude,
+                busStopList.last().longitude
             )
+            _mapCircle.postValue(lat to lon to radius)
             _busStops.postValue(getListItems(busStopList))
-            _busStopMarker.postValue(busStopList)
+            _mapMarker.postValue(mapUtil.busStopsToMarkers(busStopList) to false)
+            _loading.postValue(false)
+        }
+
+    fun searchBusStops(query: String) =
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            if (query.isNotEmpty()) {
+                _loading.postValue(true)
+                val busStopList = getBusStopsUseCase(query, getBusStopsLimitUseCase())
+                if (busStopList.isEmpty()) {
+                    _error.postValue(Alert("No matching bus stops found."))
+                    // TODO: 5/4/20
+                } else {
+                    _mapCenter.postValue(busStopList[0].latitude to busStopList[0].longitude)
+                    _busStops.postValue(getListItems(busStopList))
+                    _mapMarker.postValue(mapUtil.busStopsToMarkers(busStopList) to true)
+                    _loading.postValue(false)
+                }
+            }
         }
 
     fun onRecenterClicked() =
@@ -134,34 +165,21 @@ class OverviewViewModel @Inject constructor(
                         lon = locationOutput.longitude,
                         limit = getBusStopsLimitUseCase()
                     )
+                    val radius = mapUtil.measureDistanceMetres(
+                        locationOutput.latitude,
+                        locationOutput.longitude,
+                        busStopList.last().latitude,
+                        busStopList.last().longitude
+                    )
                     _mapCircle.postValue(
-                        locationOutput.latitude to locationOutput.longitude
-                                to measureDistanceMetres(
-                            locationOutput.latitude,
-                            locationOutput.longitude,
-                            busStopList.last().latitude,
-                            busStopList.last().longitude
-                        )
+                        locationOutput.latitude to locationOutput.longitude to radius
                     )
                     _busStops.postValue(getListItems(busStopList))
-                    _busStopMarker.postValue(busStopList)
+                    _mapMarker.postValue(mapUtil.busStopsToMarkers(busStopList) to false)
+                    _loading.postValue(false)
                 }
             }
         }
-
-    private fun measureDistanceMetres(
-        lat1: Double, lon1: Double, lat2: Double, lon2: Double
-    ): Double {
-        val r = 6378.137; // Radius of earth in KM
-        val dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
-        val dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
-        val a = sin(dLat / 2) * sin(dLat / 2) +
-                cos(lat1 * Math.PI / 180) * cos(lat2 * Math.PI / 180) *
-                sin(dLon / 2) * sin(dLon / 2);
-        val c = 2 * atan2(sqrt(a), sqrt(1 - a));
-        val d = r * c;
-        return d * 1000; // meters
-    }
 
     private fun fetchDataInit() =
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
@@ -183,17 +201,15 @@ class OverviewViewModel @Inject constructor(
                         lon = lon,
                         limit = getBusStopsLimitUseCase()
                     )
-                    _mapCircle.postValue(
-                        lat to lon
-                                to measureDistanceMetres(
-                            lat,
-                            lon,
-                            busStopList.last().latitude,
-                            busStopList.last().longitude
-                        )
+                    val radius = mapUtil.measureDistanceMetres(
+                        lat,
+                        lon,
+                        busStopList.last().latitude,
+                        busStopList.last().longitude
                     )
+                    _mapCircle.postValue(lat to lon to radius)
                     _busStops.postValue(getListItems(busStopList))
-                    _busStopMarker.postValue(busStopList)
+                    _mapMarker.postValue(mapUtil.busStopsToMarkers(busStopList) to false)
                 }
                 is LocationOutput.Success -> {
                     _locationStatus.postValue(true)
@@ -207,17 +223,17 @@ class OverviewViewModel @Inject constructor(
                         lon = locationOutput.longitude,
                         limit = getBusStopsLimitUseCase()
                     )
+                    val radius = mapUtil.measureDistanceMetres(
+                        locationOutput.latitude,
+                        locationOutput.longitude,
+                        busStopList.last().latitude,
+                        busStopList.last().longitude
+                    )
                     _mapCircle.postValue(
-                        locationOutput.latitude to locationOutput.longitude
-                                to measureDistanceMetres(
-                            locationOutput.latitude,
-                            locationOutput.longitude,
-                            busStopList.last().latitude,
-                            busStopList.last().longitude
-                        )
+                        locationOutput.latitude to locationOutput.longitude to radius
                     )
                     _busStops.postValue(getListItems(busStopList))
-                    _busStopMarker.postValue(busStopList)
+                    _mapMarker.postValue(mapUtil.busStopsToMarkers(busStopList) to false)
                 }
             }
             _loading.postValue(false)
@@ -226,12 +242,12 @@ class OverviewViewModel @Inject constructor(
     private suspend fun getListItems(busStopList: List<BusStop>): MutableList<RecyclerViewListItem> =
         withContext(dispatcherProvider.computation) {
             val listItems = mutableListOf<RecyclerViewListItem>()
-            listItems.add(HeaderItem("Nearby Bus Stops"))
+            //listItems.add(HeaderItem("Nearby Bus Stops"))
             busStopList.forEach {
                 listItems.add(
                     BusStopItem(
                         it,
-                        R.drawable.ic_bus_stop_24,
+                        R.drawable.ic_bus_stop_128,
                         ::onBusStopClicked,
                         ::onGotoClicked
                     )
