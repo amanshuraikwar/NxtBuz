@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.howmuch.ui.main.overview
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -8,19 +9,16 @@ import android.graphics.Canvas
 import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.TextView.OnEditorActionListener
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.widget.addTextChangedListener
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
@@ -33,15 +31,18 @@ import io.github.amanshuraikwar.howmuch.ui.busstop.BusStopActivity
 import io.github.amanshuraikwar.howmuch.ui.list.RecyclerViewTypeFactoryGenerated
 import io.github.amanshuraikwar.howmuch.ui.search.SearchActivity
 import io.github.amanshuraikwar.howmuch.util.PermissionUtil
+import io.github.amanshuraikwar.howmuch.util.isDarkTheme
 import io.github.amanshuraikwar.howmuch.util.lerp
 import io.github.amanshuraikwar.howmuch.util.viewModelProvider
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
+import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.itemsRv
 import kotlinx.android.synthetic.main.fragment_overview.*
 import javax.inject.Inject
 
 
 private const val TAG = "OverviewFragment"
+private const val REQUEST_SEARCH_BUS_STOPS = 10001
 
 class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
@@ -52,6 +53,7 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
     lateinit var permissionUtil: PermissionUtil
 
     private lateinit var viewModel: OverviewViewModel
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
     private var googleMap: GoogleMap? = null
 
@@ -79,42 +81,11 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
         }
 
         setupViewModel()
-        setUpBottomSheet()
-//        searchIb.setOnClickListener {
-//            if (searchTiet.text?.isEmpty() == true) {
-//                // TODO: 5/4/20
-//            } else {
-//                searchTiet.setText("")
-//            }
-//        }
-//        searchTiet.addTextChangedListener after@{
-//            if (it?.length == 1) {
-//                if (searchIb.tag == "1") {
-//                    return@after
-//                }
-//                val animated =
-//                    AnimatedVectorDrawableCompat.create(
-//                        activity!!,
-//                        R.drawable.avd_anim_settings_to_clear_24
-//                    )
-//                searchIb.setImageDrawable(animated)
-//                animated?.start()
-//                searchIb.tag = "1"
-//            } else if (it?.length == 0) {
-//                val animated =
-//                    AnimatedVectorDrawableCompat.create(
-//                        activity!!,
-//                        R.drawable.avd_anim_clear_to_settings_24
-//                    )
-//                searchIb.setImageDrawable(animated)
-//                animated?.start()
-//                searchIb.tag = "0"
-//            }
-//        }
+        setupBottomSheet()
     }
 
-    private fun setUpBottomSheet() {
-        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+    private fun setupBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.halfExpandedRatio = 0.5f
         bottomSheetBehavior.peekHeight =
             Point().let { activity!!.windowManager.defaultDisplay.getSize(it); it.y } / 3
@@ -131,6 +102,10 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                             1f, 0f, 0f, 1f, slideOffset
                         )
                     recenterFab.alpha =
+                        lerp(
+                            1f, 0f, 0f, 1f, slideOffset
+                        )
+                    starredBusArrivalsRv.alpha =
                         lerp(
                             1f, 0f, 0f, 1f, slideOffset
                         )
@@ -155,11 +130,14 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
         itemsRv.visibility = View.VISIBLE
     }
 
-    private fun showLoading() {
+    private fun showLoading(loading: Loading.Show) {
         val animated =
-            AnimatedVectorDrawableCompat.create(activity!!, R.drawable.avd_anim_get_nearby)
+            AnimatedVectorDrawableCompat.create(
+                activity!!, loading.avd
+            )
         loadingIv.setImageDrawable(animated)
         animated?.start()
+        loadingTv.text = loading.txt
         itemsRv.visibility = View.GONE
         loadingIv.visibility = View.VISIBLE
         loadingTv.visibility = View.VISIBLE
@@ -170,11 +148,16 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
         requireActivity().let { activity ->
 
+            itemsRv.layoutManager = LinearLayoutManager(activity)
+            starredBusArrivalsRv.layoutManager = LinearLayoutManager(
+                activity, RecyclerView.HORIZONTAL, false
+            )
+
             viewModel = viewModelProvider(viewModelFactory)
 
             viewModel.initMap.observe(
                 this,
-                EventObserver {
+                Observer {
                     val fragment = SupportMapFragment.newInstance(
                         GoogleMapOptions()
                             .camera(
@@ -182,6 +165,9 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                                     .zoom(14f)
                                     .build()
                             )
+                            .compassEnabled(false)
+                            .mapToolbarEnabled(false)
+                            .minZoomPreference(14f)
                     )
                     fragment.getMapAsync(this)
                     childFragmentManager.beginTransaction().replace(R.id.mapFragment, fragment)
@@ -200,13 +186,23 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                 }
             )
 
-            viewModel.busStops.observe(
+            viewModel.listItems.observe(
                 this,
-                Observer {
+                Observer { (listItems, restoreState) ->
+                    val layoutState = itemsRv.layoutManager?.onSaveInstanceState()
                     val adapter =
-                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), it)
-                    itemsRv.layoutManager = LinearLayoutManager(activity)
+                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
+                    if (restoreState) {
+                        itemsRv.layoutManager?.onRestoreInstanceState(layoutState)
+                    }
                     itemsRv.adapter = adapter
+                }
+            )
+
+            viewModel.collapseBottomSheet.observe(
+                this,
+                EventObserver {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
             )
 
@@ -226,9 +222,9 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
             viewModel.loading.observe(
                 this,
-                EventObserver {
-                    if (it) {
-                        showLoading()
+                Observer { loading ->
+                    if (loading is Loading.Show) {
+                        showLoading(loading)
                     } else {
                         hideLoading()
                     }
@@ -237,7 +233,7 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
             viewModel.mapCenter.observe(
                 this,
-                EventObserver {
+                Observer {
                     googleMap?.animateCamera(
                         CameraUpdateFactory.newLatLng(
                             LatLng(it.first, it.second)
@@ -248,7 +244,7 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
             viewModel.mapMarker.observe(
                 this,
-                EventObserver {
+                Observer {
                     if (it.second) {
                         googleMap?.clear()
                     }
@@ -260,7 +256,7 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
             viewModel.locationStatus.observe(
                 this,
-                EventObserver {
+                Observer {
                     recenterFab.setImageResource(
                         if (it) {
                             R.drawable.ic_round_my_location_24
@@ -280,7 +276,7 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
             viewModel.mapCircle.observe(
                 this,
-                EventObserver {
+                Observer {
                     googleMap?.clear()
                     googleMap?.addMarker(
                         MarkerOptions()
@@ -309,12 +305,60 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                 }
             )
 
+            viewModel.showBack.observe(
+                this,
+                Observer { show ->
+                    backFab.visibility = if (show) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+                }
+            )
+
+            viewModel.onBackPressed.observe(
+                this,
+                EventObserver {
+                    when {
+                        bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED -> {
+                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                            itemsRv.scrollToPosition(0)
+                        }
+                        backFab.isVisible -> {
+                            viewModel.onBackPressed()
+                        }
+                        else -> {
+                            activity.finish()
+                        }
+                    }
+                }
+            )
+
+            viewModel.starredListItems.observe(
+                this,
+                Observer { listItems ->
+                    val layoutState = starredBusArrivalsRv.layoutManager?.onSaveInstanceState()
+                    val adapter =
+                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
+                    starredBusArrivalsRv.layoutManager?.onRestoreInstanceState(layoutState)
+                    starredBusArrivalsRv.adapter = adapter
+                }
+            )
+
+
             recenterFab.setOnClickListener {
                 viewModel.onRecenterClicked()
             }
 
             searchMtv.setOnClickListener {
-                startActivity(Intent(activity, SearchActivity::class.java))
+                startActivityForResult(
+                    Intent(activity, SearchActivity::class.java),
+                    REQUEST_SEARCH_BUS_STOPS
+                )
+            }
+
+            backFab.setOnClickListener {
+                viewModel.onBackPressed()
             }
 
 //            searchTiet.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
@@ -328,6 +372,15 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 //                }
 //                false
 //            })
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_SEARCH_BUS_STOPS) {
+            if (resultCode == Activity.RESULT_OK) {
+                val busStop = data?.getParcelableExtra<BusStop>("bus_stop") ?: return
+                viewModel.busStopSelected(busStop)
+            }
         }
     }
 
@@ -369,7 +422,6 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap?) {
         viewModel.mapReady = googleMap != null
         this.googleMap = googleMap
-        this.googleMap?.setMinZoomPreference(14f)
         this.googleMap?.animateCamera(
             CameraUpdateFactory.scrollBy(
                 0f,
@@ -383,5 +435,13 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
         this.googleMap?.setOnMapLongClickListener {
             viewModel.fetchBusStopsForLatLon(it.latitude, it.longitude)
         }
+        this.googleMap?.setMapStyle(
+            if (isDarkTheme(activity!!)) {
+                MapStyleOptions.loadRawResourceStyle(activity!!, R.raw.map_style_dark)
+            } else {
+                MapStyleOptions.loadRawResourceStyle(activity!!, R.raw.map_style_light)
+            }
+
+        )
     }
 }

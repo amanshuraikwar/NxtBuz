@@ -33,4 +33,9 @@ internal abstract class MainModule {
 
     @ContributesAndroidInjector
     internal abstract fun e(): OverviewFragment
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    internal abstract fun f(a: MainViewModel): ViewModel
 }

@@ -68,9 +68,9 @@ class BusStopActivity : DaggerAppCompatActivity() {
                 errorCl.visibility = View.GONE
                 val listItems = mutableListOf<RecyclerViewListItem>()
                 it.forEach {
-                    listItems.add(
-                        BusArrivalCompactItem(it)
-                    )
+//                    listItems.add(
+//                        BusArrivalCompactItem(it)
+//                    )
                 }
                 val x = itemsRv.layoutManager?.onSaveInstanceState()
                 val adapter =

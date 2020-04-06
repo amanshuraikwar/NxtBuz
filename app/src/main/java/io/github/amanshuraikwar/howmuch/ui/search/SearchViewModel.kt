@@ -56,7 +56,7 @@ class SearchViewModel @Inject constructor(
                 _loading.postValue(true)
                 val busStopList = getBusStopsUseCase(query, getBusStopsLimitUseCase())
                 if (busStopList.isEmpty()) {
-                    _error.postValue(Alert("No matching bus stops found.", R.drawable.ic_no_bus_stops_found_128))
+                    _error.postValue(Alert("No matching bus stops found."))
                     // TODO: 5/4/20
                 } else {
                     _busStops.postValue(getListItems(busStopList))
@@ -73,7 +73,7 @@ class SearchViewModel @Inject constructor(
                 listItems.add(
                     BusStopItem(
                         it,
-                        R.drawable.ic_bus_stop_128,
+                        R.drawable.ic_bus_stop_24,
                         ::onBusStopClicked,
                         ::onGotoClicked
                     )
@@ -93,5 +93,5 @@ class SearchViewModel @Inject constructor(
 
 data class Alert(
     val msg: String = "Something went wrong.",
-    @DrawableRes val iconResId: Int = R.drawable.ic_round_error_48
+    @DrawableRes val iconResId: Int = R.drawable.ic_error_128
 )

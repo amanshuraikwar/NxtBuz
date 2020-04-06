@@ -8,6 +8,7 @@ import io.github.amanshuraikwar.howmuch.data.room.busstops.BusStopDao
 import io.github.amanshuraikwar.howmuch.data.room.categories.CategoryDao
 import io.github.amanshuraikwar.howmuch.data.room.operatingbus.OperatingBusDao
 import io.github.amanshuraikwar.howmuch.data.room.operatingbus.OperatingBusEntity
+import io.github.amanshuraikwar.howmuch.data.room.starredbusstops.StarredBusStopsDao
 import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionDao
 import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionEntity
 import io.github.amanshuraikwar.howmuch.data.room.userspreadsheet.UserSpreadSheetDao
@@ -26,6 +27,7 @@ class RoomDataSource @Inject constructor(
     val busStopDao: BusStopDao,
     val busRouteDao: BusRouteDao,
     val operatingBusDao: OperatingBusDao,
+    val starredBusStopsDao: StarredBusStopsDao,
     private val colorUtil: ColorUtil
 ) {
 

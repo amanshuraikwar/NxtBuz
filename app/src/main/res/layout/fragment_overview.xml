@@ -14,9 +14,9 @@
         android:id="@+id/searchBg"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:alpha="0"
         android:background="?colorSurface"
         android:paddingBottom="@dimen/padding_normal"
-        android:alpha="0"
         app:layout_constraintBottom_toTopOf="@id/bottomSheetCl"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,6 +25,20 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/backFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:src="@drawable/ic_round_arrow_back_24"
+        android:visibility="gone"
+        app:backgroundTint="?colorSurface"
+        app:fabSize="mini"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/screenTopGuideline"
+        app:tint="?colorControlNormal" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/searchCv"
@@ -36,7 +50,7 @@
         app:cardCornerRadius="@dimen/shape_corner_size_medium_component"
         app:cardElevation="0dp"
         app:layout_constraintEnd_toStartOf="@id/settingsFab"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/backFab"
         app:layout_constraintTop_toBottomOf="@id/screenTopGuideline"
         app:strokeColor="?colorControlHighlight"
         app:strokeWidth="1dp">
@@ -48,9 +62,9 @@
             android:layout_gravity="center_vertical"
             android:hint="Search bus stops..."
             android:paddingStart="@dimen/padding_normal"
-            android:paddingTop="16dp"
+            android:paddingTop="12dp"
             android:paddingEnd="@dimen/padding_normal"
-            android:paddingBottom="16dp"
+            android:paddingBottom="12dp"
             android:textAppearance="?textAppearanceSubtitle1" />
     </com.google.android.material.card.MaterialCardView>
 
@@ -58,14 +72,24 @@
         android:id="@+id/settingsFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_small"
         android:src="@drawable/ic_round_settings_24"
         app:backgroundTint="?colorSurface"
         app:fabSize="mini"
-        app:layout_constraintBottom_toBottomOf="@id/searchCv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/screenTopGuideline"
-        app:layout_constraintTop_toTopOf="@id/searchCv" />
+        app:tint="?colorControlNormal" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/starredBusArrivalsRv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/searchBg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/recenterFab"
+        android:requiresFadingEdge="horizontal|vertical"
+        android:clipToPadding="false"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/recenterFab"
@@ -76,7 +100,8 @@
         app:backgroundTint="?colorSurface"
         app:fabSize="mini"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchBg" />
+        app:layout_constraintTop_toBottomOf="@id/searchBg"
+        app:tint="?colorControlNormal" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/bottomSheetCl"

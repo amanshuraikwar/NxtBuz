@@ -16,6 +16,7 @@ import io.github.amanshuraikwar.howmuch.data.room.busroute.BusRouteDao
 import io.github.amanshuraikwar.howmuch.data.room.busstops.BusStopDao
 import io.github.amanshuraikwar.howmuch.data.room.categories.CategoryDao
 import io.github.amanshuraikwar.howmuch.data.room.operatingbus.OperatingBusDao
+import io.github.amanshuraikwar.howmuch.data.room.starredbusstops.StarredBusStopsDao
 import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionDao
 import io.github.amanshuraikwar.howmuch.data.room.userspreadsheet.UserSpreadSheetDao
 import okhttp3.OkHttpClient
@@ -107,5 +108,10 @@ class DataModuleProvides {
     @Provides
     fun k(context: Context): FusedLocationProviderClient {
         return LocationServices.getFusedLocationProviderClient(context)
+    }
+
+    @Provides
+    fun l(appDatabase: AppDatabase): StarredBusStopsDao {
+        return appDatabase.starredBusStopsDao
     }
 }

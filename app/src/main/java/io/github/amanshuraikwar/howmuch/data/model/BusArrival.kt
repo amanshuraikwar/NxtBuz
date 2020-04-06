@@ -11,7 +11,10 @@ data class BusArrival(
     val arrivals: Arrivals
 )
 
-sealed class Arrivals {
-    object NotOperating : Arrivals()
-    data class Arriving(val arrivingBusList: List<ArrivingBus>) : Arrivals()
+sealed class Arrivals(var starred: Boolean) {
+    class NotOperating(starred: Boolean) : Arrivals(starred)
+    class Arriving(
+        starred: Boolean,
+        val arrivingBusList: List<ArrivingBus>
+    ) : Arrivals(starred)
 }

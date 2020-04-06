@@ -15,6 +15,7 @@ import io.github.amanshuraikwar.howmuch.data.room.RoomDataSource
 import io.github.amanshuraikwar.howmuch.data.room.busroute.BusRouteEntity
 import io.github.amanshuraikwar.howmuch.data.room.busstops.BusStopEntity
 import io.github.amanshuraikwar.howmuch.data.room.operatingbus.OperatingBusEntity
+import io.github.amanshuraikwar.howmuch.data.room.starredbusstops.StarredBusStopEntity
 import io.github.amanshuraikwar.howmuch.util.TimeUtil
 import kotlinx.coroutines.*
 import org.threeten.bp.OffsetDateTime
@@ -236,6 +237,12 @@ class UserRepository @Inject constructor(
     suspend fun getBusArrivals(busStopCode: String): List<BusArrival> =
         withContext(dispatcherProvider.io) {
 
+            val starredBusServiceNumberSet =
+                roomDataSource.starredBusStopsDao
+                    .findByBusStopCode(busStopCode)
+                    .map { it.busServiceNumber }
+                    .toSet()
+
             return@withContext sgBusApi
                 .getBusArrivals(busStopCode)
                 .busArrivals
@@ -254,7 +261,9 @@ class UserRepository @Inject constructor(
                                 "No bus route node found for service number ${busArrivalItem.serviceNumber} and stop code $busStopCode."
                             )
 
-                    val arrivals = busArrivalItem.toArrivals()
+                    val arrivals = busArrivalItem.toArrivals(
+                        starredBusServiceNumberSet.contains(busArrivalItem.serviceNumber)
+                    )
 
                     val destinationStopDescription: String =
                         when (arrivals) {
@@ -281,10 +290,10 @@ class UserRepository @Inject constructor(
                 }
         }
 
-    private fun BusArrivalItem.toArrivals(): Arrivals {
+    private fun BusArrivalItem.toArrivals(starred: Boolean): Arrivals {
 
         if (arrivingBus == null || arrivingBus.estimatedArrival == "") {
-            return Arrivals.NotOperating
+            return Arrivals.NotOperating(starred)
         }
 
         val arrivingBusList = mutableListOf<ArrivingBus>()
@@ -304,7 +313,7 @@ class UserRepository @Inject constructor(
             }
         }
 
-        return Arrivals.Arriving(arrivingBusList)
+        return Arrivals.Arriving(starred, arrivingBusList)
     }
 
     private fun ArrivingBusItem.asArrivingBus(): ArrivingBus {
@@ -387,4 +396,74 @@ class UserRepository @Inject constructor(
                     }
                 }.awaitAll()
         }
+
+    suspend fun toggleBusStopStar(busStopCode: String, busServiceNumber: String) =
+        withContext(dispatcherProvider.io) {
+            val isAlreadyStarred =
+                roomDataSource.starredBusStopsDao.findByBusStopCodeAndBusServiceNumber(
+                    busStopCode, busServiceNumber
+                ).isNotEmpty()
+            if (isAlreadyStarred) {
+                roomDataSource.starredBusStopsDao.deleteByBusStopCodeAndBusServiceNumber(
+                    busStopCode, busServiceNumber
+                )
+            } else {
+                roomDataSource.starredBusStopsDao.insertAll(
+                    listOf(
+                        StarredBusStopEntity(busStopCode, busServiceNumber)
+                    )
+                )
+            }
+        }
+
+    suspend fun getStarredBusStopsArrivals(): List<StarredBusArrival> =
+        withContext(dispatcherProvider.io) {
+            val starredBusStops = roomDataSource.starredBusStopsDao.findAll()
+            starredBusStops.map { (busStopCode, busServiceNumber) ->
+                async(dispatcherProvider.pool8) {
+                    getBusArrivals(busStopCode)
+                        .find { it.serviceNumber == busServiceNumber }
+                        ?.arrivals
+                        ?.let {
+                            if (it is Arrivals.Arriving) {
+                                it as Arrivals.Arriving
+                            } else {
+                                null
+                            }
+                        }
+                        ?.let {
+                            it.arrivingBusList[0]
+                        }?.let {
+                            StarredBusArrival.Arriving(
+                                busStopCode,
+                                busServiceNumber,
+                                roomDataSource.busStopDao.findByCode(busStopCode)[0].description,
+                                it
+                            )
+                        }
+                        ?: StarredBusArrival.NotOperating(busStopCode, busServiceNumber)
+                }
+            }.awaitAll()
+        }
+}
+
+sealed class StarredBusArrival(
+    val busStopCode: String,
+    val busServiceNumber: String
+) {
+    class Arriving(
+        busStopCode: String,
+        busServiceNumber: String,
+        val busStopDescription: String,
+        val arrivingBus: ArrivingBus
+    ) : StarredBusArrival(
+        busStopCode, busServiceNumber
+    )
+
+    class NotOperating(
+        busStopCode: String,
+        busServiceNumber: String
+    ) : StarredBusArrival(
+        busStopCode, busServiceNumber
+    )
 }

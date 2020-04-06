@@ -9,24 +9,21 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.MarkerOptions
 import io.github.amanshuraikwar.howmuch.R
 import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.howmuch.data.model.BusArrival
 import io.github.amanshuraikwar.howmuch.data.model.BusStop
+import io.github.amanshuraikwar.howmuch.data.user.StarredBusArrival
 import io.github.amanshuraikwar.howmuch.domain.busstop.*
-import io.github.amanshuraikwar.howmuch.ui.list.BusStopItem
-import io.github.amanshuraikwar.howmuch.ui.list.HeaderItem
+import io.github.amanshuraikwar.howmuch.ui.list.*
 import io.github.amanshuraikwar.howmuch.util.MapUtil
 import io.github.amanshuraikwar.howmuch.util.asEvent
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import javax.inject.Inject
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import javax.inject.Named
 
 private const val TAG = "OverviewViewModel"
+
+private const val REFRESH_DELAY = 10000L
 
 class OverviewViewModel @Inject constructor(
     private val getBusStopsUseCase: GetBusStopsUseCase,
@@ -34,9 +31,17 @@ class OverviewViewModel @Inject constructor(
     private val getBusStopsLimitUseCase: GetBusStopsLimitUseCase,
     private val getDefaultLocationUseCase: GetDefaultLocationUseCase,
     private val getMaxDistanceOfClosesBusStopUseCase: GetMaxDistanceOfClosesBusStopUseCase,
+    private val getBusArrivalsUseCase: GetArrivalsUseCase,
+    private val toggleBusStopStarUseCase: ToggleBusStopStarUseCase,
+    private val getStarredBusStopsArrivalsUseCase: GetStarredBusStopsArrivalsUseCase,
+    @Named("onBackPressed") private val _onBackPressed: MutableLiveData<Unit>,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
     private val mapUtil: MapUtil
 ) : ViewModel() {
+
+    private var lastAppState: AppState? = null
+
+    val onBackPressed = _onBackPressed.asEvent()
 
     private val _error = MutableLiveData<Alert>()
     val error = _error
@@ -51,8 +56,12 @@ class OverviewViewModel @Inject constructor(
         _error.postValue(Alert())
     }
 
-    private val _busStops = MutableLiveData<MutableList<RecyclerViewListItem>>()
-    val busStops = _busStops.map { it }
+    private val starredBusErrorHandler = CoroutineExceptionHandler { _, th ->
+        // TODO: 6/4/20
+    }
+
+    private val _listItems = MutableLiveData<Pair<MutableList<RecyclerViewListItem>, Boolean>>()
+    val listItems = _listItems.map { it }
 
     private val _busStopActivity = MutableLiveData<BusStop>()
     val busStopActivity = _busStopActivity.asEvent()
@@ -60,36 +69,61 @@ class OverviewViewModel @Inject constructor(
     private val _goto = MutableLiveData<BusStop>()
     val goto = _goto.asEvent()
 
-    private val _loading = MutableLiveData<Boolean>()
-    val loading = _loading.asEvent()
+    private val _loading = MutableLiveData<Loading>()
+    val loading = _loading
 
     private val _locationStatus = MutableLiveData<Boolean>()
-    val locationStatus = _locationStatus.asEvent()
+    val locationStatus = _locationStatus
 
     var mapReady = false
 
     private val _mapCenter = MutableLiveData<Pair<Double, Double>>()
-    val mapCenter = _mapCenter.asEvent()
+    val mapCenter = _mapCenter
 
     private val _mapMarker = MutableLiveData<Pair<List<MarkerOptions>, Boolean>>()
-    val mapMarker = _mapMarker.asEvent()
+    val mapMarker = _mapMarker
 
     private val _clearMap = MutableLiveData<Unit>()
     val clearMap = _clearMap.asEvent()
 
     private val _mapCircle = MutableLiveData<Pair<Pair<Double, Double>, Double>>()
-    val mapCircle = _mapCircle.asEvent()
+    val mapCircle = _mapCircle
 
     private val _initMap = MutableLiveData<Pair<Double, Double>>()
-    val initMap = _initMap.asEvent()
+    val initMap = _initMap
 
-    private var lastLat: Double = 0.0
-    private var lastLon: Double = 0.0
+    private val _showBack = MutableLiveData<Boolean>()
+    val showBack = _showBack
+
+    private val _collapseBottomSheet = MutableLiveData<Unit>()
+    val collapseBottomSheet = _collapseBottomSheet.asEvent()
+
+    private val _starredListItems =
+        MutableLiveData<MutableList<RecyclerViewListItem>>()
+    val starredListItems = _starredListItems
 
     init {
         fetchDefaultLocationInit()
         fetchDataInit()
+        startStarredBus()
     }
+
+    private fun startStarredBus() =
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            while (true) {
+                _starredListItems.postValue(
+                    getStarredBusStopsArrivalsUseCase()
+                        .mapNotNull {
+                            if (it is StarredBusArrival.Arriving)
+                                StarredBusArrivalItem(it)
+                            else
+                                null
+                        }
+                        .toMutableList()
+                )
+                delay(REFRESH_DELAY)
+            }
+        }
 
     private fun fetchDefaultLocationInit() =
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
@@ -98,9 +132,13 @@ class OverviewViewModel @Inject constructor(
 
     fun fetchBusStopsForLatLon(lat: Double, lon: Double) =
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
-            _loading.postValue(true)
-            lastLat = lat
-            lastLon = lon
+            _showBack.postValue(false)
+            _loading.postValue(
+                Loading.Show(
+                    R.drawable.avd_anim_nearby_bus_stops_loading_128,
+                    "Finding bus stops nearby..."
+                )
+            )
             _mapCenter.postValue(lat to lon)
             val busStopList =
                 getBusStopsUseCase(lat = lat, lon = lon, limit = getBusStopsLimitUseCase())
@@ -123,26 +161,19 @@ class OverviewViewModel @Inject constructor(
                 busStopList.last().longitude
             )
             _mapCircle.postValue(lat to lon to radius)
-            _busStops.postValue(getListItems(busStopList))
-            _mapMarker.postValue(mapUtil.busStopsToMarkers(busStopList) to false)
-            _loading.postValue(false)
-        }
-
-    fun searchBusStops(query: String) =
-        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
-            if (query.isNotEmpty()) {
-                _loading.postValue(true)
-                val busStopList = getBusStopsUseCase(query, getBusStopsLimitUseCase())
-                if (busStopList.isEmpty()) {
-                    _error.postValue(Alert("No matching bus stops found."))
-                    // TODO: 5/4/20
-                } else {
-                    _mapCenter.postValue(busStopList[0].latitude to busStopList[0].longitude)
-                    _busStops.postValue(getListItems(busStopList))
-                    _mapMarker.postValue(mapUtil.busStopsToMarkers(busStopList) to true)
-                    _loading.postValue(false)
-                }
-            }
+            val listItems = getListItems(busStopList)
+            _listItems.postValue(listItems to false)
+            val markerOptionsList = mapUtil.busStopsToMarkers(busStopList)
+            _mapMarker.postValue(markerOptionsList to false)
+            _loading.postValue(Loading.Hide)
+            lastAppState =
+                AppState(
+                    listItems,
+                    markerOptionsList,
+                    lat,
+                    lon,
+                    radius
+                )
         }
 
     fun onRecenterClicked() =
@@ -153,13 +184,17 @@ class OverviewViewModel @Inject constructor(
                     _locationStatus.postValue(false)
                 }
                 is LocationOutput.Success -> {
+                    _showBack.postValue(false)
                     _locationStatus.postValue(true)
-                    lastLat = locationOutput.latitude
-                    lastLon = locationOutput.longitude
                     _mapCenter.postValue(
                         locationOutput.latitude to locationOutput.longitude
                     )
-                    _loading.postValue(true)
+                    _loading.postValue(
+                        Loading.Show(
+                            R.drawable.avd_anim_nearby_bus_stops_loading_128,
+                            "Finding bus stops nearby..."
+                        )
+                    )
                     val busStopList = getBusStopsUseCase(
                         lat = locationOutput.latitude,
                         lon = locationOutput.longitude,
@@ -174,16 +209,32 @@ class OverviewViewModel @Inject constructor(
                     _mapCircle.postValue(
                         locationOutput.latitude to locationOutput.longitude to radius
                     )
-                    _busStops.postValue(getListItems(busStopList))
-                    _mapMarker.postValue(mapUtil.busStopsToMarkers(busStopList) to false)
-                    _loading.postValue(false)
+                    val listItems = getListItems(busStopList)
+                    _listItems.postValue(listItems to false)
+                    val markerOptionsList = mapUtil.busStopsToMarkers(busStopList)
+                    _mapMarker.postValue(markerOptionsList to false)
+                    _loading.postValue(Loading.Hide)
+                    lastAppState =
+                        AppState(
+                            listItems,
+                            markerOptionsList,
+                            locationOutput.latitude,
+                            locationOutput.longitude,
+                            radius
+                        )
                 }
             }
         }
 
     private fun fetchDataInit() =
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
-            _loading.postValue(true)
+            _showBack.postValue(false)
+            _loading.postValue(
+                Loading.Show(
+                    R.drawable.avd_anim_nearby_bus_stops_loading_128,
+                    "Finding bus stops nearby..."
+                )
+            )
             // wait for map to be ready
             while (!mapReady) {
                 delay(1000)
@@ -193,8 +244,6 @@ class OverviewViewModel @Inject constructor(
                 is LocationOutput.CouldNotGetLocation -> {
                     _locationStatus.postValue(false)
                     val (lat, lon) = getDefaultLocationUseCase()
-                    lastLat = lat
-                    lastLon = lon
                     _mapCenter.postValue(lat to lon)
                     val busStopList = getBusStopsUseCase(
                         lat = lat,
@@ -208,13 +257,21 @@ class OverviewViewModel @Inject constructor(
                         busStopList.last().longitude
                     )
                     _mapCircle.postValue(lat to lon to radius)
-                    _busStops.postValue(getListItems(busStopList))
-                    _mapMarker.postValue(mapUtil.busStopsToMarkers(busStopList) to false)
+                    val listItems = getListItems(busStopList)
+                    _listItems.postValue(listItems to false)
+                    val markerOptionsList = mapUtil.busStopsToMarkers(busStopList)
+                    _mapMarker.postValue(markerOptionsList to false)
+                    lastAppState =
+                        AppState(
+                            listItems,
+                            markerOptionsList,
+                            lat,
+                            lon,
+                            radius
+                        )
                 }
                 is LocationOutput.Success -> {
                     _locationStatus.postValue(true)
-                    lastLat = locationOutput.latitude
-                    lastLon = locationOutput.longitude
                     _mapCenter.postValue(
                         locationOutput.latitude to locationOutput.longitude
                     )
@@ -232,11 +289,21 @@ class OverviewViewModel @Inject constructor(
                     _mapCircle.postValue(
                         locationOutput.latitude to locationOutput.longitude to radius
                     )
-                    _busStops.postValue(getListItems(busStopList))
-                    _mapMarker.postValue(mapUtil.busStopsToMarkers(busStopList) to false)
+                    val listItems = getListItems(busStopList)
+                    _listItems.postValue(listItems to false)
+                    val markerOptionsList = mapUtil.busStopsToMarkers(busStopList)
+                    _mapMarker.postValue(markerOptionsList to false)
+                    lastAppState =
+                        AppState(
+                            listItems,
+                            markerOptionsList,
+                            locationOutput.latitude,
+                            locationOutput.longitude,
+                            radius
+                        )
                 }
             }
-            _loading.postValue(false)
+            _loading.postValue(Loading.Hide)
         }
 
     private suspend fun getListItems(busStopList: List<BusStop>): MutableList<RecyclerViewListItem> =
@@ -247,7 +314,7 @@ class OverviewViewModel @Inject constructor(
                 listItems.add(
                     BusStopItem(
                         it,
-                        R.drawable.ic_bus_stop_128,
+                        R.drawable.ic_bus_stop_24,
                         ::onBusStopClicked,
                         ::onGotoClicked
                     )
@@ -257,15 +324,143 @@ class OverviewViewModel @Inject constructor(
         }
 
     private fun onBusStopClicked(busStop: BusStop) {
-        _busStopActivity.postValue(busStop)
+        busStopSelected(busStop)
     }
 
     private fun onGotoClicked(busStop: BusStop) {
         _goto.postValue(busStop)
     }
+
+    fun busStopSelected(busStop: BusStop) =
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            _collapseBottomSheet.postValue(Unit)
+            _showBack.postValue(true)
+            _loading.postValue(
+                Loading.Show(
+                    R.drawable.avd_anim_arrivals_loading_128,
+                    "Finding bus arrivals..."
+                )
+            )
+            _mapCenter.postValue(busStop.latitude to busStop.longitude)
+            _mapMarker.postValue(mapUtil.busStopsToMarkers(listOf(busStop)) to true)
+
+            val busArrivals = getBusArrivalsUseCase(busStop.code)
+            val listItems: MutableList<RecyclerViewListItem> =
+                busArrivals
+                    .map {
+                        BusArrivalCompactItem(
+                            busStop.code,
+                            it,
+                            ::onStarToggle
+                        )
+                    }
+                    .toMutableList()
+
+            _mapMarker.postValue(mapUtil.busArrivalsToMarkers(busArrivals) to false)
+
+            listItems.add(
+                0,
+                BusStopHeaderItem(
+                    busStop,
+                    R.drawable.ic_bus_stop_24
+                )
+            )
+            listItems.add(
+                1,
+                HeaderItem(
+                    "Arrivals"
+                )
+            )
+            _listItems.postValue(listItems to false)
+            _loading.postValue(Loading.Hide)
+
+            // start arrivals loop
+            arrivalsLoopJob?.cancelAndJoin()
+            arrivalsLoopJob = startArrivalsLoop(busStop, REFRESH_DELAY)
+        }
+
+    private var arrivalsLoopJob: Job? = null
+
+    private fun startArrivalsLoop(busStop: BusStop, initialDelay: Long = 0) =
+        viewModelScope.launch(dispatcherProvider.computation + errorHandler) {
+            delay(initialDelay)
+            while (isActive) {
+                val busArrivals = getBusArrivalsUseCase(busStop.code)
+                //lastUpdatedOn = OffsetDateTime.now().format(TimeUtil.TIME_READABLE_FORMATTER)
+                val listItems: MutableList<RecyclerViewListItem> =
+                    busArrivals
+                        .map {
+                            BusArrivalCompactItem(
+                                busStop.code,
+                                it,
+                                ::onStarToggle
+                            )
+                        }
+                        .toMutableList()
+                listItems.add(
+                    0,
+                    BusStopHeaderItem(
+                        busStop,
+                        R.drawable.ic_bus_stop_24
+                    )
+                )
+                listItems.add(
+                    1,
+                    HeaderItem(
+                        "Arrivals"
+                    )
+                )
+                _listItems.postValue(listItems to true)
+                _mapMarker.postValue(mapUtil.busStopsToMarkers(listOf(busStop)) to true)
+                _mapMarker.postValue(mapUtil.busArrivalsToMarkers(busArrivals) to false)
+                delay(REFRESH_DELAY)
+            }
+        }
+
+    private fun onStarToggle(busStopCode: String, busArrival: BusArrival) {
+        toggleBusStopStar(busStopCode, busArrival)
+    }
+
+    private fun toggleBusStopStar(busStopCode: String, busArrival: BusArrival) =
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            toggleBusStopStarUseCase(busStopCode, busArrival.serviceNumber)
+        }
+
+    private fun restoreLastState(appState: AppState) =
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            _loading.postValue(Loading.Hide)
+            _clearMap.postValue(Unit)
+            _mapCenter.postValue(
+                appState.circleCenterLat to appState.circleCenterLon
+            )
+            _mapCircle.postValue(
+                appState.circleCenterLat to appState.circleCenterLon to appState.circleRadius
+            )
+            _listItems.postValue(appState.listItems to false)
+            _mapMarker.postValue(appState.markerOptionsList to false)
+        }
+
+    fun onBackPressed() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+        arrivalsLoopJob?.cancelAndJoin()
+        lastAppState?.let { restoreLastState(it) } ?: fetchDataInit()
+        _showBack.postValue(false)
+    }
 }
+
+data class AppState(
+    val listItems: MutableList<RecyclerViewListItem>,
+    val markerOptionsList: List<MarkerOptions>,
+    val circleCenterLat: Double,
+    val circleCenterLon: Double,
+    val circleRadius: Double
+)
 
 data class Alert(
     val msg: String = "Something went wrong.",
-    @DrawableRes val iconResId: Int = R.drawable.ic_round_error_48
+    @DrawableRes val iconResId: Int = R.drawable.ic_error_128
 )
+
+sealed class Loading {
+    data class Show(@DrawableRes val avd: Int, val txt: String) : Loading()
+    object Hide : Loading()
+}

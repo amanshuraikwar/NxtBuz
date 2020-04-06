@@ -53,7 +53,7 @@
             android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/padding_normal"
             android:paddingEnd="@dimen/padding_normal"
-            android:textAppearance="?textAppearanceSubtitle1"
+            android:textAppearance="?textAppearanceHeadline5"
             app:layout_constraintEnd_toStartOf="@id/gotoIv"
             app:layout_constraintStart_toEndOf="@id/iconIv"
             app:layout_constraintTop_toTopOf="parent"
@@ -66,34 +66,17 @@
             android:paddingStart="@dimen/padding_normal"
             android:paddingTop="2dp"
             android:paddingEnd="@dimen/padding_small"
+            android:paddingBottom="@dimen/padding_normal"
             android:textAppearance="?textAppearanceOverline"
             app:layout_constraintStart_toEndOf="@id/iconIv"
             app:layout_constraintTop_toBottomOf="@id/stopNameTv"
             tools:text="5431"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/busCodesTv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingTop="@dimen/padding_normal"
-            android:paddingEnd="@dimen/padding_normal"
-            android:paddingBottom="@dimen/padding_normal"
-            android:textAppearance="?textAppearanceBody2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iconIv"
-            app:layout_constraintTop_toBottomOf="@id/stopCodeTv"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:fontFamily="@font/rubik_medium"
-            android:textStyle="bold"
-            android:textColor="@color/blue"
-            app:lineHeight="20sp"
-            tools:text="123  456  961  170  173" />
-
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider"
+            app:layout_constraintTop_toBottomOf="@id/stopCodeTv"
+            android:layout_height="@dimen/margin_small"
+            android:background="@color/color_background"
             app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -1,6 +1,8 @@
 package io.github.amanshuraikwar.howmuch.ui.search
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -20,7 +22,6 @@ import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.activity_search.itemsRv
 import kotlinx.android.synthetic.main.activity_search.loadingIv
 import kotlinx.android.synthetic.main.activity_search.loadingTv
-import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
 import javax.inject.Inject
 
 class SearchActivity : DaggerAppCompatActivity() {
@@ -45,7 +46,10 @@ class SearchActivity : DaggerAppCompatActivity() {
             }
             false
         })
-        backFab.setOnClickListener { finish() }
+        backFab.setOnClickListener {
+            setResult(Activity.CONTEXT_INCLUDE_CODE)
+            finish()
+        }
     }
 
     private fun setupViewModel() {
@@ -75,7 +79,14 @@ class SearchActivity : DaggerAppCompatActivity() {
         viewModel.busStopClicked.observe(
             this,
             EventObserver { busStop ->
-
+                setResult(
+                    Activity.RESULT_OK,
+                    Intent().putExtra(
+                        "bus_stop",
+                        busStop
+                    )
+                )
+                finish()
             }
         )
 
@@ -99,7 +110,7 @@ class SearchActivity : DaggerAppCompatActivity() {
 
     private fun showLoading() {
         val animated =
-            AnimatedVectorDrawableCompat.create(this, R.drawable.avd_anim_get_nearby)
+            AnimatedVectorDrawableCompat.create(this, R.drawable.avd_anim_search_loading_128)
         loadingTv.text = "Searching bus stops..."
         loadingIv.setImageDrawable(animated)
         animated?.start()

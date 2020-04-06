@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/padding_large"
-            app:srcCompat="@drawable/avd_anim_get_nearby"
+            app:srcCompat="@drawable/avd_anim_nearby_bus_stops_loading_128"
             app:tint="?colorControlActivated"
             android:visibility="invisible"/>
 

@@ -9,6 +9,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import io.github.amanshuraikwar.howmuch.R
+import io.github.amanshuraikwar.howmuch.data.model.Arrivals
+import io.github.amanshuraikwar.howmuch.data.model.BusArrival
 import io.github.amanshuraikwar.howmuch.data.model.BusStop
 import javax.inject.Inject
 import kotlin.math.atan2
@@ -52,6 +54,32 @@ class MapUtil @Inject constructor(private val activity: AppCompatActivity) {
                 )
                 .title(busStop.description)
         }
+    }
+
+    fun busArrivalsToMarkers(busArrivals: List<BusArrival>): List<MarkerOptions> {
+        return busArrivals
+            .filter { it.arrivals is Arrivals.Arriving }
+            .map { busArrival ->
+                MarkerOptions()
+                    .position(
+                        LatLng(
+                            // TODO: 6/4/20 Make more safe
+                            (busArrival.arrivals as Arrivals.Arriving).arrivingBusList[0].latitude,
+                            (busArrival.arrivals as Arrivals.Arriving).arrivingBusList[0].longitude
+                        )
+                    )
+                    .icon(
+                        bitmapDescriptorFromVector(R.drawable.ic_marker_arriving_bus_48)
+                    )
+                    .title(busArrival.serviceNumber)
+                    .snippet(
+                        if ((busArrival.arrivals as Arrivals.Arriving).arrivingBusList[0].arrival == "Arr") {
+                            "ARRIVING"
+                        } else {
+                            "${(busArrival.arrivals as Arrivals.Arriving).arrivingBusList[0].arrival} MINS"
+                        }
+                    )
+            }
     }
 
     fun measureDistanceMetres(

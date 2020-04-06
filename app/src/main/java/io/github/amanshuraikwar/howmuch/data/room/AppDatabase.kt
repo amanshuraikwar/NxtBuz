@@ -12,6 +12,8 @@ import io.github.amanshuraikwar.howmuch.data.room.categories.CategoryEntity
 import io.github.amanshuraikwar.howmuch.data.room.operatingbus.OperatingBusDao
 import io.github.amanshuraikwar.howmuch.data.room.operatingbus.OperatingBusEntity
 import io.github.amanshuraikwar.howmuch.data.room.operatingbus.TimeTypeConverters
+import io.github.amanshuraikwar.howmuch.data.room.starredbusstops.StarredBusStopEntity
+import io.github.amanshuraikwar.howmuch.data.room.starredbusstops.StarredBusStopsDao
 import io.github.amanshuraikwar.howmuch.data.room.transactions.SpreadSheetSyncStatusTypeConverters
 import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionDao
 import io.github.amanshuraikwar.howmuch.data.room.transactions.TransactionEntity
@@ -25,9 +27,10 @@ import io.github.amanshuraikwar.howmuch.data.room.userspreadsheet.UserSpreadShee
         TransactionEntity::class,
         BusStopEntity::class,
         OperatingBusEntity::class,
-        BusRouteEntity::class
+        BusRouteEntity::class,
+        StarredBusStopEntity::class
     ],
-    version = 4
+    version = 5
 )
 @TypeConverters(SpreadSheetSyncStatusTypeConverters::class, TimeTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -47,4 +50,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract val operatingBusDao: OperatingBusDao
 
     abstract val busRouteDao: BusRouteDao
+
+    abstract val starredBusStopsDao: StarredBusStopsDao
 }
