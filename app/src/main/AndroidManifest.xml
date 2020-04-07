@@ -43,6 +43,7 @@
         <activity
             android:name=".ui.search.SearchActivity"
             android:windowSoftInputMode="stateAlwaysVisible"/>
+        <activity android:name=".ui.settings.SettingsActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
