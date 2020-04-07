@@ -28,9 +28,9 @@ private const val REFRESH_DELAY = 10000L
 class OverviewViewModel @Inject constructor(
     private val getBusStopsUseCase: GetBusStopsUseCase,
     private val getLocationUseCase: GetLocationUseCase,
-    private val getBusStopsLimitUseCase: GetBusStopsLimitUseCase,
-    private val getDefaultLocationUseCase: GetDefaultLocationUseCase,
-    private val getMaxDistanceOfClosesBusStopUseCase: GetMaxDistanceOfClosesBusStopUseCase,
+    private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
+    private val defaultLocationUseCase: DefaultLocationUseCase,
+    private val maxDistanceOfClosesBusStopUseCase: MaxDistanceOfClosesBusStopUseCase,
     private val getBusArrivalsUseCase: GetArrivalsUseCase,
     private val toggleBusStopStarUseCase: ToggleBusStopStarUseCase,
     private val getStarredBusStopsArrivalsUseCase: GetStarredBusStopsArrivalsUseCase,
@@ -127,7 +127,7 @@ class OverviewViewModel @Inject constructor(
 
     private fun fetchDefaultLocationInit() =
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
-            _initMap.postValue(getDefaultLocationUseCase())
+            _initMap.postValue(defaultLocationUseCase())
         }
 
     fun fetchBusStopsForLatLon(lat: Double, lon: Double) =
@@ -141,14 +141,14 @@ class OverviewViewModel @Inject constructor(
             )
             _mapCenter.postValue(lat to lon)
             val busStopList =
-                getBusStopsUseCase(lat = lat, lon = lon, limit = getBusStopsLimitUseCase())
+                getBusStopsUseCase(lat = lat, lon = lon, limit = busStopsQueryLimitUseCase())
 
             if (mapUtil.measureDistanceMetres(
                     lat,
                     lon,
                     busStopList.first().latitude,
                     busStopList.first().longitude
-                ) > getMaxDistanceOfClosesBusStopUseCase()
+                ) > maxDistanceOfClosesBusStopUseCase()
             ) {
                 _error.postValue(Alert("You are too far away."))
                 return@launch
@@ -198,7 +198,7 @@ class OverviewViewModel @Inject constructor(
                     val busStopList = getBusStopsUseCase(
                         lat = locationOutput.latitude,
                         lon = locationOutput.longitude,
-                        limit = getBusStopsLimitUseCase()
+                        limit = busStopsQueryLimitUseCase()
                     )
                     val radius = mapUtil.measureDistanceMetres(
                         locationOutput.latitude,
@@ -243,12 +243,12 @@ class OverviewViewModel @Inject constructor(
                 is LocationOutput.PermissionsNotGranted,
                 is LocationOutput.CouldNotGetLocation -> {
                     _locationStatus.postValue(false)
-                    val (lat, lon) = getDefaultLocationUseCase()
+                    val (lat, lon) = defaultLocationUseCase()
                     _mapCenter.postValue(lat to lon)
                     val busStopList = getBusStopsUseCase(
                         lat = lat,
                         lon = lon,
-                        limit = getBusStopsLimitUseCase()
+                        limit = busStopsQueryLimitUseCase()
                     )
                     val radius = mapUtil.measureDistanceMetres(
                         lat,
@@ -278,7 +278,7 @@ class OverviewViewModel @Inject constructor(
                     val busStopList = getBusStopsUseCase(
                         lat = locationOutput.latitude,
                         lon = locationOutput.longitude,
-                        limit = getBusStopsLimitUseCase()
+                        limit = busStopsQueryLimitUseCase()
                     )
                     val radius = mapUtil.measureDistanceMetres(
                         locationOutput.latitude,

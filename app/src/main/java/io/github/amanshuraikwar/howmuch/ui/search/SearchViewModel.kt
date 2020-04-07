@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.maps.model.MarkerOptions
 import io.github.amanshuraikwar.howmuch.R
 import io.github.amanshuraikwar.howmuch.data.di.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.howmuch.data.model.BusStop
@@ -15,7 +14,6 @@ import io.github.amanshuraikwar.howmuch.ui.list.BusStopItem
 import io.github.amanshuraikwar.howmuch.util.asEvent
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -24,7 +22,7 @@ private const val TAG = "SearchViewModel"
 
 class SearchViewModel @Inject constructor(
     private val getBusStopsUseCase: GetBusStopsUseCase,
-    private val getBusStopsLimitUseCase: GetBusStopsLimitUseCase,
+    private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -54,7 +52,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
             if (query.isNotEmpty()) {
                 _loading.postValue(true)
-                val busStopList = getBusStopsUseCase(query, getBusStopsLimitUseCase())
+                val busStopList = getBusStopsUseCase(query, busStopsQueryLimitUseCase())
                 if (busStopList.isEmpty()) {
                     _error.postValue(Alert("No matching bus stops found."))
                     // TODO: 5/4/20

@@ -13,6 +13,8 @@ import io.github.amanshuraikwar.howmuch.ui.onboarding.OnboardingActivity
 import io.github.amanshuraikwar.howmuch.ui.onboarding.OnboardingModule
 import io.github.amanshuraikwar.howmuch.ui.search.SearchActivity
 import io.github.amanshuraikwar.howmuch.ui.search.SearchModule
+import io.github.amanshuraikwar.howmuch.ui.settings.SettingsActivity
+import io.github.amanshuraikwar.howmuch.ui.settings.SettingsModule
 
 /**
  * We want Dagger.Android to create a Subcomponent which has a parent Component of whichever module
@@ -47,4 +49,7 @@ abstract class ActivityBindingModule {
     @ContributesAndroidInjector(modules = [SearchModule::class])
     internal abstract fun e(): SearchActivity
 
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = [SettingsModule::class])
+    internal abstract fun f(): SettingsActivity
 }

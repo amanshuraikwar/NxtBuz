@@ -30,6 +30,7 @@ import io.github.amanshuraikwar.howmuch.domain.result.EventObserver
 import io.github.amanshuraikwar.howmuch.ui.busstop.BusStopActivity
 import io.github.amanshuraikwar.howmuch.ui.list.RecyclerViewTypeFactoryGenerated
 import io.github.amanshuraikwar.howmuch.ui.search.SearchActivity
+import io.github.amanshuraikwar.howmuch.ui.settings.SettingsActivity
 import io.github.amanshuraikwar.howmuch.util.PermissionUtil
 import io.github.amanshuraikwar.howmuch.util.isDarkTheme
 import io.github.amanshuraikwar.howmuch.util.lerp
@@ -359,6 +360,10 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
             backFab.setOnClickListener {
                 viewModel.onBackPressed()
+            }
+
+            settingsFab.setOnClickListener {
+                startActivity(Intent(activity, SettingsActivity::class.java))
             }
 
 //            searchTiet.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
