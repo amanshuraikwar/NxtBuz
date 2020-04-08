@@ -39,6 +39,7 @@ class OverviewViewModel @Inject constructor(
     private val mapUtil: MapUtil
 ) : ViewModel() {
 
+    private var lastBusStop: BusStop? = null
     private var lastAppState: AppState? = null
 
     val onBackPressed = _onBackPressed.asEvent()
@@ -56,8 +57,12 @@ class OverviewViewModel @Inject constructor(
         _error.postValue(Alert())
     }
 
-    private val starredBusErrorHandler = CoroutineExceptionHandler { _, th ->
-        // TODO: 6/4/20
+    private val starredBusErrorHandler = CoroutineExceptionHandler { _, _ ->
+        startStarredBusArrivalsLoopDelayed()
+    }
+
+    private val arrivalsLoopErrorHandler = CoroutineExceptionHandler { _, _ ->
+        startDelayedArrivalsLoop(lastBusStop ?: return@CoroutineExceptionHandler)
     }
 
     private val _listItems = MutableLiveData<Pair<MutableList<RecyclerViewListItem>, Boolean>>()
@@ -105,11 +110,16 @@ class OverviewViewModel @Inject constructor(
     init {
         fetchDefaultLocationInit()
         fetchDataInit()
-        startStarredBus()
+        startStarredBusArrivalsLoop()
     }
 
-    private fun startStarredBus() =
-        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+    private fun startStarredBusArrivalsLoopDelayed() {
+        startStarredBusArrivalsLoop(REFRESH_DELAY)
+    }
+
+    private fun startStarredBusArrivalsLoop(initialDelay: Long = 0) =
+        viewModelScope.launch(dispatcherProvider.io + starredBusErrorHandler) {
+            delay(initialDelay)
             while (true) {
                 _starredListItems.postValue(
                     getStarredBusStopsArrivalsUseCase()
@@ -309,7 +319,6 @@ class OverviewViewModel @Inject constructor(
     private suspend fun getListItems(busStopList: List<BusStop>): MutableList<RecyclerViewListItem> =
         withContext(dispatcherProvider.computation) {
             val listItems = mutableListOf<RecyclerViewListItem>()
-            //listItems.add(HeaderItem("Nearby Bus Stops"))
             busStopList.forEach {
                 listItems.add(
                     BusStopItem(
@@ -381,12 +390,16 @@ class OverviewViewModel @Inject constructor(
 
     private var arrivalsLoopJob: Job? = null
 
+    private fun startDelayedArrivalsLoop(busStop: BusStop) {
+        arrivalsLoopJob = startArrivalsLoop(busStop, REFRESH_DELAY)
+    }
+
     private fun startArrivalsLoop(busStop: BusStop, initialDelay: Long = 0) =
-        viewModelScope.launch(dispatcherProvider.computation + errorHandler) {
+        viewModelScope.launch(dispatcherProvider.computation + arrivalsLoopErrorHandler) {
+            lastBusStop = busStop
             delay(initialDelay)
             while (isActive) {
                 val busArrivals = getBusArrivalsUseCase(busStop.code)
-                //lastUpdatedOn = OffsetDateTime.now().format(TimeUtil.TIME_READABLE_FORMATTER)
                 val listItems: MutableList<RecyclerViewListItem> =
                     busArrivals
                         .map {
@@ -410,9 +423,11 @@ class OverviewViewModel @Inject constructor(
                         "Arrivals"
                     )
                 )
-                _listItems.postValue(listItems to true)
-                _mapMarker.postValue(mapUtil.busStopsToMarkers(listOf(busStop)) to true)
-                _mapMarker.postValue(mapUtil.busArrivalsToMarkers(busArrivals) to false)
+                if (isActive) {
+                    _listItems.postValue(listItems to true)
+                    _mapMarker.postValue(mapUtil.busStopsToMarkers(listOf(busStop)) to true)
+                    _mapMarker.postValue(mapUtil.busArrivalsToMarkers(busArrivals) to false)
+                }
                 delay(REFRESH_DELAY)
             }
         }
@@ -441,6 +456,7 @@ class OverviewViewModel @Inject constructor(
         }
 
     fun onBackPressed() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+        lastBusStop = null
         arrivalsLoopJob?.cancelAndJoin()
         lastAppState?.let { restoreLastState(it) } ?: fetchDataInit()
         _showBack.postValue(false)
