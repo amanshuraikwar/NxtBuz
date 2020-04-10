@@ -146,4 +146,6 @@ fabric.properties
 
 .idea
 
+app/release
+
 # End of https://www.gitignore.io/api/intellij

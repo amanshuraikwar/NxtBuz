@@ -19,3 +19,46 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# For stack traces
+-keepattributes SourceFile, LineNumberTable
+
+# Required for Retrofit/OkHttp
+-dontwarn javax.annotation.**
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-keepattributes *Annotation*, Signature, Exceptions
+
+# This optimization conflicts with how Retrofit uses proxy objects without concrete implementations
+-optimizations !method/removal/parameter
+
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+-keep public class io.github.amanshuraikwar.nxtbuz.ui.list.** {
+  public protected *;
+}
+
+-keep public class io.github.amanshuraikwar.nxtbuz.data.busapi.** {
+  public protected *;
+}
+
+-keep public class io.github.amanshuraikwar.nxtbuz.data.model.** {
+  public protected *;
+}
+
+-keep public class io.github.amanshuraikwar.nxtbuz.data.room.** {
+  public protected *;
+}
+
+-keep public class io.github.amanshuraikwar.nxtbuz.data.user.** {
+  public protected *;
+}
+
+-keep public class io.github.amanshuraikwar.nxtbuz.domain.** {
+  public protected *;
+}
+
+-keeppackagenames io.github.amanshuraikwar.nxtbuz
+
+-dontwarn kotlin.internal.**
+-dontwarn kotlin.reflect.jvm.internal.ReflectionFactoryImpl

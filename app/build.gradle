@@ -10,6 +10,16 @@ def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
+
+    signingConfigs {
+        release {
+            storeFile file(localProperties['keystore.file.path'])
+            storePassword localProperties['keystore.password']
+            keyAlias localProperties['keystore.key.alias']
+            keyPassword localProperties['keystore.key.password']
+        }
+    }
+
     compileSdkVersion versions.compileSdk
 
     defaultConfig {
@@ -20,6 +30,7 @@ android {
         versionName gitVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
 
     ext {
@@ -29,7 +40,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".release"
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.release']
