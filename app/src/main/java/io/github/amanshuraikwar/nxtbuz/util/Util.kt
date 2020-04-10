@@ -7,11 +7,12 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import io.github.amanshuraikwar.nxtbuz.BuildConfig
 
 object Util {
 
     fun getVersionInfo(): String {
-        return "V${io.github.amanshuraikwar.multiitemadapter.BuildConfig.VERSION_NAME}  •  ${io.github.amanshuraikwar.multiitemadapter.BuildConfig.VERSION_CODE}  •  ${io.github.amanshuraikwar.multiitemadapter.BuildConfig.BUILD_TYPE.toUpperCase()}"
+        return "V${BuildConfig.VERSION_NAME}  •  ${io.github.amanshuraikwar.multiitemadapter.BuildConfig.VERSION_CODE}  •  ${io.github.amanshuraikwar.multiitemadapter.BuildConfig.BUILD_TYPE.toUpperCase()}"
     }
 }
 
