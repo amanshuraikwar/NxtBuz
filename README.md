@@ -2,23 +2,24 @@
 
 The easiest way to get to know the next arriving bus in Singapore.
 
-<div align="center">
+
+<div  width="25%">
 <img width="240" src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/1.png">
 </div>
 
-<div align="center">
+<div  width="25%">
 <img width="240" src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/2.png">
 </div>
 
-<div align="center">
+<div  width="25%">
 <img width="240" src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/3.png">
 </div>
 
-<div align="center">
+<div  width="25%">
 <img width="240" src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/4.png">
 </div>
 
-<div align="center">
+<div  width="25%">
 <img width="240" src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/5.png">
 </div>
 
