@@ -38,11 +38,11 @@
     <!--applied globally across your app.-->
 
     <style name="TextAppearance.MyTheme.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="fontFamily">@font/cabin</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
-        <item name="fontFamily">@font/cabin</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
@@ -50,31 +50,31 @@
     </style>
 
     <style name="TextAppearance.MyTheme.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
-        <item name="fontFamily">@font/cabin</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="fontFamily">@font/cabin</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="fontFamily">@font/cabin</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="fontFamily">@font/open_sans</item>
+        <item name="fontFamily">@font/rubik_medium</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="fontFamily">@font/open_sans</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Body1" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">@font/open_sans</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Body2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="fontFamily">@font/open_sans</item>
+        <item name="fontFamily">@font/rubik</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Button" parent="TextAppearance.MaterialComponents.Button">
@@ -87,6 +87,7 @@
 
     <style name="TextAppearance.MyTheme.Overline" parent="TextAppearance.MaterialComponents.Overline">
         <item name="fontFamily">@font/cabin</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextAppearance.MyTheme.Amount" parent="TextAppearance.MyTheme.Subtitle1">

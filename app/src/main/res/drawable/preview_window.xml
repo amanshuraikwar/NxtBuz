@@ -17,13 +17,12 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="?colorSurface" />
+    <item android:drawable="@drawable/ic_launcher_background" />
 
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/preview_window_logo"
-            android:tint="?colorPrimary" />
+    <item android:gravity="center" android:drawable="@drawable/preview_window_logo">
+<!--        <bitmap-->
+<!--            android:gravity="center"-->
+<!--            android:src="@drawable/preview_window_logo" />-->
     </item>
 
 </layer-list>

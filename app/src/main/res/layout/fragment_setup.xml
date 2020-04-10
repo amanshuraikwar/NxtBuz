@@ -8,53 +8,41 @@
     android:animateLayoutChanges="true"
     tools:context=".ui.onboarding.OnboardingActivity">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/userPicCv"
-        android:layout_width="@dimen/avatar_size_large"
-        android:layout_height="@dimen/avatar_size_large"
-        android:layout_marginTop="@dimen/margin_very_large"
-        app:cardCornerRadius="@dimen/avatar_radius_large"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="?colorPrimary"
-        app:strokeWidth="@dimen/avatar_stroke_width">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/userPicIv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.google.android.material.card.MaterialCardView>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/userNameTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_large"
-        android:textAppearance="?textAppearanceHeadline5"
-        android:textColor="?colorPrimary"
-        app:layout_constraintTop_toBottomOf="@id/userPicCv"
-        tools:text="Welcome, Amanshu Raikwar" />
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/helpTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_normal"
-        android:textAppearance="?textAppearanceBody1"
+        android:paddingTop="72dp"
+        android:paddingStart="@dimen/padding_large"
+        android:paddingEnd="@dimen/padding_large"
+        android:textAppearance="?textAppearanceHeadline4"
+        android:textColor="?colorControlNormal"
         android:text="@string/subtitle_setup"
-        app:layout_constraintTop_toBottomOf="@id/userNameTv" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/padding_large"
+        app:layout_constraintTop_toBottomOf="@id/helpTv"
+        android:textAppearance="?textAppearanceBody1"
+        android:textColor="?colorControlNormal"
+        android:text="This may take up to one minute" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
+        android:id="@+id/setupPb"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="@dimen/margin_very_large"/>
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
+    <ImageView
+        android:id="@+id/setupIv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/avd_anim_setup_128"
+        android:layout_marginBottom="72dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
