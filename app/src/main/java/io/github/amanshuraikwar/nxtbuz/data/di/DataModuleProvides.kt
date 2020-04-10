@@ -10,6 +10,7 @@ import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.jackson2.JacksonFactory
 import dagger.Module
 import dagger.Provides
+import io.github.amanshuraikwar.nxtbuz.BuildConfig
 import io.github.amanshuraikwar.nxtbuz.data.busapi.SgBusApi
 import io.github.amanshuraikwar.nxtbuz.data.room.AppDatabase
 import io.github.amanshuraikwar.nxtbuz.data.room.busroute.BusRouteDao
@@ -75,7 +76,7 @@ class DataModuleProvides {
                         string = string.replace("%60%24%60", "$")
                         val newRequest = Request
                             .Builder()
-                            .addHeader("AccountKey", "yO8B1RhDRoesLHDACerOUg==")
+                            .addHeader("AccountKey", BuildConfig.ltaAccountkey)
                             .url(string)
                             .build()
                         chain.proceed(newRequest)
