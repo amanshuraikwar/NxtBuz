@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iconIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:src="@drawable/ic_round_error_48"
+        android:tint="?colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorError"/>
+
+    <TextView
+        android:id="@+id/errorMessageTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="@dimen/padding_large"
+        android:paddingStart="@dimen/padding_normal"
+        android:paddingEnd="@dimen/padding_normal"
+        android:textAppearance="?textAppearanceBody1"
+        app:layout_constraintTop_toBottomOf="@id/iconIv"
+        tools:text="Something went wrong!"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/retryBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:paddingTop="@dimen/padding_sign_in_btn"
+        android:paddingBottom="@dimen/padding_sign_in_btn"
+        android:text="@string/btn_txt_retry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/errorMessageTv"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

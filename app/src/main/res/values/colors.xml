@@ -34,16 +34,21 @@
     <!--colorPrimary colors map to components and elements, such as app bars and buttons. -->
     <!--colorSecondary colors are most often used as accents on components, such as FABs and -->
     <!--selection controls.-->
-    <color name="color_primary">#1a73e8</color>
+
+<!--    <color name="color_primary">#1a73e8</color>-->
+    <color name="color_primary">@color/blue</color>
     <color name="color_primary_variant">#3700b3</color>
-    <color name="color_secondary">#03dac6</color>
-    <color name="color_secondary_variant">#018786</color>
+<!--    <color name="color_secondary">#03dac6</color>-->
+    <color name="color_secondary">@color/orange</color>
+    <color name="color_secondary_variant">@color/orange_variant</color>
 
     <!--colorBackground appears behind scrollable content and is used for the default window-->
     <!--background. colorSurface is mapped to the surface of components such as cards, sheets-->
     <!--and menus. colorError is used to indicate an error state for components such as-->
     <!--text fields.-->
-    <color name="color_background">#ffffff</color>
+
+    <color name="color_background">#eef0f2</color>
+<!--    <color name="color_background">#ffffff</color>&ndash;&gt;-->
     <color name="color_surface">#ffffff</color>
     <color name="color_error">#b00020</color>
 
@@ -55,6 +60,24 @@
     <color name="color_on_surface">#000000</color>
     <color name="color_on_error">#ffffff</color>
 
+    <color name="color_distribution_bar_def">#eef0f2</color>
+
     <color name="white">#fff</color>
+
+    <color name="yellow">#FBC02D</color>
+    <color name="orange">#FE9657</color>
+    <color name="orange_variant">#FA6E18</color>
+    <color name="pink">#E91E63</color>
+    <color name="green">#4CAF50</color>
+    <color name="blue">#08ACFD</color>
+    <color name="purple">#673AB7</color>
+    <color name="navy_blue">#3F51B5</color>
+    <color name="teal">#009688</color>
+
+    <color name="red">#F44336</color>
+
+    <color name="divider">#1e000000</color>
+
+    <color name="orange_transparent">#22FF9800</color>
 
 </resources>
