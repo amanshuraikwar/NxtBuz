@@ -79,7 +79,11 @@ dependencies {
     kapt project(':annotationProcessors')
     compileOnly project(':annotations')
 
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

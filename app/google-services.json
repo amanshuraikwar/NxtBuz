@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "11333950625",
+    "firebase_url": "https://nxtbuz-be084.firebaseio.com",
+    "project_id": "nxtbuz-be084",
+    "storage_bucket": "nxtbuz-be084.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11333950625:android:e26af33ed0514fe17024e0",
+        "android_client_info": {
+          "package_name": "io.github.amanshuraikwar.nxtbuz.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "11333950625-2f1tirai9qdvd2kd1elqp3p8nqj8cnp9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTa6_WTrC-ajGlCr9tAq4PvhVsTKThguQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "11333950625-2f1tirai9qdvd2kd1elqp3p8nqj8cnp9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11333950625:android:b996587e7fc7913c7024e0",
+        "android_client_info": {
+          "package_name": "io.github.amanshuraikwar.nxtbuz.release"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "11333950625-2f1tirai9qdvd2kd1elqp3p8nqj8cnp9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTa6_WTrC-ajGlCr9tAq4PvhVsTKThguQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "11333950625-2f1tirai9qdvd2kd1elqp3p8nqj8cnp9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

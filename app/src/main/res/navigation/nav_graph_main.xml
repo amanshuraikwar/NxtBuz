@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/overview"
-        android:name="io.github.amanshuraikwar.howmuch.ui.main.overview.OverviewFragment"
+        android:name="io.github.amanshuraikwar.nxtbuz.ui.main.overview.OverviewFragment"
         android:label="OverviewFragment"
         tools:layout="@layout/fragment_overview"/>
     <fragment
         android:id="@+id/budget"
-        android:name="io.github.amanshuraikwar.howmuch.ui.main.budget.BudgetFragment"
+        android:name="io.github.amanshuraikwar.nxtbuz.ui.main.budget.BudgetFragment"
         android:label="BudgetFragment"
         tools:layout="@layout/fragment_budget"/>
     <fragment
         android:id="@+id/profile"
-        android:name="io.github.amanshuraikwar.howmuch.ui.main.profile.ProfileFragment"
+        android:name="io.github.amanshuraikwar.nxtbuz.ui.main.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile"/>
 </navigation>
