@@ -1,2 +1,5 @@
-rootProject.name='HowMuch'
+rootProject.name='NxtBuz'
 include ':app'
+include ':multiitemadapter'
+include ':annotations'
+include ':annotationProcessors'

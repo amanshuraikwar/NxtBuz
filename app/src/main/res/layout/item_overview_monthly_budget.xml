@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginTop="1dp"
+    android:layout_marginEnd="@dimen/margin_small"
+    app:cardElevation="0dp"
+    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Flat">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/amountTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingEnd="0dp"
+            android:lines="1"
+            android:text="$0"
+            android:textAppearance="?textAppearanceHeadline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/leftTv"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_bias="0"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/leftTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Left"
+            android:textAppearance="?textAppearanceBody2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@id/amountTv"
+            app:layout_constraintBottom_toBottomOf="@id/amountTv"
+            android:paddingBottom="@dimen/padding_large"
+            android:paddingStart="@dimen/padding_small"/>
+
+        <io.github.amanshuraikwar.nxtbuz.ui.widget.RoundedDistributionBar
+            android:id="@+id/distributionBar"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:layout_marginBottom="@dimen/margin_normal"
+            app:layout_constraintTop_toBottomOf="@id/amountTv"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

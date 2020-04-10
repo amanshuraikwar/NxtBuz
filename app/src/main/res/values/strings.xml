@@ -1,7 +1,18 @@
 <resources>
-    <string name="app_name">HowMuch</string>
+    <string name="app_name">NxtBuz</string>
+    <string name="app_name_debug">NxtBuz DEBUG</string>
     <string name="subtitle_sign_in">HowMuch uses Google SpreadSheets to store your data</string>
-    <string name="btn_txt_sign_in">Sign In</string>
+    <string name="btn_txt_sign_in">Get Started</string>
 
-    <string name="error_sign_in_failed">Sign In failed! Please try again.</string>
+    <string name="error_sign_in_failed">Sign in failed! Please try again.</string>
+    <string name="msg_sign_in_success">Signed in successfully.</string>
+    <string name="subtitle_app">Your minimal bus transport companion</string>
+    <string name="msg_loading">Loading…</string>
+    <string name="msg_signing_in">Signing in…</string>
+    <string name="btn_txt_switch_account">switch account</string>
+
+    <string name="btn_txt_setup">Continue as %s</string>
+    <string name="txt_welcome">Welcome, %s</string>
+    <string name="subtitle_setup">We are setting things up for you...</string>
+    <string name="btn_txt_retry">RETRY</string>
 </resources>

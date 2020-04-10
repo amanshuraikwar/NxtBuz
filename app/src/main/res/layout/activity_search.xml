@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?colorSurface">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/backFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:src="@drawable/ic_round_arrow_back_24"
+        app:backgroundTint="?colorSurface"
+        app:fabSize="mini"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorControlNormal" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/searchCv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        app:cardCornerRadius="@dimen/shape_corner_size_medium_component"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/backFab"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="?colorControlHighlight"
+        app:strokeWidth="1dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchTiet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            android:hint="Search bus stops..."
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingTop="12dp"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingBottom="12dp"
+            android:textAppearance="?textAppearanceSubtitle1" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/searchCv">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/loadingIv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_large"
+            android:tint="?colorControlActivated"
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_search_128" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/loadingTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_very_large"
+            android:text="Enter name of the bus stop to search..."
+            android:textAppearance="?textAppearanceBody1"
+            android:textColor="?android:textColorSecondary"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemsRv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/padding_small"
+        android:paddingBottom="128dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchCv" />
+</androidx.constraintlayout.widget.ConstraintLayout>

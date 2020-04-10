@@ -3,7 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+apply from: "$project.rootDir/git_version.gradle"
 apply from: '../shared_dependencies.gradle'
+
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
     compileSdkVersion versions.compileSdk
@@ -12,16 +16,38 @@ android {
         applicationId names.applicationId
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 1
-        versionName "1.0"
+        versionCode gitVersionCode
+        versionName gitVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    ext {
+        APP_NAME_DEBUG = "@string/app_name_debug"
+        APP_NAME_RELEASE = "@string/app_name"
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".release"
+            resValue "string", "google_maps_key", localProperties['google.maps.api.key.release']
+            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
+            manifestPlaceholders = [ appName : APP_NAME_RELEASE]
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            resValue "string", "google_maps_key", localProperties['google.maps.api.key.debug']
+            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.debug']+"\""
+            manifestPlaceholders = [ appName : APP_NAME_DEBUG]
+        }
+    }
+
+    // apk file name
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = new File("NxtBuz-" + variant.versionName + "-(" + variant.versionCode + ")-" + variant.buildType.name + ".apk")
         }
     }
 
@@ -32,6 +58,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
     }
 }
 
@@ -52,10 +79,33 @@ dependencies {
         exclude group: 'org.apache.httpcomponents'
     }
 
+    // glide
+    implementation "com.github.bumptech.glide:glide:${versions.glide}"
+    kapt "com.github.bumptech.glide:compiler:${versions.glide}"
+
+    implementation "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
+    implementation "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
+
+    // room
+    implementation "androidx.room:room-runtime:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
+    implementation "androidx.room:room-ktx:${versions.room}"
+
     kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
     kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
+    implementation project(':multiitemadapter')
+    kapt project(':annotationProcessors')
+    compileOnly project(':annotations')
+
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

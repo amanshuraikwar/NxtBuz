@@ -1,66 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/parentCl"
+    android:id="@+id/contentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.onboarding.OnboardingActivity"
-    android:animateLayoutChanges="true">
+    android:orientation="vertical"
+    android:background="@drawable/bg_onboarding">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iconIv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/margin_very_large"
-        android:src="@drawable/ic_round_bubble_chart_72"
-        android:tint="?colorPrimary" />
-
-    <TextView
-        android:id="@+id/titleTv"
+    <View
+        android:id="@+id/screenTopGuideline"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/iconIv"
-        android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_very_large"
-        android:textAppearance="?textAppearanceHeadline5"
-        android:text="@string/app_name" />
+        android:layout_height="1dp" />
 
-    <TextView
-        android:id="@+id/subtitleTv"
+    <fragment
+        android:id="@+id/navHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/titleTv"
-        android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_very_large"
-        android:paddingStart="@dimen/padding_large"
-        android:paddingEnd="@dimen/padding_large"
-        android:text="@string/subtitle_sign_in"
-        android:textAppearance="?textAppearanceSubtitle2"/>
-
-    <ProgressBar
-        android:id="@+id/signInLoadingPb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="@dimen/margin_very_large"
-        android:indeterminate="true"
-        android:visibility="gone"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/signInBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="@dimen/margin_very_large"
-        android:paddingTop="@dimen/padding_sign_in_btn"
-        android:paddingBottom="@dimen/padding_sign_in_btn"
-        android:text="@string/btn_txt_sign_in"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph_onboarding" />
+</LinearLayout>
