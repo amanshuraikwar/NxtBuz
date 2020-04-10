@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bus Lah</string>
+    <string name="app_name">NxtBuz</string>
     <string name="subtitle_sign_in">HowMuch uses Google SpreadSheets to store your data</string>
     <string name="btn_txt_sign_in">Get Started</string>
 

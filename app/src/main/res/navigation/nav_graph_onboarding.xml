@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="io.github.amanshuraikwar.howmuch.ui.onboarding.welcome.WelcomeFragment"
+        android:name="io.github.amanshuraikwar.nxtbuz.ui.onboarding.welcome.WelcomeFragment"
         android:label="SignInFragment"
         tools:layout="@layout/fragment_welcome" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/setupFragment"
-        android:name="io.github.amanshuraikwar.howmuch.ui.onboarding.setup.SetupFragment"
+        android:name="io.github.amanshuraikwar.nxtbuz.ui.onboarding.setup.SetupFragment"
         android:label="SetupFragment"
         tools:layout="@layout/fragment_setup" />
 </navigation>

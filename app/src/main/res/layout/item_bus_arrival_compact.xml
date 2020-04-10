@@ -100,7 +100,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/nextDeparture1Tv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/nextDeparture1Tv"
-                app:srcCompat="@drawable/ic_bus_arrivals_24"
+                app:srcCompat="@drawable/ic_arriving_bus_24"
                 app:tint="?colorControlActivated" />
 
             <ImageView

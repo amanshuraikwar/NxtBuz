@@ -44,7 +44,7 @@
             android:paddingBottom="@dimen/padding_large"
             android:paddingStart="@dimen/padding_small"/>
 
-        <io.github.amanshuraikwar.howmuch.ui.widget.RoundedDistributionBar
+        <io.github.amanshuraikwar.nxtbuz.ui.widget.RoundedDistributionBar
             android:id="@+id/distributionBar"
             android:layout_width="match_parent"
             android:layout_height="3dp"
