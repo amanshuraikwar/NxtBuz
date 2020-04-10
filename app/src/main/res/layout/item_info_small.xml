@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginTop="1dp"
+    android:layout_marginEnd="@dimen/margin_small"
+    app:cardElevation="0dp"
+    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.TopFlat">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/stopNameTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingTop="@dimen/padding_small"
+            android:paddingEnd="56dp"
+            android:paddingBottom="@dimen/padding_small"
+            android:text="This is some generic info"
+            android:textAppearance="?textAppearanceBody1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iconIv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_round_info_24"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            app:tint="@color/yellow"/>
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>
