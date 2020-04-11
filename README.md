@@ -3,25 +3,12 @@
 The easiest way to get to know the next arriving bus in Singapore.
 
 
-<div  width="25%">
-<img width="240" src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/1.png">
-</div>
 
-<div  width="25%">
-<img width="240" src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/2.png">
-</div>
+<img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/111.png"> <img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/222.png"> <img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/333.png"> <img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/444.png"> <img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/555.png"> <img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/666.png">
 
-<div  width="25%">
-<img width="240" src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/3.png">
-</div>
 
-<div  width="25%">
-<img width="240" src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/4.png">
-</div>
+<img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/111-dark.png"> <img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/222-dark.png"> <img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/333-dark.png"> <img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/444-dark.png"> <img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/555-dark.png"> <img  width="16%"  src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/666-dark.png">
 
-<div  width="25%">
-<img width="240" src="https://raw.githubusercontent.com/amanshuraikwar/NxtBuz/master/assets/5.png">
-</div>
 
 ## Get it on Google Play
 [<img height="100" src="https://amanshuraikwar.github.io/assets/splash/en_badge_web_generic.png">](https://play.google.com/store/apps/details?id=io.github.amanshuraikwar.howmuch.beta.release)
