@@ -21,5 +21,11 @@ interface OperatingBusDao {
     fun findAll(): List<OperatingBusEntity>
 
     @Query("SELECT * FROM OperatingBusEntity WHERE busStopCode = :busStopCode")
-    fun findByBusStopCode(busStopCode: String): List<OperatingBusEntity>
+    suspend fun findByBusStopCode(busStopCode: String): List<OperatingBusEntity>
+
+    @Query("SELECT * FROM OperatingBusEntity WHERE busStopCode = :busStopCode AND busServiceNumber = :busServiceNumber")
+    suspend fun findByBusStopCodeAndBusServiceNumber(
+        busStopCode: String,
+        busServiceNumber: String
+    ): List<OperatingBusEntity>
 }
