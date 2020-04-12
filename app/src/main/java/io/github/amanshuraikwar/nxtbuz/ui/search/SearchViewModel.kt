@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.di.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.*
 import io.github.amanshuraikwar.nxtbuz.ui.list.BusStopItem
 import io.github.amanshuraikwar.nxtbuz.util.asEvent

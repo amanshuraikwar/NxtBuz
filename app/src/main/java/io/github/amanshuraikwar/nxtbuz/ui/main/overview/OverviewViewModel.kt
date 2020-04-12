@@ -8,15 +8,19 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.MarkerOptions
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.di.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.model.BusArrival
-import io.github.amanshuraikwar.nxtbuz.data.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.data.user.StarredBusArrival
+import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
+import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.*
 import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.util.MapUtil
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
+import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetStarredBusStopsArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Named
@@ -31,12 +35,12 @@ class OverviewViewModel @Inject constructor(
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
     private val defaultLocationUseCase: DefaultLocationUseCase,
     private val maxDistanceOfClosesBusStopUseCase: MaxDistanceOfClosesBusStopUseCase,
-    private val getBusArrivalsUseCase: GetArrivalsUseCase,
+    private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
     private val toggleBusStopStarUseCase: ToggleBusStopStarUseCase,
     private val getStarredBusStopsArrivalsUseCase: GetStarredBusStopsArrivalsUseCase,
-    @Named("onBackPressed") private val _onBackPressed: MutableLiveData<Unit>,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
-    private val mapUtil: MapUtil
+    private val mapUtil: MapUtil,
+    @Named("onBackPressed") private val _onBackPressed: MutableLiveData<Unit>
 ) : ViewModel() {
 
     private var lastBusStop: BusStop? = null
@@ -67,9 +71,6 @@ class OverviewViewModel @Inject constructor(
 
     private val _listItems = MutableLiveData<Pair<MutableList<RecyclerViewListItem>, Boolean>>()
     val listItems = _listItems.map { it }
-
-    private val _busStopActivity = MutableLiveData<BusStop>()
-    val busStopActivity = _busStopActivity.asEvent()
 
     private val _goto = MutableLiveData<BusStop>()
     val goto = _goto.asEvent()
@@ -123,11 +124,8 @@ class OverviewViewModel @Inject constructor(
             while (true) {
                 _starredListItems.postValue(
                     getStarredBusStopsArrivalsUseCase()
-                        .mapNotNull {
-                            if (it is StarredBusArrival.Arriving)
-                                StarredBusArrivalItem(it)
-                            else
-                                null
+                        .map {
+                            StarredBusArrivalItem(it)
                         }
                         .toMutableList()
                 )
@@ -353,7 +351,7 @@ class OverviewViewModel @Inject constructor(
             _mapCenter.postValue(busStop.latitude to busStop.longitude)
             _mapMarker.postValue(mapUtil.busStopsToMarkers(listOf(busStop)) to true)
 
-            val busArrivals = getBusArrivalsUseCase(busStop.code)
+            val busArrivals = getBusBusArrivalsUseCase(busStop.code)
             val listItems: MutableList<RecyclerViewListItem> =
                 busArrivals
                     .map {
@@ -399,7 +397,7 @@ class OverviewViewModel @Inject constructor(
             lastBusStop = busStop
             delay(initialDelay)
             while (isActive) {
-                val busArrivals = getBusArrivalsUseCase(busStop.code)
+                val busArrivals = getBusBusArrivalsUseCase(busStop.code)
                 val listItems: MutableList<RecyclerViewListItem> =
                     busArrivals
                         .map {

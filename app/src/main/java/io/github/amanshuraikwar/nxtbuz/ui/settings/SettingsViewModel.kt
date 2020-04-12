@@ -5,13 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import io.github.amanshuraikwar.nxtbuz.data.di.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.busstop.DefaultLocationUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.MaxDistanceOfClosesBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.list.SettingsItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.VersionItem
-import io.github.amanshuraikwar.multiitemadapter.BuildConfig
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.util.Util
 import kotlinx.coroutines.CoroutineExceptionHandler

@@ -5,8 +5,10 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import io.github.amanshuraikwar.nxtbuz.MainApplication
-import io.github.amanshuraikwar.nxtbuz.data.di.DataModuleBinds
-import io.github.amanshuraikwar.nxtbuz.data.di.DataModuleProvides
+import io.github.amanshuraikwar.nxtbuz.data.busapi.di.BusApiProvides
+import io.github.amanshuraikwar.nxtbuz.data.location.di.LocationModuleProvides
+import io.github.amanshuraikwar.nxtbuz.data.prefs.di.PrefsModuleBinds
+import io.github.amanshuraikwar.nxtbuz.data.room.di.RoomProvides
 import javax.inject.Singleton
 
 /**
@@ -23,8 +25,10 @@ import javax.inject.Singleton
         AppModule::class,
         ActivityBindingModule::class,
         ViewModelModule::class,
-        DataModuleBinds::class,
-        DataModuleProvides::class
+        BusApiProvides::class,
+        LocationModuleProvides::class,
+        PrefsModuleBinds::class,
+        RoomProvides::class
     ]
 )
 interface AppComponent : AndroidInjector<MainApplication> {

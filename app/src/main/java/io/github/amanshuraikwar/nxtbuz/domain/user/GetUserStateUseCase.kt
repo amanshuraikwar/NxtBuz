@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.domain.user
 
 import io.github.amanshuraikwar.nxtbuz.data.user.UserRepository
-import io.github.amanshuraikwar.nxtbuz.data.user.UserState
+import io.github.amanshuraikwar.nxtbuz.data.user.model.UserState
 import javax.inject.Inject
 
 class GetUserStateUseCase @Inject constructor(

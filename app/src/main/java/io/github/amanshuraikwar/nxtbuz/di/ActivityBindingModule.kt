@@ -3,8 +3,6 @@ package io.github.amanshuraikwar.nxtbuz.di
 import io.github.amanshuraikwar.nxtbuz.ui.launcher.LaunchModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import io.github.amanshuraikwar.nxtbuz.ui.busstop.BusStopActivity
-import io.github.amanshuraikwar.nxtbuz.ui.busstop.BusStopModule
 import io.github.amanshuraikwar.nxtbuz.ui.launcher.LauncherActivity
 import io.github.amanshuraikwar.nxtbuz.ui.main.BackPressedProvides
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
@@ -46,14 +44,10 @@ abstract class ActivityBindingModule {
     internal abstract fun c(): MainActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [BusStopModule::class])
-    internal abstract fun d(): BusStopActivity
-
-    @ActivityScoped
     @ContributesAndroidInjector(modules = [SearchModule::class])
-    internal abstract fun e(): SearchActivity
+    internal abstract fun d(): SearchActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = [SettingsModule::class])
-    internal abstract fun f(): SettingsActivity
+    internal abstract fun e(): SettingsActivity
 }
