@@ -9,9 +9,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.data.model.BusArrival
-import io.github.amanshuraikwar.nxtbuz.data.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
+import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import javax.inject.Inject
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -64,8 +64,8 @@ class MapUtil @Inject constructor(private val activity: AppCompatActivity) {
                     .position(
                         LatLng(
                             // TODO: 6/4/20 Make more safe
-                            (busArrival.arrivals as Arrivals.Arriving).arrivingBusList[0].latitude,
-                            (busArrival.arrivals as Arrivals.Arriving).arrivingBusList[0].longitude
+                            (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.latitude,
+                            (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.longitude
                         )
                     )
                     .icon(
@@ -73,10 +73,10 @@ class MapUtil @Inject constructor(private val activity: AppCompatActivity) {
                     )
                     .title(busArrival.serviceNumber)
                     .snippet(
-                        if ((busArrival.arrivals as Arrivals.Arriving).arrivingBusList[0].arrival == "Arr") {
+                        if ((busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival == "Arr") {
                             "ARRIVING"
                         } else {
-                            "${(busArrival.arrivals as Arrivals.Arriving).arrivingBusList[0].arrival} MINS"
+                            "${(busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival} MINS"
                         }
                     )
             }

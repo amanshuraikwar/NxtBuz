@@ -1,9 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.ui.launcher
 
-import androidx.lifecycle.*
-import io.github.amanshuraikwar.nxtbuz.data.di.CoroutinesDispatcherProvider
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.data.user.model.UserState
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetUserStateUseCase
-import io.github.amanshuraikwar.nxtbuz.data.user.UserState
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,9 +35,4 @@ class LaunchViewModel @Inject constructor(
 
         }
     }
-}
-
-enum class LaunchDestination {
-    ONBOARDING,
-    MAIN_ACTIVITY
 }

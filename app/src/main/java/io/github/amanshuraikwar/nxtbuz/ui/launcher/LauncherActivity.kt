@@ -3,12 +3,12 @@ package io.github.amanshuraikwar.nxtbuz.ui.launcher
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import dagger.android.support.DaggerAppCompatActivity
+import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
 import io.github.amanshuraikwar.nxtbuz.ui.launcher.LaunchDestination.MAIN_ACTIVITY
 import io.github.amanshuraikwar.nxtbuz.ui.launcher.LaunchDestination.ONBOARDING
-import dagger.android.support.DaggerAppCompatActivity
-import io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingActivity
-import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
+import io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingActivity
 import io.github.amanshuraikwar.nxtbuz.util.checkAllMatched
 import io.github.amanshuraikwar.nxtbuz.util.makeStatusBarTransparent
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider

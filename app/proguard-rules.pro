@@ -38,11 +38,23 @@
   public protected *;
 }
 
--keep public class io.github.amanshuraikwar.nxtbuz.data.busapi.** {
+-keep public class io.github.amanshuraikwar.nxtbuz.data.busapi.model.** {
   public protected *;
 }
 
--keep public class io.github.amanshuraikwar.nxtbuz.data.model.** {
+-keep public class io.github.amanshuraikwar.nxtbuz.data.busarrival.model.** {
+  public protected *;
+}
+
+-keep public class io.github.amanshuraikwar.nxtbuz.data.busstop.model.** {
+  public protected *;
+}
+
+-keep public class io.github.amanshuraikwar.nxtbuz.data.prefs.model.** {
+  public protected *;
+}
+
+-keep public class io.github.amanshuraikwar.nxtbuz.data.user.model.** {
   public protected *;
 }
 
@@ -50,11 +62,15 @@
   public protected *;
 }
 
--keep public class io.github.amanshuraikwar.nxtbuz.data.user.** {
+-keep public class io.github.amanshuraikwar.nxtbuz.domain.location.model.** {
   public protected *;
 }
 
--keep public class io.github.amanshuraikwar.nxtbuz.domain.** {
+-keep public class io.github.amanshuraikwar.nxtbuz.domain.result.** {
+  public protected *;
+}
+
+-keep public class io.github.amanshuraikwar.nxtbuz.data.SetupState {
   public protected *;
 }
 

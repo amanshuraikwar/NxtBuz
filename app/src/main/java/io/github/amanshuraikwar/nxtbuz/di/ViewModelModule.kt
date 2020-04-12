@@ -6,13 +6,13 @@ import dagger.Module
 
 /**
  * Module used to define the connection between the framework's [ViewModelProvider.Factory] and
- * our own implementation: [HowMuchViewModelFactory].
+ * our own implementation: [NxtBuzViewModelFactory].
  */
 @Module
 @Suppress("UNUSED")
 abstract class ViewModelModule {
 
     @Binds
-    internal abstract fun bindViewModelFactory(factory: HowMuchViewModelFactory):
+    internal abstract fun bindViewModelFactory(factory: NxtBuzViewModelFactory):
         ViewModelProvider.Factory
 }
