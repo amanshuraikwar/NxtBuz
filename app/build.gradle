@@ -47,12 +47,14 @@ android {
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.release']
             buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
             manifestPlaceholders = [ appName : APP_NAME_RELEASE]
+            debuggable false
         }
         debug {
             applicationIdSuffix ".debug"
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.debug']
             buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.debug']+"\""
             manifestPlaceholders = [ appName : APP_NAME_DEBUG]
+            debuggable true
         }
     }
 

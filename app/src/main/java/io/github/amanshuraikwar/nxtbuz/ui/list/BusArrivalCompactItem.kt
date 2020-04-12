@@ -5,10 +5,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentActivity
 import io.github.amanshuraikwar.annotations.ListItem
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.data.model.BusArrival
-import io.github.amanshuraikwar.nxtbuz.data.model.BusLoad
-import io.github.amanshuraikwar.nxtbuz.data.model.BusType
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusLoad
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusType
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import kotlinx.android.synthetic.main.item_bus_arrival_compact.view.*
 
@@ -40,7 +40,7 @@ class BusArrivalCompactItem(
     init {
         when (busArrival.arrivals) {
             is Arrivals.Arriving -> {
-                busArrival.arrivals.arrivingBusList[0].let {
+                busArrival.arrivals.nextArrivingBus.let {
                     nextDeparture1Tv = it.arrival
                     crowdedIv1 =
                         when (it.load) {
@@ -67,8 +67,8 @@ class BusArrivalCompactItem(
                             BusType.BD -> R.drawable.ic_bus_feeder_24
                         }
                 }
-                if (busArrival.arrivals.arrivingBusList.size >= 2) {
-                    busArrival.arrivals.arrivingBusList[1].let {
+                if (busArrival.arrivals.followingArrivingBusList.isNotEmpty()) {
+                    busArrival.arrivals.followingArrivingBusList[0].let {
                         nextDeparture2Tv = it.arrival
                         crowdedIv2 =
                             when (it.load) {
@@ -101,8 +101,8 @@ class BusArrivalCompactItem(
 //                    view.wheelChairAccessIv2.setImageResource(R.drawable.ic_round_cloud_off_24)
 //                    view.busTypeIv2.setImageResource(R.drawable.ic_round_cloud_off_24)
                 }
-                if (busArrival.arrivals.arrivingBusList.size >= 3) {
-                    busArrival.arrivals.arrivingBusList[2].let {
+                if (busArrival.arrivals.followingArrivingBusList.size >= 2) {
+                    busArrival.arrivals.followingArrivingBusList[1].let {
                         nextDeparture3Tv = it.arrival
                         crowdedIv3 =
                             when (it.load) {
@@ -145,11 +145,11 @@ class BusArrivalCompactItem(
     }
 
     private fun AppCompatImageView.toggleStar() {
-        if (busArrival.arrivals.starred) {
-            busArrival.arrivals.starred = false
+        if (busArrival.starred) {
+            busArrival.starred = false
             setImageResource(R.drawable.ic_round_star_border_24)
         } else {
-            busArrival.arrivals.starred = true
+            busArrival.starred = true
             setImageResource(R.drawable.ic_round_star_24)
         }
     }
@@ -173,7 +173,7 @@ class BusArrivalCompactItem(
         view.wheelChairAccessIv3.setImageResource(wheelChairAccessIv3)
         view.busTypeIv3.setImageResource(busTypeIv3)
 
-        if (busArrival.arrivals.starred) {
+        if (busArrival.starred) {
             view.starIv.setImageResource(R.drawable.ic_round_star_24)
         } else {
             view.starIv.setImageResource(R.drawable.ic_round_star_border_24)

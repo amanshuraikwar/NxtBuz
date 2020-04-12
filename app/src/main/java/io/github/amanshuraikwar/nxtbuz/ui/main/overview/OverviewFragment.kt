@@ -24,22 +24,18 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
+import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
-import io.github.amanshuraikwar.nxtbuz.ui.busstop.BusStopActivity
 import io.github.amanshuraikwar.nxtbuz.ui.list.RecyclerViewTypeFactoryGenerated
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
-import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.util.*
 import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
-import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.itemsRv
 import kotlinx.android.synthetic.main.fragment_overview.*
 import javax.inject.Inject
 
-
-private const val TAG = "OverviewFragment"
 private const val REQUEST_SEARCH_BUS_STOPS = 10001
 
 class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
@@ -198,13 +194,6 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                 }
             )
 
-            viewModel.busStopActivity.observe(
-                this,
-                EventObserver { busStop ->
-                    startBusStopActivity(busStop)
-                }
-            )
-
             viewModel.goto.observe(
                 this,
                 EventObserver { busStop ->
@@ -356,18 +345,6 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
             settingsFab.setOnClickListener {
                 startActivity(Intent(activity, SettingsActivity::class.java))
             }
-
-//            searchTiet.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
-//                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                    viewModel.searchBusStops(searchTiet.text.toString())
-//                    searchTiet.clearFocus()
-//                    val imm =
-//                        activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//                    imm.hideSoftInputFromWindow(searchTiet.windowToken, 0)
-//                    return@OnEditorActionListener true
-//                }
-//                false
-//            })
         }
     }
 
@@ -396,10 +373,6 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
         val canvas = Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
-
-    private fun startBusStopActivity(busStop: BusStop) {
-        startActivity(Intent(activity, BusStopActivity::class.java).putExtra("busStop", busStop))
     }
 
     private fun gotoBusStop(busStop: BusStop) {

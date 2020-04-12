@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import io.github.amanshuraikwar.nxtbuz.data.di.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.data.SetupState
 import io.github.amanshuraikwar.nxtbuz.data.user.UserRepository
-import io.github.amanshuraikwar.nxtbuz.data.user.UserState
+import io.github.amanshuraikwar.nxtbuz.data.user.model.UserState
 import io.github.amanshuraikwar.nxtbuz.domain.setup.SetupUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetUserStateUseCase
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
@@ -58,13 +59,13 @@ class SetupViewModel @Inject constructor(
         _userState.postValue(userState)
         if (userState is UserState.New) {
             setupUseCase().collect(
-                object : FlowCollector<UserRepository.SetupState> {
-                    override suspend fun emit(value: UserRepository.SetupState) {
+                object : FlowCollector<SetupState> {
+                    override suspend fun emit(value: SetupState) {
                         when (value) {
-                            is UserRepository.SetupState.InProgress -> {
+                            is SetupState.InProgress -> {
                                 _setupProgress.postValue(value.progress)
                             }
-                            is UserRepository.SetupState.Complete -> {
+                            is SetupState.Complete -> {
                                 // do nothing
                             }
                         }
