@@ -8,7 +8,8 @@
     android:layout_marginTop="4dp"
     android:layout_marginBottom="@dimen/margin_small"
     app:cardElevation="2dp"
-    app:strokeColor="?colorPrimary"
+    app:strokeColor="?android:textColorSecondary"
+
     android:layout_marginStart="@dimen/margin_small">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,12 +41,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginBottom="@dimen/margin_small"
-            android:background="@drawable/bg_icon"
+            android:background="@drawable/bg_icon_warn"
             android:paddingStart="8dp"
             android:paddingTop="4dp"
             android:paddingEnd="8dp"
             android:paddingBottom="3dp"
-            android:text="961"
+            tools:text="961"
             android:textAppearance="?textAppearanceBody2"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -70,9 +71,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="04"
-            android:textAppearance="?textAppearanceSubtitle1"
-            android:textStyle="bold"
+            tools:text="No\ndata"
+            android:textAppearance="?textAppearanceOverline"
+            android:textColor="?android:textColorSecondary"
             app:layout_constraintBottom_toBottomOf="@id/nextBusIv0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/nextBusIv0"

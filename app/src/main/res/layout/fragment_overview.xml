@@ -89,6 +89,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/recenterFab"
         android:requiresFadingEdge="horizontal|vertical"
+        android:layout_marginEnd="@dimen/margin_small"
         android:clipToPadding="false"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
