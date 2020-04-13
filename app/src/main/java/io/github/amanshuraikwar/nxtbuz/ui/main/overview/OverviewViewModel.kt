@@ -7,20 +7,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.MarkerOptions
+import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.domain.busstop.*
-import io.github.amanshuraikwar.nxtbuz.ui.list.*
-import io.github.amanshuraikwar.nxtbuz.util.MapUtil
-import io.github.amanshuraikwar.nxtbuz.util.asEvent
-import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetStarredBusStopsArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.MaxDistanceOfClosesBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
+import io.github.amanshuraikwar.nxtbuz.ui.list.*
+import io.github.amanshuraikwar.nxtbuz.util.MapUtil
+import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Named
@@ -125,7 +129,10 @@ class OverviewViewModel @Inject constructor(
                 _starredListItems.postValue(
                     getStarredBusStopsArrivalsUseCase()
                         .map {
-                            StarredBusArrivalItem(it)
+                            if (it.arrivals is Arrivals.Arriving)
+                                StarredBusArrivalItem(it)
+                            else
+                                StarredBusArrivalErrorItem(it)
                         }
                         .toMutableList()
                 )
@@ -355,11 +362,19 @@ class OverviewViewModel @Inject constructor(
             val listItems: MutableList<RecyclerViewListItem> =
                 busArrivals
                     .map {
-                        BusArrivalCompactItem(
-                            busStop.code,
-                            it,
-                            ::onStarToggle
-                        )
+                        if (it.arrivals is Arrivals.Arriving) {
+                            BusArrivalCompactItem(
+                                busStop.code,
+                                it,
+                                ::onStarToggle
+                            )
+                        } else {
+                            BusArrivalErrorItem(
+                                busStop.code,
+                                it,
+                                ::onStarToggle
+                            )
+                        }
                     }
                     .toMutableList()
 
@@ -401,11 +416,19 @@ class OverviewViewModel @Inject constructor(
                 val listItems: MutableList<RecyclerViewListItem> =
                     busArrivals
                         .map {
-                            BusArrivalCompactItem(
-                                busStop.code,
-                                it,
-                                ::onStarToggle
-                            )
+                            if (it.arrivals is Arrivals.Arriving) {
+                                BusArrivalCompactItem(
+                                    busStop.code,
+                                    it,
+                                    ::onStarToggle
+                                )
+                            } else {
+                                BusArrivalErrorItem(
+                                    busStop.code,
+                                    it,
+                                    ::onStarToggle
+                                )
+                            }
                         }
                         .toMutableList()
                 listItems.add(
