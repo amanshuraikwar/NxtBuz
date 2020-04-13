@@ -7,6 +7,9 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
+import androidx.core.view.marginTop
 import io.github.amanshuraikwar.nxtbuz.BuildConfig
 
 object Util {
@@ -17,9 +20,15 @@ object Util {
 }
 
 fun View.setMarginTop(marginTop: Int) {
-    val menuLayoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
-    menuLayoutParams.setMargins(0, marginTop, 0, 0)
-    this.layoutParams = menuLayoutParams
+    val layoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
+    layoutParams.setMargins(0, marginTop, 0, 0)
+    this.layoutParams = layoutParams
+}
+
+fun View.setMarginBottom(marginBottom: Int) {
+    val layoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
+    layoutParams.setMargins(marginLeft, this.marginTop, this.marginRight, marginBottom)
+    this.layoutParams = layoutParams
 }
 
 fun Activity.makeStatusBarTransparent() {
