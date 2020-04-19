@@ -16,4 +16,7 @@
     <string name="subtitle_setup">We are setting things up for you…</string>
     <string name="btn_txt_retry">RETRY</string>
     <string name="subtitle_permission">We need your permission…</string>
+
+    <string name="bus_direction_1">\u2192</string>
+    <string name="bus_direction_2">\u21ab</string>
 </resources>

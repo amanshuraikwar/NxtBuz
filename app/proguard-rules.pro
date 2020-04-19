@@ -74,6 +74,10 @@
   public protected *;
 }
 
+-keep public enum io.github.amanshuraikwar.nxtbuz.**{
+    *;
+}
+
 -keeppackagenames io.github.amanshuraikwar.nxtbuz
 
 -dontwarn kotlin.internal.**
