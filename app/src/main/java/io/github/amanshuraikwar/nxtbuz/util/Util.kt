@@ -15,7 +15,7 @@ import io.github.amanshuraikwar.nxtbuz.BuildConfig
 object Util {
 
     fun getVersionInfo(): String {
-        return "V${BuildConfig.VERSION_NAME}  •  ${io.github.amanshuraikwar.multiitemadapter.BuildConfig.VERSION_CODE}  •  ${io.github.amanshuraikwar.multiitemadapter.BuildConfig.BUILD_TYPE.toUpperCase()}"
+        return "V${BuildConfig.VERSION_NAME}  •  ${BuildConfig.VERSION_CODE}  •  ${BuildConfig.BUILD_TYPE.toUpperCase()}"
     }
 }
 

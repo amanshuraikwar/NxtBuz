@@ -36,6 +36,7 @@ android {
     ext {
         APP_NAME_DEBUG = "@string/app_name_debug"
         APP_NAME_RELEASE = "@string/app_name"
+        APP_NAME_INTERNAL = "@string/app_name_internal"
     }
 
     buildTypes {
@@ -48,6 +49,17 @@ android {
             buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
             manifestPlaceholders = [ appName : APP_NAME_RELEASE]
             debuggable false
+        }
+        internal {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".internal"
+            resValue "string", "google_maps_key", localProperties['google.maps.api.key.release']
+            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
+            manifestPlaceholders = [ appName : APP_NAME_INTERNAL]
+            debuggable true
+            matchingFallbacks = ['release']
         }
         debug {
             applicationIdSuffix ".debug"
