@@ -29,9 +29,14 @@ import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
 import io.github.amanshuraikwar.nxtbuz.ui.list.RecyclerViewTypeFactoryGenerated
+import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
-import io.github.amanshuraikwar.nxtbuz.util.*
+import io.github.amanshuraikwar.nxtbuz.util.isDarkTheme
+import io.github.amanshuraikwar.nxtbuz.util.lerp
+import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtil
+import io.github.amanshuraikwar.nxtbuz.util.setMarginTop
+import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
 import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
 import kotlinx.android.synthetic.main.fragment_overview.*
 import javax.inject.Inject
@@ -45,6 +50,9 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
 
     @Inject
     lateinit var permissionUtil: PermissionUtil
+
+    @Inject
+    lateinit var permissionDialog: PermissionDialog
 
     private lateinit var viewModel: OverviewViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
@@ -245,6 +253,11 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                             R.drawable.ic_round_gps_off_24
                         }
                     )
+                    recenterFab.tag = if (it) {
+                        "no_error"
+                    } else {
+                        "error"
+                    }
                 }
             )
 
@@ -326,9 +339,16 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
                 }
             )
 
+            permissionDialog.init(this)
 
             recenterFab.setOnClickListener {
-                viewModel.onRecenterClicked()
+                if (recenterFab.tag == "error") {
+                    permissionDialog.show {
+                        viewModel.onRecenterClicked()
+                    }
+                } else {
+                    viewModel.onRecenterClicked()
+                }
             }
 
             searchMtv.setOnClickListener {

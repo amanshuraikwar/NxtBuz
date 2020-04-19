@@ -5,8 +5,7 @@
     android:id="@+id/parentCl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    tools:context=".ui.onboarding.OnboardingActivity">
+    android:animateLayoutChanges="true">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/helpTv"
@@ -22,6 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/descriptionTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -42,6 +42,7 @@
         android:id="@+id/setupIv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTv"
         app:layout_constraintBottom_toBottomOf="parent"
         android:src="@drawable/avd_anim_setup_128"
         android:layout_marginBottom="72dp"/>

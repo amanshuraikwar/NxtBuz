@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import io.github.amanshuraikwar.nxtbuz.di.ViewModelKey
+import io.github.amanshuraikwar.nxtbuz.ui.onboarding.permission.PermissionFragment
+import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.onboarding.setup.SetupFragment
 import io.github.amanshuraikwar.nxtbuz.ui.onboarding.setup.SetupViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.onboarding.welcome.WelcomeFragment
@@ -31,4 +33,12 @@ internal abstract class OnboardingModule {
 
     @ContributesAndroidInjector
     internal abstract fun e(): SetupFragment
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PermissionViewModel::class)
+    internal abstract fun f(a: PermissionViewModel): ViewModel
+
+    @ContributesAndroidInjector
+    internal abstract fun g(): PermissionFragment
 }

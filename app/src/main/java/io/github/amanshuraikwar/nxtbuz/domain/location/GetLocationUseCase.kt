@@ -2,7 +2,8 @@ package io.github.amanshuraikwar.nxtbuz.domain.location
 
 import io.github.amanshuraikwar.nxtbuz.data.location.LocationRepository
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
-import io.github.amanshuraikwar.nxtbuz.util.PermissionUtil
+import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionStatus
+import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtil
 import javax.inject.Inject
 
 class GetLocationUseCase @Inject constructor(
@@ -12,7 +13,7 @@ class GetLocationUseCase @Inject constructor(
 
     suspend operator fun invoke(): LocationOutput {
 
-        if (!permissionUtil.hasLocationPermission()) {
+        if (permissionUtil.hasLocationPermission() != PermissionStatus.GRANTED) {
             return LocationOutput.PermissionsNotGranted
         }
 
