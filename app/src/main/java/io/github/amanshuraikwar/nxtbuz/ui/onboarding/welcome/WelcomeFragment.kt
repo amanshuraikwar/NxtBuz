@@ -26,7 +26,7 @@ class WelcomeFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         getStartedBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_welcomeFragment_to_setupFragment)
+            findNavController().navigate(R.id.action_welcomeFragment_to_permissionFragment)
         }
         versionTv.text = Util.getVersionInfo()
         startSetupAnim()
