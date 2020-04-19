@@ -19,9 +19,6 @@ class BusArrivalCompactItem(
     private val onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit
 ) : RecyclerViewListItem {
 
-    private val busInfo =
-        "${busArrival.operator}  •  ${busArrival.stopSequence}  •  ${busArrival.distance}KM  •  ${busArrival.direction}\n${busArrival.originStopDescription}"
-
     private var nextDeparture1Tv: String = "N/A"
     private var crowdedIv1: Int = R.drawable.ic_round_cloud_off_24
     private var wheelChairAccessIv1: Int = R.drawable.ic_round_cloud_off_24
@@ -144,6 +141,18 @@ class BusArrivalCompactItem(
     }
 
     override fun bind(view: View, activity: FragmentActivity) {
+        val busInfo =
+            busArrival.operator +
+                    "  •  ${busArrival.stopSequence} bus stops" +
+                    "  •  ${busArrival.distance}KM" +
+                    "\n${
+                    if (busArrival.direction == 1)
+                        activity.getString(R.string.bus_direction_1)
+                    else 
+                        activity.getString(R.string.bus_direction_2)
+                    }" +
+                    "${busArrival.originStopDescription}"
+
         view.serviceNumberTv.text = busArrival.serviceNumber
         view.busInfoTv.text = busInfo
 
