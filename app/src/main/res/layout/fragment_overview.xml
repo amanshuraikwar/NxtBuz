@@ -85,12 +85,12 @@
         android:id="@+id/starredBusArrivalsRv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/searchBg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/recenterFab"
-        android:requiresFadingEdge="horizontal|vertical"
         android:layout_marginEnd="@dimen/margin_small"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false"
+        android:requiresFadingEdge="horizontal|vertical"
+        app:layout_constraintEnd_toStartOf="@id/recenterFab"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchBg" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/recenterFab"
@@ -120,4 +120,5 @@
             app:behavior_hideable="true"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,4 +80,6 @@
 
     <color name="orange_transparent">#22FF9800</color>
 
+    <color name="colorScrim">#dd000000</color>
+
 </resources>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentCl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/helpTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingStart="@dimen/padding_large"
+        android:paddingTop="72dp"
+        android:paddingEnd="@dimen/padding_large"
+        android:text="@string/subtitle_permission"
+        android:textAppearance="?textAppearanceHeadline4"
+        android:textColor="?colorControlNormal"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/descriptionTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/padding_large"
+        android:text="Location permission helps us find bus stops near you"
+        android:textAppearance="?textAppearanceBody1"
+        android:textColor="?colorControlNormal"
+        app:layout_constraintTop_toBottomOf="@id/helpTv" />
+
+    <ImageView
+        android:id="@+id/illustrationIv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="72dp"
+        android:src="@drawable/avd_anim_permission_128"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/actionBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:paddingTop="@dimen/padding_sign_in_btn"
+        android:paddingBottom="@dimen/padding_sign_in_btn"
+        android:stateListAnimator="@null"
+        android:text="Give Permissions"
+        android:visibility="visible"
+        app:backgroundTint="?colorSecondary"
+        app:layout_constraintBottom_toTopOf="@id/skipBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/skipBtn"
+        style="?materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:stateListAnimator="@null"
+        android:text="Continue without permissions"
+        android:textColor="?colorControlNormal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="?colorControlNormal" />
+</androidx.constraintlayout.widget.ConstraintLayout>
