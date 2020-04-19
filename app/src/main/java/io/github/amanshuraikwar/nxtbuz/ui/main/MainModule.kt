@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap
 import io.github.amanshuraikwar.nxtbuz.di.ViewModelKey
 import io.github.amanshuraikwar.nxtbuz.ui.main.overview.OverviewFragment
 import io.github.amanshuraikwar.nxtbuz.ui.main.overview.OverviewViewModel
+import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionViewModel
 
 @Module
 internal abstract class MainModule {
@@ -28,4 +29,9 @@ internal abstract class MainModule {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     internal abstract fun d(a: MainViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PermissionViewModel::class)
+    internal abstract fun e(a: PermissionViewModel): ViewModel
 }

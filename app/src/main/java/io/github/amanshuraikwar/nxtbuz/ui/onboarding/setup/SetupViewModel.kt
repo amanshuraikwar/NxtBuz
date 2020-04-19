@@ -19,8 +19,6 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG = "SetupViewModel"
-
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 class SetupViewModel @Inject constructor(
@@ -75,5 +73,9 @@ class SetupViewModel @Inject constructor(
             userState = getUserStateUseCase.invoke()
             _userState.postValue(userState)
         }
+    }
+
+    companion object {
+        private const val TAG = "SetupViewModel"
     }
 }
