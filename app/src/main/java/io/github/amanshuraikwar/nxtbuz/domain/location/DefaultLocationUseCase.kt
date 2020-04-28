@@ -9,7 +9,6 @@ class DefaultLocationUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): Pair<Double, Double> {
-        delay(500)
         return locationRepository.getDefaultLocation()
     }
 }

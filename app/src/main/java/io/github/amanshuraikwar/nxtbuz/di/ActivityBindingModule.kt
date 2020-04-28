@@ -4,7 +4,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.launcher.LaunchModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import io.github.amanshuraikwar.nxtbuz.ui.launcher.LauncherActivity
-import io.github.amanshuraikwar.nxtbuz.ui.main.BackPressedProvides
+import io.github.amanshuraikwar.nxtbuz.ui.main.MainLiveDataProvides
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainModule
 import io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingActivity
@@ -41,7 +41,7 @@ abstract class ActivityBindingModule {
     internal abstract fun b(): OnboardingActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [MainModule::class, BackPressedProvides::class, PermissionUtilProvides::class])
+    @ContributesAndroidInjector(modules = [MainModule::class, MainLiveDataProvides::class, PermissionUtilProvides::class])
     internal abstract fun c(): MainActivity
 
     @ActivityScoped

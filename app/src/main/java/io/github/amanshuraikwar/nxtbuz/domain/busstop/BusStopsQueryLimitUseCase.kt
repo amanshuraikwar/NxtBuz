@@ -9,7 +9,6 @@ class BusStopsQueryLimitUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): Int {
-        delay(500)
         return busStopRepository.getBusStopQueryLimit()
     }
 
