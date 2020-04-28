@@ -430,7 +430,6 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
             } else {
                 MapStyleOptions.loadRawResourceStyle(activity!!, R.raw.map_style_light)
             }
-
         )
     }
 }

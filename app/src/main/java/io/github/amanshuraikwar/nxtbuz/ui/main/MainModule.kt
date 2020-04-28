@@ -6,9 +6,12 @@ import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
+import io.github.amanshuraikwar.nxtbuz.di.ActivityScoped
 import io.github.amanshuraikwar.nxtbuz.di.ViewModelKey
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.OverviewFragment
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.OverviewViewModel
+import io.github.amanshuraikwar.nxtbuz.ui.main.overview.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.ui.main.overview.map.MapViewModelDelegateImpl
+import io.github.amanshuraikwar.nxtbuz.ui.main.overview.neww.OverviewFragmentNew
+import io.github.amanshuraikwar.nxtbuz.ui.main.overview.neww.OverviewViewModelNew
 import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionViewModel
 
 @Module
@@ -17,13 +20,13 @@ internal abstract class MainModule {
     @Binds
     internal abstract fun a(a: MainActivity): AppCompatActivity
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(OverviewViewModel::class)
-    internal abstract fun b(a: OverviewViewModel): ViewModel
+//    @Binds
+//    @IntoMap
+//    @ViewModelKey(OverviewViewModel::class)
+//    internal abstract fun b(a: OverviewViewModel): ViewModel
 
-    @ContributesAndroidInjector
-    internal abstract fun c(): OverviewFragment
+//    @ContributesAndroidInjector
+//    internal abstract fun c(): OverviewFragment
 
     @Binds
     @IntoMap
@@ -34,4 +37,16 @@ internal abstract class MainModule {
     @IntoMap
     @ViewModelKey(PermissionViewModel::class)
     internal abstract fun e(a: PermissionViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OverviewViewModelNew::class)
+    internal abstract fun f(a: OverviewViewModelNew): ViewModel
+
+    @ContributesAndroidInjector
+    internal abstract fun g(): OverviewFragmentNew
+
+    @Binds
+    @ActivityScoped
+    internal abstract fun h(a: MapViewModelDelegateImpl): MapViewModelDelegate
 }

@@ -496,8 +496,3 @@ data class Alert(
     val msg: String = "Something went wrong.",
     @DrawableRes val iconResId: Int = R.drawable.ic_error_128
 )
-
-sealed class Loading {
-    data class Show(@DrawableRes val avd: Int, val txt: String) : Loading()
-    object Hide : Loading()
-}
