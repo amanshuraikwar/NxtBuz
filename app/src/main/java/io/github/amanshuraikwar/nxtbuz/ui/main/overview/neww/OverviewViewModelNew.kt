@@ -85,7 +85,8 @@ class OverviewViewModelNew @Inject constructor(
             screenStateBackStack.push(screenState)
             busStopViewModelDelegate.start(
                 screenState,
-                ::onStarToggle
+                ::onStarToggle,
+                viewModelScope
             )
         }
     }
