@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.util
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
@@ -114,5 +115,23 @@ class MapUtil @Inject constructor(private val activity: AppCompatActivity) {
                 MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style_light)
             }
         )
+    }
+
+    @ColorInt
+    fun getRouteLineColor(): Int {
+        return ContextCompat.getColor(activity, R.color.orange)
+    }
+
+    @ColorInt
+    fun getRouteLineColorLight(): Int {
+        return ContextCompat.getColor(activity, R.color.orange_light)
+    }
+
+    fun getRouteLineWidth(): Float {
+        return activity.resources.getDimension(R.dimen.bus_route_line_width)
+    }
+
+    fun getRouteLineWidthSmall(): Float {
+        return activity.resources.getDimension(R.dimen.bus_route_line_width_small)
     }
 }

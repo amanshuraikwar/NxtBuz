@@ -16,7 +16,8 @@ import kotlinx.android.synthetic.main.item_bus_arrival_compact.view.*
 class BusArrivalCompactItem(
     private val busStopCode: String,
     private val busArrival: BusArrival,
-    private val onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit
+    private val onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit,
+    private val onBusServiceClicked: (serviceNumber: String) -> Unit
 ) : RecyclerViewListItem {
 
     private var nextDeparture1Tv: String = "N/A"
@@ -141,6 +142,7 @@ class BusArrivalCompactItem(
     }
 
     override fun bind(view: View, activity: FragmentActivity) {
+
         val busInfo =
             busArrival.operator +
                     "  •  ${busArrival.stopSequence} bus stops" +
@@ -152,6 +154,8 @@ class BusArrivalCompactItem(
                         activity.getString(R.string.bus_direction_2)
                     }" +
                     "${busArrival.originStopDescription}"
+
+        view.parentCv.setOnClickListener { onBusServiceClicked(busArrival.serviceNumber) }
 
         view.serviceNumberTv.text = busArrival.serviceNumber
         view.busInfoTv.text = busInfo

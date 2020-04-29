@@ -4,8 +4,11 @@ import android.util.Log
 import io.github.amanshuraikwar.nxtbuz.data.busapi.SgBusApi
 import io.github.amanshuraikwar.nxtbuz.data.busapi.model.BusRouteItem
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.data.busroute.model.BusRoute
+import io.github.amanshuraikwar.nxtbuz.data.busroute.model.BusRouteNode
 import io.github.amanshuraikwar.nxtbuz.data.room.busroute.BusRouteDao
 import io.github.amanshuraikwar.nxtbuz.data.room.busroute.BusRouteEntity
+import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusEntity
 import kotlinx.coroutines.*
@@ -20,6 +23,7 @@ import javax.inject.Singleton
 class BusRouteRepository @Inject constructor(
     private val busRouteDao: BusRouteDao,
     private val operatingBusDao: OperatingBusDao,
+    private val busStopDao: BusStopDao,
     private val busApi: SgBusApi,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -179,6 +183,76 @@ class BusRouteRepository @Inject constructor(
         )
 
         flowCollector.emit(1.0)
+    }
+
+    suspend fun getBusRoute(
+        busServiceNumber: String,
+        direction: Int? = null,
+        busStopCode: String? = null
+    ): BusRoute = withContext(dispatcherProvider.io) {
+
+        val busRouteEntityList = busRouteDao.findByBusServiceNumber(busServiceNumber)
+
+        val direction1 = busRouteEntityList.filter { it.direction == 1 }
+        val direction2 = busRouteEntityList.filter { it.direction == 2 }
+
+        val (selectedBusRouteEntityList: List<BusRouteEntity>, direction: Int) = when {
+            busRouteEntityList.isEmpty() -> {
+                // todo separate error state
+                emptyList<BusRouteEntity>() to 0
+            }
+            direction == 1 -> {
+                direction1 to 1
+            }
+            direction == 2 -> {
+                direction2 to 2
+            }
+            busStopCode != null -> {
+                when {
+                    direction1.find { it.busStopCode == busStopCode } != null -> {
+                        direction1 to 1
+                    }
+                    direction2.find { it.busStopCode == busStopCode } != null -> {
+                        direction2 to 2
+                    }
+                    else -> {
+                        // todo separate error state
+                        emptyList<BusRouteEntity>() to 0
+                    }
+                }
+            }
+            else -> {
+                direction1 to 1
+            }
+        }
+
+        val busRouteNodeList =
+            selectedBusRouteEntityList
+                .map { busRouteEntity ->
+                    async(dispatcherProvider.pool8) {
+                        val busStopEntity = busStopDao.findByCode(busRouteEntity.busStopCode).let {
+                            if (it.isEmpty()) throw Exception("No bus stop found for bus stop code ${busRouteEntity.busStopCode}")
+                            it[0]
+                        }
+                        BusRouteNode(
+                            busServiceNumber,
+                            busStopEntity.code,
+                            busRouteEntity.direction,
+                            busRouteEntity.stopSequence,
+                            busRouteEntity.distance,
+                            busStopEntity.latitude,
+                            busStopEntity.longitude
+                        )
+                    }
+                }
+                .awaitAll()
+                .sortedBy { it.stopSequence }
+
+        BusRoute(
+            busServiceNumber,
+            direction,
+            busRouteNodeList
+        )
     }
 
     companion object {

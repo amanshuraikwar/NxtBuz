@@ -12,4 +12,9 @@ sealed class ScreenState {
     class BusStopState(
         val busStop: BusStop
     ) : ScreenState()
+
+    class BusServiceState(
+        val busStop: BusStop,
+        val busServiceNumber: String
+    ) : ScreenState()
 }
