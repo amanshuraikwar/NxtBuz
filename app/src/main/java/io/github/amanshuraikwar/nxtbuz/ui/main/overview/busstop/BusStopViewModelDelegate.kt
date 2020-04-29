@@ -48,9 +48,10 @@ class BusStopViewModelDelegate @Inject constructor(
 
     suspend fun start(
         busStopState: ScreenState.BusStopState,
-        onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit
-    ): Unit = withContext(dispatcherProvider.io) {
-        viewModelScope = this
+        onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit,
+        coroutineScope: CoroutineScope
+    ) = coroutineScope.launch(dispatcherProvider.io) {
+        viewModelScope = coroutineScope
         this@BusStopViewModelDelegate.onStarToggle = onStarToggle
         _loading.postValue(
             Loading.Show(
@@ -91,6 +92,7 @@ class BusStopViewModelDelegate @Inject constructor(
             startArrivalsLoop(curBusStopState.busStop, onStarToggle)
         }
     }
+
     private fun startStarredBusArrivalsLoopDelayed() {
         arrivalsLoopJob = viewModelScope.launch(arrivalsLoopErrorHandler) {
             startArrivalsLoop(curBusStopState.busStop, onStarToggle, REFRESH_DELAY)
