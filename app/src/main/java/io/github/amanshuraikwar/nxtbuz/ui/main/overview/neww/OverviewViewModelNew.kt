@@ -16,6 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.ui.main.overview.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.overview.ScreenState
+import io.github.amanshuraikwar.nxtbuz.ui.main.overview.busservice.BusServiceViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.overview.busstop.BusStopViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.overview.busstops.BusStopsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.overview.map.MapViewModelDelegate
@@ -34,6 +35,7 @@ class OverviewViewModelNew @Inject constructor(
     private val busStopsViewModelDelegate: BusStopsViewModelDelegate,
     private val busStopViewModelDelegate: BusStopViewModelDelegate,
     private val mapViewModelDelegate: MapViewModelDelegate,
+    private val busServiceViewModelDelegate: BusServiceViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(),
     MapViewModelDelegate by mapViewModelDelegate {
@@ -86,6 +88,7 @@ class OverviewViewModelNew @Inject constructor(
             busStopViewModelDelegate.start(
                 screenState,
                 ::onStarToggle,
+                ::onBusServiceClicked,
                 viewModelScope
             )
         }
@@ -94,6 +97,18 @@ class OverviewViewModelNew @Inject constructor(
     private fun onStarToggle(busStopCode: String, busArrival: BusArrival) {
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
             toggleBusStopStar(busStopCode, busArrival.serviceNumber)
+        }
+    }
+
+    private fun onBusServiceClicked(busStop: BusStop, busServiceNumber: String) {
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            val screenState =
+                ScreenState.BusServiceState(
+                    busStop,
+                    busServiceNumber
+                )
+            screenStateBackStack.push(screenState)
+            busServiceViewModelDelegate.start(screenState, viewModelScope)
         }
     }
 

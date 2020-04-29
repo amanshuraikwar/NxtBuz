@@ -65,6 +65,7 @@
     <color name="white">#fff</color>
 
     <color name="yellow">#FBC02D</color>
+    <color name="orange_light">#FFCC80</color>
     <color name="orange">#FE9657</color>
     <color name="orange_variant">#FA6E18</color>
     <color name="pink">#E91E63</color>

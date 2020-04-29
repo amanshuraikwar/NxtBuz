@@ -36,6 +36,7 @@ class BusStopViewModelDelegate @Inject constructor(
     private lateinit var curBusStopState: ScreenState.BusStopState
     private lateinit var viewModelScope: CoroutineScope
     private lateinit var onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit
+    private lateinit var onBusServiceClicked: (busServiceNumber: String) -> Unit
     private var arrivalsLoopJob: Job? = null
 
     private val arrivalsLoopErrorHandler = CoroutineExceptionHandler { _, _ ->
@@ -49,10 +50,14 @@ class BusStopViewModelDelegate @Inject constructor(
     suspend fun start(
         busStopState: ScreenState.BusStopState,
         onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit,
+        onBusServiceClicked: (busStop: BusStop, busServiceNumber: String) -> Unit,
         coroutineScope: CoroutineScope
     ) = coroutineScope.launch(dispatcherProvider.io) {
         viewModelScope = coroutineScope
         this@BusStopViewModelDelegate.onStarToggle = onStarToggle
+        this@BusStopViewModelDelegate.onBusServiceClicked = { busServiceNumber ->
+            onBusServiceClicked(busStopState.busStop, busServiceNumber)
+        }
         _loading.postValue(
             Loading.Show(
                 R.drawable.avd_anim_arrivals_loading_128,
@@ -118,7 +123,8 @@ class BusStopViewModelDelegate @Inject constructor(
                             BusArrivalCompactItem(
                                 busStop.code,
                                 it,
-                                onStarToggle
+                                onStarToggle,
+                                onBusServiceClicked
                             )
                         } else {
                             BusArrivalErrorItem(

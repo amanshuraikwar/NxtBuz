@@ -9,10 +9,8 @@ import androidx.annotation.UiThread
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.ui.main.overview.model.AnimateMarker
 import io.github.amanshuraikwar.nxtbuz.ui.main.overview.model.MapEvent
@@ -80,6 +78,9 @@ class MapViewModelDelegateImpl @Inject constructor(
                 is MapEvent.DeleteMarker -> {
                     deleteMarkers(mapEvent)
                 }
+                is MapEvent.AddRoute -> {
+                    addRoute(mapEvent)
+                }
             }
         }
     }
@@ -88,6 +89,30 @@ class MapViewModelDelegateImpl @Inject constructor(
     override fun onReCreate() {
         mapUtil.updateMapStyle(map ?: return)
     }
+
+    private suspend fun addRoute(mapEvent: MapEvent.AddRoute) =
+        withContext(dispatcherProvider.computation) {
+
+            val opts = PolylineOptions()
+                .color(mapEvent.lineColor)
+                .width(mapEvent.lineWidth)
+                .jointType(JointType.ROUND)
+
+            mapEvent.latLngList.forEach { opts.add(LatLng(it.first, it.second)) }
+
+            val bitmapDescriptor =
+                mapUtil.bitmapDescriptorFromVector(
+                    R.drawable.ic_marker_bus_route_node_14)
+
+            withContext(dispatcherProvider.main) {
+                map?.addPolyline(opts)
+                mapEvent.latLngList.forEach { (lat, lng) ->
+                    map?.addMarker(
+                        MarkerOptions().icon(bitmapDescriptor).position(LatLng(lat, lng)).flat(true).anchor(0.5f, 0.5f)
+                    )
+                }
+            }
+        }
 
     private suspend fun deleteMarkers(mapEvent: MapEvent.DeleteMarker) =
         withContext(dispatcherProvider.main) {

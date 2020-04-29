@@ -366,7 +366,8 @@ class OverviewViewModel @Inject constructor(
                             BusArrivalCompactItem(
                                 busStop.code,
                                 it,
-                                ::onStarToggle
+                                ::onStarToggle,
+                                {}
                             )
                         } else {
                             BusArrivalErrorItem(
@@ -420,8 +421,8 @@ class OverviewViewModel @Inject constructor(
                                 BusArrivalCompactItem(
                                     busStop.code,
                                     it,
-                                    ::onStarToggle
-                                )
+                                    ::onStarToggle,
+                                    {})
                             } else {
                                 BusArrivalErrorItem(
                                     busStop.code,
