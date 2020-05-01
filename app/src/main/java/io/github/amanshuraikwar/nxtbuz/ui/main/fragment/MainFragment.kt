@@ -1,18 +1,13 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.overview.neww
+package io.github.amanshuraikwar.nxtbuz.ui.main.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Point
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -29,11 +24,9 @@ import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
 import io.github.amanshuraikwar.nxtbuz.ui.list.RecyclerViewTypeFactoryGenerated
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
-import io.github.amanshuraikwar.nxtbuz.util.isDarkTheme
 import io.github.amanshuraikwar.nxtbuz.util.lerp
 import io.github.amanshuraikwar.nxtbuz.util.setMarginTop
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
@@ -41,7 +34,7 @@ import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
 import kotlinx.android.synthetic.main.fragment_overview.*
 import javax.inject.Inject
 
-class OverviewFragmentNew : DaggerFragment() {
+class MainFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -49,7 +42,7 @@ class OverviewFragmentNew : DaggerFragment() {
     @Inject
     lateinit var permissionDialog: PermissionDialog
 
-    private lateinit var viewModel: OverviewViewModelNew
+    private lateinit var viewModel: MainFragmentViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
     override fun onCreateView(
@@ -277,34 +270,34 @@ class OverviewFragmentNew : DaggerFragment() {
 //                }
 //            )
 //
-//            viewModel.showBack.observe(
-//                this,
-//                Observer { show ->
-//                    backFab.visibility = if (show) {
-//                        View.VISIBLE
-//                    } else {
-//                        View.GONE
-//                    }
-//                }
-//            )
-//
-//            viewModel.onBackPressed.observe(
-//                this,
-//                EventObserver {
-//                    when {
-//                        bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED -> {
-//                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//                            itemsRv.scrollToPosition(0)
-//                        }
-//                        backFab.isVisible -> {
-//                            viewModel.onBackPressed()
-//                        }
-//                        else -> {
-//                            activity.finish()
-//                        }
-//                    }
-//                }
-//            )
+            viewModel.showBack.observe(
+                this,
+                Observer { show ->
+                    backFab.visibility = if (show) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+                }
+            )
+
+            viewModel.onBackPressed.observe(
+                this,
+                EventObserver {
+                    when {
+                        bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED -> {
+                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                            itemsRv.scrollToPosition(0)
+                        }
+                        backFab.isVisible -> {
+                            viewModel.onBackPressed()
+                        }
+                        else -> {
+                            activity.finish()
+                        }
+                    }
+                }
+            )
 //
 //            viewModel.starredListItems.observe(
 //                this,
@@ -330,14 +323,14 @@ class OverviewFragmentNew : DaggerFragment() {
             }
 
             searchMtv.setOnClickListener {
-//                startActivityForResult(
-//                    Intent(activity, SearchActivity::class.java),
-//                    REQUEST_SEARCH_BUS_STOPS
-//                )
+                startActivityForResult(
+                    Intent(activity, SearchActivity::class.java),
+                    REQUEST_SEARCH_BUS_STOPS
+                )
             }
 
             backFab.setOnClickListener {
-//                viewModel.onBackPressed()
+                activity.onBackPressed()
             }
 
             settingsFab.setOnClickListener {
@@ -347,11 +340,15 @@ class OverviewFragmentNew : DaggerFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        if (requestCode == REQUEST_SEARCH_BUS_STOPS) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                val busStop = data?.getParcelableExtra<BusStop>("bus_stop") ?: return
-//                viewModel.busStopSelected(busStop)
-//            }
-//        }
+        if (requestCode == REQUEST_SEARCH_BUS_STOPS) {
+            if (resultCode == Activity.RESULT_OK) {
+                val busStop = data?.getParcelableExtra<BusStop>("bus_stop") ?: return
+                viewModel.onBusStopClicked(busStop)
+            }
+        }
+    }
+
+    companion object {
+        private const val REQUEST_SEARCH_BUS_STOPS = 10001
     }
 }

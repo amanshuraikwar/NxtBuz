@@ -240,6 +240,8 @@ class BusRouteRepository @Inject constructor(
                             busRouteEntity.direction,
                             busRouteEntity.stopSequence,
                             busRouteEntity.distance,
+                            busStopEntity.roadName,
+                            busStopEntity.description,
                             busStopEntity.latitude,
                             busStopEntity.longitude
                         )

@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.overview.busstops
+package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstops
 
 import androidx.lifecycle.MutableLiveData
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
@@ -8,11 +8,11 @@ import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.list.BusStopItem
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.model.MapEvent
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.model.MapMarker
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.Loading
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.ScreenState
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.util.MapUtil
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -30,11 +30,24 @@ class BusStopsViewModelDelegate @Inject constructor(
 
     private lateinit var curBusStopsState: ScreenState.BusStopsState
 
+    suspend fun stop(busStopsState: ScreenState.BusStopsState) {
+        // do nothing
+    }
+
     suspend fun start(
         busStopsState: ScreenState.BusStopsState,
         onBusStopClicked: (BusStop) -> Unit
     ) = withContext(dispatcherProvider.io) {
+        _loading.postValue(
+            Loading.Show(
+                R.drawable.avd_anim_nearby_bus_stops_loading_128,
+                "Finding bus stops nearby..."
+            )
+        )
         curBusStopsState = busStopsState
+        mapViewModelDelegate.pushMapEvent(
+            MapEvent.ClearMap
+        )
         mapViewModelDelegate.pushMapEvent(
             MapEvent.MoveCenter(curBusStopsState.lat, curBusStopsState.lng)
         )

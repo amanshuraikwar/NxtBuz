@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/overview"
-        android:name="io.github.amanshuraikwar.nxtbuz.ui.main.overview.neww.OverviewFragmentNew"
+        android:name="io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragment"
         android:label="OverviewFragment"
         tools:layout="@layout/fragment_overview"/>
 </navigation>

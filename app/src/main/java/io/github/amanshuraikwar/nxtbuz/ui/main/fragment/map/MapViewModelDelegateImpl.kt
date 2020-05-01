@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.overview.map
+package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map
 
 import android.animation.Animator
 import android.animation.AnimatorSet
@@ -12,9 +12,12 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.model.AnimateMarker
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.model.MapEvent
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.model.MapMarker
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.model.AnimateUpdate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.model.MapInitData
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.util.LatLngInterpolator
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.AnimateMarker
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
 import io.github.amanshuraikwar.nxtbuz.util.MapUtil
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.CoroutineScope

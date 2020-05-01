@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <io.github.amanshuraikwar.nxtbuz.ui.main.overview.BottomSheetBgView
+    <io.github.amanshuraikwar.nxtbuz.ui.main.fragment.BottomSheetBgView
         android:id="@+id/bottomSheetBgView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

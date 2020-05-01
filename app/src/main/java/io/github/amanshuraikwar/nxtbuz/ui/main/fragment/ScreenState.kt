@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.overview
+package io.github.amanshuraikwar.nxtbuz.ui.main.fragment
 
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 
@@ -13,7 +13,7 @@ sealed class ScreenState {
         val busStop: BusStop
     ) : ScreenState()
 
-    class BusServiceState(
+    class BusRouteState(
         val busStop: BusStop,
         val busServiceNumber: String
     ) : ScreenState()

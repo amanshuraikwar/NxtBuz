@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.overview
+package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.old
 
 import android.util.Log
 import androidx.annotation.DrawableRes
@@ -23,6 +23,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.ui.list.*
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.util.MapUtil
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.*
@@ -165,7 +166,11 @@ class OverviewViewModel @Inject constructor(
                     busStopList.first().longitude
                 ) > maxDistanceOfClosesBusStopUseCase()
             ) {
-                _error.postValue(Alert("You are too far away."))
+                _error.postValue(
+                    Alert(
+                        "You are too far away."
+                    )
+                )
                 return@launch
             }
 
@@ -399,13 +404,17 @@ class OverviewViewModel @Inject constructor(
 
             // start arrivals loop
             arrivalsLoopJob?.cancelAndJoin()
-            arrivalsLoopJob = startArrivalsLoop(busStop, REFRESH_DELAY)
+            arrivalsLoopJob = startArrivalsLoop(busStop,
+                REFRESH_DELAY
+            )
         }
 
     private var arrivalsLoopJob: Job? = null
 
     private fun startDelayedArrivalsLoop(busStop: BusStop) {
-        arrivalsLoopJob = startArrivalsLoop(busStop, REFRESH_DELAY)
+        arrivalsLoopJob = startArrivalsLoop(busStop,
+            REFRESH_DELAY
+        )
     }
 
     private fun startArrivalsLoop(busStop: BusStop, initialDelay: Long = 0) =
