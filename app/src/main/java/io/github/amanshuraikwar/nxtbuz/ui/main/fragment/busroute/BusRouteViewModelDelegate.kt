@@ -11,6 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.ui.list.BusRouteHeaderItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.BusRouteNodeItem
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
@@ -55,7 +56,8 @@ class BusRouteViewModelDelegate @Inject constructor(
     suspend fun start(
         busRouteState: ScreenState.BusRouteState,
         coroutineScope: CoroutineScope,
-        onBusStopClicked: (BusStop) -> Unit
+        onBusStopClicked: (BusStop) -> Unit,
+        onStarToggle: (busStopCode: String, busServiceNumber: String) -> Unit
     ) = coroutineScope.launch(dispatcherProvider.io) {
 
         viewModelScope = coroutineScope
@@ -141,16 +143,31 @@ class BusRouteViewModelDelegate @Inject constructor(
 
         // add route to bottom sheet
 
-        _listItems.postValue(
-            busRoute.busRouteNodeList.mapIndexed { index: Int, busRouteNode: BusRouteNode ->
+        val listItems = mutableListOf<RecyclerViewListItem>()
+        listItems.add(
+            BusRouteHeaderItem(
+                busStopCode = curBusRouteState.busStop.code,
+                busServiceNumber = curBusRouteState.busServiceNumber,
+                busStopDescription = curBusRouteState.busStop.description,
+                originBusStopDescription = busRoute.originBusStopDescription,
+                destinationBusStopDescription = busRoute.destinationBusStopDescription,
+                starred = busRoute.starred,
+                onStarToggle = onStarToggle
+            )
+        )
+
+        busRoute.busRouteNodeList.forEachIndexed { index: Int, busRouteNode: BusRouteNode ->
+            listItems.add(
                 BusRouteNodeItem(
                     busRouteNode,
                     first = index == 0,
                     last = index == busRoute.busRouteNodeList.size - 1,
                     onBusStopClicked = ::onBusStopClicked
                 )
-            }
-        )
+            )
+        }
+
+        _listItems.postValue(listItems)
 
         _loading.postValue(Loading.Hide)
 

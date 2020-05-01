@@ -105,6 +105,12 @@ class MainFragmentViewModel @Inject constructor(
         }
     }
 
+    private fun onStarToggle(busStopCode: String, busServiceNumber: String) {
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            toggleBusStopStar(busStopCode, busServiceNumber)
+        }
+    }
+
     private fun onBusServiceClicked(busStop: BusStop, busServiceNumber: String) {
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
             val screenState =
@@ -141,7 +147,7 @@ class MainFragmentViewModel @Inject constructor(
                     )
                 }
                 is ScreenState.BusRouteState -> {
-                    busRouteViewModelDelegate.start(screenState, viewModelScope, ::onBusStopClicked)
+                    busRouteViewModelDelegate.start(screenState, viewModelScope, ::onBusStopClicked, ::onStarToggle)
                 }
             }
 

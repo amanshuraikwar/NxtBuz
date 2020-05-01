@@ -19,5 +19,7 @@
     <string name="subtitle_permission">We need your permission…</string>
 
     <string name="bus_direction_1">\u2192</string>
+    <string name="origin_destination">\u21cb</string>
+
     <string name="bus_direction_2">\u21ab</string>
 </resources>

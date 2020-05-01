@@ -11,6 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.data.room.busroute.BusRouteEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusEntity
+import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopsDao
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -24,6 +25,7 @@ class BusRouteRepository @Inject constructor(
     private val busRouteDao: BusRouteDao,
     private val operatingBusDao: OperatingBusDao,
     private val busStopDao: BusStopDao,
+    private val starredBusStopsDao: StarredBusStopsDao,
     private val busApi: SgBusApi,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -251,9 +253,18 @@ class BusRouteRepository @Inject constructor(
                 .sortedBy { it.stopSequence }
 
         BusRoute(
-            busServiceNumber,
-            direction,
-            busRouteNodeList
+            busServiceNumber = busServiceNumber,
+            direction = direction,
+            starred = busStopCode?.let {
+                starredBusStopsDao
+                    .findByBusStopCode(busStopCode)
+                    .map { it.busServiceNumber }
+                    .toSet()
+                    .contains(busServiceNumber)
+            },
+            busRouteNodeList = busRouteNodeList,
+            originBusStopDescription = busRouteNodeList.first().busStopDescription,
+            destinationBusStopDescription = busRouteNodeList.last().busStopDescription
         )
     }
 
