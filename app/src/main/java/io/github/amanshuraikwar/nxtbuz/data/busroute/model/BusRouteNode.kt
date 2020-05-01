@@ -6,6 +6,8 @@ data class BusRouteNode(
     val direction: Int,
     val stopSequence: Int,
     val distance: Double,
+    val busStopRoadName: String,
+    val busStopDescription: String,
     val busStopLat: Double,
     val busStopLng: Double
 )

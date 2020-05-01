@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.overview.model
+package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model
 
 import androidx.annotation.ColorInt
 

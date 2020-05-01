@@ -1,7 +1,7 @@
 /* Copyright 2013 Google Inc.
    Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0.html */
 
-package io.github.amanshuraikwar.nxtbuz.ui.main.overview.map;
+package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.util;
 
 import com.google.android.gms.maps.model.LatLng;
 

@@ -1,8 +1,7 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.overview.busstop
+package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstop
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.maps.model.LatLng
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
@@ -14,18 +13,17 @@ import io.github.amanshuraikwar.nxtbuz.ui.list.BusArrivalCompactItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.BusArrivalErrorItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.BusStopHeaderItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.HeaderItem
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.model.MapEvent
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.model.MapMarker
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.Loading
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.ScreenState
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.map.MapViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.overview.model.MapUpdate
-import io.github.amanshuraikwar.nxtbuz.util.MapUtil
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapUpdate
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Named
 
-class BusStopViewModelDelegate @Inject constructor(
+class BusStopArrivalsViewModelDelegate @Inject constructor(
     private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
@@ -47,6 +45,12 @@ class BusStopViewModelDelegate @Inject constructor(
     private val serviceNumberMapMarkerMap =
         mutableMapOf<String, MapMarker>()
 
+    suspend fun stop(busStopState: ScreenState.BusStopState) {
+        if (busStopState == curBusStopState) {
+            arrivalsLoopJob?.cancel()
+        }
+    }
+
     suspend fun start(
         busStopState: ScreenState.BusStopState,
         onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit,
@@ -54,8 +58,9 @@ class BusStopViewModelDelegate @Inject constructor(
         coroutineScope: CoroutineScope
     ) = coroutineScope.launch(dispatcherProvider.io) {
         viewModelScope = coroutineScope
-        this@BusStopViewModelDelegate.onStarToggle = onStarToggle
-        this@BusStopViewModelDelegate.onBusServiceClicked = { busServiceNumber ->
+        this@BusStopArrivalsViewModelDelegate.onStarToggle = onStarToggle
+        this@BusStopArrivalsViewModelDelegate.onBusServiceClicked = { busServiceNumber ->
+            arrivalsLoopJob?.cancel()
             onBusServiceClicked(busStopState.busStop, busServiceNumber)
         }
         _loading.postValue(
