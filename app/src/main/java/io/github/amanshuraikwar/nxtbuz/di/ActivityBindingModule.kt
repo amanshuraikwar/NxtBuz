@@ -4,9 +4,9 @@ import io.github.amanshuraikwar.nxtbuz.ui.launcher.LaunchModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import io.github.amanshuraikwar.nxtbuz.ui.launcher.LauncherActivity
-import io.github.amanshuraikwar.nxtbuz.ui.main.MainLiveDataProvides
+import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainLiveDataProvides
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
-import io.github.amanshuraikwar.nxtbuz.ui.main.MainModule
+import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainModule
 import io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingActivity
 import io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingModule
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity

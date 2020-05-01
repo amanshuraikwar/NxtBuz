@@ -131,7 +131,7 @@ class OverviewViewModel @Inject constructor(
                     getStarredBusStopsArrivalsUseCase()
                         .map {
                             if (it.arrivals is Arrivals.Arriving)
-                                StarredBusArrivalItem(it)
+                                StarredBusArrivalItem(it, {_, _ ->})
                             else
                                 StarredBusArrivalErrorItem(it)
                         }

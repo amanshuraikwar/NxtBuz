@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main
+package io.github.amanshuraikwar.nxtbuz.ui.main.di
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -8,6 +8,8 @@ import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import io.github.amanshuraikwar.nxtbuz.di.ActivityScoped
 import io.github.amanshuraikwar.nxtbuz.di.ViewModelKey
+import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
+import io.github.amanshuraikwar.nxtbuz.ui.main.MainViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragment

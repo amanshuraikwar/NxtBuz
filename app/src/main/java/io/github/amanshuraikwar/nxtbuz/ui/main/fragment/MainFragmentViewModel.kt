@@ -15,9 +15,10 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.BusRouteViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstop.BusStopArrivalsViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstoparrivals.BusStopArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstops.BusStopsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -32,11 +33,13 @@ class MainFragmentViewModel @Inject constructor(
     private val toggleBusStopStar: ToggleBusStopStarUseCase,
     @Named("listItems") _listItems: MutableLiveData<MutableList<RecyclerViewListItem>>,
     @Named("loading") private val _loading: MutableLiveData<Loading>,
-    @Named("onBackPressed") private val _onBackPressed: MutableLiveData<Unit>,
+    @Named("onBackPressed") _onBackPressed: MutableLiveData<Unit>,
+    @Named("starredListItems") _starredListItems: MutableLiveData<MutableList<RecyclerViewListItem>>,
     private val busStopsViewModelDelegate: BusStopsViewModelDelegate,
     private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
     private val mapViewModelDelegate: MapViewModelDelegate,
     private val busRouteViewModelDelegate: BusRouteViewModelDelegate,
+    starredArrivalsViewModelDelegate: StarredArrivalsViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(),
     MapViewModelDelegate by mapViewModelDelegate {
@@ -50,12 +53,14 @@ class MainFragmentViewModel @Inject constructor(
     val listItems = _listItems.map { it }
     val loading = _loading.map { it }
     val onBackPressed = _onBackPressed.asEvent()
+    val starredListItems = _starredListItems.map { it }
 
     private val _showBack = MutableLiveData<Boolean>()
     val showBack = _showBack
 
     init {
         init()
+        starredArrivalsViewModelDelegate.start(viewModelScope, ::onBusServiceClicked)
     }
 
     private fun init() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
@@ -123,7 +128,7 @@ class MainFragmentViewModel @Inject constructor(
     private suspend fun startScreenState(screenState: ScreenState) =
         withContext(dispatcherProvider.io) {
 
-            when(screenState) {
+            when (screenState) {
                 is ScreenState.BusStopsState -> {
                     busStopsViewModelDelegate.start(screenState, ::onBusStopClicked)
                 }
@@ -149,7 +154,7 @@ class MainFragmentViewModel @Inject constructor(
 
     private suspend fun stopScreenState(screenState: ScreenState) =
         withContext(dispatcherProvider.io) {
-            when(screenState) {
+            when (screenState) {
                 is ScreenState.BusStopsState -> {
                     busStopsViewModelDelegate.stop(screenState)
                 }
