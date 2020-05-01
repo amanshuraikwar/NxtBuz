@@ -298,17 +298,17 @@ class MainFragment : DaggerFragment() {
                     }
                 }
             )
-//
-//            viewModel.starredListItems.observe(
-//                this,
-//                Observer { listItems ->
-//                    val layoutState = starredBusArrivalsRv.layoutManager?.onSaveInstanceState()
-//                    val adapter =
-//                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
-//                    starredBusArrivalsRv.layoutManager?.onRestoreInstanceState(layoutState)
-//                    starredBusArrivalsRv.adapter = adapter
-//                }
-//            )
+
+            viewModel.starredListItems.observe(
+                this,
+                Observer { listItems ->
+                    val layoutState = starredBusArrivalsRv.layoutManager?.onSaveInstanceState()
+                    val adapter =
+                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
+                    starredBusArrivalsRv.layoutManager?.onRestoreInstanceState(layoutState)
+                    starredBusArrivalsRv.adapter = adapter
+                }
+            )
 
             permissionDialog.init(this)
 

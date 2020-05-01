@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main
+package io.github.amanshuraikwar.nxtbuz.ui.main.di
 
 import androidx.lifecycle.MutableLiveData
 import dagger.Module
@@ -30,5 +30,12 @@ internal class MainLiveDataProvides {
     @ActivityScoped
     fun c(): MutableLiveData<Loading> {
         return MutableLiveData<Loading>()
+    }
+
+    @Provides
+    @Named("starredListItems")
+    @ActivityScoped
+    fun d(): MutableLiveData<MutableList<RecyclerViewListItem>> {
+        return MutableLiveData<MutableList<RecyclerViewListItem>>()
     }
 }

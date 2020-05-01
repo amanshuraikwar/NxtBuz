@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstop
+package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstoparrivals
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
