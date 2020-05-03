@@ -1,10 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.data.busarrival
 
+import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busapi.SgBusApi
 import io.github.amanshuraikwar.nxtbuz.data.busapi.model.ArrivingBusItem
 import io.github.amanshuraikwar.nxtbuz.data.busapi.model.BusArrivalItem
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.*
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.room.busroute.BusRouteDao
 import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusDao
@@ -84,6 +84,54 @@ class BusArrivalRepository @Inject constructor(
             }
 
             busArrivalList
+        }
+
+    suspend fun getBusArrivals(busStopCode: String, busServiceNumber: String): BusArrival =
+        withContext(dispatcherProvider.io) {
+
+            val starredBusServiceNumberSet =
+                starredBusStopsDao
+                    .findByBusStopCode(busStopCode)
+                    .map { it.busServiceNumber }
+                    .toSet()
+
+            fun BusArrivalItem.isStarred() =
+                starredBusServiceNumberSet.contains(this.serviceNumber)
+
+            fun OperatingBusEntity.isStarred() =
+                starredBusServiceNumberSet.contains(this.busServiceNumber)
+
+            val operatingBusServiceNumberMap =
+                operatingBusDao
+                    .findByBusStopCode(busStopCode)
+                    .groupBy { it.busServiceNumber }
+                    .mapValues { (_, v) -> v[0] }
+                    .toMutableMap()
+
+            val operatingBusEntity =
+                operatingBusServiceNumberMap[busServiceNumber] ?: throw Exception(
+                    "No operating bus row found for service number " +
+                            "$busServiceNumber and stop code " +
+                            "$busStopCode in local DB."
+                )
+
+            val busArrivalItemList =
+                busApi.getBusArrivals(busStopCode, busServiceNumber).busArrivals
+
+            if (busArrivalItemList.isNotEmpty()) {
+
+                val busArrivalItem = busArrivalItemList[0]
+                return@withContext busArrivalItem.toBusArrival(
+                    busStopCode,
+                    busArrivalItem.isStarred()
+                )
+
+            } else {
+
+                return@withContext operatingBusEntity.toBusArrivalError(
+                    operatingBusEntity.isStarred()
+                )
+            }
         }
 
     private suspend inline fun BusArrivalItem.toBusArrival(

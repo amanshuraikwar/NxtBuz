@@ -2,12 +2,11 @@ package io.github.amanshuraikwar.nxtbuz.util
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.*
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
@@ -20,7 +19,7 @@ import kotlin.math.sqrt
 
 class MapUtil @Inject constructor(private val activity: AppCompatActivity) {
 
-    private fun bitmapDescriptorFromVector(vectorResId: Int): BitmapDescriptor {
+    fun bitmapDescriptorFromVector(vectorResId: Int): BitmapDescriptor {
         val context = activity.applicationContext
         val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
             ?: throw IllegalArgumentException("Vector res id $vectorResId is not valid.")
@@ -94,5 +93,45 @@ class MapUtil @Inject constructor(private val activity: AppCompatActivity) {
         val c = 2 * atan2(sqrt(a), sqrt(1 - a));
         val d = r * c;
         return d * 1000; // meters
+    }
+
+    fun getCircleOptions(lat: Double, lng: Double, radius: Double): CircleOptions {
+        return CircleOptions()
+            .center(LatLng(lat, lng))
+            .radius(radius)
+            // todo get from settings
+            .fillColor(ContextCompat.getColor(activity, R.color.orange_transparent))
+            // todo get from settings
+            .strokeWidth(4f)
+            // todo get from settings
+            .strokeColor(ContextCompat.getColor(activity, R.color.orange))
+    }
+
+    fun updateMapStyle(googleMap: GoogleMap) {
+        googleMap.setMapStyle(
+            if (isDarkTheme(activity)) {
+                MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style_dark)
+            } else {
+                MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style_light)
+            }
+        )
+    }
+
+    @ColorInt
+    fun getRouteLineColor(): Int {
+        return ContextCompat.getColor(activity, R.color.orange)
+    }
+
+    @ColorInt
+    fun getRouteLineColorLight(): Int {
+        return ContextCompat.getColor(activity, R.color.orange_light)
+    }
+
+    fun getRouteLineWidth(): Float {
+        return activity.resources.getDimension(R.dimen.bus_route_line_width)
+    }
+
+    fun getRouteLineWidthSmall(): Float {
+        return activity.resources.getDimension(R.dimen.bus_route_line_width_small)
     }
 }

@@ -22,4 +22,7 @@
     <dimen name="bottom_app_bar_height">56dp</dimen>
     <dimen name="bottom_app_bar_fab_cradle_corner_radius">32dp</dimen>
     <dimen name="bottom_app_bar_fab_cradle_margin">8dp</dimen>
+
+    <dimen name="bus_route_line_width">4dp</dimen>
+    <dimen name="bus_route_line_width_small">2dp</dimen>
 </resources>

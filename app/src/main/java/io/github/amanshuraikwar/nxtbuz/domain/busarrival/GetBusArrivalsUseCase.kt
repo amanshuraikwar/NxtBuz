@@ -11,4 +11,7 @@ class GetBusArrivalsUseCase @Inject constructor(
     suspend operator fun invoke(busStopCode: String): List<BusArrival> {
         return busArrivalRepository.getBusArrivals(busStopCode)
     }
+    suspend operator fun invoke(busStopCode: String, busServiceNumber: String): BusArrival {
+        return busArrivalRepository.getBusArrivals(busStopCode, busServiceNumber)
+    }
 }
