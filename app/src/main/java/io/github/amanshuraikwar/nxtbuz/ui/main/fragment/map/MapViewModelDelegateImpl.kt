@@ -42,7 +42,11 @@ class MapViewModelDelegateImpl @Inject constructor(
     private val mapMarkerIdMapMarkerMap: MutableMap<String, MapMarker> = mutableMapOf()
     private val mutex = Mutex()
 
-    override suspend fun CoroutineScope.initMap(lat: Double, lng: Double) {
+    override suspend fun initMap(
+        lat: Double,
+        lng: Double,
+        onMapLongClick: (lat: Double, lng: Double) -> Unit
+    ) {
         if (map != null) return
         else return suspendCoroutine { cont ->
 
@@ -55,6 +59,9 @@ class MapViewModelDelegateImpl @Inject constructor(
                     map = googleMap
                     map?.let { mapUtil.updateMapStyle(it) }
                     cont.resumeWith(Result.success(Unit))
+                    map?.setOnMapLongClickListener {
+                        onMapLongClick(it.latitude, it.longitude)
+                    }
                 }
             )
         }
@@ -105,13 +112,15 @@ class MapViewModelDelegateImpl @Inject constructor(
 
             val bitmapDescriptor =
                 mapUtil.bitmapDescriptorFromVector(
-                    R.drawable.ic_marker_bus_route_node_14)
+                    R.drawable.ic_marker_bus_route_node_14
+                )
 
             withContext(dispatcherProvider.main) {
                 map?.addPolyline(opts)
                 mapEvent.latLngList.forEach { (lat, lng) ->
                     map?.addMarker(
-                        MarkerOptions().icon(bitmapDescriptor).position(LatLng(lat, lng)).flat(true).anchor(0.5f, 0.5f)
+                        MarkerOptions().icon(bitmapDescriptor).position(LatLng(lat, lng)).flat(true)
+                            .anchor(0.5f, 0.5f)
                     )
                 }
             }
