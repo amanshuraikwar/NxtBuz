@@ -1,9 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.nxtbuz.R
+import io.github.amanshuraikwar.nxtbuz.util.location.LocationUtil
 import io.github.amanshuraikwar.nxtbuz.util.makeStatusBarTransparent
 import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtil
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
@@ -16,6 +18,9 @@ class MainActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var permissionUtil: PermissionUtil
+
+    @Inject
+    lateinit var locationUtil: LocationUtil
 
     private lateinit var viewModel: MainViewModel
 
@@ -36,5 +41,12 @@ class MainActivity : DaggerAppCompatActivity() {
         grantResults: IntArray
     ) {
         permissionUtil.onPermissionResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode > LocationUtil.REQUEST_CHECK_SETTINGS) {
+            locationUtil.onResult(requestCode, resultCode, data)
+        }
     }
 }

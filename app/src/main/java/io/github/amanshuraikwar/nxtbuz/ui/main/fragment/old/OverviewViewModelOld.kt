@@ -24,6 +24,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.Alert
 import io.github.amanshuraikwar.nxtbuz.util.MapUtil
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.*
@@ -500,9 +501,4 @@ data class AppState(
     val circleCenterLat: Double,
     val circleCenterLon: Double,
     val circleRadius: Double
-)
-
-data class Alert(
-    val msg: String = "Something went wrong.",
-    @DrawableRes val iconResId: Int = R.drawable.ic_error_128
 )

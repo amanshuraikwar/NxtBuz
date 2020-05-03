@@ -20,6 +20,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapUpdate
 import io.github.amanshuraikwar.nxtbuz.util.MapUtil
+import io.github.amanshuraikwar.nxtbuz.util.post
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Named
@@ -30,6 +31,7 @@ class BusRouteViewModelDelegate @Inject constructor(
     private val getBusStopUseCase: GetBusStopUseCase,
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
+    @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
     private val mapViewModelDelegate: MapViewModelDelegate,
     private val mapUtil: MapUtil,
     private val dispatcherProvider: CoroutinesDispatcherProvider
@@ -69,6 +71,8 @@ class BusRouteViewModelDelegate @Inject constructor(
                 "Gathering bus route info..."
             )
         )
+
+        _collapseBottomSheet.post()
 
         curBusRouteState = busRouteState
 

@@ -18,6 +18,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.BusRouteViewMod
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstoparrivals.BusStopArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstops.BusStopsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.Alert
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -35,6 +36,7 @@ class MainFragmentViewModel @Inject constructor(
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("onBackPressed") _onBackPressed: MutableLiveData<Unit>,
     @Named("starredListItems") _starredListItems: MutableLiveData<MutableList<RecyclerViewListItem>>,
+    @Named("collapseBottomSheet") _collapseBottomSheet: MutableLiveData<Unit>,
     private val busStopsViewModelDelegate: BusStopsViewModelDelegate,
     private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
     private val mapViewModelDelegate: MapViewModelDelegate,
@@ -46,14 +48,26 @@ class MainFragmentViewModel @Inject constructor(
 
     private val screenStateBackStack: Stack<ScreenState> = Stack()
 
+    private val _error = MutableLiveData<Alert>()
+    private val _locationStatus = MutableLiveData<Boolean>()
+
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
+        _error.postValue(Alert())
     }
 
     val listItems = _listItems.map { it }
     val loading = _loading.map { it }
     val onBackPressed = _onBackPressed.asEvent()
     val starredListItems = _starredListItems.map { it }
+    val collapseBottomSheet = _collapseBottomSheet.asEvent()
+    val error = _error
+        .map {
+            Log.e(TAG, "onError: $it")
+            it
+        }
+        .asEvent()
+    val locationStatus = _locationStatus.map { it }
 
     private val _showBack = MutableLiveData<Boolean>()
     val showBack = _showBack
@@ -71,24 +85,29 @@ class MainFragmentViewModel @Inject constructor(
             )
         )
         val (defaultLat, defaultLng) = defaultLocationUseCase()
-        initMap(defaultLat, defaultLng)
-        val locationOutput = getLocationUseCase()
-        val (lat, lng) = when (locationOutput) {
-            is LocationOutput.PermissionsNotGranted,
-            is LocationOutput.CouldNotGetLocation -> {
-                defaultLocationUseCase()
-            }
-            is LocationOutput.Success -> {
-                locationOutput.latitude to locationOutput.longitude
-            }
+        mapViewModelDelegate.initMap(defaultLat, defaultLng) {
+                lat, lng -> fetchBusStopsForLatLon(lat, lng)
         }
-        val screenState =
-            ScreenState.BusStopsState(
-                lat,
-                lng
-            )
-        pushNewScreenState(screenState)
-        startScreenState(screenState)
+        onRecenterClicked(true)
+    }
+
+    private fun fetchBusStopsForLatLon(lat: Double, lng: Double) {
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            if (screenStateBackStack.size >= 1) {
+                val topScreenState = screenStateBackStack.peek()
+                if (topScreenState is ScreenState.BusStopsState) {
+                    screenStateBackStack.pop()
+                }
+            }
+
+            val screenState =
+                ScreenState.BusStopsState(
+                    lat,
+                    lng
+                )
+            pushNewScreenState(screenState)
+            startScreenState(screenState)
+        }
     }
 
     fun onBusStopClicked(busStop: BusStop) {
@@ -186,6 +205,42 @@ class MainFragmentViewModel @Inject constructor(
         } else {
             Log.w(TAG, "onBackPressed: Called when back stack's size was less than 2.")
         }
+    }
+
+    fun onRecenterClicked(
+        useDefault: Boolean = false
+    ) = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+
+        if (screenStateBackStack.size >= 1) {
+            val topScreenState = screenStateBackStack.peek()
+            if (topScreenState is ScreenState.BusStopsState) {
+                screenStateBackStack.pop()
+            }
+        }
+
+        val locationOutput = getLocationUseCase()
+        val (lat, lng) = when (locationOutput) {
+            is LocationOutput.PermissionsNotGranted,
+            is LocationOutput.CouldNotGetLocation -> {
+                _locationStatus.postValue(false)
+                if (useDefault) {
+                    defaultLocationUseCase()
+                } else {
+                    return@launch
+                }
+            }
+            is LocationOutput.Success -> {
+                _locationStatus.postValue(true)
+                locationOutput.latitude to locationOutput.longitude
+            }
+        }
+        val screenState =
+            ScreenState.BusStopsState(
+                lat,
+                lng
+            )
+        pushNewScreenState(screenState)
+        startScreenState(screenState)
     }
 
     companion object {

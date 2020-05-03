@@ -50,8 +50,8 @@ class PermissionFragment : DaggerFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         viewModel.checkPermissions()
     }
 
@@ -131,6 +131,16 @@ class PermissionFragment : DaggerFragment() {
                         goToNextPage()
                     }
                     skipBtn.visibility = View.INVISIBLE
+                }
+            )
+
+            viewModel.showEnableSettingsBtn.observe(
+                this,
+                Observer {
+                    actionBtn.text = "Enable location settings"
+                    actionBtn.setOnClickListener {
+                        viewModel.enableSettings()
+                    }
                 }
             )
         }
