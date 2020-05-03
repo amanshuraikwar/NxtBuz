@@ -11,15 +11,15 @@ import kotlin.coroutines.suspendCoroutine
 
 class PermissionUtil(private val activity: AppCompatActivity) {
 
+    private val countContinuationMap: MutableMap<Int, Continuation<PermissionStatus>> =
+        mutableMapOf()
+
     private var count = 1
 
     @Synchronized
     private fun generatePermissionRequestId(): Int {
         return ++count
     }
-
-    private val countContinuationMap: MutableMap<Int, Continuation<PermissionStatus>> =
-        mutableMapOf()
 
     fun hasLocationPermission(): PermissionStatus {
 

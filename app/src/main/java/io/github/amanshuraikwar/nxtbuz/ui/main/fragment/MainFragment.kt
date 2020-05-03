@@ -57,7 +57,6 @@ class MainFragment : DaggerFragment() {
         super.onActivityCreated(savedInstanceState)
 
         ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { _, insets ->
-            //searchBg.setMarginTop(insets.systemWindowInsetTop)
             screenTopGuideline.setMarginTop(insets.systemWindowInsetTop)
             insets.consumeSystemWindowInsets()
         }
@@ -166,16 +165,16 @@ class MainFragment : DaggerFragment() {
                 }
             )
 
-//            viewModel.error.observe(
-//                this,
-//                EventObserver {
-//                    itemsRv.visibility = View.GONE
-//                    loadingIv.visibility = View.VISIBLE
-//                    loadingTv.visibility = View.VISIBLE
-//                    loadingIv.setImageResource(it.iconResId)
-//                    loadingTv.text = it.msg
-//                }
-//            )
+            viewModel.error.observe(
+                this,
+                EventObserver {
+                    itemsRv.visibility = View.GONE
+                    loadingIv.visibility = View.VISIBLE
+                    loadingTv.visibility = View.VISIBLE
+                    loadingIv.setImageResource(it.iconResId)
+                    loadingTv.text = it.msg
+                }
+            )
 
             viewModel.listItems.observe(
                 this,
@@ -188,20 +187,13 @@ class MainFragment : DaggerFragment() {
                 }
             )
 
-//            viewModel.collapseBottomSheet.observe(
-//                this,
-//                EventObserver {
-//                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//                }
-//            )
-//
-//            viewModel.goto.observe(
-//                this,
-//                EventObserver { busStop ->
-//                    gotoBusStop(busStop)
-//                }
-//            )
-//
+            viewModel.collapseBottomSheet.observe(
+                this,
+                EventObserver {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                }
+            )
+
             viewModel.loading.observe(
                 this,
                 Observer { loading ->
@@ -213,63 +205,24 @@ class MainFragment : DaggerFragment() {
                 }
             )
 
-//
-//            viewModel.locationStatus.observe(
-//                this,
-//                Observer {
-//                    recenterFab.setImageResource(
-//                        if (it) {
-//                            R.drawable.ic_round_my_location_24
-//                        } else {
-//                            R.drawable.ic_round_gps_off_24
-//                        }
-//                    )
-//                    recenterFab.tag = if (it) {
-//                        "no_error"
-//                    } else {
-//                        "error"
-//                    }
-//                }
-//            )
-//
-//            viewModel.clearMap.observe(
-//                this,
-//                EventObserver {
-//                    googleMap?.clear()
-//                }
-//            )
-//
-//            viewModel.mapCircle.observe(
-//                this,
-//                Observer {
-//                    googleMap?.clear()
-//                    googleMap?.addMarker(
-//                        MarkerOptions()
-//                            .position(
-//                                LatLng(
-//                                    it.first.first,
-//                                    it.first.second
-//                                )
-//                            )
-//                            .icon(
-//                                bitmapDescriptorFromVector(
-//                                    activity,
-//                                    R.drawable.ic_location_marker_24_32
-//                                )
-//                            )
-//                            .title("center")
-//                    )
-//                    googleMap?.addCircle(
-//                        CircleOptions()
-//                            .center(LatLng(it.first.first, it.first.second))
-//                            .radius(it.second)
-//                            .fillColor(ContextCompat.getColor(activity, R.color.orange_transparent))
-//                            .strokeWidth(4f)
-//                            .strokeColor(ContextCompat.getColor(activity, R.color.orange))
-//                    )
-//                }
-//            )
-//
+            viewModel.locationStatus.observe(
+                this,
+                Observer {
+                    recenterFab.setImageResource(
+                        if (it) {
+                            R.drawable.ic_round_my_location_24
+                        } else {
+                            R.drawable.ic_round_gps_off_24
+                        }
+                    )
+                    recenterFab.tag = if (it) {
+                        "no_error"
+                    } else {
+                        "error"
+                    }
+                }
+            )
+
             viewModel.showBack.observe(
                 this,
                 Observer { show ->
@@ -313,13 +266,13 @@ class MainFragment : DaggerFragment() {
             permissionDialog.init(this)
 
             recenterFab.setOnClickListener {
-//                if (recenterFab.tag == "error") {
-//                    permissionDialog.show {
-//                        viewModel.onRecenterClicked()
-//                    }
-//                } else {
-//                    viewModel.onRecenterClicked()
-//                }
+                if (recenterFab.tag == "error") {
+                    permissionDialog.show {
+                        viewModel.onRecenterClicked()
+                    }
+                } else {
+                    viewModel.onRecenterClicked()
+                }
             }
 
             searchMtv.setOnClickListener {

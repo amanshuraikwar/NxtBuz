@@ -2,10 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.util
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.map
+import androidx.lifecycle.*
 import io.github.amanshuraikwar.nxtbuz.domain.result.Event
 
 // region ViewModels
@@ -64,6 +61,10 @@ val <T> T.checkAllMatched: T
 
 fun <X> LiveData<X>.asEvent(): LiveData<Event<X>> {
     return this.map { Event(it) }
+}
+
+fun MutableLiveData<Unit>.post() {
+    postValue(Unit)
 }
 
 //endregion

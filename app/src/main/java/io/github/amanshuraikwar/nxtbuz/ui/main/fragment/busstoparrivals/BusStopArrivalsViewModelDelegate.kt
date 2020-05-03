@@ -19,6 +19,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapUpdate
+import io.github.amanshuraikwar.nxtbuz.util.post
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Named
@@ -27,6 +28,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
     private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
+    @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
     private val mapViewModelDelegate: MapViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -69,6 +71,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
                 "Finding bus arrivals..."
             )
         )
+        _collapseBottomSheet.post()
         curBusStopState = busStopState
         serviceNumberMapMarkerMap.clear()
         mapViewModelDelegate.pushMapEvent(

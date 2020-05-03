@@ -11,7 +11,11 @@ interface MapViewModelDelegate {
 
     val initMap: LiveData<Event<MapInitData>>
 
-    suspend fun CoroutineScope.initMap(lat: Double, lng: Double)
+    suspend fun initMap(
+        lat: Double,
+        lng: Double,
+        onMapLongClick: (lat: Double, lng: Double) -> Unit
+    )
 
     suspend fun pushMapEvent(mapEvent: MapEvent)
 

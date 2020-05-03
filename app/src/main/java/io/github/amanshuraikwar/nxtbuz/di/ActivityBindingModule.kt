@@ -13,6 +13,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsModule
+import io.github.amanshuraikwar.nxtbuz.util.location.LocationUtilProvides
 import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtilProvides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -37,11 +38,20 @@ abstract class ActivityBindingModule {
     @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [OnboardingModule::class, PermissionUtilProvides::class])
+    @ContributesAndroidInjector(modules = [
+        OnboardingModule::class,
+        PermissionUtilProvides::class,
+        LocationUtilProvides::class
+    ])
     internal abstract fun b(): OnboardingActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [MainModule::class, MainLiveDataProvides::class, PermissionUtilProvides::class])
+    @ContributesAndroidInjector(modules = [
+        MainModule::class,
+        MainLiveDataProvides::class,
+        PermissionUtilProvides::class,
+        LocationUtilProvides::class
+    ])
     internal abstract fun c(): MainActivity
 
     @ActivityScoped

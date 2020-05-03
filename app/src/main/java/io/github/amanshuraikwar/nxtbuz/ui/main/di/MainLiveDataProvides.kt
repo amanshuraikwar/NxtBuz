@@ -38,4 +38,11 @@ internal class MainLiveDataProvides {
     fun d(): MutableLiveData<MutableList<RecyclerViewListItem>> {
         return MutableLiveData<MutableList<RecyclerViewListItem>>()
     }
+
+    @Provides
+    @Named("collapseBottomSheet")
+    @ActivityScoped
+    fun e(): MutableLiveData<Unit> {
+        return MutableLiveData<Unit>()
+    }
 }
