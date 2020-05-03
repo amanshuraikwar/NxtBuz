@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
@@ -53,6 +54,7 @@ class MainFragmentViewModel @Inject constructor(
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
+        FirebaseCrashlytics.getInstance().recordException(th)
         _error.postValue(Alert())
     }
 
@@ -73,6 +75,7 @@ class MainFragmentViewModel @Inject constructor(
     val showBack = _showBack
 
     init {
+        FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
         init()
         starredArrivalsViewModelDelegate.start(viewModelScope, ::onBusServiceClicked)
     }

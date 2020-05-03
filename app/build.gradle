@@ -83,7 +83,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
     }
 }
@@ -127,7 +127,8 @@ dependencies {
     kapt project(':annotationProcessors')
     compileOnly project(':annotations')
 
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-analytics:17.4.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -135,3 +136,4 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'

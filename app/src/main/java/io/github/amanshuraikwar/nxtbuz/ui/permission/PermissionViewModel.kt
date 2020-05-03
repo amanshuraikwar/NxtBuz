@@ -5,12 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtil
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.util.location.LocationUtil
 import io.github.amanshuraikwar.nxtbuz.util.location.SettingsState
 import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionStatus
+import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtil
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,7 +47,12 @@ class PermissionViewModel @Inject constructor(
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
+        FirebaseCrashlytics.getInstance().recordException(th)
         _error.postValue(th)
+    }
+
+    init {
+        FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
     }
 
     fun checkPermissions() =
