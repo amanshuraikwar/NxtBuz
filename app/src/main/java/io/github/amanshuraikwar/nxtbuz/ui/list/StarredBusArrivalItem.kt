@@ -11,10 +11,14 @@ import kotlinx.android.synthetic.main.item_starred_bus_arrival.view.*
 
 @ListItem(layoutResId = R.layout.item_starred_bus_arrival)
 class StarredBusArrivalItem(
-    private val starredBusArrival: StarredBusArrival
+    private val starredBusArrival: StarredBusArrival,
+    private val onClicked: (busStopCode: String, busServiceNumber: String) -> Unit
 ) : RecyclerViewListItem {
 
     override fun bind(view: View, activity: FragmentActivity) {
+        view.parentCv.setOnClickListener {
+            onClicked(starredBusArrival.busStopCode, starredBusArrival.busServiceNumber)
+        }
         view.busStopDescriptionTv.text = starredBusArrival.busStopDescription
         view.serviceNumberTv.text = starredBusArrival.busServiceNumber
         view.nextDeparture1Tv.text = when(val arrivals = starredBusArrival.arrivals) {

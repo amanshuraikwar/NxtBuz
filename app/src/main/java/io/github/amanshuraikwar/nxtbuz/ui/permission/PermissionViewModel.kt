@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtil
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
+import io.github.amanshuraikwar.nxtbuz.util.location.LocationUtil
+import io.github.amanshuraikwar.nxtbuz.util.location.SettingsState
 import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionStatus
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -15,6 +17,7 @@ import javax.inject.Inject
 
 class PermissionViewModel @Inject constructor(
     private val permissionUtil: PermissionUtil,
+    private val locationUtil: LocationUtil,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -38,6 +41,9 @@ class PermissionViewModel @Inject constructor(
     private val _showContinueBtn = MutableLiveData<Unit>()
     val showContinueBtn = _showContinueBtn.map { it }
 
+    private val _showEnableSettingsBtn = MutableLiveData<Unit>()
+    val showEnableSettingsBtn = _showEnableSettingsBtn.map { it }
+
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
         _error.postValue(th)
@@ -47,7 +53,11 @@ class PermissionViewModel @Inject constructor(
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
             when (permissionUtil.hasLocationPermission()) {
                 PermissionStatus.GRANTED -> {
-                    _showContinueBtn.postValue(Unit)
+                    if (locationUtil.settingEnabled() == SettingsState.Enabled) {
+                        _showContinueBtn.postValue(Unit)
+                    } else {
+                        _showEnableSettingsBtn.postValue(Unit)
+                    }
                 }
                 PermissionStatus.DENIED -> {
                     _showSkipBtn.postValue(Unit)
@@ -64,7 +74,11 @@ class PermissionViewModel @Inject constructor(
         Log.i(TAG, "askPermissions: Permission result = ${permissionResult.name}")
         when (permissionResult) {
             PermissionStatus.GRANTED -> {
-                _nextPage.postValue(Unit)
+                if (locationUtil.settingEnabled() == SettingsState.Enabled) {
+                    _nextPage.postValue(Unit)
+                } else {
+                    _showEnableSettingsBtn.postValue(Unit)
+                }
             }
             PermissionStatus.DENIED -> {
                 _showSkipBtn.postValue(Unit)
@@ -74,6 +88,24 @@ class PermissionViewModel @Inject constructor(
                 _showGoToSettingsBtn.postValue(Unit)
             }
         }
+    }
+
+    fun enableSettings() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+        when (val settingsState = locationUtil.enableSettings()) {
+            is SettingsState.Enabled -> {
+                _nextPage.postValue(Unit)
+            }
+            SettingsState.Resolvable -> {
+                Log.wtf(TAG, "enableSettings: Resulted in SettingsState.Resolvable")
+            }
+            SettingsState.UserCancelled -> {
+                _showSkipBtn.postValue(Unit)
+            }
+            is SettingsState.UnResolvable -> {
+                Log.e(TAG, "enableSettings: Resulted in SettingsState.UnResolvable")
+            }
+        }
+
     }
 
     companion object {

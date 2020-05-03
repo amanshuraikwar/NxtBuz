@@ -4,15 +4,16 @@ import io.github.amanshuraikwar.nxtbuz.ui.launcher.LaunchModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import io.github.amanshuraikwar.nxtbuz.ui.launcher.LauncherActivity
-import io.github.amanshuraikwar.nxtbuz.ui.main.BackPressedProvides
+import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainLiveDataProvides
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
-import io.github.amanshuraikwar.nxtbuz.ui.main.MainModule
+import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainModule
 import io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingActivity
 import io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingModule
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsModule
+import io.github.amanshuraikwar.nxtbuz.util.location.LocationUtilProvides
 import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtilProvides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -37,11 +38,20 @@ abstract class ActivityBindingModule {
     @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [OnboardingModule::class, PermissionUtilProvides::class])
+    @ContributesAndroidInjector(modules = [
+        OnboardingModule::class,
+        PermissionUtilProvides::class,
+        LocationUtilProvides::class
+    ])
     internal abstract fun b(): OnboardingActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [MainModule::class, BackPressedProvides::class, PermissionUtilProvides::class])
+    @ContributesAndroidInjector(modules = [
+        MainModule::class,
+        MainLiveDataProvides::class,
+        PermissionUtilProvides::class,
+        LocationUtilProvides::class
+    ])
     internal abstract fun c(): MainActivity
 
     @ActivityScoped

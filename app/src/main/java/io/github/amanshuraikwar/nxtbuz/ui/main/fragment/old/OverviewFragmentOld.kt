@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.overview
+package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.old
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -29,6 +29,7 @@ import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
 import io.github.amanshuraikwar.nxtbuz.ui.list.RecyclerViewTypeFactoryGenerated
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
@@ -430,7 +431,6 @@ class OverviewFragment : DaggerFragment(), OnMapReadyCallback {
             } else {
                 MapStyleOptions.loadRawResourceStyle(activity!!, R.raw.map_style_light)
             }
-
         )
     }
 }

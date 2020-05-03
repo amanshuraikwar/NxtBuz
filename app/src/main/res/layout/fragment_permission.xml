@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_normal"
         android:stateListAnimator="@null"
-        android:text="Continue without permissions"
+        android:text="Skip"
         android:textColor="?colorControlNormal"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"

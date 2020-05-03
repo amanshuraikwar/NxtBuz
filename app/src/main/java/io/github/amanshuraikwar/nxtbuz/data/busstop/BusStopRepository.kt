@@ -1,21 +1,24 @@
 package io.github.amanshuraikwar.nxtbuz.data.busstop
 
 import androidx.annotation.IntRange
+import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busapi.SgBusApi
 import io.github.amanshuraikwar.nxtbuz.data.busapi.model.BusStopItem
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.Bus
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopsDao
-import kotlinx.coroutines.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -155,4 +158,28 @@ class BusStopRepository @Inject constructor(
                 )
             }
         }
+
+    suspend fun getBusStop(busStopCode: String): BusStop = withContext(dispatcherProvider.io) {
+        busStopDao
+            .findByCode(busStopCode)
+            .let { list ->
+                if (list.isEmpty()) {
+                    throw Exception("No bus stop found for code $busStopCode")
+                } else {
+                    list[0]
+                }
+            }
+            .let { busStopEntity ->
+                BusStop(
+                    busStopEntity.code,
+                    busStopEntity.roadName,
+                    busStopEntity.description,
+                    busStopEntity.latitude,
+                    busStopEntity.longitude,
+                    operatingBusDao
+                        .findByBusStopCode(busStopEntity.code)
+                        .map { Bus(it.busServiceNumber) }
+                )
+            }
+    }
 }

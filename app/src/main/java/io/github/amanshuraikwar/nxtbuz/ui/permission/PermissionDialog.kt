@@ -15,6 +15,8 @@ import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
 import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionViewModel
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
 import kotlinx.android.synthetic.main.dialog_permission.view.*
+import kotlinx.android.synthetic.main.dialog_permission.view.actionBtn
+import kotlinx.android.synthetic.main.fragment_permission.*
 import javax.inject.Inject
 
 class PermissionDialog @Inject constructor(
@@ -67,6 +69,17 @@ class PermissionDialog @Inject constructor(
                 view.actionBtn.text = "Done"
                 view.actionBtn.setOnClickListener {
                     dialog.dismiss()
+                }
+            }
+        )
+
+        viewModel.showEnableSettingsBtn.observe(
+            lifecycleOwner,
+            Observer {
+                view.descriptionTv.text = "We use your location to fetch bus stops nearby."
+                view.actionBtn.text = "Enable location settings"
+                view.actionBtn.setOnClickListener {
+                    viewModel.enableSettings()
                 }
             }
         )

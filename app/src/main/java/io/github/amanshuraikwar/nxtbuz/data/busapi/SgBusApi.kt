@@ -12,7 +12,10 @@ interface SgBusApi {
     suspend fun getBusStops(@Query("`$`skip") skip: Int = 0): BusStopsResponse
 
     @GET("BusArrivalv2")
-    suspend fun getBusArrivals(@Query("BusStopCode") busStopCode: String): BusArrivalsResponse
+    suspend fun getBusArrivals(
+        @Query("BusStopCode") busStopCode: String,
+        @Query("ServiceNo") busServiceNumber: String? = null
+    ): BusArrivalsResponse
 
     @GET("BusRoutes")
     suspend fun getBusRoutes(@Query("`$`skip") skip: Int = 0): BusRoutesResponse
