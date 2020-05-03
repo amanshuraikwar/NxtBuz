@@ -5,12 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.SetupState
 import io.github.amanshuraikwar.nxtbuz.data.user.UserRepository
 import io.github.amanshuraikwar.nxtbuz.data.user.model.UserState
 import io.github.amanshuraikwar.nxtbuz.domain.setup.SetupUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetUserStateUseCase
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragmentViewModel
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,6 +39,7 @@ class SetupViewModel @Inject constructor(
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
+        FirebaseCrashlytics.getInstance().recordException(th)
         _error.postValue(th)
     }
 
@@ -47,6 +50,7 @@ class SetupViewModel @Inject constructor(
     val setupProgress = _setupProgress.asEvent()
 
     init {
+        FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
         initiateSetup()
     }
 
