@@ -2,33 +2,43 @@ package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstoparrivals
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.list.BusArrivalCompactItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.BusArrivalErrorItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.BusStopHeaderItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.HeaderItem
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.Alert
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapUpdate
 import io.github.amanshuraikwar.nxtbuz.util.post
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onCompletion
 import javax.inject.Inject
 import javax.inject.Named
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class BusStopArrivalsViewModelDelegate @Inject constructor(
-    private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
+    private val getBusArrivalFlowUseCase: GetBusArrivalFlowUseCase,
+    private val stopBusArrivalFlowUseCase: StopBusArrivalFlowUseCase,
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
+    @Named("error") private val _error: MutableLiveData<Alert>,
     private val mapViewModelDelegate: MapViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -37,22 +47,19 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
     private lateinit var viewModelScope: CoroutineScope
     private lateinit var onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit
     private lateinit var onBusServiceClicked: (busServiceNumber: String) -> Unit
-    private var arrivalsLoopJob: Job? = null
-
-    private val arrivalsLoopErrorHandler = CoroutineExceptionHandler { _, _ ->
-        Log.i(TAG, "arrivalsLoopErrorHandler: Exception thrown.")
-        startStarredBusArrivalsLoopDelayed()
-    }
 
     private val serviceNumberMapMarkerMap =
         mutableMapOf<String, MapMarker>()
 
-    suspend fun stop(busStopState: ScreenState.BusStopState) {
+    fun stop(busStopState: ScreenState.BusStopState) {
         if (busStopState == curBusStopState) {
-            arrivalsLoopJob?.cancel()
+            // todo make this safer by only destroying the service
+            //  if the service is currently running for this bus stop
+            stopBusArrivalFlowUseCase()
         }
     }
 
+    @InternalCoroutinesApi
     suspend fun start(
         busStopState: ScreenState.BusStopState,
         onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit,
@@ -62,7 +69,6 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
         viewModelScope = coroutineScope
         this@BusStopArrivalsViewModelDelegate.onStarToggle = onStarToggle
         this@BusStopArrivalsViewModelDelegate.onBusServiceClicked = { busServiceNumber ->
-            arrivalsLoopJob?.cancel()
             onBusServiceClicked(busStopState.busStop, busServiceNumber)
         }
         _loading.postValue(
@@ -96,167 +102,168 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
                 curBusStopState.busStop.longitude
             )
         )
-        arrivalsLoopJob?.cancel()
-        startStarredBusArrivalsLoop()
-    }
-
-    private fun startStarredBusArrivalsLoop() {
-        arrivalsLoopJob = viewModelScope.launch(arrivalsLoopErrorHandler) {
-            startArrivalsLoop(curBusStopState.busStop, onStarToggle)
-        }
-    }
-
-    private fun startStarredBusArrivalsLoopDelayed() {
-        arrivalsLoopJob = viewModelScope.launch(arrivalsLoopErrorHandler) {
-            startArrivalsLoop(curBusStopState.busStop, onStarToggle, REFRESH_DELAY)
-        }
-    }
-
-    private suspend fun startArrivalsLoop(
-        busStop: BusStop,
-        onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit,
-        initialDelay: Long = 0
-    ) = withContext(dispatcherProvider.computation) {
-
-        delay(initialDelay)
-
-        while (isActive) {
-
-            val busArrivals = getBusBusArrivalsUseCase(busStop.code)
-
-            val listItems: MutableList<RecyclerViewListItem> =
-                busArrivals
-                    .map {
-                        if (it.arrivals is Arrivals.Arriving) {
-                            BusArrivalCompactItem(
-                                busStop.code,
-                                it,
-                                onStarToggle,
-                                onBusServiceClicked
-                            )
-                        } else {
-                            BusArrivalErrorItem(
-                                busStop.code,
-                                it,
-                                onStarToggle
-                            )
-                        }
-                    }
-                    .toMutableList()
-
-            listItems.add(
-                0,
-                BusStopHeaderItem(
-                    busStop,
-                    R.drawable.ic_bus_stop_24
-                )
-            )
-
-            listItems.add(
-                1,
-                HeaderItem(
-                    "Arrivals"
-                )
-            )
-
-            if (isActive) {
-
-                _listItems.postValue(listItems)
-
-                val busAddList = mutableListOf<MapMarker>()
-                val busDeleteList = mutableListOf<String>()
-                val busUpdateList = mutableListOf<MapUpdate>()
-
-                busArrivals
-                    .forEach { busArrival ->
-                        when (busArrival.arrivals) {
-                            is Arrivals.Arriving -> {
-                                serviceNumberMapMarkerMap[busArrival.serviceNumber]
-                                    ?.let { mapMarker ->
-                                        if (busArrival.arrivals.nextArrivingBus.latitude != mapMarker.lat
-                                            || busArrival.arrivals.nextArrivingBus.longitude != mapMarker.lng
-                                        ) {
-                                            busUpdateList.add(
-                                                MapUpdate(
-                                                    mapMarker.id,
-                                                    busArrival.arrivals.nextArrivingBus.latitude,
-                                                    busArrival.arrivals.nextArrivingBus.longitude
-                                                )
-                                            )
-                                            serviceNumberMapMarkerMap[busArrival.serviceNumber] =
-                                                mapMarker.copy(
-                                                    lat = busArrival.arrivals.nextArrivingBus.latitude,
-                                                    lng = busArrival.arrivals.nextArrivingBus.longitude
-                                                )
-                                        }
-                                    }
-                                    ?: run {
-                                        val mapMarker = MapMarker(
-                                            busArrival.serviceNumber,
-                                            busArrival.arrivals.nextArrivingBus.latitude,
-                                            busArrival.arrivals.nextArrivingBus.longitude,
-                                            R.drawable.ic_marker_arriving_bus_48,
-                                            if ((busArrival.arrivals).nextArrivingBus.arrival == "Arr") {
-                                                "ARRIVING"
-                                            } else {
-                                                "${(busArrival.arrivals).nextArrivingBus.arrival} MINS"
-                                            }
-                                        )
-                                        serviceNumberMapMarkerMap[busArrival.serviceNumber] =
-                                            mapMarker
-                                        busAddList.add(mapMarker)
-                                    }
-                            }
-                            is Arrivals.DataNotAvailable,
-                            is Arrivals.NotOperating -> {
-                                serviceNumberMapMarkerMap[busArrival.serviceNumber]
-                                    ?.let { mapMarker ->
-                                        busDeleteList.add(mapMarker.id)
-                                        serviceNumberMapMarkerMap.remove(mapMarker.id)
-                                    }
-                                    ?: run {
-                                        // just ignore
-                                    }
-                            }
-                        }
-                    }
-
-                withContext(dispatcherProvider.main) {
-                    if (busAddList.isNotEmpty()) {
-                        mapViewModelDelegate.pushMapEvent(
-                            MapEvent.AddMapMarkers(
-                                busAddList
-                            )
-                        )
-                    }
-                    if (busDeleteList.isNotEmpty()) {
-                        mapViewModelDelegate.pushMapEvent(
-                            MapEvent.DeleteMarker(
-                                busDeleteList
-                            )
-                        )
-                    }
-                    if (busUpdateList.isNotEmpty()) {
-                        mapViewModelDelegate.pushMapEvent(
-                            MapEvent.UpdateMapMarkers(
-                                busUpdateList
-                            )
+        getBusArrivalFlowUseCase(busStopState.busStop.code)
+            .catch { throwable ->
+                FirebaseCrashlytics.getInstance().recordException(throwable)
+                _error.postValue(Alert("Something went wrong. Please restart the app."))
+            }
+            .onCompletion {
+                Log.i(TAG, "start: onCompletion")
+            }
+            .collect(
+                object : FlowCollector<List<BusArrival>> {
+                    override suspend fun emit(value: List<BusArrival>) {
+                        Log.d(TAG, "emit: ")
+                        handleBusArrivalList(
+                            busStopState.busStop,
+                            onStarToggle,
+                            value
                         )
                     }
                 }
+            )
+    }
 
-                Log.i(TAG, "startArrivalsLoop: add ${busAddList.size}")
-                Log.i(TAG, "startArrivalsLoop: delete ${busDeleteList.size}")
-                Log.i(TAG, "startArrivalsLoop: update ${busUpdateList.size}")
+    private suspend fun handleBusArrivalList(
+        busStop: BusStop,
+        onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit,
+        busArrivals: List<BusArrival>
+    ) = withContext(dispatcherProvider.computation) {
+
+        val listItems: MutableList<RecyclerViewListItem> =
+            busArrivals
+                .map {
+                    if (it.arrivals is Arrivals.Arriving) {
+                        BusArrivalCompactItem(
+                            busStop.code,
+                            it,
+                            onStarToggle,
+                            onBusServiceClicked
+                        )
+                    } else {
+                        BusArrivalErrorItem(
+                            busStop.code,
+                            it,
+                            onStarToggle
+                        )
+                    }
+                }
+                .toMutableList()
+
+        listItems.add(
+            0,
+            BusStopHeaderItem(
+                busStop,
+                R.drawable.ic_bus_stop_24
+            )
+        )
+
+        listItems.add(
+            1,
+            HeaderItem(
+                "Arrivals"
+            )
+        )
+
+        if (isActive) {
+
+            _listItems.postValue(listItems)
+
+            val busAddList = mutableListOf<MapMarker>()
+            val busDeleteList = mutableListOf<String>()
+            val busUpdateList = mutableListOf<MapUpdate>()
+
+            busArrivals
+                .forEach { busArrival ->
+                    when (busArrival.arrivals) {
+                        is Arrivals.Arriving -> {
+                            serviceNumberMapMarkerMap[busArrival.serviceNumber]
+                                ?.let { mapMarker ->
+                                    if (busArrival.arrivals.nextArrivingBus.latitude != mapMarker.lat
+                                        || busArrival.arrivals.nextArrivingBus.longitude != mapMarker.lng
+                                    ) {
+                                        busUpdateList.add(
+                                            MapUpdate(
+                                                mapMarker.id,
+                                                busArrival.arrivals.nextArrivingBus.latitude,
+                                                busArrival.arrivals.nextArrivingBus.longitude
+                                            )
+                                        )
+                                        serviceNumberMapMarkerMap[busArrival.serviceNumber] =
+                                            mapMarker.copy(
+                                                lat = busArrival.arrivals.nextArrivingBus.latitude,
+                                                lng = busArrival.arrivals.nextArrivingBus.longitude
+                                            )
+                                    }
+                                }
+                                ?: run {
+                                    val mapMarker = MapMarker(
+                                        busArrival.serviceNumber,
+                                        busArrival.arrivals.nextArrivingBus.latitude,
+                                        busArrival.arrivals.nextArrivingBus.longitude,
+                                        R.drawable.ic_marker_arriving_bus_48,
+                                        if ((busArrival.arrivals).nextArrivingBus.arrival == "Arr") {
+                                            "ARRIVING"
+                                        } else {
+                                            "${(busArrival.arrivals).nextArrivingBus.arrival} MINS"
+                                        }
+                                    )
+                                    serviceNumberMapMarkerMap[busArrival.serviceNumber] =
+                                        mapMarker
+                                    busAddList.add(mapMarker)
+                                }
+                        }
+                        is Arrivals.DataNotAvailable,
+                        is Arrivals.NotOperating -> {
+                            serviceNumberMapMarkerMap[busArrival.serviceNumber]
+                                ?.let { mapMarker ->
+                                    busDeleteList.add(mapMarker.id)
+                                    serviceNumberMapMarkerMap.remove(mapMarker.id)
+                                }
+                                ?: run {
+                                    // just ignore
+                                }
+                        }
+                    }
+                }
+
+            withContext(dispatcherProvider.main) {
+                if (busAddList.isNotEmpty()) {
+                    mapViewModelDelegate.pushMapEvent(
+                        MapEvent.AddMapMarkers(
+                            busAddList
+                        )
+                    )
+                }
+                if (busDeleteList.isNotEmpty()) {
+                    mapViewModelDelegate.pushMapEvent(
+                        MapEvent.DeleteMarker(
+                            busDeleteList
+                        )
+                    )
+                }
+                if (busUpdateList.isNotEmpty()) {
+                    mapViewModelDelegate.pushMapEvent(
+                        MapEvent.UpdateMapMarkers(
+                            busUpdateList
+                        )
+                    )
+                }
             }
 
+            Log.i(TAG, "startArrivalsLoop: add ${busAddList.size}")
+            Log.i(TAG, "startArrivalsLoop: delete ${busDeleteList.size}")
+            Log.i(TAG, "startArrivalsLoop: update ${busUpdateList.size}")
+
             _loading.postValue(Loading.Hide)
-            delay(REFRESH_DELAY)
         }
     }
 
+    fun clear() {
+        stopBusArrivalFlowUseCase()
+    }
+
     companion object {
-        private const val REFRESH_DELAY = 10000L
         private const val TAG = "BusStopViewModelDelegat"
     }
 }

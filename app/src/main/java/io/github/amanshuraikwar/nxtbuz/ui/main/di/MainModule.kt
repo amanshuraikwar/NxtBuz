@@ -15,6 +15,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragment
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragmentViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
 
 @Module
 internal abstract class MainModule {
@@ -40,11 +41,13 @@ internal abstract class MainModule {
     @ViewModelKey(PermissionViewModel::class)
     internal abstract fun e(a: PermissionViewModel): ViewModel
 
+    @InternalCoroutinesApi
     @Binds
     @IntoMap
     @ViewModelKey(MainFragmentViewModel::class)
     internal abstract fun f(a: MainFragmentViewModel): ViewModel
 
+    @InternalCoroutinesApi
     @ContributesAndroidInjector
     internal abstract fun g(): MainFragment
 
