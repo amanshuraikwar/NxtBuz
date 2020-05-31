@@ -4,11 +4,9 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
-import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.MainApplication
-import javax.inject.Singleton
 
 /**
  * Defines all the classes that need to be provided in the scope of the app.
@@ -37,10 +35,4 @@ class AppModule {
     fun providesClipboardManager(context: Context): ClipboardManager =
         context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
             as ClipboardManager
-
-    @Provides
-    @Singleton
-    fun a(): NetworkFlipperPlugin {
-        return NetworkFlipperPlugin()
-    }
 }
