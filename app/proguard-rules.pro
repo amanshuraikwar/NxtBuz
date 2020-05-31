@@ -78,6 +78,16 @@
     *;
 }
 
+# Flipper
+# From https://github.com/facebook/flipper/issues/314#issuecomment-517219829
+-keep class com.facebook.jni.** { *; }
+-keep class com.facebook.flipper.** { *; }
+-dontwarn com.facebook.litho.**
+-dontwarn com.facebook.flipper.**
+-dontwarn com.facebook.yoga.**
+-dontwarn org.mozilla.**
+-dontwarn  com.facebook.fbui.**
+
 -keeppackagenames io.github.amanshuraikwar.nxtbuz
 
 -dontwarn kotlin.internal.**

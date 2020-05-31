@@ -1,11 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.data.busapi.di
 
-import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
-import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.BuildConfig
 import io.github.amanshuraikwar.nxtbuz.data.busapi.SgBusApi
+import io.github.amanshuraikwar.nxtbuz.util.flipper.FlipperHelper
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,7 +17,7 @@ class BusApiProvides {
 
     @Provides
     @Singleton
-    fun a(networkFlipperPlugin: NetworkFlipperPlugin): SgBusApi {
+    fun a(): SgBusApi {
         return Retrofit
             .Builder()
             .baseUrl(SgBusApi.ENDPOINT)
@@ -36,10 +35,18 @@ class BusApiProvides {
                             .build()
                         chain.proceed(newRequest)
                     }
-                    .addInterceptor(
-                        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-                    )
-                    .addNetworkInterceptor(FlipperOkhttpInterceptor(networkFlipperPlugin))
+                    .apply {
+                        @Suppress("ConstantConditionIf")
+                        if (BuildConfig.BUILD_TYPE == "debug"
+                            || BuildConfig.BUILD_TYPE == "internal") {
+                            addInterceptor(
+                                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+                            )
+                        }
+                    }
+                    .apply {
+                        FlipperHelper.addInterceptor(this)
+                    }
                     .build()
             )
             .addConverterFactory(GsonConverterFactory.create())
