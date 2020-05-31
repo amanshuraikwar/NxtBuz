@@ -32,8 +32,14 @@ import io.github.amanshuraikwar.nxtbuz.util.setMarginTop
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
 import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
 import kotlinx.android.synthetic.main.fragment_overview.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@FlowPreview
+@InternalCoroutinesApi
 class MainFragment : DaggerFragment() {
 
     @Inject
@@ -190,6 +196,7 @@ class MainFragment : DaggerFragment() {
             viewModel.collapseBottomSheet.observe(
                 this,
                 EventObserver {
+                    itemsRv.smoothScrollToPosition(0)
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
             )

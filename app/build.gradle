@@ -31,6 +31,22 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
+    }
+
+    sourceSets {
+        main {
+            // Adds exported schema location as app assets.
+            assets.srcDirs += files("$projectDir/schemas".toString())
+        }
+        androidTest {
+            assets.srcDirs += files("$projectDir/schemas".toString())
+        }
     }
 
     ext {
@@ -90,7 +106,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
 
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
@@ -116,6 +132,7 @@ dependencies {
     implementation "androidx.room:room-runtime:${versions.room}"
     kapt "androidx.room:room-compiler:${versions.room}"
     implementation "androidx.room:room-ktx:${versions.room}"
+    androidTestImplementation "androidx.room:room-testing:${versions.room}"
 
     kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
     kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
@@ -133,6 +150,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // flipper
+    debugImplementation 'com.facebook.flipper:flipper:0.35.0'
+    debugImplementation 'com.facebook.soloader:soloader:0.9.0'
+    debugImplementation 'com.facebook.flipper:flipper-network-plugin:0.35.0'
+
+    releaseImplementation 'com.facebook.flipper:flipper-noop:0.35.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

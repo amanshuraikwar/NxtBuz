@@ -6,6 +6,7 @@ import dagger.Provides
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.di.ActivityScoped
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.Alert
 import javax.inject.Named
 
 @Module
@@ -44,5 +45,12 @@ internal class MainLiveDataProvides {
     @ActivityScoped
     fun e(): MutableLiveData<Unit> {
         return MutableLiveData<Unit>()
+    }
+
+    @Provides
+    @Named("error")
+    @ActivityScoped
+    fun f(): MutableLiveData<Alert> {
+        return MutableLiveData<Alert>()
     }
 }
