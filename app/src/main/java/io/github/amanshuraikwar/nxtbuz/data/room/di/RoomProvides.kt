@@ -9,6 +9,8 @@ import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.BuildConfig
 import io.github.amanshuraikwar.nxtbuz.data.busapi.SgBusApi
 import io.github.amanshuraikwar.nxtbuz.data.room.AppDatabase
+import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalDao
+import io.github.amanshuraikwar.nxtbuz.data.room.busoperator.BusOperatorDao
 import io.github.amanshuraikwar.nxtbuz.data.room.busroute.BusRouteDao
 import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusDao
@@ -30,7 +32,7 @@ class RoomProvides {
                 AppDatabase::class.java,
                 AppDatabase.DATABASE_NAME
             )
-            .fallbackToDestructiveMigration()
+            .addMigrations(AppDatabase.MIGRATION_6_7)
             .build()
     }
 
@@ -52,5 +54,15 @@ class RoomProvides {
     @Provides
     fun f(appDatabase: AppDatabase): StarredBusStopsDao {
         return appDatabase.starredBusStopsDao
+    }
+
+    @Provides
+    fun g(appDatabase: AppDatabase): BusOperatorDao {
+        return appDatabase.busOperatorDao
+    }
+
+    @Provides
+    fun h(appDatabase: AppDatabase): BusArrivalDao {
+        return appDatabase.busArrivalDao
     }
 }

@@ -22,4 +22,6 @@
     <string name="origin_destination">\u21cb</string>
 
     <string name="bus_direction_2">\u21ab</string>
+    <string name="channel_name_bus_arrival">Bus Arrivals</string>
+    <string name="channel_description_bus_arrival">Displays bus arrivals in notification.</string>
 </resources>

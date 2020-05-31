@@ -40,17 +40,19 @@
             android:name="io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity"
             android:windowSoftInputMode="adjustNothing" />
 
-        <activity android:name="io.github.amanshuraikwar.nxtbuz.ui.busstop.BusStopActivity" />
-
         <activity
             android:name="io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity"
             android:windowSoftInputMode="stateAlwaysVisible"/>
         <activity android:name="io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity" />
 
+        <activity android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity"
+            android:exported="true"/>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <service android:name=".data.busarrival.service.BusArrivalService" />
     </application>
 
 </manifest>

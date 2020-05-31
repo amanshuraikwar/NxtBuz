@@ -1,0 +1,342 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 7,
+    "identityHash": "d8ad99906653bb296ab066bebc845efb",
+    "entities": [
+      {
+        "tableName": "BusStopEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`code` TEXT NOT NULL, `roadName` TEXT NOT NULL, `description` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, PRIMARY KEY(`code`))",
+        "fields": [
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roadName",
+            "columnName": "roadName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "code"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "OperatingBusEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`busStopCode` TEXT NOT NULL, `busServiceNumber` TEXT NOT NULL, `wdFirstBus` TEXT, `wdLastBus` TEXT, `satFirstBus` TEXT, `satLastBus` TEXT, `sunFirstBus` TEXT, `sunLastBus` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "busStopCode",
+            "columnName": "busStopCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "busServiceNumber",
+            "columnName": "busServiceNumber",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wdFirstBus",
+            "columnName": "wdFirstBus",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "wdLastBus",
+            "columnName": "wdLastBus",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "satFirstBus",
+            "columnName": "satFirstBus",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "satLastBus",
+            "columnName": "satLastBus",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sunFirstBus",
+            "columnName": "sunFirstBus",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sunLastBus",
+            "columnName": "sunLastBus",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "BusRouteEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`busServiceNumber` TEXT NOT NULL, `busStopCode` TEXT NOT NULL, `direction` INTEGER NOT NULL, `stopSequence` INTEGER NOT NULL, `distance` REAL NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "busServiceNumber",
+            "columnName": "busServiceNumber",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "busStopCode",
+            "columnName": "busStopCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "direction",
+            "columnName": "direction",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stopSequence",
+            "columnName": "stopSequence",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "distance",
+            "columnName": "distance",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "StarredBusStopEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`busStopCode` TEXT NOT NULL, `busServiceNumber` TEXT NOT NULL, PRIMARY KEY(`busStopCode`, `busServiceNumber`))",
+        "fields": [
+          {
+            "fieldPath": "busStopCode",
+            "columnName": "busStopCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "busServiceNumber",
+            "columnName": "busServiceNumber",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "busStopCode",
+            "busServiceNumber"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "BusOperatorEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`busServiceNumber` TEXT NOT NULL, `busStopCode` TEXT NOT NULL, `operator` TEXT NOT NULL, `lastUpdatedOn` TEXT NOT NULL, PRIMARY KEY(`busServiceNumber`, `busStopCode`))",
+        "fields": [
+          {
+            "fieldPath": "busServiceNumber",
+            "columnName": "busServiceNumber",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "busStopCode",
+            "columnName": "busStopCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "operator",
+            "columnName": "operator",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUpdatedOn",
+            "columnName": "lastUpdatedOn",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "busServiceNumber",
+            "busStopCode"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "BusArrivalEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`busServiceNumber` TEXT NOT NULL, `busStopCode` TEXT NOT NULL, `seqNumber` INTEGER NOT NULL, `busArrivalStatus` TEXT NOT NULL, `originCode` TEXT NOT NULL, `destinationCode` TEXT NOT NULL, `estimatedArrivalTimestamp` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `visitNumber` INTEGER NOT NULL, `load` TEXT NOT NULL, `feature` TEXT NOT NULL, `type` TEXT NOT NULL, `lastUpdatedOn` TEXT NOT NULL, PRIMARY KEY(`busServiceNumber`, `busStopCode`, `seqNumber`))",
+        "fields": [
+          {
+            "fieldPath": "busServiceNumber",
+            "columnName": "busServiceNumber",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "busStopCode",
+            "columnName": "busStopCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "seqNumber",
+            "columnName": "seqNumber",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "busArrivalStatus",
+            "columnName": "busArrivalStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "originCode",
+            "columnName": "originCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "destinationCode",
+            "columnName": "destinationCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estimatedArrivalTimestamp",
+            "columnName": "estimatedArrivalTimestamp",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "visitNumber",
+            "columnName": "visitNumber",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "load",
+            "columnName": "load",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "feature",
+            "columnName": "feature",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUpdatedOn",
+            "columnName": "lastUpdatedOn",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "busServiceNumber",
+            "busStopCode",
+            "seqNumber"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd8ad99906653bb296ab066bebc845efb')"
+    ]
+  }
+}
