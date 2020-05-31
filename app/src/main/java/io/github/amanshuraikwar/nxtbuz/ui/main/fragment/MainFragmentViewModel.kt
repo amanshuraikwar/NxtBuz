@@ -22,13 +22,14 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.Alert
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 
+@FlowPreview
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 class MainFragmentViewModel @Inject constructor(
     private val getLocationUseCase: GetLocationUseCase,
     private val defaultLocationUseCase: DefaultLocationUseCase,
@@ -38,6 +39,7 @@ class MainFragmentViewModel @Inject constructor(
     @Named("onBackPressed") _onBackPressed: MutableLiveData<Unit>,
     @Named("starredListItems") _starredListItems: MutableLiveData<MutableList<RecyclerViewListItem>>,
     @Named("collapseBottomSheet") _collapseBottomSheet: MutableLiveData<Unit>,
+    @Named("error") private val _error: MutableLiveData<Alert>,
     private val busStopsViewModelDelegate: BusStopsViewModelDelegate,
     private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
     private val mapViewModelDelegate: MapViewModelDelegate,
@@ -49,7 +51,6 @@ class MainFragmentViewModel @Inject constructor(
 
     private val screenStateBackStack: Stack<ScreenState> = Stack()
 
-    private val _error = MutableLiveData<Alert>()
     private val _locationStatus = MutableLiveData<Boolean>()
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
@@ -88,8 +89,8 @@ class MainFragmentViewModel @Inject constructor(
             )
         )
         val (defaultLat, defaultLng) = defaultLocationUseCase()
-        mapViewModelDelegate.initMap(defaultLat, defaultLng) {
-                lat, lng -> fetchBusStopsForLatLon(lat, lng)
+        mapViewModelDelegate.initMap(defaultLat, defaultLng) { lat, lng ->
+            fetchBusStopsForLatLon(lat, lng)
         }
         onRecenterClicked(true)
     }
@@ -153,6 +154,7 @@ class MainFragmentViewModel @Inject constructor(
             screenStateBackStack.push(screenState)
         }
 
+    @InternalCoroutinesApi
     private suspend fun startScreenState(screenState: ScreenState) =
         withContext(dispatcherProvider.io) {
 
@@ -169,7 +171,12 @@ class MainFragmentViewModel @Inject constructor(
                     )
                 }
                 is ScreenState.BusRouteState -> {
-                    busRouteViewModelDelegate.start(screenState, viewModelScope, ::onBusStopClicked, ::onStarToggle)
+                    busRouteViewModelDelegate.start(
+                        screenState,
+                        viewModelScope,
+                        ::onBusStopClicked,
+                        ::onStarToggle
+                    )
                 }
             }
 
@@ -244,6 +251,12 @@ class MainFragmentViewModel @Inject constructor(
             )
         pushNewScreenState(screenState)
         startScreenState(screenState)
+    }
+
+    @ExperimentalCoroutinesApi
+    override fun onCleared() {
+        super.onCleared()
+        busStopArrivalsViewModelDelegate.clear()
     }
 
     companion object {

@@ -1,5 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.data.busapi.di
 
+import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
+import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.BuildConfig
@@ -9,12 +11,14 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 class BusApiProvides {
 
     @Provides
-    fun a(): SgBusApi {
+    @Singleton
+    fun a(networkFlipperPlugin: NetworkFlipperPlugin): SgBusApi {
         return Retrofit
             .Builder()
             .baseUrl(SgBusApi.ENDPOINT)
@@ -35,6 +39,7 @@ class BusApiProvides {
                     .addInterceptor(
                         HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
                     )
+                    .addNetworkInterceptor(FlipperOkhttpInterceptor(networkFlipperPlugin))
                     .build()
             )
             .addConverterFactory(GsonConverterFactory.create())

@@ -16,7 +16,8 @@ data class CoroutinesDispatcherProvider(
     val computation: CoroutineDispatcher,
     val io: CoroutineDispatcher,
     val pool8: CoroutineDispatcher,
-    val map: CoroutineDispatcher
+    val map: CoroutineDispatcher,
+    val arrivalService: CoroutineDispatcher
 ) {
 
     @Inject
@@ -25,6 +26,7 @@ data class CoroutinesDispatcherProvider(
         Default,
         IO,
         Executors.newFixedThreadPool(8).asCoroutineDispatcher(),
-        Executors.newFixedThreadPool(1).asCoroutineDispatcher()
+        Executors.newFixedThreadPool(1).asCoroutineDispatcher(),
+        Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     )
 }

@@ -4,31 +4,43 @@ import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busapi.SgBusApi
 import io.github.amanshuraikwar.nxtbuz.data.busapi.model.ArrivingBusItem
 import io.github.amanshuraikwar.nxtbuz.data.busapi.model.BusArrivalItem
+import io.github.amanshuraikwar.nxtbuz.data.busapi.model.BusArrivalsResponse
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.delegates.BusArrivalStateFlowDelegate
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.delegates.BusArrivalStateFlowDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.*
+import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.busroute.BusRouteDao
 import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopsDao
 import io.github.amanshuraikwar.nxtbuz.util.TimeUtil
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetTime
 import org.threeten.bp.temporal.ChronoUnit
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
+@ExperimentalCoroutinesApi
 @Singleton
 class BusArrivalRepository @Inject constructor(
     private val starredBusStopsDao: StarredBusStopsDao,
     private val busRouteDao: BusRouteDao,
     private val operatingBusDao: OperatingBusDao,
     private val busStopDao: BusStopDao,
+    private val busArrivalStateFlowDelegate: BusArrivalStateFlowDelegate,
     private val busApi: SgBusApi,
     private val dispatcherProvider: CoroutinesDispatcherProvider
-) {
+) : BusArrivalStateFlowDelegate by busArrivalStateFlowDelegate {
 
     suspend fun getBusArrivals(busStopCode: String): List<BusArrival> =
         withContext(dispatcherProvider.io) {
