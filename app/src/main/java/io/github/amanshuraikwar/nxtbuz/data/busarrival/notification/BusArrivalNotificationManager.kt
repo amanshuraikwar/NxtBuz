@@ -1,10 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.data.busarrival.notification
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
 import androidx.core.app.NotificationManagerCompat
@@ -15,7 +15,6 @@ import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalDao
 import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalStatus
 import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
 import kotlinx.coroutines.withContext
-import java.lang.Integer.min
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,17 +29,17 @@ class BusArrivalNotificationManager @Inject constructor(
 
     private val busStopCodeNotificationIdMap = ConcurrentHashMap<String, Int>()
 
-    suspend fun showNotification(busStopCode: String) = withContext(dispatcherProvider.io) {
+    suspend fun createNotification(
+        busStopCode: String
+    ): Pair<Int, Notification> = withContext(dispatcherProvider.io) {
 
         val busArrivalEntityList = busArrivalDao.findByBusStopCode(busStopCode)
 
         if (busArrivalEntityList.isEmpty()) {
-            Log.w(
-                TAG,
-                "showNotification: Bus arrival entity list " +
+            throw Exception(
+                "Bus arrival entity list " +
                         "for bus stop code $busStopCode is empty."
             )
-            return@withContext
         }
 
         val busStopDescription =
@@ -82,26 +81,26 @@ class BusArrivalNotificationManager @Inject constructor(
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_noti_bus_arrival)
             .setContentTitle("Arriving at $busStopDescription")
-            .setContentText(arrivalStr.split("\n")[0]+"...")
+            .setContentText(arrivalStr.split("\n")[0] + "...")
             .setSubText(busStopDescription)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(arrivalStr).setSummaryText(busStopCode))
+            .setStyle(
+                NotificationCompat.BigTextStyle().bigText(arrivalStr).setSummaryText(busStopCode)
+            )
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setVisibility(VISIBILITY_PUBLIC)
             .setVibrate(null)
             .setOngoing(true)
 
-        with(NotificationManagerCompat.from(context)) {
-            // notificationId is a unique int for each notification
-            notify(
-                busStopCodeNotificationIdMap[busStopCode]
-                    ?: run {
-                        val newId = busStopCodeNotificationIdMap.size + 1
-                        busStopCodeNotificationIdMap[busStopCode] = newId
-                        newId
-                    },
-                builder.build()
-            )
-        }
+        val id = busStopCodeNotificationIdMap[busStopCode]
+            ?: run {
+                val newId = busStopCodeNotificationIdMap.size + 1
+                busStopCodeNotificationIdMap[busStopCode] = newId
+                newId
+            }
+
+        val notification = builder.build()
+
+        Pair(id, notification)
     }
 
     fun cancel(busStopCode: String) {
