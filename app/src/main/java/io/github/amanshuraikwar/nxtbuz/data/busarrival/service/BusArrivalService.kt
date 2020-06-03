@@ -181,7 +181,11 @@ class BusArrivalService : DaggerService() {
                 )
             }
 
-            busArrivalNotificationManager.showNotification(busStopCode)
+            busArrivalNotificationManager
+                .createNotification(busStopCode)
+                .let { (id, notification) ->
+                    startForeground(id, notification)
+                }
 
             if (isActive) emit(busStopCode)
 
@@ -373,6 +377,7 @@ class BusArrivalService : DaggerService() {
         currentBusStopCode = ""
         currentCoroutineJob?.cancel()
         coroutineScope.cancel()
+        stopForeground(true)
     }
 
     companion object {
