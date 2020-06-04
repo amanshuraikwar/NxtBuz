@@ -48,6 +48,7 @@ class SearchViewModel @Inject constructor(
     private val _busStopClicked = MutableLiveData<BusStop>()
     val busStopClicked = _busStopClicked.asEvent()
 
+
     private val _loading = MutableLiveData<Boolean>()
     val loading = _loading.asEvent()
 

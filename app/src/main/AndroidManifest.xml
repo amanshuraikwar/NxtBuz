@@ -44,10 +44,13 @@
         <activity
             android:name="io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity"
             android:windowSoftInputMode="stateAlwaysVisible"/>
+
         <activity android:name="io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity" />
 
         <activity android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity"
             android:exported="true"/>
+
+        <activity android:name=".ui.starred.StarredBusArrivalsActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

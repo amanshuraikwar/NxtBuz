@@ -27,6 +27,8 @@ import io.github.amanshuraikwar.nxtbuz.ui.list.RecyclerViewTypeFactoryGenerated
 import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
+import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsActivity
+import io.github.amanshuraikwar.nxtbuz.ui.starred.model.StarredBusArrivalClicked
 import io.github.amanshuraikwar.nxtbuz.util.lerp
 import io.github.amanshuraikwar.nxtbuz.util.setMarginTop
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
@@ -270,6 +272,16 @@ class MainFragment : DaggerFragment() {
                 }
             )
 
+            viewModel.startStarredBusArrivalActivity.observe(
+                this,
+                EventObserver {
+                    startActivityForResult(
+                        Intent(activity, StarredBusArrivalsActivity::class.java),
+                        REQUEST_STARRED_BUS_ARRIVALS
+                    )
+                }
+            )
+
             permissionDialog.init(this)
 
             recenterFab.setOnClickListener {
@@ -306,9 +318,21 @@ class MainFragment : DaggerFragment() {
                 viewModel.onBusStopClicked(busStop)
             }
         }
+        if (requestCode == REQUEST_STARRED_BUS_ARRIVALS) {
+            if (resultCode == Activity.RESULT_OK) {
+                val starredBusArrivalClicked =
+                    data?.getParcelableExtra<StarredBusArrivalClicked>(
+                        StarredBusArrivalsActivity.KEY_STARRED_BUS_ARRIVAL_CLICKED
+                    ) ?: return
+                viewModel.onBusServiceClicked(
+                    starredBusArrivalClicked.busStop, starredBusArrivalClicked.busServiceNumber
+                )
+            }
+        }
     }
 
     companion object {
         private const val REQUEST_SEARCH_BUS_STOPS = 10001
+        private const val REQUEST_STARRED_BUS_ARRIVALS = 10002
     }
 }
