@@ -10,6 +10,7 @@
     <dimen name="padding_normal">16dp</dimen>
     <dimen name="padding_large">32dp</dimen>
     <dimen name="avatar_size">40dp</dimen>
+    <dimen name="margin_very_small">4dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_normal">16dp</dimen>
     <dimen name="padding_small">8dp</dimen>
@@ -17,6 +18,8 @@
     <dimen name="avatar_radius">20dp</dimen>
     <dimen name="avatar_stroke_width">2dp</dimen>
     <dimen name="avatar_radius_large">36dp</dimen>
+    
+    <dimen name="bus_arrival_info_icon_size_small">20dp</dimen>
 
     <!--BottomAppBar-->
     <dimen name="bottom_app_bar_height">56dp</dimen>

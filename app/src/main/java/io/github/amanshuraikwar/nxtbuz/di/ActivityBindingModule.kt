@@ -13,6 +13,8 @@ import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsModule
+import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsActivity
+import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsModule
 import io.github.amanshuraikwar.nxtbuz.util.location.LocationUtilProvides
 import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtilProvides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -61,4 +63,10 @@ abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = [SettingsModule::class])
     internal abstract fun e(): SettingsActivity
+
+    @ExperimentalCoroutinesApi
+    @InternalCoroutinesApi
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = [StarredBusArrivalsModule::class])
+    internal abstract fun f(): StarredBusArrivalsActivity
 }

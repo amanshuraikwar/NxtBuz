@@ -47,7 +47,8 @@ class MainFragmentViewModel @Inject constructor(
     starredArrivalsViewModelDelegate: StarredArrivalsViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(),
-    MapViewModelDelegate by mapViewModelDelegate {
+    MapViewModelDelegate by mapViewModelDelegate,
+    StarredArrivalsViewModelDelegate by starredArrivalsViewModelDelegate {
 
     private val screenStateBackStack: Stack<ScreenState> = Stack()
 
@@ -134,7 +135,7 @@ class MainFragmentViewModel @Inject constructor(
         }
     }
 
-    private fun onBusServiceClicked(busStop: BusStop, busServiceNumber: String) {
+    fun onBusServiceClicked(busStop: BusStop, busServiceNumber: String) {
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
             val screenState =
                 ScreenState.BusRouteState(
