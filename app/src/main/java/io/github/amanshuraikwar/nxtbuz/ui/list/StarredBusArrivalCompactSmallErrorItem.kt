@@ -11,10 +11,16 @@ import kotlinx.android.synthetic.main.item_starred_bus_arrival_compact_small_err
 
 @ListItem(layoutResId = R.layout.item_starred_bus_arrival_compact_small_error)
 class StarredBusArrivalCompactSmallErrorItem(
-    private val busArrival: StarredBusArrival
+    val busArrival: StarredBusArrival,
+    private val onLongClick: (busStopCode: String, busServiceNumber: String) -> Unit
 ) : RecyclerViewListItem {
 
     override fun bind(view: View, activity: FragmentActivity) {
+
+        view.parentCv.setOnLongClickListener {
+            onLongClick(busArrival.busStopCode, busArrival.busServiceNumber)
+            true
+        }
 
         view.serviceNumberTv.text = busArrival.busServiceNumber
 

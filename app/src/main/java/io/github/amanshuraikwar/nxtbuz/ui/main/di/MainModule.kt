@@ -17,6 +17,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragmentViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionViewModel
+import io.github.amanshuraikwar.nxtbuz.ui.starred.options.StarredBusArrivalOptionsDialogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -67,4 +68,7 @@ internal abstract class MainModule {
     @Binds
     @ActivityScoped
     internal abstract fun i(a: StarredArrivalsViewModelDelegateImpl): StarredArrivalsViewModelDelegate
+
+    @ContributesAndroidInjector
+    internal abstract fun j(): StarredBusArrivalOptionsDialogFragment
 }

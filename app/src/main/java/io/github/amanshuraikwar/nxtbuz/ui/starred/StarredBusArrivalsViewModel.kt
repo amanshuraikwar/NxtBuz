@@ -1,10 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.ui.starred
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
@@ -12,6 +9,7 @@ import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.StarredBusArrival
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.result.Event
 import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.list.HeaderItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalCompactSmallErrorItem
@@ -26,12 +24,14 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class StarredBusArrivalsViewModel @Inject constructor(
     private val attachStarredBusArrivalsUseCase: AttachStarredBusArrivalsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
+    @Named("starred-bus-arrival-removed-event") val remove: LiveData<Event<Pair<BusStop, String>>>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -40,6 +40,9 @@ class StarredBusArrivalsViewModel @Inject constructor(
 
     private val _starredBusArrivalClicked = MutableLiveData<StarredBusArrivalClicked>()
     val starredBusArrivalClicked = _starredBusArrivalClicked.asEvent()
+
+    private val _starredBusArrivalOptionsDialog = MutableLiveData<StarredBusArrivalClicked>()
+    val starredBusArrivalOptionsDialog = _starredBusArrivalOptionsDialog.asEvent()
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
@@ -82,9 +85,11 @@ class StarredBusArrivalsViewModel @Inject constructor(
                 starredBusArrivalList.forEach {
                     listItems.add(
                         if (it.arrivals is Arrivals.Arriving)
-                            StarredBusArrivalCompactSmallItem(it, ::onStarredItemClicked)
+                            StarredBusArrivalCompactSmallItem(
+                                it, ::onStarredItemClicked, ::onLongClick
+                            )
                         else
-                            StarredBusArrivalCompactSmallErrorItem(it)
+                            StarredBusArrivalCompactSmallErrorItem(it, ::onLongClick)
                     )
                 }
             }
@@ -95,6 +100,16 @@ class StarredBusArrivalsViewModel @Inject constructor(
     private fun onStarredItemClicked(busStopCode: String, busServiceNumber: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _starredBusArrivalClicked.postValue(
+                StarredBusArrivalClicked(
+                    getBusStopUseCase(busStopCode), busServiceNumber
+                )
+            )
+        }
+    }
+
+    private fun onLongClick(busStopCode: String, busServiceNumber: String) {
+        viewModelScope.launch(dispatcherProvider.io) {
+            _starredBusArrivalOptionsDialog.postValue(
                 StarredBusArrivalClicked(
                     getBusStopUseCase(busStopCode), busServiceNumber
                 )

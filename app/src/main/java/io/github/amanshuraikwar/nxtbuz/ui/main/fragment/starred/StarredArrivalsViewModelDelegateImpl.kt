@@ -9,15 +9,22 @@ import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.StarredBusArrival
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.ui.list.*
+import io.github.amanshuraikwar.nxtbuz.domain.result.Event
+import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalBtnItem
+import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalErrorItem
+import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalItem
+import io.github.amanshuraikwar.nxtbuz.ui.starred.model.StarredBusArrivalClicked
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.util.post
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -27,6 +34,7 @@ class StarredArrivalsViewModelDelegateImpl @Inject constructor(
     private val getBusStopUseCase: GetBusStopUseCase,
     @Named("starredListItems") private val _starredListItems: MutableLiveData<MutableList<RecyclerViewListItem>>,
     @Named("startStarredBusArrivalActivity") private val _startStarredBusArrivalActivity: MutableLiveData<Unit>,
+    @Named("starred-bus-arrival-removed-event") override val starredBusArrivalRemoved: LiveData<Event<Pair<BusStop, String>>>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : StarredArrivalsViewModelDelegate {
 
@@ -34,6 +42,9 @@ class StarredArrivalsViewModelDelegateImpl @Inject constructor(
     private lateinit var onStarredItemClicked: (busStop: BusStop, busServiceNumber: String) -> Unit
 
     override val startStarredBusArrivalActivity = _startStarredBusArrivalActivity.asEvent()
+
+    private val _starredBusArrivalOptionsDialog = MutableLiveData<StarredBusArrivalClicked>()
+    override val starredBusArrivalOptionsDialog = _starredBusArrivalOptionsDialog.asEvent()
 
     @InternalCoroutinesApi
     override fun start(
@@ -64,9 +75,9 @@ class StarredArrivalsViewModelDelegateImpl @Inject constructor(
             starredBusArrivalList
                 .map {
                     if (it.arrivals is Arrivals.Arriving)
-                        StarredBusArrivalItem(it, ::onStarredItemClicked)
+                        StarredBusArrivalItem(it, ::onStarredItemClicked, ::onLongClick)
                     else
-                        StarredBusArrivalErrorItem(it)
+                        StarredBusArrivalErrorItem(it, ::onLongClick)
                 }
                 .toMutableList()
                 .also {
@@ -84,6 +95,16 @@ class StarredArrivalsViewModelDelegateImpl @Inject constructor(
     private fun onStarredItemClicked(busStopCode: String, busServiceNumber: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             onStarredItemClicked(getBusStopUseCase(busStopCode), busServiceNumber)
+        }
+    }
+
+    private fun onLongClick(busStopCode: String, busServiceNumber: String) {
+        viewModelScope.launch(dispatcherProvider.io) {
+            _starredBusArrivalOptionsDialog.postValue(
+                StarredBusArrivalClicked(
+                    getBusStopUseCase(busStopCode), busServiceNumber
+                )
+            )
         }
     }
 
