@@ -62,4 +62,12 @@
         <item name="cornerSize">0dp</item>
     </style>
 
+    <style name="ShapeAppearanceBottomSheetDialog">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/shape_corner_size_medium_component</item>
+        <item name="cornerSizeTopLeft">@dimen/shape_corner_size_medium_component</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
 </resources>

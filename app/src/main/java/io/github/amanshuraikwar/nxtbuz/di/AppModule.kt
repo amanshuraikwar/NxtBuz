@@ -4,9 +4,13 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
+import androidx.lifecycle.MutableLiveData
 import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.MainApplication
+import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import javax.inject.Named
+import javax.inject.Singleton
 
 /**
  * Defines all the classes that need to be provided in the scope of the app.
@@ -34,5 +38,5 @@ class AppModule {
     @Provides
     fun providesClipboardManager(context: Context): ClipboardManager =
         context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
-            as ClipboardManager
+                as ClipboardManager
 }

@@ -15,6 +15,8 @@ import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsModule
 import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsModule
+import io.github.amanshuraikwar.nxtbuz.ui.starred.di.StarredBusArrivalsProvides
+import io.github.amanshuraikwar.nxtbuz.ui.starred.options.di.StarredBusArrivalOptionsModule
 import io.github.amanshuraikwar.nxtbuz.util.location.LocationUtilProvides
 import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtilProvides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,12 +49,16 @@ abstract class ActivityBindingModule {
     ])
     internal abstract fun b(): OnboardingActivity
 
+    @ExperimentalCoroutinesApi
+    @InternalCoroutinesApi
     @ActivityScoped
     @ContributesAndroidInjector(modules = [
         MainModule::class,
         MainLiveDataProvides::class,
         PermissionUtilProvides::class,
-        LocationUtilProvides::class
+        LocationUtilProvides::class,
+        StarredBusArrivalsProvides::class,
+        StarredBusArrivalOptionsModule::class
     ])
     internal abstract fun c(): MainActivity
 
@@ -67,6 +73,6 @@ abstract class ActivityBindingModule {
     @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [StarredBusArrivalsModule::class])
+    @ContributesAndroidInjector(modules = [StarredBusArrivalsModule::class, StarredBusArrivalOptionsModule::class, StarredBusArrivalsProvides::class])
     internal abstract fun f(): StarredBusArrivalsActivity
 }

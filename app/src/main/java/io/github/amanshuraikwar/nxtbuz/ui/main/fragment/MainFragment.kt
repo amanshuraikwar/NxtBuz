@@ -23,12 +23,13 @@ import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
-import io.github.amanshuraikwar.nxtbuz.ui.list.RecyclerViewTypeFactoryGenerated
+import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.starred.model.StarredBusArrivalClicked
+import io.github.amanshuraikwar.nxtbuz.ui.starred.options.StarredBusArrivalOptionsDialogFragment
 import io.github.amanshuraikwar.nxtbuz.util.lerp
 import io.github.amanshuraikwar.nxtbuz.util.setMarginTop
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
@@ -52,6 +53,8 @@ class MainFragment : DaggerFragment() {
 
     private lateinit var viewModel: MainFragmentViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+
+    private var starredBusArrivalsAdapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -265,10 +268,10 @@ class MainFragment : DaggerFragment() {
                 this,
                 Observer { listItems ->
                     val layoutState = starredBusArrivalsRv.layoutManager?.onSaveInstanceState()
-                    val adapter =
+                    starredBusArrivalsAdapter =
                         MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
                     starredBusArrivalsRv.layoutManager?.onRestoreInstanceState(layoutState)
-                    starredBusArrivalsRv.adapter = adapter
+                    starredBusArrivalsRv.adapter = starredBusArrivalsAdapter ?: return@Observer
                 }
             )
 
@@ -278,6 +281,32 @@ class MainFragment : DaggerFragment() {
                     startActivityForResult(
                         Intent(activity, StarredBusArrivalsActivity::class.java),
                         REQUEST_STARRED_BUS_ARRIVALS
+                    )
+                }
+            )
+
+            viewModel.starredBusArrivalRemoved.observe(
+                this,
+                EventObserver { (busStop, busServiceNumber) ->
+                    starredBusArrivalsAdapter?.remove { item ->
+                        if (item is StarredBusArrivalItem) {
+                            return@remove item.starredBusArrival.busStopCode == busStop.code
+                                    && item.starredBusArrival.busServiceNumber == busServiceNumber
+                        }
+                        if (item is StarredBusArrivalErrorItem) {
+                            return@remove item.starredBusArrival.busStopCode == busStop.code
+                                    && item.starredBusArrival.busServiceNumber == busServiceNumber
+                        }
+                        return@remove false
+                    }
+                }
+            )
+
+            viewModel.starredBusArrivalOptionsDialog.observe(
+                this,
+                EventObserver { (busStop, busServiceNumber) ->
+                    StarredBusArrivalOptionsDialogFragment(busStop, busServiceNumber).show(
+                        childFragmentManager, "starred-bus-arrival-options"
                     )
                 }
             )

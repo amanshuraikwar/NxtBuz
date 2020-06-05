@@ -13,8 +13,9 @@ import kotlinx.android.synthetic.main.item_starred_bus_arrival_compact_small.vie
 
 @ListItem(layoutResId = R.layout.item_starred_bus_arrival_compact_small)
 class StarredBusArrivalCompactSmallItem(
-    private val busArrival: StarredBusArrival,
-    private val onClicked: (busStopCode: String, busServiceNumber: String) -> Unit
+    val busArrival: StarredBusArrival,
+    private val onClicked: (busStopCode: String, busServiceNumber: String) -> Unit,
+    private val onLongClick: (busStopCode: String, busServiceNumber: String) -> Unit
 ) : RecyclerViewListItem {
 
     private var nextDeparture1Tv: String = "N/A"
@@ -132,6 +133,11 @@ class StarredBusArrivalCompactSmallItem(
 
         view.parentCv.setOnClickListener {
             onClicked(busArrival.busStopCode, busArrival.busServiceNumber)
+        }
+
+        view.parentCv.setOnLongClickListener {
+            onLongClick(busArrival.busStopCode, busArrival.busServiceNumber)
+            true
         }
 
         view.serviceNumberTv.text = busArrival.busServiceNumber

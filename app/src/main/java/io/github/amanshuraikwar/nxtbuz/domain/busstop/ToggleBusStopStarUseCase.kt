@@ -11,4 +11,10 @@ class ToggleBusStopStarUseCase @Inject constructor(
             busStopCode, busServiceNumber
         )
     }
+
+    suspend operator fun invoke(busStopCode: String, busServiceNumber: String, toggleTo: Boolean) {
+        busStopRepository.toggleBusStopStar(
+            busStopCode, busServiceNumber, toggleTo
+        )
+    }
 }

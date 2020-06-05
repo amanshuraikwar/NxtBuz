@@ -46,16 +46,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="961" />
 
-            <ImageView
-                android:id="@+id/nextBusIv0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_very_small"
-                android:src="@drawable/ic_round_keyboard_arrow_right_24"
-                app:layout_constraintBottom_toBottomOf="@id/serviceNumberBg"
-                app:layout_constraintStart_toEndOf="@id/serviceNumberBg"
-                app:layout_constraintTop_toTopOf="@id/serviceNumberBg" />
-
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/warnIv"
                 android:layout_width="wrap_content"
@@ -68,6 +58,16 @@
                 app:layout_constraintTop_toTopOf="@id/serviceNumberTv"
                 app:layout_constraintBottom_toBottomOf="@id/serviceNumberTv"
                 app:layout_constraintStart_toEndOf="@id/serviceNumberTv"/>
+
+            <ImageView
+                android:id="@+id/nextBusIv0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_very_small"
+                android:src="@drawable/ic_round_keyboard_arrow_right_24"
+                app:layout_constraintBottom_toBottomOf="@id/serviceNumberBg"
+                app:layout_constraintStart_toEndOf="@id/serviceNumberBg"
+                app:layout_constraintTop_toTopOf="@id/serviceNumberBg" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/nextDeparture1Tv"

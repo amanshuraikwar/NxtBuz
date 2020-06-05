@@ -159,6 +159,33 @@ class BusStopRepository @Inject constructor(
             }
         }
 
+    suspend fun toggleBusStopStar(
+        busStopCode: String,
+        busServiceNumber: String,
+        toggleTo: Boolean
+    ): Unit = withContext(dispatcherProvider.io) {
+
+        val isAlreadyStarred =
+            starredBusStopsDao.findByBusStopCodeAndBusServiceNumber(
+                busStopCode,
+                busServiceNumber
+            ).isNotEmpty()
+
+        if (toggleTo != isAlreadyStarred) {
+            if (toggleTo) {
+                starredBusStopsDao.insertAll(
+                    listOf(
+                        StarredBusStopEntity(busStopCode, busServiceNumber)
+                    )
+                )
+            } else {
+                starredBusStopsDao.deleteByBusStopCodeAndBusServiceNumber(
+                    busStopCode, busServiceNumber
+                )
+            }
+        }
+    }
+
     suspend fun getBusStop(busStopCode: String): BusStop = withContext(dispatcherProvider.io) {
         busStopDao
             .findByCode(busStopCode)
