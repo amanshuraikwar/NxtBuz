@@ -14,7 +14,12 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragment
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragmentViewModel
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionViewModel
+import io.github.amanshuraikwar.nxtbuz.ui.starred.options.StarredBusArrivalOptionsDialogFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @Module
@@ -41,12 +46,16 @@ internal abstract class MainModule {
     @ViewModelKey(PermissionViewModel::class)
     internal abstract fun e(a: PermissionViewModel): ViewModel
 
+    @ExperimentalCoroutinesApi
+    @FlowPreview
     @InternalCoroutinesApi
     @Binds
     @IntoMap
     @ViewModelKey(MainFragmentViewModel::class)
     internal abstract fun f(a: MainFragmentViewModel): ViewModel
 
+    @FlowPreview
+    @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
     @ContributesAndroidInjector
     internal abstract fun g(): MainFragment
@@ -54,4 +63,12 @@ internal abstract class MainModule {
     @Binds
     @ActivityScoped
     internal abstract fun h(a: MapViewModelDelegateImpl): MapViewModelDelegate
+
+    @ExperimentalCoroutinesApi
+    @Binds
+    @ActivityScoped
+    internal abstract fun i(a: StarredArrivalsViewModelDelegateImpl): StarredArrivalsViewModelDelegate
+
+    @ContributesAndroidInjector
+    internal abstract fun j(): StarredBusArrivalOptionsDialogFragment
 }

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentFl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/handle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_bottom_sheet_handle_36"
+        app:tint="?colorControlHighlight" />
+
+    <View
+        android:id="@+id/serviceNumberBg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_icon_star"
+        app:layout_constraintBottom_toBottomOf="@id/serviceNumberTv"
+        app:layout_constraintEnd_toEndOf="@id/warnIv"
+        app:layout_constraintStart_toStartOf="@id/serviceNumberTv"
+        app:layout_constraintTop_toTopOf="@id/serviceNumberTv" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/serviceNumberTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="2dp"
+        android:textAppearance="?textAppearanceHeadline6"
+        android:textColor="?android:textColorPrimaryInverse"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/handle"
+        tools:text="961" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/warnIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="6dp"
+        android:src="@drawable/ic_round_star_16"
+        android:tint="?android:textColorPrimaryInverse"
+        app:layout_constraintBottom_toBottomOf="@id/serviceNumberTv"
+        app:layout_constraintStart_toEndOf="@id/serviceNumberTv"
+        app:layout_constraintTop_toTopOf="@id/serviceNumberTv" />
+
+    <ImageView
+        android:id="@+id/arrowIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:src="@drawable/ic_round_keyboard_arrow_right_24"
+        app:layout_constraintBottom_toBottomOf="@id/serviceNumberTv"
+        app:layout_constraintStart_toEndOf="@id/serviceNumberBg"
+        app:layout_constraintTop_toTopOf="@id/serviceNumberTv"
+        tools:ignore="ContentDescription" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/busStopDescriptionTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textAppearance="?textAppearanceHeadline6"
+        app:layout_constraintBottom_toBottomOf="@id/arrowIv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/arrowIv"
+        app:layout_constraintTop_toTopOf="@id/arrowIv"
+        tools:text="Springdale Condo" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:background="@color/divider"
+        app:layout_constraintTop_toBottomOf="@id/serviceNumberBg" />
+
+    <FrameLayout
+        android:id="@+id/unStarBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:background="?selectableItemBackground"
+        android:paddingTop="@dimen/margin_normal"
+        android:paddingBottom="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:src="@drawable/ic_round_star_border_24"
+            app:tint="?android:textColorHint" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="72dp"
+            android:text="Un Star"
+            android:textAppearance="?textAppearanceButton"
+            android:textStyle="bold" />
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
