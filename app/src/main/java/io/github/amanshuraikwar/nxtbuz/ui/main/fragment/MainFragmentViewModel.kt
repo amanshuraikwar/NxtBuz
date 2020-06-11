@@ -1,17 +1,15 @@
 package io.github.amanshuraikwar.nxtbuz.ui.main.fragment
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.domain.busstop.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.data.starred.model.StarToggleState
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
@@ -23,6 +21,9 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.Alert
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
@@ -40,6 +41,7 @@ class MainFragmentViewModel @Inject constructor(
     @Named("starredListItems") _starredListItems: MutableLiveData<MutableList<RecyclerViewListItem>>,
     @Named("collapseBottomSheet") _collapseBottomSheet: MutableLiveData<Unit>,
     @Named("error") private val _error: MutableLiveData<Alert>,
+    @Named("starToggleState") _starToggleStateFlow: MutableStateFlow<StarToggleState>,
     private val busStopsViewModelDelegate: BusStopsViewModelDelegate,
     private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
     private val mapViewModelDelegate: MapViewModelDelegate,
@@ -49,6 +51,11 @@ class MainFragmentViewModel @Inject constructor(
 ) : ViewModel(),
     MapViewModelDelegate by mapViewModelDelegate,
     StarredArrivalsViewModelDelegate by starredArrivalsViewModelDelegate {
+
+    private val starToggleStateFlow: StateFlow<StarToggleState> = _starToggleStateFlow
+
+    private val _starToggleState = MutableLiveData<StarToggleState>()
+    val starToggleState = _starToggleState.asEvent()
 
     private val screenStateBackStack: Stack<ScreenState> = Stack()
 
@@ -94,6 +101,11 @@ class MainFragmentViewModel @Inject constructor(
             fetchBusStopsForLatLon(lat, lng)
         }
         onRecenterClicked(true)
+        launch {
+            starToggleStateFlow.collect {
+                _starToggleState.postValue(it)
+            }
+        }
     }
 
     private fun fetchBusStopsForLatLon(lat: Double, lng: Double) {
