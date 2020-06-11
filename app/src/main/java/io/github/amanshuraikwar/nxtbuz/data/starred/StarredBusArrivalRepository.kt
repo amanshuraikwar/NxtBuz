@@ -173,7 +173,7 @@ class StarredBusArrivalRepository @Inject constructor(
                 busStopCode, busServiceNumber, !isAlreadyStarred
             )
 
-            launch { getArrivalsAndEmit() }
+            coroutineScope.launch { getArrivalsAndEmit() }
         }
 
     suspend fun toggleBusStopStar(
@@ -207,7 +207,7 @@ class StarredBusArrivalRepository @Inject constructor(
             starToggleState.value = StarToggleState(busStopCode, busServiceNumber, toggleTo)
         }
 
-        launch { getArrivalsAndEmit() }
+        coroutineScope.launch { getArrivalsAndEmit() }
     }
 
     companion object {
