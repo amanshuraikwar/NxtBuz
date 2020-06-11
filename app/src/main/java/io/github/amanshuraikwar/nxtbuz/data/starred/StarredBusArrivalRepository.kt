@@ -4,16 +4,18 @@ import android.util.Log
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.StarredBusArrival
 import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
+import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopsDao
 import io.github.amanshuraikwar.nxtbuz.data.starred.delegate.BusArrivalsDelegate
+import io.github.amanshuraikwar.nxtbuz.data.starred.model.StarToggleState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
@@ -22,6 +24,7 @@ class StarredBusArrivalRepository @Inject constructor(
     private val starredBusStopsDao: StarredBusStopsDao,
     private val busStopDao: BusStopDao,
     private val busArrivalsDelegate: BusArrivalsDelegate,
+    @Named("starToggleState") private val starToggleState: MutableStateFlow<StarToggleState>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
 
@@ -63,7 +66,6 @@ class StarredBusArrivalRepository @Inject constructor(
             // we return a new instance of flow to the client
             // regardless of if it was already attached or not
             return starredBusArrivalStateFlow
-                .filter { it.isNotEmpty() }
                 .onCompletion {
                     detach(id)
                 }
@@ -102,43 +104,110 @@ class StarredBusArrivalRepository @Inject constructor(
         delay(initialDelay)
 
         while (isActive) {
-
-            val starredBusStops = starredBusStopsDao.findAll()
-
-            val starredBusArrivalList = starredBusStops
-                .map { (busStopCode, busServiceNumber) ->
-                    async(dispatcherProvider.pool8) {
-                        busArrivalsDelegate
-                            .getBusArrivals(busStopCode)
-                            .find { it.serviceNumber == busServiceNumber }
-                            ?.let { busArrival ->
-                                StarredBusArrival(
-                                    busStopCode,
-                                    busServiceNumber,
-                                    busStopDao
-                                        .findByCode(busStopCode)
-                                        .takeIf { it.isNotEmpty() }
-                                        ?.get(0)
-                                        ?.description
-                                        ?: throw Exception(
-                                            "No bus stop row found for stop code " +
-                                                    "$busStopCode in local DB."
-                                        ),
-                                    busArrival.arrivals
-                                )
-                            }
-                            ?: throw Exception(
-                                "Bus arrival for bus stop " +
-                                        "$busStopCode and service number " +
-                                        "$busServiceNumber not fetched."
-                            )
-                    }
-                }.awaitAll()
-
-            starredBusArrivalStateFlow.value = starredBusArrivalList
-
+            getArrivalsAndEmit()
             delay(DELAY_TIME_MILLIS)
         }
+    }
+
+    private suspend fun getArrivalsAndEmit() = coroutineScope {
+
+        val starredBusStops = starredBusStopsDao.findAll()
+
+        val starredBusArrivalList = starredBusStops
+            .map { (busStopCode, busServiceNumber) ->
+                async(dispatcherProvider.pool8) {
+                    busArrivalsDelegate
+                        .getBusArrivals(busStopCode)
+                        .find { it.serviceNumber == busServiceNumber }
+                        ?.let { busArrival ->
+                            StarredBusArrival(
+                                busStopCode,
+                                busServiceNumber,
+                                busStopDao
+                                    .findByCode(busStopCode)
+                                    .takeIf { it.isNotEmpty() }
+                                    ?.get(0)
+                                    ?.description
+                                    ?: throw Exception(
+                                        "No bus stop row found for stop code " +
+                                                "$busStopCode in local DB."
+                                    ),
+                                busArrival.arrivals
+                            )
+                        }
+                        ?: throw Exception(
+                            "Bus arrival for bus stop " +
+                                    "$busStopCode and service number " +
+                                    "$busServiceNumber not fetched."
+                        )
+                }
+            }.awaitAll()
+
+        starredBusArrivalStateFlow.value = starredBusArrivalList
+    }
+
+    suspend fun toggleBusStopStar(busStopCode: String, busServiceNumber: String): Unit =
+        withContext(dispatcherProvider.io) {
+
+            val isAlreadyStarred =
+                starredBusStopsDao.findByBusStopCodeAndBusServiceNumber(
+                    busStopCode,
+                    busServiceNumber
+                ).isNotEmpty()
+
+            if (isAlreadyStarred) {
+
+                starredBusStopsDao.deleteByBusStopCodeAndBusServiceNumber(
+                    busStopCode, busServiceNumber
+                )
+
+            } else {
+                starredBusStopsDao.insertAll(
+                    listOf(
+                        StarredBusStopEntity(busStopCode, busServiceNumber)
+                    )
+                )
+            }
+
+            starToggleState.value = StarToggleState(
+                busStopCode, busServiceNumber, !isAlreadyStarred
+            )
+
+            launch { getArrivalsAndEmit() }
+        }
+
+    suspend fun toggleBusStopStar(
+        busStopCode: String,
+        busServiceNumber: String,
+        toggleTo: Boolean
+    ): Unit = withContext(dispatcherProvider.io) {
+
+        val isAlreadyStarred =
+            starredBusStopsDao.findByBusStopCodeAndBusServiceNumber(
+                busStopCode,
+                busServiceNumber
+            ).isNotEmpty()
+
+        if (toggleTo != isAlreadyStarred) {
+
+            if (toggleTo) {
+
+                starredBusStopsDao.insertAll(
+                    listOf(
+                        StarredBusStopEntity(busStopCode, busServiceNumber)
+                    )
+                )
+
+            } else {
+                starredBusStopsDao.deleteByBusStopCodeAndBusServiceNumber(
+                    busStopCode, busServiceNumber
+                )
+            }
+
+            starToggleState.value = StarToggleState(busStopCode, busServiceNumber, toggleTo)
+        }
+
+        launch { getArrivalsAndEmit() }
     }
 
     companion object {

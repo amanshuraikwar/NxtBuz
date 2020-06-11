@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.domain.busstop.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch

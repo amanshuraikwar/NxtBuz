@@ -15,8 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
@@ -54,7 +56,9 @@ class MainFragment : DaggerFragment() {
     private lateinit var viewModel: MainFragmentViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
-    private var starredBusArrivalsAdapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? = null
+    private var starredBusArrivalsAdapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? =
+        null
+    private var adapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -191,10 +195,10 @@ class MainFragment : DaggerFragment() {
                 this,
                 Observer { listItems ->
                     val layoutState = itemsRv.layoutManager?.onSaveInstanceState()
-                    val adapter =
+                    adapter =
                         MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
                     itemsRv.layoutManager?.onRestoreInstanceState(layoutState)
-                    itemsRv.adapter = adapter
+                    itemsRv.adapter = adapter ?: return@Observer
                 }
             )
 
@@ -299,6 +303,9 @@ class MainFragment : DaggerFragment() {
                         }
                         return@remove false
                     }
+                    if (starredBusArrivalsAdapter?.items?.size == 1) {
+                        starredBusArrivalsAdapter?.remove { true }
+                    }
                 }
             )
 
@@ -308,6 +315,54 @@ class MainFragment : DaggerFragment() {
                     StarredBusArrivalOptionsDialogFragment(busStop, busServiceNumber).show(
                         childFragmentManager, "starred-bus-arrival-options"
                     )
+                }
+            )
+
+            viewModel.starToggleState.observe(
+                this,
+                EventObserver { (busStopCode, busServiceNumber, newToggleState) ->
+                    adapter
+                        ?.items
+                        ?.indexOfFirst { item ->
+
+                            if (item is BusArrivalCompactItem) {
+                                if (
+                                    item.busStopCode == busStopCode
+                                    && item.busArrival.serviceNumber == busServiceNumber
+                                    && item.busArrival.starred != newToggleState
+                                ) {
+                                    item.busArrival.starred = newToggleState
+                                    return@indexOfFirst true
+                                }
+                            }
+
+                            if (item is BusArrivalErrorItem) {
+                                if (
+                                    item.busStopCode == busStopCode
+                                    && item.busArrival.serviceNumber == busServiceNumber
+                                    && item.busArrival.starred != newToggleState
+                                ) {
+                                    item.busArrival.starred = newToggleState
+                                    return@indexOfFirst true
+                                }
+                            }
+
+                            if (item is BusRouteHeaderItem) {
+                                if (
+                                    item.busStopCode == busStopCode
+                                    && item.busServiceNumber == busServiceNumber
+                                    && item.starred != newToggleState
+                                ) {
+                                    item.starred = newToggleState
+                                    return@indexOfFirst true
+                                }
+                            }
+
+                            false
+                        }
+                        ?.let { index ->
+                            adapter?.notifyItemChanged(index)
+                        }
                 }
             )
 

@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.item_bus_arrival_compact.view.*
 
 @ListItem(layoutResId = R.layout.item_bus_arrival_compact)
 class BusArrivalCompactItem(
-    private val busStopCode: String,
-    private val busArrival: BusArrival,
+    val busStopCode: String,
+    val busArrival: BusArrival,
     private val onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit,
     private val onBusServiceClicked: (serviceNumber: String) -> Unit
 ) : RecyclerViewListItem {

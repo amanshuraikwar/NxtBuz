@@ -12,6 +12,7 @@ import io.github.amanshuraikwar.nxtbuz.data.location.di.LocationModuleProvides
 import io.github.amanshuraikwar.nxtbuz.data.prefs.di.PrefsModuleBinds
 import io.github.amanshuraikwar.nxtbuz.data.room.di.RoomProvides
 import io.github.amanshuraikwar.nxtbuz.data.starred.di.StarredBusArrivalModule
+import io.github.amanshuraikwar.nxtbuz.data.starred.di.StarredBusArrivalProvides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import javax.inject.Singleton
@@ -39,7 +40,8 @@ import javax.inject.Singleton
         RoomProvides::class,
         BusArrivalProvides::class,
         BusArrivalModule::class,
-        StarredBusArrivalModule::class
+        StarredBusArrivalModule::class,
+        StarredBusArrivalProvides::class,
     ]
 )
 interface AppComponent : AndroidInjector<MainApplication> {

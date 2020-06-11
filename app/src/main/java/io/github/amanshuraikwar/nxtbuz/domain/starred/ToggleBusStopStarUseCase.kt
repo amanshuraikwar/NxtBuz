@@ -1,19 +1,21 @@
-package io.github.amanshuraikwar.nxtbuz.domain.busstop
+package io.github.amanshuraikwar.nxtbuz.domain.starred
 
-import io.github.amanshuraikwar.nxtbuz.data.busstop.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.data.starred.StarredBusArrivalRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class ToggleBusStopStarUseCase @Inject constructor(
-    private val busStopRepository: BusStopRepository
+    private val repo: StarredBusArrivalRepository
 ) {
     suspend operator fun invoke(busStopCode: String, busServiceNumber: String) {
-        busStopRepository.toggleBusStopStar(
+        repo.toggleBusStopStar(
             busStopCode, busServiceNumber
         )
     }
 
     suspend operator fun invoke(busStopCode: String, busServiceNumber: String, toggleTo: Boolean) {
-        busStopRepository.toggleBusStopStar(
+        repo.toggleBusStopStar(
             busStopCode, busServiceNumber, toggleTo
         )
     }

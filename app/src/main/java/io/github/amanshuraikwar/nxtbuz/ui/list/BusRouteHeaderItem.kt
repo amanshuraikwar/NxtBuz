@@ -10,12 +10,12 @@ import kotlinx.android.synthetic.main.item_bus_route_header.view.*
 
 @ListItem(layoutResId = R.layout.item_bus_route_header)
 class BusRouteHeaderItem(
-    private val busStopCode: String,
-    private val busServiceNumber: String,
+    val busStopCode: String,
+    val busServiceNumber: String,
     private val busStopDescription: String,
     private val destinationBusStopDescription: String,
     private val originBusStopDescription: String,
-    private var starred: Boolean?,
+    var starred: Boolean?,
     private val onStarToggle: (busStopCode: String, busServiceNumber: String) -> Unit
 ) : RecyclerViewListItem {
 

@@ -10,9 +10,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
-import io.github.amanshuraikwar.nxtbuz.ui.list.RecyclerViewTypeFactoryGenerated
-import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalCompactSmallErrorItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalCompactSmallItem
+import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.ui.starred.options.StarredBusArrivalOptionsDialogFragment
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
 import kotlinx.android.synthetic.main.activity_starred_bus_arrivals.*
@@ -79,16 +77,32 @@ class StarredBusArrivalsActivity : DaggerAppCompatActivity() {
         viewModel.remove.observe(
             this,
             EventObserver { (busStop, busServiceNumber) ->
-                adapter.remove { item ->
-                    if (item is StarredBusArrivalCompactSmallItem) {
-                        return@remove item.busArrival.busStopCode == busStop.code
-                                && item.busArrival.busServiceNumber == busServiceNumber
+
+                adapter
+                    .prepareRemove { item ->
+                        if (item is StarredBusArrivalCompactSmallItem) {
+                            return@prepareRemove item.busArrival.busStopCode == busStop.code
+                                    && item.busArrival.busServiceNumber == busServiceNumber
+                        }
+                        if (item is StarredBusArrivalCompactSmallErrorItem) {
+                            return@prepareRemove item.busArrival.busStopCode == busStop.code
+                                    && item.busArrival.busServiceNumber == busServiceNumber
+                        }
+                        return@prepareRemove false
                     }
-                    if (item is StarredBusArrivalCompactSmallErrorItem) {
-                        return@remove item.busArrival.busStopCode == busStop.code
-                                && item.busArrival.busServiceNumber == busServiceNumber
+                    ?.alsoRemove { currentIndex ->
+                        if (previousItem() is HeaderItem
+                            && (nextItem() is HeaderItem || isCurrentItemLast())
+                        ) {
+                            currentIndex - 1
+                        } else {
+                            -1
+                        }
                     }
-                    return@remove false
+                    ?.doItNow()
+
+                if (adapter.items.size == 0) {
+                    finish()
                 }
             }
         )
