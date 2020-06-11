@@ -15,18 +15,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
-import io.github.amanshuraikwar.nxtbuz.ui.list.RecyclerViewTypeFactoryGenerated
+import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
+import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsActivity
+import io.github.amanshuraikwar.nxtbuz.ui.starred.model.StarredBusArrivalClicked
+import io.github.amanshuraikwar.nxtbuz.ui.starred.options.StarredBusArrivalOptionsDialogFragment
 import io.github.amanshuraikwar.nxtbuz.util.lerp
 import io.github.amanshuraikwar.nxtbuz.util.setMarginTop
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
@@ -50,6 +55,10 @@ class MainFragment : DaggerFragment() {
 
     private lateinit var viewModel: MainFragmentViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+
+    private var starredBusArrivalsAdapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? =
+        null
+    private var adapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -186,10 +195,10 @@ class MainFragment : DaggerFragment() {
                 this,
                 Observer { listItems ->
                     val layoutState = itemsRv.layoutManager?.onSaveInstanceState()
-                    val adapter =
+                    adapter =
                         MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
                     itemsRv.layoutManager?.onRestoreInstanceState(layoutState)
-                    itemsRv.adapter = adapter
+                    itemsRv.adapter = adapter ?: return@Observer
                 }
             )
 
@@ -263,10 +272,97 @@ class MainFragment : DaggerFragment() {
                 this,
                 Observer { listItems ->
                     val layoutState = starredBusArrivalsRv.layoutManager?.onSaveInstanceState()
-                    val adapter =
+                    starredBusArrivalsAdapter =
                         MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
                     starredBusArrivalsRv.layoutManager?.onRestoreInstanceState(layoutState)
-                    starredBusArrivalsRv.adapter = adapter
+                    starredBusArrivalsRv.adapter = starredBusArrivalsAdapter ?: return@Observer
+                }
+            )
+
+            viewModel.startStarredBusArrivalActivity.observe(
+                this,
+                EventObserver {
+                    startActivityForResult(
+                        Intent(activity, StarredBusArrivalsActivity::class.java),
+                        REQUEST_STARRED_BUS_ARRIVALS
+                    )
+                }
+            )
+
+            viewModel.starredBusArrivalRemoved.observe(
+                this,
+                EventObserver { (busStop, busServiceNumber) ->
+                    starredBusArrivalsAdapter?.remove { item ->
+                        if (item is StarredBusArrivalItem) {
+                            return@remove item.starredBusArrival.busStopCode == busStop.code
+                                    && item.starredBusArrival.busServiceNumber == busServiceNumber
+                        }
+                        if (item is StarredBusArrivalErrorItem) {
+                            return@remove item.starredBusArrival.busStopCode == busStop.code
+                                    && item.starredBusArrival.busServiceNumber == busServiceNumber
+                        }
+                        return@remove false
+                    }
+                    if (starredBusArrivalsAdapter?.items?.size == 1) {
+                        starredBusArrivalsAdapter?.remove { true }
+                    }
+                }
+            )
+
+            viewModel.starredBusArrivalOptionsDialog.observe(
+                this,
+                EventObserver { (busStop, busServiceNumber) ->
+                    StarredBusArrivalOptionsDialogFragment(busStop, busServiceNumber).show(
+                        childFragmentManager, "starred-bus-arrival-options"
+                    )
+                }
+            )
+
+            viewModel.starToggleState.observe(
+                this,
+                EventObserver { (busStopCode, busServiceNumber, newToggleState) ->
+                    adapter
+                        ?.items
+                        ?.indexOfFirst { item ->
+
+                            if (item is BusArrivalCompactItem) {
+                                if (
+                                    item.busStopCode == busStopCode
+                                    && item.busArrival.serviceNumber == busServiceNumber
+                                    && item.busArrival.starred != newToggleState
+                                ) {
+                                    item.busArrival.starred = newToggleState
+                                    return@indexOfFirst true
+                                }
+                            }
+
+                            if (item is BusArrivalErrorItem) {
+                                if (
+                                    item.busStopCode == busStopCode
+                                    && item.busArrival.serviceNumber == busServiceNumber
+                                    && item.busArrival.starred != newToggleState
+                                ) {
+                                    item.busArrival.starred = newToggleState
+                                    return@indexOfFirst true
+                                }
+                            }
+
+                            if (item is BusRouteHeaderItem) {
+                                if (
+                                    item.busStopCode == busStopCode
+                                    && item.busServiceNumber == busServiceNumber
+                                    && item.starred != newToggleState
+                                ) {
+                                    item.starred = newToggleState
+                                    return@indexOfFirst true
+                                }
+                            }
+
+                            false
+                        }
+                        ?.let { index ->
+                            adapter?.notifyItemChanged(index)
+                        }
                 }
             )
 
@@ -306,9 +402,21 @@ class MainFragment : DaggerFragment() {
                 viewModel.onBusStopClicked(busStop)
             }
         }
+        if (requestCode == REQUEST_STARRED_BUS_ARRIVALS) {
+            if (resultCode == Activity.RESULT_OK) {
+                val starredBusArrivalClicked =
+                    data?.getParcelableExtra<StarredBusArrivalClicked>(
+                        StarredBusArrivalsActivity.KEY_STARRED_BUS_ARRIVAL_CLICKED
+                    ) ?: return
+                viewModel.onBusServiceClicked(
+                    starredBusArrivalClicked.busStop, starredBusArrivalClicked.busServiceNumber
+                )
+            }
+        }
     }
 
     companion object {
         private const val REQUEST_SEARCH_BUS_STOPS = 10001
+        private const val REQUEST_STARRED_BUS_ARRIVALS = 10002
     }
 }

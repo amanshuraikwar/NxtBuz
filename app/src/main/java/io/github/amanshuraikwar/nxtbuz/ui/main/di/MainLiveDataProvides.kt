@@ -53,4 +53,11 @@ internal class MainLiveDataProvides {
     fun f(): MutableLiveData<Alert> {
         return MutableLiveData<Alert>()
     }
+
+    @Provides
+    @Named("startStarredBusArrivalActivity")
+    @ActivityScoped
+    fun g(): MutableLiveData<Unit> {
+        return MutableLiveData<Unit>()
+    }
 }

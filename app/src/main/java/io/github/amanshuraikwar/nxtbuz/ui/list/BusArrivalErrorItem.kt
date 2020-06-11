@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.item_bus_arrival_error.view.*
 
 @ListItem(layoutResId = R.layout.item_bus_arrival_error)
 class BusArrivalErrorItem(
-    private val busStopCode: String,
-    private val busArrival: BusArrival,
+    val busStopCode: String,
+    val busArrival: BusArrival,
     private val onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit
 ) : RecyclerViewListItem {
 
