@@ -10,7 +10,10 @@ import javax.inject.Inject
 class AttachStarredBusArrivalsUseCase @Inject constructor(
     private val starredBusArrivalRepository: StarredBusArrivalRepository
 ) {
-    suspend operator fun invoke(id: String): Flow<List<StarredBusArrival>> {
-        return starredBusArrivalRepository.attach(id)
+    suspend operator fun invoke(
+        id: String,
+        considerFilteringError: Boolean = false
+    ): Flow<List<StarredBusArrival>> {
+        return starredBusArrivalRepository.attach(id, considerFilteringError)
     }
 }

@@ -11,12 +11,14 @@ import kotlinx.android.synthetic.main.item_setting.view.*
 class SettingsItem(
     private val title: String,
     private val description: String,
-    private val value: String
+    private val onClick: () -> Unit,
+    private val last: Boolean = false
 ) : RecyclerViewListItem {
 
     override fun bind(view: View, activity: FragmentActivity) {
+        view.parentCl.setOnClickListener { onClick() }
         view.titleTv.text = title
         view.descriptionTv.text = description
-        view.valueTv.text = value
+        view.divider.visibility = if (last) View.INVISIBLE else View.VISIBLE
     }
 }
