@@ -42,11 +42,16 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         prefs, PREF_MAX_DISTANCE_OF_CLOSEST_BUS_STOP, 50_000
     )
 
+    override var showErrorStarredBusArrivals by BooleanPreference(
+        prefs, PREF_SHOW_ERROR_STARRED_BUS_ARRIVALS, false
+    )
+
     companion object {
         const val PREFS_NAME = BuildConfig.APPLICATION_ID
         const val PREF_ONBOARDING = "pref_onboarding"
         const val PREF_BUS_STOPS_QUERY_LIMIT = "pref_bus_stops_query_limit"
         const val PREF_DEFAULT_LOCATION = "pref_default_location"
         const val PREF_MAX_DISTANCE_OF_CLOSEST_BUS_STOP = "pref_max_distance_of_closest_bus_stop"
+        const val PREF_SHOW_ERROR_STARRED_BUS_ARRIVALS = "show_error_bus_arrivals"
     }
 }

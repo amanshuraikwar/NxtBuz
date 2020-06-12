@@ -12,6 +12,7 @@ import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.result.Event
 import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalBtnItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalErrorItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalItem
@@ -32,6 +33,7 @@ import javax.inject.Named
 class StarredArrivalsViewModelDelegateImpl @Inject constructor(
     private val attachStarredBusArrivalsUseCase: AttachStarredBusArrivalsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
+    private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
     @Named("starredListItems") private val _starredListItems: MutableLiveData<MutableList<RecyclerViewListItem>>,
     @Named("startStarredBusArrivalActivity") private val _startStarredBusArrivalActivity: MutableLiveData<Unit>,
     @Named("starred-bus-arrival-removed-event") override val starredBusArrivalRemoved: LiveData<Event<Pair<BusStop, String>>>,
@@ -53,7 +55,8 @@ class StarredArrivalsViewModelDelegateImpl @Inject constructor(
     ) = coroutineScope.launch(dispatcherProvider.io) {
         this@StarredArrivalsViewModelDelegateImpl.onStarredItemClicked = onStarredItemClicked
         this@StarredArrivalsViewModelDelegateImpl.viewModelScope = coroutineScope
-        attachStarredBusArrivalsUseCase("main-fragment-view-model")
+        attachStarredBusArrivalsUseCase(
+            "main-fragment-view-model", considerFilteringError = true)
             .catch { throwable ->
                 FirebaseCrashlytics.getInstance().recordException(throwable)
             }
