@@ -2,16 +2,16 @@ package io.github.amanshuraikwar.nxtbuz.data.starred
 
 import android.util.Log
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.StarredBusArrival
+import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopsDao
 import io.github.amanshuraikwar.nxtbuz.data.starred.delegate.BusArrivalsDelegate
 import io.github.amanshuraikwar.nxtbuz.data.starred.model.StarToggleState
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
@@ -23,6 +23,7 @@ import javax.inject.Singleton
 class StarredBusArrivalRepository @Inject constructor(
     private val starredBusStopsDao: StarredBusStopsDao,
     private val busStopDao: BusStopDao,
+    private val preferenceStorage: PreferenceStorage,
     private val busArrivalsDelegate: BusArrivalsDelegate,
     @Named("starToggleState") private val starToggleState: MutableStateFlow<StarToggleState>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
@@ -45,7 +46,19 @@ class StarredBusArrivalRepository @Inject constructor(
     private var attachedComponentSet = mutableSetOf<String>()
     private val mutex = Mutex()
 
-    suspend fun attach(id: String): Flow<List<StarredBusArrival>> {
+    suspend fun shouldShowErrorStarredBusArrivals(): Boolean = withContext(dispatcherProvider.io) {
+        preferenceStorage.showErrorStarredBusArrivals
+    }
+
+    suspend fun setShouldShowErrorStarredBusArrivals(shouldShow: Boolean) =
+        withContext(dispatcherProvider.io) {
+            if (shouldShow != preferenceStorage.showErrorStarredBusArrivals) {
+                preferenceStorage.showErrorStarredBusArrivals = shouldShow
+                coroutineScope.launch { getArrivalsAndEmit() }
+            }
+        }
+
+    suspend fun attach(id: String, considerFilteringError: Boolean): Flow<List<StarredBusArrival>> {
 
         mutex.withLock {
 
@@ -66,6 +79,18 @@ class StarredBusArrivalRepository @Inject constructor(
             // we return a new instance of flow to the client
             // regardless of if it was already attached or not
             return starredBusArrivalStateFlow
+                .map { arrivalList ->
+                    // if we should consider filtering error bus arrivals
+                    // and
+                    // if we should not show error bus arrivals
+                    // then
+                    // filter items for which arrivals is Arrivals.Arriving
+                    if (considerFilteringError && !shouldShowErrorStarredBusArrivals()) {
+                        arrivalList.filter { it.arrivals is Arrivals.Arriving }
+                    } else {
+                        arrivalList
+                    }
+                }
                 .onCompletion {
                     detach(id)
                 }
