@@ -7,9 +7,12 @@
     android:layout_height="wrap_content"
     android:paddingStart="@dimen/padding_normal"
     android:paddingTop="@dimen/padding_normal"
+    android:paddingBottom="@dimen/padding_normal"
     android:paddingEnd="@dimen/padding_normal"
-    android:textAppearance="?textAppearanceSubtitle2"
+    android:textAppearance="?textAppearanceSubtitle1"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    tools:text="V1.0.0" />
+    android:background="?colorSurface"
+    tools:text="V1.0.0"
+    android:elevation="@dimen/cardview_default_elevation"/>

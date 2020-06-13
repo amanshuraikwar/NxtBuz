@@ -8,6 +8,7 @@ interface PreferenceStorage {
     var busStopsQueryLimit: Int
     var defaultLocation: Pair<Double, Double>
     var maxDistanceOfClosestBusStop: Int
+    var showErrorStarredBusArrivals: Boolean
 }
 
 
