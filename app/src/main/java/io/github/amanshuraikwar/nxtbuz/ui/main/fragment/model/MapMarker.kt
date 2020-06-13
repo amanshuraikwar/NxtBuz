@@ -2,7 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model
 
 import androidx.annotation.DrawableRes
 
-data class MapMarker(
+open class MapMarker(
     val id: String,
     val lat: Double,
     val lng: Double,
@@ -22,5 +22,20 @@ data class MapMarker(
         if (id != other.id) return false
 
         return true
+    }
+}
+
+class ArrivingBusMapMarker(
+    id: String,
+    lat: Double,
+    lng: Double,
+    description: String,
+    val busServiceNumber: String,
+) : MapMarker(id, lat, lng, 0, description) {
+
+    fun copy(lat: Double, lng: Double): ArrivingBusMapMarker {
+        return ArrivingBusMapMarker(
+            id, lat, lng, description, busServiceNumber
+        )
     }
 }
