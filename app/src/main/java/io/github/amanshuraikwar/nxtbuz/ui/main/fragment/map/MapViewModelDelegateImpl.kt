@@ -16,11 +16,12 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.model.AnimateUpdate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.model.MapInitData
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.util.LatLngInterpolator
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.AnimateMarker
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.ArrivingBusMapMarker
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
-import io.github.amanshuraikwar.nxtbuz.util.MapUtil
+import io.github.amanshuraikwar.nxtbuz.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
-import kotlinx.coroutines.CoroutineScope
+import io.github.amanshuraikwar.nxtbuz.util.map.MarkerUtil
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -30,7 +31,8 @@ import kotlin.coroutines.suspendCoroutine
 
 class MapViewModelDelegateImpl @Inject constructor(
     private val mapUtil: MapUtil,
-    private val dispatcherProvider: CoroutinesDispatcherProvider
+    private val markerUtil: MarkerUtil,
+    private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) : MapViewModelDelegate {
 
     private var map: GoogleMap? = null
@@ -267,7 +269,11 @@ class MapViewModelDelegateImpl @Inject constructor(
                         )
                     )
                     .icon(
-                        mapUtil.bitmapDescriptorFromVector(mapMarker.iconDrawableRes)
+                        if (mapMarker is ArrivingBusMapMarker) {
+                            markerUtil.arrivingBusBitmapDescriptor(mapMarker.busServiceNumber)
+                        } else {
+                            mapUtil.bitmapDescriptorFromVector(mapMarker.iconDrawableRes)
+                        }
                     )
                     .title(mapMarker.description)
 

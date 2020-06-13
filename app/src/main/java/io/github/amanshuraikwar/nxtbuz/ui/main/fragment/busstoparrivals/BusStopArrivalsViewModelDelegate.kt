@@ -18,10 +18,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.list.HeaderItem
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.Alert
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapUpdate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.*
 import io.github.amanshuraikwar.nxtbuz.util.post
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.FlowCollector
@@ -49,7 +46,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
     private lateinit var onBusServiceClicked: (busServiceNumber: String) -> Unit
 
     private val serviceNumberMapMarkerMap =
-        mutableMapOf<String, MapMarker>()
+        mutableMapOf<String, ArrivingBusMapMarker>()
 
     fun stop(busStopState: ScreenState.BusStopState) {
         if (busStopState == curBusStopState) {
@@ -169,7 +166,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
 
             _listItems.postValue(listItems)
 
-            val busAddList = mutableListOf<MapMarker>()
+            val busAddList = mutableListOf<ArrivingBusMapMarker>()
             val busDeleteList = mutableListOf<String>()
             val busUpdateList = mutableListOf<MapUpdate>()
 
@@ -197,16 +194,16 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
                                     }
                                 }
                                 ?: run {
-                                    val mapMarker = MapMarker(
+                                    val mapMarker = ArrivingBusMapMarker(
                                         busArrival.serviceNumber,
                                         busArrival.arrivals.nextArrivingBus.latitude,
                                         busArrival.arrivals.nextArrivingBus.longitude,
-                                        R.drawable.ic_marker_arriving_bus_48,
                                         if ((busArrival.arrivals).nextArrivingBus.arrival == "Arr") {
                                             "ARRIVING"
                                         } else {
                                             "${(busArrival.arrivals).nextArrivingBus.arrival} MINS"
-                                        }
+                                        },
+                                        busServiceNumber = busArrival.serviceNumber,
                                     )
                                     serviceNumberMapMarkerMap[busArrival.serviceNumber] =
                                         mapMarker
