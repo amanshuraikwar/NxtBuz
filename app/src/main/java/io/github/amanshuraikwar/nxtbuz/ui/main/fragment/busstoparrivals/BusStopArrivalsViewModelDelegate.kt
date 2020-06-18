@@ -37,6 +37,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
     @Named("error") private val _error: MutableLiveData<Alert>,
     private val mapViewModelDelegate: MapViewModelDelegate,
+    private val busStopArrivalsMapMarkerHelper: BusStopArrivalsMapMarkerHelper,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
 
@@ -44,9 +45,6 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
     private lateinit var viewModelScope: CoroutineScope
     private lateinit var onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit
     private lateinit var onBusServiceClicked: (busServiceNumber: String) -> Unit
-
-    private val serviceNumberMapMarkerMap =
-        mutableMapOf<String, ArrivingBusMapMarker>()
 
     fun stop(busStopState: ScreenState.BusStopState) {
         if (busStopState == curBusStopState) {
@@ -76,7 +74,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
         )
         _collapseBottomSheet.post()
         curBusStopState = busStopState
-        serviceNumberMapMarkerMap.clear()
+        busStopArrivalsMapMarkerHelper.clear()
         mapViewModelDelegate.pushMapEvent(
             MapEvent.ClearMap
         )
@@ -163,95 +161,8 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
         )
 
         if (isActive) {
-
             _listItems.postValue(listItems)
-
-            val busAddList = mutableListOf<ArrivingBusMapMarker>()
-            val busDeleteList = mutableListOf<String>()
-            val busUpdateList = mutableListOf<MapUpdate>()
-
-            busArrivals
-                .forEach { busArrival ->
-                    when (busArrival.arrivals) {
-                        is Arrivals.Arriving -> {
-                            serviceNumberMapMarkerMap[busArrival.serviceNumber]
-                                ?.let { mapMarker ->
-                                    if (busArrival.arrivals.nextArrivingBus.latitude != mapMarker.lat
-                                        || busArrival.arrivals.nextArrivingBus.longitude != mapMarker.lng
-                                    ) {
-                                        busUpdateList.add(
-                                            MapUpdate(
-                                                mapMarker.id,
-                                                busArrival.arrivals.nextArrivingBus.latitude,
-                                                busArrival.arrivals.nextArrivingBus.longitude
-                                            )
-                                        )
-                                        serviceNumberMapMarkerMap[busArrival.serviceNumber] =
-                                            mapMarker.copy(
-                                                lat = busArrival.arrivals.nextArrivingBus.latitude,
-                                                lng = busArrival.arrivals.nextArrivingBus.longitude
-                                            )
-                                    }
-                                }
-                                ?: run {
-                                    val mapMarker = ArrivingBusMapMarker(
-                                        busArrival.serviceNumber,
-                                        busArrival.arrivals.nextArrivingBus.latitude,
-                                        busArrival.arrivals.nextArrivingBus.longitude,
-                                        if ((busArrival.arrivals).nextArrivingBus.arrival == "Arr") {
-                                            "ARRIVING"
-                                        } else {
-                                            "${(busArrival.arrivals).nextArrivingBus.arrival} MINS"
-                                        },
-                                        busServiceNumber = busArrival.serviceNumber,
-                                    )
-                                    serviceNumberMapMarkerMap[busArrival.serviceNumber] =
-                                        mapMarker
-                                    busAddList.add(mapMarker)
-                                }
-                        }
-                        is Arrivals.DataNotAvailable,
-                        is Arrivals.NotOperating -> {
-                            serviceNumberMapMarkerMap[busArrival.serviceNumber]
-                                ?.let { mapMarker ->
-                                    busDeleteList.add(mapMarker.id)
-                                    serviceNumberMapMarkerMap.remove(mapMarker.id)
-                                }
-                                ?: run {
-                                    // just ignore
-                                }
-                        }
-                    }
-                }
-
-            withContext(dispatcherProvider.main) {
-                if (busAddList.isNotEmpty()) {
-                    mapViewModelDelegate.pushMapEvent(
-                        MapEvent.AddMapMarkers(
-                            busAddList
-                        )
-                    )
-                }
-                if (busDeleteList.isNotEmpty()) {
-                    mapViewModelDelegate.pushMapEvent(
-                        MapEvent.DeleteMarker(
-                            busDeleteList
-                        )
-                    )
-                }
-                if (busUpdateList.isNotEmpty()) {
-                    mapViewModelDelegate.pushMapEvent(
-                        MapEvent.UpdateMapMarkers(
-                            busUpdateList
-                        )
-                    )
-                }
-            }
-
-            Log.i(TAG, "startArrivalsLoop: add ${busAddList.size}")
-            Log.i(TAG, "startArrivalsLoop: delete ${busDeleteList.size}")
-            Log.i(TAG, "startArrivalsLoop: update ${busUpdateList.size}")
-
+            busStopArrivalsMapMarkerHelper.showMapMarkers(busArrivals)
             _loading.postValue(Loading.Hide)
         }
     }

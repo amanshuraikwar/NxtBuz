@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import io.github.amanshuraikwar.nxtbuz.BuildConfig
+import io.github.amanshuraikwar.nxtbuz.data.prefs.model.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.data.prefs.model.BooleanPreference
 import io.github.amanshuraikwar.nxtbuz.data.prefs.model.IntPreference
 import io.github.amanshuraikwar.nxtbuz.data.prefs.model.ObjectPreference
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.Alert
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -46,6 +48,22 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         prefs, PREF_SHOW_ERROR_STARRED_BUS_ARRIVALS, false
     )
 
+    override var alertStarredBusArrivals by BooleanPreference(
+        prefs, PREF_ALERT_STARRED_BUS_ARRIVALS, true
+    )
+
+    override var alertStarredBusArrivalsMinutes by IntPreference(
+        prefs, PREF_ALERT_STARRED_BUS_ARRIVALS_MINUTES, 5
+    )
+
+    override var alertStarredBusArrivalsFrequency by ObjectPreference(
+        prefs,
+        PREF_ALERT_STARRED_BUS_ARRIVALS_FREQUENCY,
+        AlertFrequency.ONCE,
+        { it.toString() },
+        fromStr@{ str -> AlertFrequency.valueOf(str ?: return@fromStr null) }
+    )
+
     companion object {
         const val PREFS_NAME = BuildConfig.APPLICATION_ID
         const val PREF_ONBOARDING = "pref_onboarding"
@@ -53,5 +71,8 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         const val PREF_DEFAULT_LOCATION = "pref_default_location"
         const val PREF_MAX_DISTANCE_OF_CLOSEST_BUS_STOP = "pref_max_distance_of_closest_bus_stop"
         const val PREF_SHOW_ERROR_STARRED_BUS_ARRIVALS = "show_error_bus_arrivals"
+        const val PREF_ALERT_STARRED_BUS_ARRIVALS = "alert_starred_bus_arrivals"
+        const val PREF_ALERT_STARRED_BUS_ARRIVALS_MINUTES = "alert_starred_bus_arrivals_minutes"
+        const val PREF_ALERT_STARRED_BUS_ARRIVALS_FREQUENCY = "alert_starred_bus_arrivals_frequency"
     }
 }

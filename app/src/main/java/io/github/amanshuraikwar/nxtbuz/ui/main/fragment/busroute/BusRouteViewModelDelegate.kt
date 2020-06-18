@@ -244,8 +244,9 @@ class BusRouteViewModelDelegate @Inject constructor(
                             )
                         )
                         mapMarkerList[curIndex] = mapMarkerList[curIndex].copy(
-                            lat = busArrival.arrivals.nextArrivingBus.latitude,
-                            lng = busArrival.arrivals.nextArrivingBus.longitude
+                            newLat = busArrival.arrivals.nextArrivingBus.latitude,
+                            newLng = busArrival.arrivals.nextArrivingBus.longitude,
+                            newDescription = "",
                         )
                     }
                 }
@@ -281,8 +282,9 @@ class BusRouteViewModelDelegate @Inject constructor(
                                 )
                             )
                             mapMarkerList[curIndex] = mapMarkerList[curIndex].copy(
-                                lat = arrivingBus.latitude,
-                                lng = arrivingBus.longitude
+                                newLat = arrivingBus.latitude,
+                                newLng = arrivingBus.longitude,
+                                newDescription = "",
                             )
                         }
                     }
