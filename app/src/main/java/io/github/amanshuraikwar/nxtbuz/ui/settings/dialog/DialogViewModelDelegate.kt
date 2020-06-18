@@ -28,7 +28,25 @@ class DialogViewModelDelegate @Inject constructor(
                 cont.resumeWith(Result.success(predicate(choices[checkedItemIndex])))
             }
             .show()
-
     }
 
+    suspend fun <T> showSingleChoiceIndexed(
+        title: String,
+        choices: List<T>,
+        checkedItemIndex: Int,
+        choiceToStr: (T) -> String,
+    ): T = suspendCoroutine { cont ->
+
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(title)
+            .setSingleChoiceItems(choices.map(choiceToStr).toTypedArray(), checkedItemIndex) { dialog, which ->
+                cont.resumeWith(Result.success(choices[which]))
+                dialog.dismiss()
+            }
+            .setOnCancelListener {
+                cont.resumeWith(Result.success(choices[checkedItemIndex]))
+            }
+            .show()
+
+    }
 }

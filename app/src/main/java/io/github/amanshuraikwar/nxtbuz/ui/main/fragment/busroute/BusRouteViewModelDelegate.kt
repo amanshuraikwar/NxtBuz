@@ -16,10 +16,11 @@ import io.github.amanshuraikwar.nxtbuz.ui.list.BusRouteNodeItem
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.ArrivingBusMapMarker
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapUpdate
-import io.github.amanshuraikwar.nxtbuz.util.MapUtil
+import io.github.amanshuraikwar.nxtbuz.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.util.post
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -47,7 +48,7 @@ class BusRouteViewModelDelegate @Inject constructor(
         startStarredBusArrivalsLoopDelayed()
     }
 
-    private val mapMarkerList = mutableListOf<MapMarker>()
+    private val mapMarkerList = mutableListOf<ArrivingBusMapMarker>()
 
     suspend fun stop(busRouteState: ScreenState.BusRouteState) {
         if (busRouteState == curBusRouteState) {
@@ -218,16 +219,16 @@ class BusRouteViewModelDelegate @Inject constructor(
 
                 if (curIndex >= mapMarkerList.size) {
 
-                    val mapMarker = MapMarker(
+                    val mapMarker = ArrivingBusMapMarker(
                         busArrival.serviceNumber,
                         busArrival.arrivals.nextArrivingBus.latitude,
                         busArrival.arrivals.nextArrivingBus.longitude,
-                        R.drawable.ic_marker_arriving_bus_48,
                         if (busArrival.arrivals.nextArrivingBus.arrival == "Arr") {
                             "ARRIVING"
                         } else {
                             "${busArrival.arrivals.nextArrivingBus.arrival} MINS"
-                        }
+                        },
+                        busArrival.serviceNumber,
                     )
                     mapMarkerList.add(mapMarker)
                     busAddList.add(mapMarker)
@@ -243,8 +244,9 @@ class BusRouteViewModelDelegate @Inject constructor(
                             )
                         )
                         mapMarkerList[curIndex] = mapMarkerList[curIndex].copy(
-                            lat = busArrival.arrivals.nextArrivingBus.latitude,
-                            lng = busArrival.arrivals.nextArrivingBus.longitude
+                            newLat = busArrival.arrivals.nextArrivingBus.latitude,
+                            newLng = busArrival.arrivals.nextArrivingBus.longitude,
+                            newDescription = "",
                         )
                     }
                 }
@@ -254,16 +256,16 @@ class BusRouteViewModelDelegate @Inject constructor(
                 busArrival.arrivals.followingArrivingBusList.forEach { arrivingBus ->
                     if (curIndex >= mapMarkerList.size) {
 
-                        val mapMarker = MapMarker(
+                        val mapMarker = ArrivingBusMapMarker(
                             busArrival.serviceNumber,
                             arrivingBus.latitude,
                             arrivingBus.longitude,
-                            R.drawable.ic_marker_arriving_bus_48,
                             if (arrivingBus.arrival == "Arr") {
                                 "ARRIVING"
                             } else {
                                 "${arrivingBus.arrival} MINS"
-                            }
+                            },
+                            busArrival.serviceNumber,
                         )
                         mapMarkerList.add(mapMarker)
                         busAddList.add(mapMarker)
@@ -280,8 +282,9 @@ class BusRouteViewModelDelegate @Inject constructor(
                                 )
                             )
                             mapMarkerList[curIndex] = mapMarkerList[curIndex].copy(
-                                lat = arrivingBus.latitude,
-                                lng = arrivingBus.longitude
+                                newLat = arrivingBus.latitude,
+                                newLng = arrivingBus.longitude,
+                                newDescription = "",
                             )
                         }
                     }
