@@ -21,7 +21,7 @@ interface StarredBusStopsDao {
     suspend fun findByBusStopCode(busStopCode: String): List<StarredBusStopEntity>
 
     @Query("SELECT * FROM StarredBusStopEntity WHERE busStopCode = :busStopCode AND busServiceNumber = :busServiceNumber ")
-    fun findByBusStopCodeAndBusServiceNumber(busStopCode: String, busServiceNumber: String): List<StarredBusStopEntity>
+    suspend fun findByBusStopCodeAndBusServiceNumber(busStopCode: String, busServiceNumber: String): List<StarredBusStopEntity>
 
     @Query("DELETE FROM StarredBusStopEntity WHERE busStopCode = :busStopCode AND busServiceNumber = :busServiceNumber ")
     fun deleteByBusStopCodeAndBusServiceNumber(busStopCode: String, busServiceNumber: String)

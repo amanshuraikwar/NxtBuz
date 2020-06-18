@@ -33,9 +33,9 @@ class ArrivingBusMapMarker(
     val busServiceNumber: String,
 ) : MapMarker(id, lat, lng, 0, description) {
 
-    fun copy(lat: Double, lng: Double): ArrivingBusMapMarker {
+    fun copy(newLat: Double, newLng: Double, newDescription: String): ArrivingBusMapMarker {
         return ArrivingBusMapMarker(
-            id, lat, lng, description, busServiceNumber
+            id, newLat, newLng, newDescription, busServiceNumber
         )
     }
 }
