@@ -1,5 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.data.prefs
 
+import io.github.amanshuraikwar.nxtbuz.data.prefs.model.AlertFrequency
+
 /**
  * Storage for app and user preferences.
  */
@@ -9,6 +11,9 @@ interface PreferenceStorage {
     var defaultLocation: Pair<Double, Double>
     var maxDistanceOfClosestBusStop: Int
     var showErrorStarredBusArrivals: Boolean
+    var alertStarredBusArrivals: Boolean
+    var alertStarredBusArrivalsMinutes: Int
+    var alertStarredBusArrivalsFrequency: AlertFrequency
 }
 
 

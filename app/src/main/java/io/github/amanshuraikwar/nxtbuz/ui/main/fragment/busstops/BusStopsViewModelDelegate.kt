@@ -13,7 +13,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.util.MapUtil
+import io.github.amanshuraikwar.nxtbuz.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.util.post
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

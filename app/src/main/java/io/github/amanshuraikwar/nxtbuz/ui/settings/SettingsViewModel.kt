@@ -8,9 +8,14 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.data.busarrival.util.toNotificationTimeStr
+import io.github.amanshuraikwar.nxtbuz.data.prefs.model.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.MaxDistanceOfClosesBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.AlertStarredBusArrivalsFrequency
+import io.github.amanshuraikwar.nxtbuz.domain.starred.AlertStarredBusArrivalsMinutes
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ShouldAlertStarredBusArrivals
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.list.BooleanSettingsItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.SettingsHeadingItem
@@ -22,6 +27,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 private const val TAG = "SettingsViewModel"
@@ -31,6 +37,9 @@ class SettingsViewModel @Inject constructor(
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
     private val maxDistanceOfClosesBusStopUseCase: MaxDistanceOfClosesBusStopUseCase,
     private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
+    private val shouldAlertStarredBusArrivals: ShouldAlertStarredBusArrivals,
+    private val alertStarredBusArrivalsMinutes: AlertStarredBusArrivalsMinutes,
+    private val alertStarredBusArrivalsFrequency: AlertStarredBusArrivalsFrequency,
     private val dialogViewModelDelegate: DialogViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
@@ -99,10 +108,98 @@ class SettingsViewModel @Inject constructor(
                 )
             )
 
+            listItems.add(SettingsHeadingItem("NOTIFICATIONS"))
+
+            val shouldAlertStarredBusArrivals = shouldAlertStarredBusArrivals()
+
+            listItems.add(
+                BooleanSettingsItem(
+                    "Notify starred buses arriving",
+                    { value ->
+                        if (value)
+                            "You will be notified of the arriving starred buses at the current bus stop"
+                        else
+                            "You will be not be notified of the arriving starred buses"
+                    },
+                    shouldAlertStarredBusArrivals,
+                    ::onShouldAlertStarredBusArrivalsClicked,
+                )
+            )
+
+            listItems.add(
+                SettingsItem(
+                    "Starred buses arriving notify time",
+                    "You will be notified if the bus is arriving in set minutes.",
+                    ::alertStarredBusArrivalsMinutesClicked,
+                )
+            )
+
+            listItems.add(
+                SettingsItem(
+                    "Starred buses arriving notify frequency",
+                    "Frequency at which you will be notified of the arriving buses",
+                    ::alertStarredBusArrivalsFrequencyClicked,
+                    last = true,
+                )
+            )
+
             listItems.add(SettingsHeadingItem("ABOUT"))
             listItems.add(VersionItem(Util.getVersionInfo()))
 
             _listItems.postValue(listItems)
+        }
+
+    private fun alertStarredBusArrivalsMinutesClicked() =
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+
+            val checkedItemIndex = when (alertStarredBusArrivalsMinutes()) {
+                0 -> 0
+                2 -> 1
+                5 -> 2
+                else -> 0
+            }
+
+            val newValue = withContext(dispatcherProvider.main) {
+                dialogViewModelDelegate.showSingleChoiceIndexed(
+                    "Notify me if the bus is arriving",
+                    listOf(0, 2, 5),
+                    checkedItemIndex,
+                ) {
+                    when (it) {
+                        0 -> "Now"
+                        2 -> "In 2 minutes"
+                        5 -> "In 5 minutes"
+                        else -> throw IllegalArgumentException("Item cannot be $it.")
+                    }
+                }
+            }
+
+            alertStarredBusArrivalsMinutes(newValue)
+        }
+
+
+    private fun alertStarredBusArrivalsFrequencyClicked() =
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+
+            val checkedItemIndex = when (alertStarredBusArrivalsFrequency()) {
+                AlertFrequency.ONCE -> 0
+                AlertFrequency.EVERY_TIME_BUS_GETS_CLOSER -> 1
+            }
+
+            val newValue = withContext(dispatcherProvider.main) {
+                dialogViewModelDelegate.showSingleChoiceIndexed(
+                    "Notify me about arriving bus",
+                    listOf(AlertFrequency.ONCE, AlertFrequency.EVERY_TIME_BUS_GETS_CLOSER),
+                    checkedItemIndex,
+                ) {
+                    when (it) {
+                        AlertFrequency.ONCE -> AlertFrequency.ONCE.title
+                        AlertFrequency.EVERY_TIME_BUS_GETS_CLOSER -> AlertFrequency.EVERY_TIME_BUS_GETS_CLOSER.title
+                    }
+                }
+            }
+
+            alertStarredBusArrivalsFrequency(newValue)
         }
 
     private fun onBusStopQueryLimitClicked() =
@@ -159,5 +256,10 @@ class SettingsViewModel @Inject constructor(
     private fun onShouldShowStarredBusArrivalsClicked(newVal: Boolean) =
         viewModelScope.launch(dispatcherProvider.io) {
             showErrorStarredBusArrivalsUseCase(newVal)
+        }
+
+    private fun onShouldAlertStarredBusArrivalsClicked(newVal: Boolean) =
+        viewModelScope.launch(dispatcherProvider.io) {
+            shouldAlertStarredBusArrivals(newVal)
         }
 }
