@@ -1,20 +1,26 @@
 package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstops
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.list.BusStopItem
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
 import io.github.amanshuraikwar.nxtbuz.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.util.post
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
@@ -22,6 +28,7 @@ import javax.inject.Named
 class BusStopsViewModelDelegate @Inject constructor(
     private val getBusStopsUseCase: GetBusStopsUseCase,
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
+    private val getBusStopUseCase: GetBusStopUseCase,
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
@@ -31,6 +38,14 @@ class BusStopsViewModelDelegate @Inject constructor(
 ) {
 
     private lateinit var curBusStopsState: ScreenState.BusStopsState
+    private lateinit var coroutineScope: CoroutineScope
+    private lateinit var onBusStopClicked: (BusStop) -> Unit
+    private val mapMarkerIdBusStopMap = mutableMapOf<String, BusStop>()
+
+    private val errorHandler = CoroutineExceptionHandler { _, th ->
+        Log.e(TAG, "errorHandler: $th", th)
+        FirebaseCrashlytics.getInstance().recordException(th)
+    }
 
     suspend fun stop(busStopsState: ScreenState.BusStopsState) {
         // do nothing
@@ -38,8 +53,11 @@ class BusStopsViewModelDelegate @Inject constructor(
 
     suspend fun start(
         busStopsState: ScreenState.BusStopsState,
-        onBusStopClicked: (BusStop) -> Unit
+        onBusStopClicked: (BusStop) -> Unit,
+        coroutineScope: CoroutineScope,
     ) = withContext(dispatcherProvider.io) {
+        this@BusStopsViewModelDelegate.coroutineScope = coroutineScope
+        this@BusStopsViewModelDelegate.onBusStopClicked = onBusStopClicked
         _loading.postValue(
             Loading.Show(
                 R.drawable.avd_anim_nearby_bus_stops_loading_128,
@@ -49,7 +67,7 @@ class BusStopsViewModelDelegate @Inject constructor(
         _collapseBottomSheet.post()
         curBusStopsState = busStopsState
 
-        val mapStateId = mapViewModelDelegate.newState()
+        val mapStateId = mapViewModelDelegate.newState(::onMapMarkerClicked)
 
         mapViewModelDelegate.pushMapEvent(
             mapStateId,
@@ -95,6 +113,7 @@ class BusStopsViewModelDelegate @Inject constructor(
             mapStateId,
             MapEvent.AddMapMarkers(
                 busStopList.map { busStop ->
+                    mapMarkerIdBusStopMap[busStop.code] = busStop
                     MapMarker(
                         busStop.code,
                         busStop.latitude,
@@ -138,5 +157,13 @@ class BusStopsViewModelDelegate @Inject constructor(
 
     // todo remove this
     private fun onGotoClicked(busStop: BusStop) {
+    }
+
+    private fun onMapMarkerClicked(markerId: String) = coroutineScope.launch(errorHandler) {
+        onBusStopClicked(getBusStopUseCase(markerId))
+    }
+
+    companion object {
+        private const val TAG = "BusStopsVmDelegate"
     }
 }
