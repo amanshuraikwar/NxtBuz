@@ -72,9 +72,23 @@ class MapViewModelDelegateImpl @Inject constructor(
         }
     }
 
-    override suspend fun newState(): Int = mutex.withLock {
-        return ++mapStateId
-    }
+    override suspend fun newState(onMarkerInfoWindowClickListener: (markerId: String) -> Unit): Int =
+        mutex.withLock {
+            withContext(dispatcherProvider.main) {
+                map?.setOnInfoWindowClickListener { marker ->
+                    onMarkerInfoWindowClickListener(
+                        mapMarkerIdMarkerMap
+                            .entries
+                            .find { (_, v) ->
+                                v.id == marker.id
+                            }
+                            ?.key
+                            ?: return@setOnInfoWindowClickListener
+                    )
+                }
+            }
+            return ++mapStateId
+        }
 
     override suspend fun pushMapEvent(mapStateId: Int, mapEvent: MapEvent) {
 
