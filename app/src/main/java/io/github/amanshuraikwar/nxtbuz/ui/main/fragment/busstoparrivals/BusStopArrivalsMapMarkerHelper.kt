@@ -19,6 +19,7 @@ class BusStopArrivalsMapMarkerHelper @Inject constructor(
 ) {
 
     private val serviceNumberMapMarkerMap = mutableMapOf<String, ArrivingBusMapMarker>()
+    internal var mapStateId: Int = 0
 
     suspend fun showMapMarkers(busArrivals: List<BusArrival>): Unit =
         withContext(dispatcherProvider.computation) {
@@ -85,6 +86,7 @@ class BusStopArrivalsMapMarkerHelper @Inject constructor(
 
             if (busAddList.isNotEmpty()) {
                 mapViewModelDelegate.pushMapEvent(
+                    mapStateId,
                     MapEvent.AddMapMarkers(
                         busAddList
                     )
@@ -93,6 +95,7 @@ class BusStopArrivalsMapMarkerHelper @Inject constructor(
 
             if (busDeleteList.isNotEmpty()) {
                 mapViewModelDelegate.pushMapEvent(
+                    mapStateId,
                     MapEvent.DeleteMarker(
                         busDeleteList
                     )
@@ -101,6 +104,7 @@ class BusStopArrivalsMapMarkerHelper @Inject constructor(
 
             if (busUpdateList.isNotEmpty()) {
                 mapViewModelDelegate.pushMapEvent(
+                    mapStateId,
                     MapEvent.UpdateMapMarkers(
                         busUpdateList
                     )

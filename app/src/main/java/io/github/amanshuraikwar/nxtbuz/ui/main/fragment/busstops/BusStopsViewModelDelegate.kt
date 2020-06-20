@@ -48,24 +48,30 @@ class BusStopsViewModelDelegate @Inject constructor(
         )
         _collapseBottomSheet.post()
         curBusStopsState = busStopsState
+
+        val mapStateId = mapViewModelDelegate.newState()
+
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.ClearMap
         )
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.MoveCenter(curBusStopsState.lat, curBusStopsState.lng)
         )
         mapViewModelDelegate.pushMapEvent(
-                MapEvent.AddMapMarkers(
-                    listOf(
-                        MapMarker(
-                            "center",
-                            curBusStopsState.lat,
-                            curBusStopsState.lng,
-                            R.drawable.ic_location_marker_24_32,
-                            "center"
-                        )
+            mapStateId,
+            MapEvent.AddMapMarkers(
+                listOf(
+                    MapMarker(
+                        "center",
+                        curBusStopsState.lat,
+                        curBusStopsState.lng,
+                        R.drawable.ic_location_marker_24_32,
+                        "center"
                     )
                 )
+            )
         )
         val busStopList = getBusStopsUseCase(
             lat = curBusStopsState.lat,
@@ -73,6 +79,7 @@ class BusStopsViewModelDelegate @Inject constructor(
             limit = busStopsQueryLimitUseCase()
         )
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.MapCircle(
                 curBusStopsState.lat,
                 curBusStopsState.lng,
@@ -85,6 +92,7 @@ class BusStopsViewModelDelegate @Inject constructor(
             )
         )
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.AddMapMarkers(
                 busStopList.map { busStop ->
                     MapMarker(

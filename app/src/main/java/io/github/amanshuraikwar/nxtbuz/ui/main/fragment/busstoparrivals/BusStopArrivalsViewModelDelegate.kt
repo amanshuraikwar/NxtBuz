@@ -46,6 +46,8 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
     private lateinit var onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit
     private lateinit var onBusServiceClicked: (busServiceNumber: String) -> Unit
 
+    private var mapStateId: Int = 0
+
     fun stop(busStopState: ScreenState.BusStopState) {
         if (busStopState == curBusStopState) {
             // todo make this safer by only destroying the service
@@ -75,10 +77,16 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
         _collapseBottomSheet.post()
         curBusStopState = busStopState
         busStopArrivalsMapMarkerHelper.clear()
+
+        mapStateId = mapViewModelDelegate.newState()
+        busStopArrivalsMapMarkerHelper.mapStateId = mapStateId
+
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.ClearMap
         )
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.AddMapMarkers(
                 listOf(
                     MapMarker(
@@ -92,6 +100,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
             )
         )
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.MoveCenter(
                 curBusStopState.busStop.latitude,
                 curBusStopState.busStop.longitude
@@ -162,8 +171,8 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
 
         if (isActive) {
             _listItems.postValue(listItems)
-            busStopArrivalsMapMarkerHelper.showMapMarkers(busArrivals)
             _loading.postValue(Loading.Hide)
+            busStopArrivalsMapMarkerHelper.showMapMarkers(busArrivals)
         }
     }
 
