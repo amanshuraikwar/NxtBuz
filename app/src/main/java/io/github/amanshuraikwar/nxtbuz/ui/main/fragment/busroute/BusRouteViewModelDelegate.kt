@@ -41,6 +41,7 @@ class BusRouteViewModelDelegate @Inject constructor(
     private lateinit var curBusRouteState: ScreenState.BusRouteState
     private lateinit var viewModelScope: CoroutineScope
     private lateinit var onBusStopClicked: (BusStop) -> Unit
+    private var mapStateId: Int = 0
     private var arrivalsLoopJob: Job? = null
 
     private val arrivalsLoopErrorHandler = CoroutineExceptionHandler { _, _ ->
@@ -79,11 +80,15 @@ class BusRouteViewModelDelegate @Inject constructor(
 
         mapMarkerList.clear()
 
+        mapStateId = mapViewModelDelegate.newState()
+
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.ClearMap
         )
 
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.AddMapMarkers(
                 listOf(
                     MapMarker(
@@ -98,6 +103,7 @@ class BusRouteViewModelDelegate @Inject constructor(
         )
 
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.MoveCenter(
                 curBusRouteState.busStop.latitude,
                 curBusRouteState.busStop.longitude
@@ -123,6 +129,7 @@ class BusRouteViewModelDelegate @Inject constructor(
         }
 
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.AddRoute(
                 mapUtil.getRouteLineColorLight(),
                 mapUtil.getRouteLineWidthSmall(),
@@ -135,6 +142,7 @@ class BusRouteViewModelDelegate @Inject constructor(
         )
 
         mapViewModelDelegate.pushMapEvent(
+            mapStateId,
             MapEvent.AddRoute(
                 mapUtil.getRouteLineColor(),
                 mapUtil.getRouteLineWidth(),
@@ -311,6 +319,7 @@ class BusRouteViewModelDelegate @Inject constructor(
             withContext(dispatcherProvider.main) {
                 if (busAddList.isNotEmpty()) {
                     mapViewModelDelegate.pushMapEvent(
+                        mapStateId,
                         MapEvent.AddMapMarkers(
                             busAddList
                         )
@@ -318,6 +327,7 @@ class BusRouteViewModelDelegate @Inject constructor(
                 }
                 if (busDeleteList.isNotEmpty()) {
                     mapViewModelDelegate.pushMapEvent(
+                        mapStateId,
                         MapEvent.DeleteMarker(
                             busDeleteList
                         )
@@ -325,6 +335,7 @@ class BusRouteViewModelDelegate @Inject constructor(
                 }
                 if (busUpdateList.isNotEmpty()) {
                     mapViewModelDelegate.pushMapEvent(
+                        mapStateId,
                         MapEvent.UpdateMapMarkers(
                             busUpdateList
                         )
