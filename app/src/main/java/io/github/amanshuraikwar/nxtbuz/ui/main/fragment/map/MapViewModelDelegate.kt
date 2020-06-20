@@ -20,7 +20,7 @@ interface MapViewModelDelegate {
     /**
      * @return New map state id
      */
-    suspend fun newState(): Int
+    suspend fun newState(onMarkerInfoWindowClickListener: (markerId: String) -> Unit = {}): Int
 
     suspend fun pushMapEvent(mapStateId: Int, mapEvent: MapEvent)
 

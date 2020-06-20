@@ -17,6 +17,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.list.BusStopHeaderItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.HeaderItem
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstops.BusStopsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.*
 import io.github.amanshuraikwar.nxtbuz.util.post
@@ -48,6 +49,11 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
 
     private var mapStateId: Int = 0
 
+    private val errorHandler = CoroutineExceptionHandler { _, th ->
+        Log.e(TAG, "errorHandler: $th", th)
+        FirebaseCrashlytics.getInstance().recordException(th)
+    }
+
     fun stop(busStopState: ScreenState.BusStopState) {
         if (busStopState == curBusStopState) {
             // todo make this safer by only destroying the service
@@ -78,7 +84,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
         curBusStopState = busStopState
         busStopArrivalsMapMarkerHelper.clear()
 
-        mapStateId = mapViewModelDelegate.newState()
+        mapStateId = mapViewModelDelegate.newState(::onMapMarkerClicked)
         busStopArrivalsMapMarkerHelper.mapStateId = mapStateId
 
         mapViewModelDelegate.pushMapEvent(
@@ -178,6 +184,10 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
 
     fun clear() {
         stopBusArrivalFlowUseCase()
+    }
+
+    private fun onMapMarkerClicked(markerId: String) = viewModelScope.launch(errorHandler) {
+        onBusServiceClicked(markerId)
     }
 
     companion object {
