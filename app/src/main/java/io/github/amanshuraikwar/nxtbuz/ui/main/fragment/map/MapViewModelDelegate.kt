@@ -17,7 +17,12 @@ interface MapViewModelDelegate {
         onMapLongClick: (lat: Double, lng: Double) -> Unit
     )
 
-    suspend fun pushMapEvent(mapEvent: MapEvent)
+    /**
+     * @return New map state id
+     */
+    suspend fun newState(): Int
+
+    suspend fun pushMapEvent(mapStateId: Int, mapEvent: MapEvent)
 
     @UiThread
     fun onReCreate()

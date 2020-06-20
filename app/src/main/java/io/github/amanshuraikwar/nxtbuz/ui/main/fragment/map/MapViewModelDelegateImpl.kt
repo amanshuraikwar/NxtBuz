@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.TypeEvaluator
+import android.util.Log
 import android.util.Property
 import androidx.annotation.UiThread
 import androidx.lifecycle.MutableLiveData
@@ -44,6 +45,8 @@ class MapViewModelDelegateImpl @Inject constructor(
     private val mapMarkerIdMapMarkerMap: MutableMap<String, MapMarker> = mutableMapOf()
     private val mutex = Mutex()
 
+    private var mapStateId = 0
+
     override suspend fun initMap(
         lat: Double,
         lng: Double,
@@ -69,33 +72,42 @@ class MapViewModelDelegateImpl @Inject constructor(
         }
     }
 
-    override suspend fun pushMapEvent(mapEvent: MapEvent) {
-        mutex.withLock {
-            when (mapEvent) {
-                is MapEvent.MoveCenter -> {
-                    withContext(dispatcherProvider.main) { moveCenter(mapEvent) }
-                }
-                is MapEvent.AddMapMarkers -> {
-                    addMarkers(mapEvent)
-                }
-                is MapEvent.MapCircle -> {
-                    addCircle(mapEvent)
-                }
-                is MapEvent.ClearMap -> {
-                    clearMap()
-                }
-                is MapEvent.UpdateMapMarkers -> {
-                    updateMarkers(mapEvent)
-                }
-                is MapEvent.DeleteMarker -> {
-                    deleteMarkers(mapEvent)
-                }
-                is MapEvent.AddRoute -> {
-                    addRoute(mapEvent)
-                }
+    override suspend fun newState(): Int = mutex.withLock {
+        return ++mapStateId
+    }
+
+    override suspend fun pushMapEvent(mapStateId: Int, mapEvent: MapEvent) {
+
+        if (mapStateId != this.mapStateId) {
+            Log.i(TAG, "pushMapEvent: Map state id mismatch, ignoring map event.")
+            return
+        }
+
+        when (mapEvent) {
+            is MapEvent.MoveCenter -> {
+                withContext(dispatcherProvider.main) { moveCenter(mapEvent) }
+            }
+            is MapEvent.AddMapMarkers -> {
+                addMarkers(mapEvent)
+            }
+            is MapEvent.MapCircle -> {
+                addCircle(mapEvent)
+            }
+            is MapEvent.ClearMap -> {
+                clearMap()
+            }
+            is MapEvent.UpdateMapMarkers -> {
+                updateMarkers(mapEvent)
+            }
+            is MapEvent.DeleteMarker -> {
+                deleteMarkers(mapEvent)
+            }
+            is MapEvent.AddRoute -> {
+                addRoute(mapEvent)
             }
         }
     }
+
 
     @UiThread
     override fun onReCreate() {
