@@ -173,7 +173,9 @@ class MainFragmentViewModel @Inject constructor(
 
             when (screenState) {
                 is ScreenState.BusStopsState -> {
-                    busStopsViewModelDelegate.start(screenState, ::onBusStopClicked)
+                    busStopsViewModelDelegate.start(
+                        screenState, ::onBusStopClicked, viewModelScope
+                    )
                 }
                 is ScreenState.BusStopState -> {
                     busStopArrivalsViewModelDelegate.start(
