@@ -14,6 +14,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.BusRouteViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.BusRouteViewModelDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstoparrivals.BusStopArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstops.BusStopsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
@@ -45,12 +46,13 @@ class MainFragmentViewModel @Inject constructor(
     private val busStopsViewModelDelegate: BusStopsViewModelDelegate,
     private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
     private val mapViewModelDelegate: MapViewModelDelegate,
-    private val busRouteViewModelDelegate: BusRouteViewModelDelegate,
+    private val busRouteViewModelDelegate: BusRouteViewModelDelegateImpl,
     starredArrivalsViewModelDelegate: StarredArrivalsViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(),
     MapViewModelDelegate by mapViewModelDelegate,
-    StarredArrivalsViewModelDelegate by starredArrivalsViewModelDelegate {
+    StarredArrivalsViewModelDelegate by starredArrivalsViewModelDelegate,
+    BusRouteViewModelDelegate by busRouteViewModelDelegate {
 
     private val starToggleStateFlow: StateFlow<StarToggleState> = _starToggleStateFlow
 
@@ -272,6 +274,13 @@ class MainFragmentViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         busStopArrivalsViewModelDelegate.clear()
+    }
+
+    fun bottomSheetCollapsed() = viewModelScope.launch(dispatcherProvider.computation) {
+//        val currentScreenState = screenStateBackStack.peek()
+//        if (currentScreenState is ScreenState.BusRouteState) {
+//            busRouteViewModelDelegate.onBottomSheetCollapsed()
+//        }
     }
 
     companion object {

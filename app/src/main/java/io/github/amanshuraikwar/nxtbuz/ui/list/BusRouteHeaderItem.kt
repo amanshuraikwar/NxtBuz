@@ -12,7 +12,8 @@ import kotlinx.android.synthetic.main.item_bus_route_header.view.*
 class BusRouteHeaderItem(
     val busStopCode: String,
     val busServiceNumber: String,
-    private val busStopDescription: String,
+    private val totalBusStops: Int,
+    private val totalDistance: Double,
     private val destinationBusStopDescription: String,
     private val originBusStopDescription: String,
     var starred: Boolean?,
@@ -32,10 +33,10 @@ class BusRouteHeaderItem(
     override fun bind(view: View, activity: FragmentActivity) {
 
         view.serviceNumberTv.text = busServiceNumber
-        view.busStopDescriptionTv.text = busStopDescription
-        view.infoTv.text =
-            """$originBusStopDescription ${activity.getString(R.string.origin_destination)} $destinationBusStopDescription"""
-        view.infoTv.isSelected = true
+        view.destinationTv.text =
+            "$originBusStopDescription ${activity.getString(R.string.origin_destination)} $destinationBusStopDescription"
+        view.destinationTv.isSelected = true
+        view.infoTv.text = "$totalBusStops Stops  •  $totalDistance KM"
         when (starred) {
             null -> {
                 view.starIv.visibility = View.GONE
