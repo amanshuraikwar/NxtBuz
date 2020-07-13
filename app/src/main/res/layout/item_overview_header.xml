@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/headerTv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,4 +11,6 @@
     android:paddingEnd="@dimen/padding_normal"
     android:textAppearance="?textAppearanceOverline"
     android:background="@color/color_background"
-    tools:text="Alert" />
+    tools:text="Alert"
+    tools:drawableEnd="@drawable/ic_round_unfold_less_16"
+    app:drawableTint="?colorSecondary" />

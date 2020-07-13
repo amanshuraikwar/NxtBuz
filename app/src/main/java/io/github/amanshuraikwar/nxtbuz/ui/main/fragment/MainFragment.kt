@@ -26,6 +26,7 @@ import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
 import io.github.amanshuraikwar.nxtbuz.ui.list.*
+import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.domain.BusArrivalUpdate
 import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
@@ -122,6 +123,9 @@ class MainFragment : DaggerFragment() {
                         recenterFab.visibility = View.INVISIBLE
                     } else {
                         recenterFab.visibility = View.VISIBLE
+                    }
+                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                        viewModel.bottomSheetCollapsed()
                     }
                 }
 
@@ -362,6 +366,118 @@ class MainFragment : DaggerFragment() {
                         }
                         ?.let { index ->
                             adapter?.notifyItemChanged(index)
+                        }
+                }
+            )
+
+            viewModel.primaryBusArrivalUpdate.observe(this) { busArrivalUpdate ->
+                adapter
+                    ?.items
+                    ?.indexOfFirst { item ->
+                        item is BusRouteCurrentItem && item.busStopCode == busArrivalUpdate.busStopCode
+                    }?.let { index ->
+                        if (index != -1) {
+                            (adapter?.items?.get(index) as? BusRouteCurrentItem)
+                                ?.updateBusArrivals(busArrivalUpdate)
+                            adapter?.notifyItemChanged(index)
+                        }
+                    }
+            }
+
+            viewModel.secondaryBusArrivalUpdate.observe(this) { busArrivalUpdate ->
+                adapter
+                    ?.items
+                    ?.forEachIndexed { index, item ->
+                        if (item is BusRouteItem) {
+                            if (item.busStopCode == busArrivalUpdate.busStopCode) {
+                                item.updateBusArrivals(busArrivalUpdate)
+                                adapter?.notifyItemChanged(index)
+                            } else if (item !is BusRouteCurrentItem && item.arrivals.isNotEmpty()) {
+                                item.updateBusArrivals(BusArrivalUpdate.noRadar(item.busStopCode))
+                                adapter?.notifyItemChanged(index)
+                            }
+                        }
+                    }
+            }
+
+            viewModel.previousBusStopItems.observe(
+                this,
+                EventObserver { previousItems ->
+
+                    adapter?.items
+                        ?.takeIf { items ->
+                            items.isNotEmpty()
+                        }
+                        ?.let rvUpdate@{ items ->
+
+                            val previousAllItemIndex =
+                                items.indexOfFirst { it is BusRoutePreviousAllItem }
+
+                            if (previousAllItemIndex == -1) return@rvUpdate
+
+                            items.removeAt(previousAllItemIndex)
+                            adapter?.notifyItemRemoved(previousAllItemIndex)
+                            items.addAll(previousAllItemIndex, previousItems)
+                            adapter?.notifyItemRangeInserted(
+                                previousAllItemIndex,
+                                previousItems.size
+                            )
+
+                            items
+                                .indexOfFirst { it is HeaderItem }
+                                .takeIf { it != -1 }?.let { index ->
+                                    (items[index] as HeaderItem).icon =
+                                        R.drawable.ic_round_unfold_less_16
+                                    adapter?.notifyItemChanged(index)
+                                }
+                        }
+                }
+            )
+
+            viewModel.hidePreviousBusStopItems.observe(
+                this,
+                EventObserver { previousAllItem ->
+
+                    adapter?.items
+                        ?.takeIf { items ->
+                            items.isNotEmpty()
+                                    // if we don't already have previous all item
+                                    && items.find { it is BusRoutePreviousAllItem } == null
+                        }
+                        ?.let rvUpdate@{ items ->
+
+                            val firstPreviousBusStopItemIndex =
+                                items.indexOfFirst { it is BusRoutePreviousItem }
+
+                            if (firstPreviousBusStopItemIndex == -1) return@rvUpdate
+
+                            var currentBusStopItemIndex =
+                                items.indexOfFirst { it is BusRouteCurrentItem }
+
+                            if (currentBusStopItemIndex == -1) return@rvUpdate
+
+                            items.removeAll { it is BusRoutePreviousItem }
+
+                            adapter?.notifyItemRangeRemoved(
+                                firstPreviousBusStopItemIndex,
+                                currentBusStopItemIndex - firstPreviousBusStopItemIndex
+                            )
+
+                            currentBusStopItemIndex =
+                                items.indexOfFirst { it is BusRouteCurrentItem }
+
+                            if (currentBusStopItemIndex == -1) return@rvUpdate
+
+                            items.add(currentBusStopItemIndex, previousAllItem)
+
+                            adapter?.notifyItemInserted(currentBusStopItemIndex)
+
+                            items
+                                .indexOfFirst { it is HeaderItem }
+                                .takeIf { it != -1 }?.let { index ->
+                                    (items[index] as HeaderItem).icon = null
+                                    adapter?.notifyItemChanged(index)
+                                }
                         }
                 }
             )
