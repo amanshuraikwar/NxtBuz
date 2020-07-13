@@ -37,7 +37,7 @@
 
 <!--    <color name="color_primary">#1a73e8</color>-->
     <color name="color_primary">@color/blue</color>
-    <color name="color_primary_variant">#3700b3</color>
+    <color name="color_primary_variant">@color/blue_dark</color>
 <!--    <color name="color_secondary">#03dac6</color>-->
     <color name="color_secondary">@color/orange</color>
     <color name="color_secondary_variant">@color/orange_variant</color>
@@ -71,6 +71,7 @@
     <color name="pink">#E91E63</color>
     <color name="green">#4CAF50</color>
     <color name="blue">#08ACFD</color>
+    <color name="blue_dark">#0288D1</color>
     <color name="purple">#673AB7</color>
     <color name="navy_blue">#3F51B5</color>
     <color name="teal">#009688</color>
@@ -83,4 +84,6 @@
 
     <color name="colorScrim">#dd000000</color>
 
+    <color name="colorBusRoutePrimary">@color/blue</color>
+    <color name="colorBusRouteSecondary">#BDBDBD</color>
 </resources>

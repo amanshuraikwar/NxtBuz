@@ -39,6 +39,7 @@
     <color name="pink">#F06292</color>
     <color name="green">#AED581</color>
     <color name="blue">#64B5F6</color>
+    <color name="blue_dark">#1E88E5</color>
     <color name="purple">#9575CD</color>
     <color name="navy_blue">#7986CB</color>
     <color name="teal">#4DB6AC</color>
@@ -48,4 +49,7 @@
     <color name="divider">#1effffff</color>
 
     <color name="orange_transparent">#22FFB74D</color>
+
+    <color name="colorBusRoutePrimary">@color/blue</color>
+    <color name="colorBusRouteSecondary">#616161</color>
 </resources>
