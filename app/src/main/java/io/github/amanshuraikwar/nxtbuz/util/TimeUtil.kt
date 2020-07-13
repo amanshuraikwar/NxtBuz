@@ -7,7 +7,7 @@ import org.threeten.bp.format.DateTimeFormatter
 object TimeUtil {
 
     @JvmStatic
-    val TIME_READABLE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
+    val TIME_READABLE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("h:mm a")
 
     fun isWeekday(): Boolean {
         val now = OffsetDateTime.now()
@@ -28,4 +28,7 @@ object TimeUtil {
         return now.dayOfWeek == DayOfWeek.SUNDAY
     }
 
+    fun currentTimeStr(): String {
+        return OffsetDateTime.now().format(TIME_READABLE_FORMATTER)
+    }
 }

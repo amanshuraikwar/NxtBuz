@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/topBar"
+        android:layout_width="4dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorBusRouteSecondary"
+        app:layout_constraintBottom_toBottomOf="@id/circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/bottomBar"
+        android:layout_width="4dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorBusRoutePrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/circle" />
+
+    <View
+        android:id="@+id/radar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/ic_arrivals_radar_primary_40"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/busStopDescriptionTv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/busStopDescriptionTv" />
+
+    <View
+        android:id="@+id/circle"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="28dp"
+        android:background="@drawable/circle_current_bus_stop"
+        app:layout_constraintBottom_toBottomOf="@id/busStopDescriptionTv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/busStopDescriptionTv" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/busStopDescriptionTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="72dp"
+        android:paddingTop="@dimen/padding_normal"
+        android:paddingEnd="@dimen/padding_normal"
+        android:paddingBottom="@dimen/padding_normal"
+        android:textAppearance="?textAppearanceHeadline6"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Springdale Condo" />
+
+    <include
+        android:id="@+id/arrivals"
+        layout="@layout/layout_bus_stop_arrivals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/busStopDescriptionTv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
