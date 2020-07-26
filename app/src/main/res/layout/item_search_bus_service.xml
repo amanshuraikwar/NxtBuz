@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/busArrivalIv"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:background="@drawable/bg_icon"
+        android:padding="@dimen/padding_small"
+        android:src="@drawable/ic_bus_24"
+        app:layout_constraintBottom_toBottomOf="@id/serviceNumberTv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/serviceNumberTv"
+        app:tint="@color/white" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:src="@drawable/ic_round_keyboard_arrow_right_24"
+        app:layout_constraintBottom_toBottomOf="@id/serviceNumberTv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/serviceNumberTv" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/serviceNumberTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:background="@drawable/bg_icon"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="2dp"
+        android:textAppearance="?textAppearanceHeadline6"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="961" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/arrowIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:src="@drawable/ic_round_keyboard_arrow_right_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/serviceNumberTv"
+        app:layout_constraintStart_toEndOf="@id/serviceNumberTv"
+        app:layout_constraintTop_toTopOf="@id/serviceNumberTv" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/destinationTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:ellipsize="marquee"
+        android:paddingStart="0dp"
+        android:paddingEnd="@dimen/padding_small"
+        android:singleLine="true"
+        android:textAppearance="?textAppearanceOverline"
+        app:layout_constraintBottom_toTopOf="@id/infoTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/arrowIv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lineHeight="16sp"
+        tools:text="SMRT  •  MRINE CTR TER" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/infoTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_very_small"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:ellipsize="end"
+        android:lines="1"
+        android:paddingStart="0dp"
+        android:paddingEnd="@dimen/padding_small"
+        android:textAppearance="?textAppearanceOverline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/arrowIv"
+        app:layout_constraintTop_toBottomOf="@id/destinationTv"
+        app:lineHeight="16sp"
+        tools:text="23 Bus Stops  •  34 KM" />
+</androidx.constraintlayout.widget.ConstraintLayout>

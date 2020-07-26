@@ -100,6 +100,20 @@ class SearchActivity : DaggerAppCompatActivity() {
                 }
             }
         )
+
+        viewModel.busServiceClicked.observe(
+            this,
+            EventObserver { busService ->
+                setResult(
+                    Activity.RESULT_OK,
+                    Intent().putExtra(
+                        "bus_service",
+                        busService
+                    )
+                )
+                finish()
+            }
+        )
     }
 
     private fun hideLoading() {
