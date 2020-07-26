@@ -11,9 +11,10 @@ import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.data.search.model.BusService
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
-import io.github.amanshuraikwar.nxtbuz.ui.list.BusStopItem
+import io.github.amanshuraikwar.nxtbuz.domain.search.SearchUseCase
+import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -23,8 +24,7 @@ import javax.inject.Inject
 private const val TAG = "SearchViewModel"
 
 class SearchViewModel @Inject constructor(
-    private val getBusStopsUseCase: GetBusStopsUseCase,
-    private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
+    private val searchUseCase: SearchUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -48,6 +48,9 @@ class SearchViewModel @Inject constructor(
     private val _busStopClicked = MutableLiveData<BusStop>()
     val busStopClicked = _busStopClicked.asEvent()
 
+    private val _busServiceClicked = MutableLiveData<BusService>()
+    val busServiceClicked = _busServiceClicked.asEvent()
+
 
     private val _loading = MutableLiveData<Boolean>()
     val loading = _loading.asEvent()
@@ -60,12 +63,30 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
             if (query.isNotEmpty()) {
                 _loading.postValue(true)
-                val busStopList = getBusStopsUseCase(query, busStopsQueryLimitUseCase())
-                if (busStopList.isEmpty()) {
-                    _error.postValue(Alert("No matching bus stops found."))
-                    // TODO: 5/4/20
+                val searchResult = searchUseCase(query, 5)
+                if (searchResult.busServiceList.isEmpty() && searchResult.busStopList.isEmpty()) {
+                    _error.postValue(Alert("No matching bus stops and bus services found."))
                 } else {
-                    _busStops.postValue(getListItems(busStopList))
+
+                    val listItems = mutableListOf<RecyclerViewListItem>()
+
+                    if (searchResult.busServiceList.isNotEmpty()) {
+                        listItems.add(HeaderItem("Bus Services"))
+                        listItems.addAll(
+                            searchResult.busServiceList.map {
+                                SearchBusServiceItem(it, ::onBusServiceClicked)
+                            }
+                        )
+                    }
+
+                    if (searchResult.busStopList.isNotEmpty()) {
+                        listItems.add(HeaderItem("Bus Stops"))
+                        listItems.addAll(
+                            getListItems(searchResult.busStopList)
+                        )
+                    }
+
+                    _busStops.postValue(listItems)
                     _loading.postValue(false)
                 }
             }
@@ -77,7 +98,7 @@ class SearchViewModel @Inject constructor(
             //listItems.add(HeaderItem("Nearby Bus Stops"))
             busStopList.forEach {
                 listItems.add(
-                    BusStopItem(
+                    SearchBusStopItem(
                         it,
                         R.drawable.ic_bus_stop_24,
                         ::onBusStopClicked,
@@ -90,6 +111,10 @@ class SearchViewModel @Inject constructor(
 
     private fun onBusStopClicked(busStop: BusStop) {
         _busStopClicked.postValue(busStop)
+    }
+
+    private fun onBusServiceClicked(busService: BusService) {
+        _busServiceClicked.postValue(busService)
     }
 
     private fun onGotoClicked(busStop: BusStop) {

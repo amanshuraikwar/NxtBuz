@@ -22,7 +22,6 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
 class BusStopRepository @Inject constructor(
     private val busStopDao: BusStopDao,
