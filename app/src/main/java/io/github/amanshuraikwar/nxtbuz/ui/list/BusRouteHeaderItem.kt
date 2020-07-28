@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_bus_route_header.view.*
 
 @ListItem(layoutResId = R.layout.item_bus_route_header)
 class BusRouteHeaderItem(
-    val busStopCode: String,
+    val busStopCode: String?,
     val busServiceNumber: String,
     private val totalBusStops: Int,
     private val totalDistance: Double,
@@ -51,9 +51,17 @@ class BusRouteHeaderItem(
             }
         }
 
-        view.starIv.setOnClickListener {
-            view.starIv.toggleStar()
-            onStarToggle(busStopCode, busServiceNumber)
+        if (busStopCode != null) {
+
+            view.starIv.visibility = View.VISIBLE
+            view.starIv.setOnClickListener {
+                view.starIv.toggleStar()
+                onStarToggle(busStopCode, busServiceNumber)
+            }
+
+        } else {
+            view.starIv.visibility = View.GONE
         }
+
     }
 }

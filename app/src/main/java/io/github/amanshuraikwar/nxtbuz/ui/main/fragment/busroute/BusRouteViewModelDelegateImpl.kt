@@ -8,11 +8,15 @@ import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
+import io.github.amanshuraikwar.nxtbuz.data.busroute.model.BusRoute
 import io.github.amanshuraikwar.nxtbuz.data.busroute.model.BusRouteNode
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
@@ -34,6 +38,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 import javax.inject.Named
+import kotlin.math.max
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
@@ -41,6 +48,8 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
     private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
     private val getBusRouteUseCase: GetBusRouteUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
+    private val getLocationUseCase: GetLocationUseCase,
+    private val getDefaultLocationUseCase: DefaultLocationUseCase,
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
@@ -102,6 +111,14 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
         curBusRouteState = busRouteState
 
+        val primaryBusStop = curBusRouteState.busStop
+
+//        if (primaryBusStop != null) {
+//            initMap(primaryBusStop)
+//        }
+
+        //region init map
+
         mapMarkerList.clear()
 
         mapStateId = mapViewModelDelegate.newState()
@@ -111,48 +128,67 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
             MapEvent.ClearMap
         )
 
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.AddMapMarkers(
-                listOf(
-                    MapMarker(
-                        curBusRouteState.busStop.code,
-                        curBusRouteState.busStop.latitude,
-                        curBusRouteState.busStop.longitude,
-                        R.drawable.ic_marker_bus_stop_48,
-                        curBusRouteState.busStop.description
-                    )
-                )
-            )
-        )
+//        mapViewModelDelegate.pushMapEvent(
+//            mapStateId,
+//            MapEvent.AddMapMarkers(
+//                listOf(
+//                    MapMarker(
+//                        curBusRouteState.busStop.code,
+//                        curBusRouteState.busStop.latitude,
+//                        curBusRouteState.busStop.longitude,
+//                        R.drawable.ic_marker_bus_stop_48,
+//                        curBusRouteState.busStop.description
+//                    )
+//                )
+//            )
+//        )
+//
+//        mapViewModelDelegate.pushMapEvent(
+//            mapStateId,
+//            MapEvent.MoveCenter(
+//                curBusRouteState.busStop.latitude,
+//                curBusRouteState.busStop.longitude
+//            )
+//        )
 
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.MoveCenter(
-                curBusRouteState.busStop.latitude,
-                curBusRouteState.busStop.longitude
-            )
-        )
+        //endregion
+
+        //region get route
 
         val busRoute = getBusRouteUseCase(
-            busServiceNumber = curBusRouteState.busServiceNumber,
-            busStopCode = curBusRouteState.busStop.code
+            busServiceNumber = busRouteState.busServiceNumber,
+            busStopCode = primaryBusStop?.code
         )
+
+        if (primaryBusStop != null) {
+            showBusStop(primaryBusStop)
+        } else {
+            reCenterToClosestBusStop(busRoute)
+        }
 
         curBusRouteState.busRoute = busRoute
 
-        val currentBusRouteNodeIndex =
+        //endregion
+
+        val currentBusRouteNodeIndex = if (primaryBusStop != null) {
+
             busRoute.busRouteNodeList.indexOfFirst {
-                it.busStopCode == curBusRouteState.busStop.code
+                it.busStopCode == primaryBusStop.code
             }
 
-        if (currentBusRouteNodeIndex == -1) {
-            throw Exception(
-                "Current bus stop code " +
-                        "${curBusRouteState.busStop.code} for service " +
-                        "${curBusRouteState.busServiceNumber} is -1."
-            )
+        } else {
+            -1
         }
+
+//        if (currentBusRouteNodeIndex == -1) {
+//            throw Exception(
+//                "Current bus stop code " +
+//                        "${curBusRouteState.busStop.code} for service " +
+//                        "${curBusRouteState.busServiceNumber} is -1."
+//            )
+//        }
+
+        //region add route to map
 
         mapViewModelDelegate.pushMapEvent(
             mapStateId,
@@ -173,14 +209,16 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
                 mapUtil.getRouteLineColor(),
                 mapUtil.getRouteLineWidth(),
                 busRoute.busRouteNodeList
-                    .subList(currentBusRouteNodeIndex, busRoute.busRouteNodeList.size)
+                    .subList(max(0, currentBusRouteNodeIndex), busRoute.busRouteNodeList.size)
                     .map { busRouteNode ->
                         busRouteNode.busStopLat to busRouteNode.busStopLng
                     }
             )
         )
 
-        // add route to bottom sheet
+        //endregion
+
+        //region add route to bottom sheet
 
         val lastBusStopSequence = busRoute.busRouteNodeList
             .maxBy { it.stopSequence }
@@ -198,8 +236,8 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
         listItems.add(
             BusRouteHeaderItem(
-                busStopCode = curBusRouteState.busStop.code,
-                busServiceNumber = curBusRouteState.busServiceNumber,
+                busStopCode = primaryBusStop?.code,
+                busServiceNumber = busRouteState.busServiceNumber,
                 totalBusStops = totalStops,
                 totalDistance = totalDistance,
                 originBusStopDescription = busRoute.originBusStopDescription,
@@ -209,18 +247,23 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
             )
         )
 
-        val currentSequenceNumber: Int = curBusRouteState.busRoute.busRouteNodeList
-            .find {
-                it.busStopCode == curBusRouteState.busStop.code
-            }
-            ?.stopSequence
-            ?: throw Exception(
-                "Current bus stop ${curBusRouteState.busStop.code} is not in the bus route."
-            )
+        val currentSequenceNumber = if (primaryBusStop != null) {
+            busRoute.busRouteNodeList
+                .find {
+                    it.busStopCode == primaryBusStop.code
+                }
+                ?.stopSequence
+                ?: throw Exception(
+                    "Current bus stop ${primaryBusStop.code} is not in the bus route."
+                )
+        } else {
+            0
+        }
 
-        listItems.add(
-            HeaderItem("Bus Stops") {
-                if (currentSequenceNumber > 1) {
+        if (currentSequenceNumber > 1) {
+
+            listItems.add(
+                HeaderItem("Bus Stops") {
                     _hidePreviousBusStopItems.postValue(
                         BusRoutePreviousAllItem(
                             "",
@@ -230,14 +273,17 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
                         )
                     )
                 }
-            }
-        )
+            )
+
+        } else {
+            listItems.add(HeaderItem("Bus Stops"))
+        }
 
         if (currentSequenceNumber > 1) {
             listItems.add(
                 BusRoutePreviousAllItem(
                     "",
-                    "See all ${currentSequenceNumber - 1} bus stops",
+                    "See previous ${currentSequenceNumber - 1} bus stops",
                     BusRouteItem.Position.MIDDLE,
                     ::onPreviousAllClicked
                 )
@@ -266,7 +312,7 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
                             busRouteNode.busStopCode,
                             busRouteNode.busStopDescription,
                             when (busRouteNode.stopSequence) {
-                                0 -> BusRouteItem.Position.ORIGIN
+                                1 -> BusRouteItem.Position.ORIGIN
                                 lastBusStopSequence -> BusRouteItem.Position.DESTINATION
                                 else -> BusRouteItem.Position.MIDDLE
                             },
@@ -283,88 +329,82 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
         _loading.postValue(Loading.Hide)
 
-        startStarredBusArrivalsLoop()
-    }
+        //endregion
 
-    private fun startSecondaryArrivals(busStopCode: String) {
-        viewModelScope.launch(dispatcherProvider.computation) {
-            secondaryArrivalsLoop?.stop()
-
-            val arrivalsLoop = ArrivalsLoop(
-                busServiceNumber = curBusRouteState.busServiceNumber,
-                busStopCode = busStopCode,
-                getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
-                dispatcher = dispatcherProvider.pool8
-            )
-
-            secondaryArrivalsLoop = arrivalsLoop
-
-            arrivalsLoop.start(viewModelScope)
-                .catch { throwable ->
-                    FirebaseCrashlytics.getInstance().recordException(throwable)
-                }
-                .filterNotNull()
-                .collect(
-                    object : FlowCollector<ArrivalsLoopData> {
-                        override suspend fun emit(value: ArrivalsLoopData) {
-                            delay(300)
-                            // check for busStopCode & busServiceNumber
-                            // to prevent pushing any dangling loop output to UI
-                            if (value.busStopCode == busStopCode
-                                && value.busServiceNumber == curBusRouteState.busServiceNumber
-                            ) {
-                                handleSecondaryArrivals(busStopCode, value.busArrival)
-                            } else {
-                                arrivalsLoop.stop()
-                            }
-                        }
-                    }
-                )
+        if (primaryBusStop != null) {
+            startPrimaryBusArrivalsLoop(primaryBusStop)
         }
     }
 
-    private fun handleSecondaryArrivals(busStopCode: String, busArrival: BusArrival) {
-
-        if (busArrival.arrivals is Arrivals.Arriving) {
-
-            val arrivalStrList = mutableListOf(
-                busArrival.arrivals.nextArrivingBus.arrival
-            )
-
-            for (arrival in busArrival.arrivals.followingArrivingBusList) {
-                arrivalStrList.add(arrival.arrival)
+    private suspend fun reCenterToClosestBusStop(busRoute: BusRoute) {
+        val (lat, lng) = when (val location = getLocationUseCase()) {
+            is LocationOutput.Success -> {
+                location.latitude to location.longitude
             }
-
-            _secondaryBusArrivalUpdate.postValue(
-                BusArrivalUpdate(
-                    busStopCode, arrivalStrList, TimeUtil.currentTimeStr()
-                )
-            )
-
-        } else {
-
-            _secondaryBusArrivalUpdate.postValue(
-                BusArrivalUpdate(
-                    busStopCode,
-                    listOf(
-                        if (busArrival.arrivals is Arrivals.DataNotAvailable)
-                            "No data"
-                        else
-                            "Not operating"
-                    ),
-                    TimeUtil.currentTimeStr()
-                )
-            )
+            else -> {
+                getDefaultLocationUseCase()
+            }
         }
+
+        val closestBusRouteNode =
+            busRoute
+                .busRouteNodeList
+                .minBy { busRouteNode ->
+                    sqrt(
+                        (busRouteNode.busStopLat - lat).pow(2.0)
+                                + (busRouteNode.busStopLng - lng).pow(2.0)
+                    )
+                }
+                ?: throw Exception("Cannot find closest bus route node.")
+
+        mapViewModelDelegate.pushMapEvent(
+            mapStateId,
+            MapEvent.MoveCenter(
+                closestBusRouteNode.busStopLat,
+                closestBusRouteNode.busStopLng
+            )
+        )
     }
 
-    private suspend fun startStarredBusArrivalsLoop() {
+    private var displayedBusStopMapMarker: MapMarker? = null
+
+    private suspend fun showBusStop(busStop: BusStop) {
+
+        displayedBusStopMapMarker?.let {
+            mapViewModelDelegate.pushMapEvent(
+                mapStateId,
+                MapEvent.DeleteMarker(listOf(it.id))
+            )
+        }
+
+        val marker = MapMarker(
+            busStop.code,
+            busStop.latitude,
+            busStop.longitude,
+            R.drawable.ic_marker_bus_stop_48,
+            busStop.description
+        )
+
+        mapViewModelDelegate.pushMapEvent(mapStateId, MapEvent.AddMapMarkers(listOf(marker)))
+
+        displayedBusStopMapMarker = marker
+
+        mapViewModelDelegate.pushMapEvent(
+            mapStateId,
+            MapEvent.MoveCenter(
+                busStop.latitude,
+                busStop.longitude
+            )
+        )
+    }
+
+    private suspend fun startPrimaryBusArrivalsLoop(primaryBusStop: BusStop) {
 
         primaryArrivalsLoop?.stop()
 
         val arrivalsLoop = ArrivalsLoop(
             busServiceNumber = curBusRouteState.busServiceNumber,
-            busStopCode = curBusRouteState.busStop.code,
+            busStopCode = primaryBusStop.code,
             getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
             dispatcher = dispatcherProvider.pool8
         )
@@ -382,10 +422,10 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
                     override suspend fun emit(value: ArrivalsLoopData) {
                         // check for busStopCode & busServiceNumber
                         // to prevent pushing any dangling loop output to UI
-                        if (value.busStopCode == curBusRouteState.busStop.code
+                        if (value.busStopCode == primaryBusStop.code
                             && value.busServiceNumber == curBusRouteState.busServiceNumber
                         ) {
-                            handlePrimaryArrivals(value.busArrival)
+                            handlePrimaryArrivals(primaryBusStop, value.busArrival)
                         } else {
                             arrivalsLoop.stop()
                         }
@@ -395,7 +435,7 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
     }
 
-    private suspend fun handlePrimaryArrivals(busArrival: BusArrival) {
+    private suspend fun handlePrimaryArrivals(primaryBusStop: BusStop, busArrival: BusArrival) {
         val busAddList = mutableListOf<MapMarker>()
         val busDeleteList = mutableListOf<String>()
         val busUpdateList = mutableListOf<MapUpdate>()
@@ -412,7 +452,7 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
             _primaryBusArrivalUpdate.postValue(
                 BusArrivalUpdate(
-                    curBusRouteState.busStop.code, arrivalStrList, TimeUtil.currentTimeStr()
+                    primaryBusStop.code, arrivalStrList, TimeUtil.currentTimeStr()
                 )
             )
 
@@ -503,7 +543,7 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
             _primaryBusArrivalUpdate.postValue(
                 BusArrivalUpdate(
-                    curBusRouteState.busStop.code,
+                    primaryBusStop.code,
                     listOf(
                         if (busArrival.arrivals is Arrivals.DataNotAvailable)
                             "No data"
@@ -554,6 +594,89 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
         Log.i(TAG, "startArrivalsLoop: update ${busUpdateList.size}")
     }
 
+    private fun startSecondaryArrivals(busStopCode: String) {
+        viewModelScope.launch(dispatcherProvider.computation) {
+
+            val busStop = getBusStopUseCase(busStopCode)
+
+            // if primary bus stop is null
+            // we show the current secondary bus stop
+            val showBusStopDef = if (curBusRouteState.busStop == null) {
+                async(start = CoroutineStart.DEFAULT) { showBusStop(busStop) }
+            } else null
+
+            secondaryArrivalsLoop?.stop()
+
+            val arrivalsLoop = ArrivalsLoop(
+                busServiceNumber = curBusRouteState.busServiceNumber,
+                busStopCode = busStopCode,
+                getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
+                dispatcher = dispatcherProvider.pool8
+            )
+
+            secondaryArrivalsLoop = arrivalsLoop
+
+            arrivalsLoop.start(viewModelScope)
+                .catch { throwable ->
+                    FirebaseCrashlytics.getInstance().recordException(throwable)
+                }
+                .filterNotNull()
+                .collect(
+                    object : FlowCollector<ArrivalsLoopData> {
+                        override suspend fun emit(value: ArrivalsLoopData) {
+                            delay(300)
+                            // check for busStopCode & busServiceNumber
+                            // to prevent pushing any dangling loop output to UI
+                            if (value.busStopCode == busStopCode
+                                && value.busServiceNumber == curBusRouteState.busServiceNumber
+                            ) {
+                                handleSecondaryArrivals(busStopCode, value.busArrival)
+                            } else {
+                                arrivalsLoop.stop()
+                            }
+                        }
+                    }
+                )
+
+            showBusStopDef?.await()
+        }
+    }
+
+    private fun handleSecondaryArrivals(busStopCode: String, busArrival: BusArrival) {
+
+        if (busArrival.arrivals is Arrivals.Arriving) {
+
+            val arrivalStrList = mutableListOf(
+                busArrival.arrivals.nextArrivingBus.arrival
+            )
+
+            for (arrival in busArrival.arrivals.followingArrivingBusList) {
+                arrivalStrList.add(arrival.arrival)
+            }
+
+            _secondaryBusArrivalUpdate.postValue(
+                BusArrivalUpdate(
+                    busStopCode, arrivalStrList, TimeUtil.currentTimeStr()
+                )
+            )
+
+        } else {
+
+            _secondaryBusArrivalUpdate.postValue(
+                BusArrivalUpdate(
+                    busStopCode,
+                    listOf(
+                        if (busArrival.arrivals is Arrivals.DataNotAvailable)
+                            "No data"
+                        else
+                            "Not operating"
+                    ),
+                    TimeUtil.currentTimeStr()
+                )
+            )
+        }
+    }
+
     private fun goToBusStop(busStopCode: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             onBusStopClicked(getBusStopUseCase(busStopCode))
@@ -569,7 +692,8 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
                 curBusRouteState
                     .busRoute
                     .busRouteNodeList
-                    .indexOfFirst { it.busStopCode == curBusRouteState.busStop.code }
+                    // TODO: 26/7/20 Safer than curBusRouteState.busStop!!
+                    .indexOfFirst { it.busStopCode == curBusRouteState.busStop!!.code }
             )
 
         if (previousBusRouteNodeList.isEmpty()) return

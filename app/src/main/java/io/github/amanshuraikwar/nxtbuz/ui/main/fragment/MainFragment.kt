@@ -24,6 +24,7 @@ import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.data.search.model.BusService
 import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
 import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.domain.BusArrivalUpdate
@@ -514,8 +515,14 @@ class MainFragment : DaggerFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_SEARCH_BUS_STOPS) {
             if (resultCode == Activity.RESULT_OK) {
-                val busStop = data?.getParcelableExtra<BusStop>("bus_stop") ?: return
-                viewModel.onBusStopClicked(busStop)
+                data?.getParcelableExtra<BusStop>("bus_stop")?.let { busStop ->
+                    viewModel.onBusStopClicked(busStop)
+                    return
+                }
+                data?.getParcelableExtra<BusService>("bus_service")?.let { busService ->
+                    viewModel.onBusServiceClicked(busService.busServiceNumber)
+                    return
+                }
             }
         }
         if (requestCode == REQUEST_STARRED_BUS_ARRIVALS) {
