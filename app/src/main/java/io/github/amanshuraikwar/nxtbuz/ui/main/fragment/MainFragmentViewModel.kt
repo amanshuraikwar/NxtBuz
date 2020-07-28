@@ -161,6 +161,17 @@ class MainFragmentViewModel @Inject constructor(
         }
     }
 
+    fun onBusServiceClicked(busServiceNumber: String) {
+        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+            val screenState =
+                ScreenState.BusRouteState(
+                    busServiceNumber = busServiceNumber
+                )
+            pushNewScreenState(screenState)
+            startScreenState(screenState)
+        }
+    }
+
     private suspend fun pushNewScreenState(screenState: ScreenState) =
         withContext(dispatcherProvider.io) {
             if (screenStateBackStack.isNotEmpty()) {

@@ -15,7 +15,7 @@ sealed class ScreenState {
     ) : ScreenState()
 
     class BusRouteState(
-        var busStop: BusStop,
+        var busStop: BusStop? = null,
         val busServiceNumber: String,
     ) : ScreenState() {
         lateinit var busRoute: BusRoute
