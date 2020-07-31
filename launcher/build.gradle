@@ -24,8 +24,10 @@ android {
 }
 
 dependencies {
-    implementation Libs.Kotlin.stdlib
+    implementation project(":common")
 
-    implementation Libs.AndroidX.Fragment.fragment
-    implementation Libs.AndroidX.recyclerview
+    Libs.Kotlin.stdlib
+
+    implementation Libs.Coroutines.core
+    implementation Libs.Coroutines.android
 }

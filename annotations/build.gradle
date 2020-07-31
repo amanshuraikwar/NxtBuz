@@ -1,10 +1,12 @@
+import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
+
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    Libs.Kotlin.stdlib
 }
 
 sourceCompatibility = "8"
