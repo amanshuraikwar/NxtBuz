@@ -1,10 +1,12 @@
+import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 apply from: "$project.rootDir/git_version.gradle"
-apply from: '../shared_dependencies.gradle'
+//apply from: '../shared_dependencies.gradle'
 
 def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("local.properties")))
@@ -20,12 +22,12 @@ android {
         }
     }
 
-    compileSdkVersion versions.compileSdk
+    compileSdkVersion buildConfig.compileSdk
 
     defaultConfig {
         applicationId names.applicationId
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
         versionCode gitVersionCode
         versionName gitVersionName
 
@@ -105,61 +107,64 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
-
-    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
-
-    implementation "com.google.android.gms:play-services-auth:${versions.playServices}"
-
-    implementation("com.google.api-client:google-api-client-android:${versions.googleApiClient}") {
-        exclude group: 'org.apache.httpcomponents'
-    }
-
-    implementation("com.google.apis:google-api-services-sheets:${versions.googleSheetsApi}") {
-        exclude group: 'org.apache.httpcomponents'
-    }
-
-    // glide
-    implementation "com.github.bumptech.glide:glide:${versions.glide}"
-    kapt "com.github.bumptech.glide:compiler:${versions.glide}"
-
-    implementation "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
-    implementation "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
-
-    // room
-    implementation "androidx.room:room-runtime:${versions.room}"
-    kapt "androidx.room:room-compiler:${versions.room}"
-    implementation "androidx.room:room-ktx:${versions.room}"
-    androidTestImplementation "androidx.room:room-testing:${versions.room}"
-
-    kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
-    kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
-
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
-
     implementation project(':multiitemadapter')
+
+    implementation Libs.Kotlin.stdlib
+
+    implementation Libs.Coroutines.core
+    implementation Libs.Coroutines.android
+
+    implementation Libs.Google.material
+
+    implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.appcompat
+    implementation Libs.AndroidX.constraintlayout
+
+    implementation Libs.AndroidX.Navigation.fragment
+    implementation Libs.AndroidX.Navigation.ui
+
+    implementation Libs.AndroidX.Room.runtime
+    kapt Libs.AndroidX.Room.compiler
+    implementation Libs.AndroidX.Room.ktx
+    androidTestImplementation Libs.AndroidX.Room.testing
+
+    implementation Libs.AndroidX.Lifecycle.viewmodel
+    implementation Libs.AndroidX.Lifecycle.livedata
+    implementation Libs.AndroidX.Lifecycle.extensions
+
+    implementation Libs.threeTenAbp
+
+    implementation Libs.Retrofit.retrofit
+    implementation Libs.Retrofit.gsonConverter
+    implementation Libs.OkHttp.loggingInterceptor
+
+    implementation Libs.Dagger.library
+    implementation Libs.Dagger.androidSupport
+    kapt Libs.Dagger.compiler
+    kapt Libs.Dagger.androidProcessor
+
+    implementation Libs.Google.playServicesMap
+    implementation Libs.Google.playServicesLocation
+
     kapt project(':annotationProcessors')
     compileOnly project(':annotations')
 
-    implementation 'com.google.firebase:firebase-analytics:17.4.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
+    implementation Libs.Google.analytics
+    implementation Libs.Google.crashlytics
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-    // flipper
-    debugImplementation 'com.facebook.flipper:flipper:0.35.0'
-    debugImplementation 'com.facebook.soloader:soloader:0.9.0'
-    debugImplementation 'com.facebook.flipper:flipper-network-plugin:0.35.0'
+    testImplementation Libs.junit
+    androidTestImplementation Libs.AndroidX.Test.Ext.junit
+    androidTestImplementation Libs.AndroidX.Test.espressoCore
 
     // flipper
-    internalImplementation 'com.facebook.flipper:flipper:0.35.0'
-    internalImplementation 'com.facebook.soloader:soloader:0.9.0'
-    internalImplementation 'com.facebook.flipper:flipper-network-plugin:0.35.0'
+    debugImplementation Libs.Flipper.library
+    debugImplementation Libs.Flipper.soloader
+    debugImplementation Libs.Flipper.networkPlugin
+
+    // flipper
+    internalImplementation Libs.Flipper.library
+    internalImplementation Libs.Flipper.soloader
+    internalImplementation Libs.Flipper.networkPlugin
 }
 
 apply plugin: 'com.google.gms.google-services'

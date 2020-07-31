@@ -24,8 +24,6 @@ android {
 }
 
 dependencies {
-    implementation Libs.Kotlin.stdlib
-
-    implementation Libs.AndroidX.Fragment.fragment
-    implementation Libs.AndroidX.recyclerview
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    Libs.Kotlin.stdlib
 }
