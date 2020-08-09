@@ -3,6 +3,7 @@ import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion buildConfig.compileSdk
@@ -25,9 +26,21 @@ android {
 
 dependencies {
     implementation project(":common")
+    implementation project(":domain")
 
     Libs.Kotlin.stdlib
 
     implementation Libs.Coroutines.core
     implementation Libs.Coroutines.android
+
+    implementation Libs.Dagger.library
+    implementation Libs.Dagger.androidSupport
+    kapt Libs.Dagger.compiler
+    kapt Libs.Dagger.androidProcessor
+
+    implementation Libs.AndroidX.Lifecycle.viewmodel
+
+    implementation Libs.Google.material
+
+    implementation Libs.Google.crashlytics
 }

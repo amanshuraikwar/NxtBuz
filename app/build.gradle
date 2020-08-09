@@ -108,6 +108,13 @@ android {
 
 dependencies {
     implementation project(':multiitemadapter')
+    implementation project(':common')
+
+    // todo: remove after complete migration
+    implementation project(':data')
+
+    implementation project(':domain')
+    implementation project(':launcher')
 
     implementation Libs.Kotlin.stdlib
 

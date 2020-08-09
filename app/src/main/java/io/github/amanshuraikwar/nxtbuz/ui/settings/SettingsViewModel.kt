@@ -7,9 +7,9 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
+import io.github.amanshuraikwar.nxtbuz.common.model.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.util.toNotificationTimeStr
-import io.github.amanshuraikwar.nxtbuz.data.prefs.model.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.MaxDistanceOfClosesBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase

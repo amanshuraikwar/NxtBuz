@@ -23,7 +23,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.launcher.LauncherActivity"
+            android:name=".launcher.LauncherActivity"
             android:theme="@style/AppTheme.Launcher">
 
             <intent-filter>

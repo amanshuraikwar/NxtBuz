@@ -1,3 +1,6 @@
+include ':domain'
+include ':data'
+include ':ltaapi'
 include ':common'
 include ':launcher'
 rootProject.name='NxtBuz'

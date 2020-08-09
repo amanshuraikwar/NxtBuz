@@ -16,7 +16,10 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/data" />
+            <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/launcher" />
+            <option value="$PROJECT_DIR$/ltaapi" />
             <option value="$PROJECT_DIR$/multiitemadapter" />
           </set>
         </option>
