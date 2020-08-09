@@ -1,9 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.di
 
-import io.github.amanshuraikwar.nxtbuz.ui.launcher.LaunchModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import io.github.amanshuraikwar.nxtbuz.ui.launcher.LauncherActivity
+import io.github.amanshuraikwar.nxtbuz.launcher.LauncherActivity
+import io.github.amanshuraikwar.nxtbuz.launcher.LauncherModule
 import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainLiveDataProvides
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainModule
@@ -36,7 +36,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 abstract class ActivityBindingModule {
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [LaunchModule::class])
+    @ContributesAndroidInjector(modules = [LauncherModule::class])
     internal abstract fun a(): LauncherActivity
 
     @ExperimentalCoroutinesApi

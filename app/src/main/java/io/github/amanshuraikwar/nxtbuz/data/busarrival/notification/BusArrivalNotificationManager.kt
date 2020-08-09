@@ -9,13 +9,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
 import androidx.core.app.NotificationManagerCompat
 import io.github.amanshuraikwar.nxtbuz.R
+import io.github.amanshuraikwar.nxtbuz.common.model.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.util.asArrivingInMin
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.util.asArrivingInMinutesStr
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.util.getArrivalTimeStrNotification
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.util.isArrivingIn
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
-import io.github.amanshuraikwar.nxtbuz.data.prefs.model.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalDao
 import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalStatus

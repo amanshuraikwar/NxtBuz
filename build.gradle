@@ -4,6 +4,9 @@ import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
 
 buildscript {
 
+    ext {
+        kotlin_version = '1.4-M2'
+    }
     ext.buildConfig = [
             'compileSdk': 29,
             'minSdk'    : 23,
@@ -70,6 +73,7 @@ buildscript {
 
         classpath Libs.Google.gmsGoogleServices
         classpath Libs.Google.crashlyticsGradle
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 

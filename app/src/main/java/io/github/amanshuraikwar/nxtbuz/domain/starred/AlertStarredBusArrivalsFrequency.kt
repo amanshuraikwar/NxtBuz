@@ -1,8 +1,8 @@
 package io.github.amanshuraikwar.nxtbuz.domain.starred
 
+import io.github.amanshuraikwar.nxtbuz.common.model.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
-import io.github.amanshuraikwar.nxtbuz.data.prefs.model.AlertFrequency
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
