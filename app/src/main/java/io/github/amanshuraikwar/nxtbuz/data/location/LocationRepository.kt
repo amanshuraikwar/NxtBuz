@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.location.Location
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.tasks.Tasks
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

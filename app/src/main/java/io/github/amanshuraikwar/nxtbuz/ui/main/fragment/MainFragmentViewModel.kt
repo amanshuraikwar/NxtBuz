@@ -5,9 +5,9 @@ import androidx.lifecycle.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.data.starred.model.StarToggleState
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase

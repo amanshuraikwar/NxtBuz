@@ -2,8 +2,6 @@ package io.github.amanshuraikwar.nxtbuz.ui.settings.dialog
 
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.suspendCoroutine
 

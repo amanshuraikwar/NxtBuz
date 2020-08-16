@@ -2,9 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.data.busarrival.di
 
 import dagger.Module
 import dagger.Provides
-import io.github.amanshuraikwar.nxtbuz.data.busapi.model.BusArrivalsResponse
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrivalsState
-import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalEntity
+import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalsState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow

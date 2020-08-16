@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -55,6 +56,12 @@ fun Activity.makeStatusBarTransparent() {
             statusBarColor = Color.TRANSPARENT
         }
     }
+}
+
+fun View.setMarginTop(marginTop: Int) {
+    val layoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
+    layoutParams.setMargins(0, marginTop, 0, 0)
+    this.layoutParams = layoutParams
 }
 
 //endregion

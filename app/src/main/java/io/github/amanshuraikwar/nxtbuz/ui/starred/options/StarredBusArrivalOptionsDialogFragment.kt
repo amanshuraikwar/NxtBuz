@@ -15,7 +15,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
 import kotlinx.android.synthetic.main.dialog_starred_bus_arrival_options.*

@@ -38,4 +38,15 @@ dependencies {
     implementation Libs.Google.material
 
     implementation Libs.AndroidX.Lifecycle.livedata
+
+    implementation Libs.Google.playServicesLocation
+
+    implementation Libs.AndroidX.Room.runtime
+    kapt Libs.AndroidX.Room.compiler
+    implementation Libs.AndroidX.Room.ktx
+    androidTestImplementation Libs.AndroidX.Room.testing
+
+    implementation Libs.threeTenAbp
+
+    implementation Libs.AndroidX.constraintlayout
 }

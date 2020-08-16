@@ -12,7 +12,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.model.AnimateUpdate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.model.MapInitData
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.util.LatLngInterpolator

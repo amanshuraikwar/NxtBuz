@@ -5,13 +5,12 @@ import androidx.fragment.app.FragmentActivity
 import io.github.amanshuraikwar.annotations.ListItem
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.StarredBusArrival
+import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
 import kotlinx.android.synthetic.main.item_starred_bus_arrival.view.*
 import kotlinx.android.synthetic.main.item_starred_bus_arrival.view.nextDeparture1Tv
 import kotlinx.android.synthetic.main.item_starred_bus_arrival.view.parentCv
 import kotlinx.android.synthetic.main.item_starred_bus_arrival.view.serviceNumberTv
-import kotlinx.android.synthetic.main.item_starred_bus_arrival_compact_small_error.view.*
 
 @ListItem(layoutResId = R.layout.item_starred_bus_arrival)
 class StarredBusArrivalItem(

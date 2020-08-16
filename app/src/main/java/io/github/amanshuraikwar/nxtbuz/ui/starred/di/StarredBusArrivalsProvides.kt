@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.Module
 import dagger.Provides
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import javax.inject.Named
-import io.github.amanshuraikwar.nxtbuz.di.ActivityScoped
+import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
 import io.github.amanshuraikwar.nxtbuz.domain.result.Event
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 

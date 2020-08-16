@@ -5,12 +5,27 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 android {
     compileSdkVersion buildConfig.compileSdk
 
     defaultConfig {
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
+    }
+
+    buildTypes {
+        release {
+            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
+        }
+        internal {
+            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
+        }
+        debug {
+            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.debug']+"\""
+        }
     }
 
     compileOptions {

@@ -2,13 +2,16 @@ package io.github.amanshuraikwar.nxtbuz.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
+import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtilProvides
+import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtilProvides
 import io.github.amanshuraikwar.nxtbuz.launcher.LauncherActivity
 import io.github.amanshuraikwar.nxtbuz.launcher.LauncherModule
+import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity
+import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingModule
 import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainLiveDataProvides
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainModule
-import io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingActivity
-import io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingModule
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
@@ -17,8 +20,6 @@ import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsModule
 import io.github.amanshuraikwar.nxtbuz.ui.starred.di.StarredBusArrivalsProvides
 import io.github.amanshuraikwar.nxtbuz.ui.starred.options.di.StarredBusArrivalOptionsModule
-import io.github.amanshuraikwar.nxtbuz.util.location.LocationUtilProvides
-import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtilProvides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 

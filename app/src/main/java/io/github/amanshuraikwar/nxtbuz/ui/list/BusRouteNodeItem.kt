@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import io.github.amanshuraikwar.annotations.ListItem
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.busroute.model.BusRouteNode
+import io.github.amanshuraikwar.nxtbuz.common.model.BusRouteNode
 import kotlinx.android.synthetic.main.item_bus_route_node.view.*
 
 @ListItem(layoutResId = R.layout.item_bus_route_node)

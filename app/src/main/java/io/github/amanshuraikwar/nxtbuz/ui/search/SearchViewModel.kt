@@ -9,10 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.data.search.model.BusService
-import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.search.SearchUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.util.asEvent

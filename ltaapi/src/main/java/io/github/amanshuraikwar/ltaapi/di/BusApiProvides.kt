@@ -30,7 +30,7 @@ class BusApiProvides {
                         val newRequest = Request
                             .Builder()
                                 //todo
-                            .addHeader("AccountKey", "BuildConfig.ltaAccountkey")
+                            .addHeader("AccountKey", BuildConfig.ltaAccountkey)
                             .url(string)
                             .build()
                         chain.proceed(newRequest)

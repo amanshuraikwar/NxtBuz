@@ -23,12 +23,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.data.search.model.BusService
 import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
+import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.domain.BusArrivalUpdate
-import io.github.amanshuraikwar.nxtbuz.ui.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsActivity

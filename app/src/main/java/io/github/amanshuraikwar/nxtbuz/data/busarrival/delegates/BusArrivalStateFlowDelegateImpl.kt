@@ -1,21 +1,17 @@
 package io.github.amanshuraikwar.nxtbuz.data.busarrival.delegates
 
 import android.util.Log
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.*
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.util.getArrivalTimeStr
-import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalEntity
-import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalStatus
-import io.github.amanshuraikwar.nxtbuz.data.room.busoperator.BusOperatorDao
-import io.github.amanshuraikwar.nxtbuz.data.room.busroute.BusRouteDao
-import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
-import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopsDao
+import io.github.amanshuraikwar.nxtbuz.common.model.*
+import io.github.amanshuraikwar.nxtbuz.common.util.getArrivalTimeStr
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusOperatorDao
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
-import org.threeten.bp.OffsetDateTime
-import org.threeten.bp.temporal.ChronoUnit
 import javax.inject.Inject
 import javax.inject.Named
 

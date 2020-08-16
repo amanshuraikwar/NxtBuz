@@ -7,18 +7,18 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.android.DaggerService
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.busapi.SgBusApi
-import io.github.amanshuraikwar.nxtbuz.data.busapi.model.BusArrivalItem
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrivalsState
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusLoad
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusType
+import io.github.amanshuraikwar.ltaapi.LtaApi
+import io.github.amanshuraikwar.ltaapi.model.BusArrivalItemDto
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalsState
+import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
+import io.github.amanshuraikwar.nxtbuz.common.model.BusType
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.notification.BusArrivalNotificationManager
-import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalDao
-import io.github.amanshuraikwar.nxtbuz.data.room.busarrival.BusArrivalEntity
-import io.github.amanshuraikwar.nxtbuz.data.room.busoperator.BusOperatorDao
-import io.github.amanshuraikwar.nxtbuz.data.room.busoperator.BusOperatorEntity
-import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusDao
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusArrivalDao
+import io.github.amanshuraikwar.nxtbuz.common.model.room.BusArrivalEntity
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusOperatorDao
+import io.github.amanshuraikwar.nxtbuz.common.model.room.BusOperatorEntity
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.util.TimeUtil
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +38,7 @@ class BusArrivalService : DaggerService() {
     lateinit var dispatcherProvider: CoroutinesDispatcherProvider
 
     @Inject
-    lateinit var busApi: SgBusApi
+    lateinit var busApi: LtaApi
 
     @Inject
     lateinit var busOperatorDao: BusOperatorDao
@@ -218,7 +218,7 @@ class BusArrivalService : DaggerService() {
         }
     }
 
-    private suspend inline fun BusArrivalItem.asBusArrivalEntityList(
+    private suspend inline fun BusArrivalItemDto.asBusArrivalEntityList(
         busStopCode: String
     ): List<BusArrivalEntity> {
 
@@ -352,11 +352,12 @@ class BusArrivalService : DaggerService() {
         busServiceNumber: String,
         operator: String,
     ) {
-        val busOperatorEntity = BusOperatorEntity(
-            busServiceNumber = busServiceNumber,
-            busStopCode = busStopCode,
-            operator = operator
-        )
+        val busOperatorEntity =
+            BusOperatorEntity(
+                busServiceNumber = busServiceNumber,
+                busStopCode = busStopCode,
+                operator = operator
+            )
 
         if (busOperatorDao
                 .findByBusServiceNumberAndBusStopCode(busServiceNumber, busStopCode)

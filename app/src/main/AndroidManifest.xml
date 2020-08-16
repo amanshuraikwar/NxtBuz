@@ -35,7 +35,7 @@
 
         <activity
             android:theme="@style/AppTheme.Onboarding"
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingActivity" />
+            android:name="io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity" />
 
         <activity
             android:name="io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity"
