@@ -4,8 +4,8 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
+import io.github.amanshuraikwar.ltaapi.di.BusApiProvides
 import io.github.amanshuraikwar.nxtbuz.MainApplication
-import io.github.amanshuraikwar.nxtbuz.data.busapi.di.BusApiProvides
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.di.BusArrivalModule
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.di.BusArrivalProvides
 import io.github.amanshuraikwar.nxtbuz.data.location.di.LocationModuleProvides

@@ -4,9 +4,9 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.FragmentActivity
 import io.github.amanshuraikwar.annotations.ListItem
-import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
+import io.github.amanshuraikwar.nxtbuz.R
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import kotlinx.android.synthetic.main.item_bus_stop_header.view.*
 import kotlinx.android.synthetic.main.item_info_small.view.iconIv
 import kotlinx.android.synthetic.main.item_info_small.view.stopNameTv

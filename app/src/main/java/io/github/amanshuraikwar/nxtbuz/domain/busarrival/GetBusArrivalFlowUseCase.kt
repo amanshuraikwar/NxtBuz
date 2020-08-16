@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.domain.busarrival
 
+import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.BusArrivalRepository
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.service.BusArrivalService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

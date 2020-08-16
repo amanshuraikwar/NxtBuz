@@ -22,7 +22,5 @@ interface LtaApi {
 
     companion object {
         const val ENDPOINT = "http://datamall2.mytransport.sg/ltaodataservice/"
-
-
     }
 }

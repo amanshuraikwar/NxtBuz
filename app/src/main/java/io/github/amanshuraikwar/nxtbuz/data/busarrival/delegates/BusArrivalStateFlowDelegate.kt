@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.data.busarrival.delegates
 
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
+import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import kotlinx.coroutines.flow.Flow
 
 interface BusArrivalStateFlowDelegate {

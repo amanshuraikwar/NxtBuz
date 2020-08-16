@@ -1,15 +1,15 @@
 package io.github.amanshuraikwar.nxtbuz.data.starred.delegate
 
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.busapi.SgBusApi
-import io.github.amanshuraikwar.nxtbuz.data.busapi.model.ArrivingBusItem
-import io.github.amanshuraikwar.nxtbuz.data.busapi.model.BusArrivalItem
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.*
-import io.github.amanshuraikwar.nxtbuz.data.room.busroute.BusRouteDao
-import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
-import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusDao
-import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusEntity
-import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopsDao
+import io.github.amanshuraikwar.ltaapi.LtaApi
+import io.github.amanshuraikwar.ltaapi.model.ArrivingBusItemDto
+import io.github.amanshuraikwar.ltaapi.model.BusArrivalItemDto
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.model.*
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
+import io.github.amanshuraikwar.nxtbuz.common.model.room.OperatingBusEntity
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
 import io.github.amanshuraikwar.nxtbuz.util.TimeUtil
 import kotlinx.coroutines.withContext
 import org.threeten.bp.OffsetDateTime
@@ -22,7 +22,7 @@ class BusArrivalsDelegateImpl @Inject constructor(
     private val operatingBusDao: OperatingBusDao,
     private val busRouteDao: BusRouteDao,
     private val busStopDao: BusStopDao,
-    private val busApi: SgBusApi,
+    private val busApi: LtaApi,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : BusArrivalsDelegate {
 
@@ -35,7 +35,7 @@ class BusArrivalsDelegateImpl @Inject constructor(
                     .map { it.busServiceNumber }
                     .toSet()
 
-            fun BusArrivalItem.isStarred() =
+            fun BusArrivalItemDto.isStarred() =
                 starredBusServiceNumberSet.contains(this.serviceNumber)
 
             fun OperatingBusEntity.isStarred() =
@@ -82,7 +82,7 @@ class BusArrivalsDelegateImpl @Inject constructor(
             busArrivalList
         }
 
-    private suspend inline fun BusArrivalItem.toBusArrival(
+    private suspend inline fun BusArrivalItemDto.toBusArrival(
         busStopCode: String,
         isStarred: Boolean
     ): BusArrival {
@@ -120,28 +120,28 @@ class BusArrivalsDelegateImpl @Inject constructor(
     }
 
 
-    private suspend inline fun BusArrivalItem.toArrivals(busStopCode: String): Arrivals.Arriving {
+    private suspend inline fun BusArrivalItemDto.toArrivals(busStopCode: String): Arrivals.Arriving {
 
-        if (arrivingBus == null || arrivingBus.estimatedArrival == "") {
+        if (arrivingBus == null || arrivingBus!!.estimatedArrival == "") {
             throw Exception(
                 "First arriving bus is null for bus stop $busStopCode and service $serviceNumber"
             )
         }
 
-        val nextArrivingBus = arrivingBus.asArrivingBus()
+        val nextArrivingBus = arrivingBus!!.asArrivingBus()
 
         val followingArrivingBusList = mutableListOf<ArrivingBus>()
 
         if (arrivingBus1 != null) {
-            if (arrivingBus1.estimatedArrival != "") {
-                followingArrivingBusList.add(arrivingBus1.asArrivingBus())
+            if (arrivingBus1!!.estimatedArrival != "") {
+                followingArrivingBusList.add(arrivingBus1!!.asArrivingBus())
             }
         }
 
 
         if (arrivingBus2 != null) {
-            if (arrivingBus2.estimatedArrival != "") {
-                followingArrivingBusList.add(arrivingBus2.asArrivingBus())
+            if (arrivingBus2!!.estimatedArrival != "") {
+                followingArrivingBusList.add(arrivingBus2!!.asArrivingBus())
             }
         }
 
@@ -149,7 +149,7 @@ class BusArrivalsDelegateImpl @Inject constructor(
 
     }
 
-    private suspend inline fun ArrivingBusItem.asArrivingBus(): ArrivingBus {
+    private suspend inline fun ArrivingBusItemDto.asArrivingBus(): ArrivingBus {
 
         val time =
             ChronoUnit.MINUTES.between(

@@ -5,12 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
-import io.github.amanshuraikwar.nxtbuz.data.busroute.model.BusRoute
-import io.github.amanshuraikwar.nxtbuz.data.busroute.model.BusRouteNode
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
@@ -443,10 +439,10 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
         if (busArrival.arrivals is Arrivals.Arriving) {
 
             val arrivalStrList = mutableListOf(
-                busArrival.arrivals.nextArrivingBus.arrival
+                (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival
             )
 
-            for (arrival in busArrival.arrivals.followingArrivingBusList) {
+            for (arrival in (busArrival.arrivals as Arrivals.Arriving).followingArrivingBusList) {
                 arrivalStrList.add(arrival.arrival)
             }
 
@@ -462,31 +458,31 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
                 val mapMarker = ArrivingBusMapMarker(
                     busArrival.serviceNumber,
-                    busArrival.arrivals.nextArrivingBus.latitude,
-                    busArrival.arrivals.nextArrivingBus.longitude,
-                    if (busArrival.arrivals.nextArrivingBus.arrival == "Arr") {
+                    (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.latitude,
+                    (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.longitude,
+                    if ((busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival == "Arr") {
                         "ARRIVING"
                     } else {
-                        "${busArrival.arrivals.nextArrivingBus.arrival} MINS"
+                        "${(busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival} MINS"
                     },
                     busArrival.serviceNumber,
                 )
                 mapMarkerList.add(mapMarker)
                 busAddList.add(mapMarker)
             } else {
-                if (busArrival.arrivals.nextArrivingBus.latitude != mapMarkerList[curIndex].lat
-                    || busArrival.arrivals.nextArrivingBus.longitude != mapMarkerList[curIndex].lng
+                if ((busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.latitude != mapMarkerList[curIndex].lat
+                    || (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.longitude != mapMarkerList[curIndex].lng
                 ) {
                     busUpdateList.add(
                         MapUpdate(
                             id = mapMarkerList[curIndex].id,
-                            newLat = busArrival.arrivals.nextArrivingBus.latitude,
-                            newLng = busArrival.arrivals.nextArrivingBus.longitude
+                            newLat = (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.latitude,
+                            newLng = (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.longitude
                         )
                     )
                     mapMarkerList[curIndex] = mapMarkerList[curIndex].copy(
-                        newLat = busArrival.arrivals.nextArrivingBus.latitude,
-                        newLng = busArrival.arrivals.nextArrivingBus.longitude,
+                        newLat = (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.latitude,
+                        newLng = (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.longitude,
                         newDescription = "",
                     )
                 }
@@ -494,7 +490,7 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
             curIndex++
 
-            busArrival.arrivals.followingArrivingBusList.forEach { arrivingBus ->
+            (busArrival.arrivals as Arrivals.Arriving).followingArrivingBusList.forEach { arrivingBus ->
                 if (curIndex >= mapMarkerList.size) {
 
                     val mapMarker = ArrivingBusMapMarker(
@@ -647,10 +643,10 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
         if (busArrival.arrivals is Arrivals.Arriving) {
 
             val arrivalStrList = mutableListOf(
-                busArrival.arrivals.nextArrivingBus.arrival
+                (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival
             )
 
-            for (arrival in busArrival.arrivals.followingArrivingBusList) {
+            for (arrival in (busArrival.arrivals as Arrivals.Arriving).followingArrivingBusList) {
                 arrivalStrList.add(arrival.arrival)
             }
 

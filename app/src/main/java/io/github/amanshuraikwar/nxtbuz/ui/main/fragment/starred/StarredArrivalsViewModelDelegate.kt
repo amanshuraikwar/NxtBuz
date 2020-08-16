@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred
 
 import androidx.lifecycle.LiveData
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.result.Event
 import io.github.amanshuraikwar.nxtbuz.ui.starred.model.StarredBusArrivalClicked
 import kotlinx.coroutines.CoroutineScope

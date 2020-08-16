@@ -1,11 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.data.search
 
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.Bus
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.data.room.busroute.BusRouteDao
-import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
-import io.github.amanshuraikwar.nxtbuz.data.room.operatingbus.OperatingBusDao
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.model.Bus
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.data.search.model.BusService
 import io.github.amanshuraikwar.nxtbuz.data.search.model.SearchResult
 import kotlinx.coroutines.async

@@ -1,10 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstoparrivals
 
 import android.util.Log
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.ArrivingBus
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.ArrivingBus
+import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.ArrivingBusMapMarker
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
@@ -36,7 +36,7 @@ class BusStopArrivalsMapMarkerHelper @Inject constructor(
 
                     is Arrivals.Arriving -> {
 
-                        val nextArrivingBus = busArrival.arrivals.nextArrivingBus
+                        val nextArrivingBus = (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus
 
                         serviceNumberMapMarkerMap[busArrival.serviceNumber]?.let { mapMarker ->
 

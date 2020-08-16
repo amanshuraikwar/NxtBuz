@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.list.BusArrivalCompactItem
@@ -17,7 +17,6 @@ import io.github.amanshuraikwar.nxtbuz.ui.list.BusStopHeaderItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.HeaderItem
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstops.BusStopsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.*
 import io.github.amanshuraikwar.nxtbuz.util.post

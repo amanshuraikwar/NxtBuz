@@ -26,6 +26,7 @@ android {
 
 dependencies {
     implementation project(":common")
+    implementation project(":ltaapi")
 
     implementation Libs.Kotlin.stdlib
 
@@ -37,4 +38,11 @@ dependencies {
     kapt Libs.Dagger.androidProcessor
 
     implementation Libs.Coroutines.core
+
+    implementation Libs.AndroidX.Room.runtime
+    kapt Libs.AndroidX.Room.compiler
+    implementation Libs.AndroidX.Room.ktx
+    androidTestImplementation Libs.AndroidX.Room.testing
+
+    implementation Libs.threeTenAbp
 }

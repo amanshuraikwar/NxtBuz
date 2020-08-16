@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_onboarding"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="io.github.amanshuraikwar.nxtbuz.onboarding.welcome.WelcomeFragment"
+        android:label="SignInFragment"
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_permissionFragment"
+            app:destination="@id/permissionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/permissionFragment"
+        android:name="io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionFragment"
+        android:label="PermissionFragment"
+        tools:layout="@layout/fragment_permission" >
+        <action
+            android:id="@+id/action_permissionFragment_to_setupFragment"
+            app:destination="@id/setupFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/setupFragment"
+        android:name="io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupFragment"
+        android:label="SetupFragment"
+        tools:layout="@layout/fragment_setup" />
+</navigation>

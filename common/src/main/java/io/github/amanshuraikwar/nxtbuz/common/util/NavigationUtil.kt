@@ -17,7 +17,7 @@ fun Activity.startOnboardingActivity() {
     startActivity(
         Intent(
             this,
-            getActivityClass("io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingActivity")
+            getActivityClass("io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity")
         )
     )
 }

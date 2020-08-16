@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/launcher" />
             <option value="$PROJECT_DIR$/ltaapi" />
             <option value="$PROJECT_DIR$/multiitemadapter" />
+            <option value="$PROJECT_DIR$/onboarding" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

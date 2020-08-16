@@ -3,7 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.util
 import androidx.appcompat.app.AppCompatActivity
 import dagger.Module
 import dagger.Provides
-import io.github.amanshuraikwar.nxtbuz.util.permission.PermissionUtil
+import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
 
 @Module
 class UtilModule {

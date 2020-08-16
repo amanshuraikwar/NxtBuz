@@ -1,13 +1,13 @@
 package io.github.amanshuraikwar.nxtbuz.data.starred
 
 import android.util.Log
-import io.github.amanshuraikwar.nxtbuz.data.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.StarredBusArrival
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
-import io.github.amanshuraikwar.nxtbuz.data.room.busstops.BusStopDao
-import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopEntity
-import io.github.amanshuraikwar.nxtbuz.data.room.starredbusstops.StarredBusStopsDao
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
+import io.github.amanshuraikwar.nxtbuz.common.model.room.StarredBusStopEntity
+import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
 import io.github.amanshuraikwar.nxtbuz.data.starred.delegate.BusArrivalsDelegate
 import io.github.amanshuraikwar.nxtbuz.data.starred.model.StarToggleState
 import kotlinx.coroutines.*
@@ -134,13 +134,13 @@ class StarredBusArrivalRepository @Inject constructor(
         }
     }
 
-    private suspend fun getArrivalsAndEmit() = coroutineScope {
+    private suspend fun getArrivalsAndEmit() {
 
         val starredBusStops = starredBusStopsDao.findAll()
 
         val starredBusArrivalList = starredBusStops
             .map { (busStopCode, busServiceNumber) ->
-                async(dispatcherProvider.pool8) {
+                //async(dispatcherProvider.pool8) {
                     busArrivalsDelegate
                         .getBusArrivals(busStopCode)
                         .find { it.serviceNumber == busServiceNumber }
@@ -165,8 +165,8 @@ class StarredBusArrivalRepository @Inject constructor(
                                     "$busStopCode and service number " +
                                     "$busServiceNumber not fetched."
                         )
-                }
-            }.awaitAll()
+                //}
+            }/*.awaitAll()*/
 
         starredBusArrivalStateFlow.value = starredBusArrivalList
     }
@@ -189,7 +189,10 @@ class StarredBusArrivalRepository @Inject constructor(
             } else {
                 starredBusStopsDao.insertAll(
                     listOf(
-                        StarredBusStopEntity(busStopCode, busServiceNumber)
+                        StarredBusStopEntity(
+                            busStopCode,
+                            busServiceNumber
+                        )
                     )
                 )
             }
@@ -219,7 +222,10 @@ class StarredBusArrivalRepository @Inject constructor(
 
                 starredBusStopsDao.insertAll(
                     listOf(
-                        StarredBusStopEntity(busStopCode, busServiceNumber)
+                        StarredBusStopEntity(
+                            busStopCode,
+                            busServiceNumber
+                        )
                     )
                 )
 

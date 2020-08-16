@@ -6,10 +6,10 @@ import androidx.fragment.app.FragmentActivity
 import io.github.amanshuraikwar.annotations.ListItem
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusArrival
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusLoad
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.model.BusType
+import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
+import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
+import io.github.amanshuraikwar.nxtbuz.common.model.BusType
 import kotlinx.android.synthetic.main.item_bus_arrival_compact.view.*
 
 @ListItem(layoutResId = R.layout.item_bus_arrival_compact)
@@ -38,7 +38,7 @@ class BusArrivalCompactItem(
     init {
         when (busArrival.arrivals) {
             is Arrivals.Arriving -> {
-                busArrival.arrivals.nextArrivingBus.let {
+                (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.let {
                     nextDeparture1Tv = it.arrival
                     crowdedIv1 =
                         when (it.load) {
@@ -65,8 +65,8 @@ class BusArrivalCompactItem(
                             BusType.BD -> R.drawable.ic_bus_feeder_24
                         }
                 }
-                if (busArrival.arrivals.followingArrivingBusList.isNotEmpty()) {
-                    busArrival.arrivals.followingArrivingBusList[0].let {
+                if ((busArrival.arrivals as Arrivals.Arriving).followingArrivingBusList.isNotEmpty()) {
+                    (busArrival.arrivals as Arrivals.Arriving).followingArrivingBusList[0].let {
                         nextDeparture2Tv = it.arrival
                         crowdedIv2 =
                             when (it.load) {
@@ -94,8 +94,8 @@ class BusArrivalCompactItem(
                             }
                     }
                 }
-                if (busArrival.arrivals.followingArrivingBusList.size >= 2) {
-                    busArrival.arrivals.followingArrivingBusList[1].let {
+                if ((busArrival.arrivals as Arrivals.Arriving).followingArrivingBusList.size >= 2) {
+                    (busArrival.arrivals as Arrivals.Arriving).followingArrivingBusList[1].let {
                         nextDeparture3Tv = it.arrival
                         crowdedIv3 =
                             when (it.load) {
