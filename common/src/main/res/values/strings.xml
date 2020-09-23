@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">NxtBuz</string>
     <string name="btn_txt_retry">RETRY</string>
+
+    <string name="bus_direction_1">\u2192</string>
+    <string name="bus_direction_2">\u21ab</string>
+    <string name="origin_destination">\u21cb</string>
 </resources>

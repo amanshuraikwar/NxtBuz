@@ -9,7 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
+import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
+import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
+import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
+import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallErrorItem
+import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallItem
 import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.ui.starred.options.StarredBusArrivalOptionsDialogFragment
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider

@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.ui.list.RecyclerViewTypeFactoryGenerated
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
+import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
 import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
 

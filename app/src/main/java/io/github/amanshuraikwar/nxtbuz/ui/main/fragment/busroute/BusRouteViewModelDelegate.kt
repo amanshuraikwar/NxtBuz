@@ -1,10 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute
 
 import androidx.lifecycle.LiveData
-import io.github.amanshuraikwar.nxtbuz.domain.result.Event
-import io.github.amanshuraikwar.nxtbuz.ui.list.BusRoutePreviousAllItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.BusRoutePreviousItem
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.domain.BusArrivalUpdate
+import io.github.amanshuraikwar.nxtbuz.listitem.BusRoutePreviousAllItem
+import io.github.amanshuraikwar.nxtbuz.listitem.BusRoutePreviousItem
+import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalUpdate
+import io.github.amanshuraikwar.nxtbuz.common.model.Event
 
 interface BusRouteViewModelDelegate {
     suspend fun onBottomSheetCollapsed()

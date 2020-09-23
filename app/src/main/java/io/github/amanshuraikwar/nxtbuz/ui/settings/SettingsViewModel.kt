@@ -15,10 +15,10 @@ import io.github.amanshuraikwar.nxtbuz.domain.starred.AlertStarredBusArrivalsFre
 import io.github.amanshuraikwar.nxtbuz.domain.starred.AlertStarredBusArrivalsMinutes
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ShouldAlertStarredBusArrivals
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
-import io.github.amanshuraikwar.nxtbuz.ui.list.BooleanSettingsItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.SettingsHeadingItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.SettingsItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.VersionItem
+import io.github.amanshuraikwar.nxtbuz.listitem.BooleanSettingsItem
+import io.github.amanshuraikwar.nxtbuz.listitem.SettingsHeadingItem
+import io.github.amanshuraikwar.nxtbuz.listitem.SettingsItem
+import io.github.amanshuraikwar.nxtbuz.listitem.VersionItem
 import io.github.amanshuraikwar.nxtbuz.ui.settings.dialog.DialogViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.util.Util
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -60,7 +60,11 @@ class SettingsViewModel @Inject constructor(
 
             val listItems = mutableListOf<RecyclerViewListItem>()
 
-            listItems.add(SettingsHeadingItem("BASIC"))
+            listItems.add(
+                SettingsHeadingItem(
+                    "BASIC"
+                )
+            )
 
             listItems.add(
                 SettingsItem(
@@ -106,7 +110,11 @@ class SettingsViewModel @Inject constructor(
                 )
             )
 
-            listItems.add(SettingsHeadingItem("NOTIFICATIONS"))
+            listItems.add(
+                SettingsHeadingItem(
+                    "NOTIFICATIONS"
+                )
+            )
 
             val shouldAlertStarredBusArrivals = shouldAlertStarredBusArrivals()
 
@@ -141,8 +149,16 @@ class SettingsViewModel @Inject constructor(
                 )
             )
 
-            listItems.add(SettingsHeadingItem("ABOUT"))
-            listItems.add(VersionItem(Util.getVersionInfo()))
+            listItems.add(
+                SettingsHeadingItem(
+                    "ABOUT"
+                )
+            )
+            listItems.add(
+                VersionItem(
+                    Util.getVersionInfo()
+                )
+            )
 
             _listItems.postValue(listItems)
         }

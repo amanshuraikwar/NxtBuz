@@ -9,11 +9,11 @@ import io.github.amanshuraikwar.nxtbuz.launcher.LauncherActivity
 import io.github.amanshuraikwar.nxtbuz.launcher.LauncherModule
 import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity
 import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingModule
+import io.github.amanshuraikwar.nxtbuz.search.SearchActivity
+import io.github.amanshuraikwar.nxtbuz.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainLiveDataProvides
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainModule
-import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
-import io.github.amanshuraikwar.nxtbuz.ui.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsModule
 import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsActivity
