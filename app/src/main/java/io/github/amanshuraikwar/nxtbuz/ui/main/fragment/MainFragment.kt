@@ -24,12 +24,13 @@ import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.data.search.model.BusService
-import io.github.amanshuraikwar.nxtbuz.domain.result.EventObserver
+import io.github.amanshuraikwar.nxtbuz.common.model.BusService
+import io.github.amanshuraikwar.nxtbuz.listitem.*
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.ui.list.*
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.domain.BusArrivalUpdate
-import io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity
+import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalUpdate
+import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
+import io.github.amanshuraikwar.nxtbuz.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.starred.model.StarredBusArrivalClicked
@@ -161,7 +162,7 @@ class MainFragment : DaggerFragment() {
             viewModel = viewModelProvider(viewModelFactory)
 
             viewModel.initMap.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver { mapInitData ->
                     val fragment = SupportMapFragment.newInstance(
                         GoogleMapOptions()
@@ -186,7 +187,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.error.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver {
                     itemsRv.visibility = View.GONE
                     loadingIv.visibility = View.VISIBLE
@@ -197,7 +198,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.listItems.observe(
-                this,
+                viewLifecycleOwner,
                 Observer { listItems ->
                     val layoutState = itemsRv.layoutManager?.onSaveInstanceState()
                     adapter =
@@ -208,7 +209,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.collapseBottomSheet.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver {
                     itemsRv.smoothScrollToPosition(0)
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -216,7 +217,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.loading.observe(
-                this,
+                viewLifecycleOwner,
                 Observer { loading ->
                     if (loading is Loading.Show) {
                         showLoading(loading)
@@ -227,7 +228,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.locationStatus.observe(
-                this,
+                viewLifecycleOwner,
                 Observer {
                     recenterFab.setImageResource(
                         if (it) {
@@ -245,7 +246,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.showBack.observe(
-                this,
+                viewLifecycleOwner,
                 Observer { show ->
                     backFab.visibility = if (show) {
                         View.VISIBLE
@@ -256,7 +257,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.onBackPressed.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver {
                     when {
                         bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED -> {
@@ -274,7 +275,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.starredListItems.observe(
-                this,
+                viewLifecycleOwner,
                 Observer { listItems ->
                     val layoutState = starredBusArrivalsRv.layoutManager?.onSaveInstanceState()
                     starredBusArrivalsAdapter =
@@ -285,7 +286,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.startStarredBusArrivalActivity.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver {
                     startActivityForResult(
                         Intent(activity, StarredBusArrivalsActivity::class.java),
@@ -295,7 +296,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.starredBusArrivalRemoved.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver { (busStop, busServiceNumber) ->
                     starredBusArrivalsAdapter?.remove { item ->
                         if (item is StarredBusArrivalItem) {
@@ -315,7 +316,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.starredBusArrivalOptionsDialog.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver { (busStop, busServiceNumber) ->
                     StarredBusArrivalOptionsDialogFragment(busStop, busServiceNumber).show(
                         childFragmentManager, "starred-bus-arrival-options"
@@ -324,7 +325,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.starToggleState.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver { (busStopCode, busServiceNumber, newToggleState) ->
                     adapter
                         ?.items
@@ -402,7 +403,7 @@ class MainFragment : DaggerFragment() {
             }
 
             viewModel.previousBusStopItems.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver { previousItems ->
 
                     adapter?.items
@@ -436,7 +437,7 @@ class MainFragment : DaggerFragment() {
             )
 
             viewModel.hidePreviousBusStopItems.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver { previousAllItem ->
 
                     adapter?.items
@@ -497,7 +498,7 @@ class MainFragment : DaggerFragment() {
 
             searchMtv.setOnClickListener {
                 startActivityForResult(
-                    Intent(activity, SearchActivity::class.java),
+                    Intent(activity, io.github.amanshuraikwar.nxtbuz.search.SearchActivity::class.java),
                     REQUEST_SEARCH_BUS_STOPS
                 )
             }

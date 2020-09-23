@@ -7,13 +7,13 @@ import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.Event
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.result.Event
 import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
-import io.github.amanshuraikwar.nxtbuz.ui.list.HeaderItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalCompactSmallErrorItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalCompactSmallItem
+import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
+import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallErrorItem
+import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallItem
 import io.github.amanshuraikwar.nxtbuz.ui.starred.model.StarredBusArrivalClicked
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -80,7 +80,11 @@ class StarredBusArrivalsViewModel @Inject constructor(
             .groupBy { it.busStopDescription }
             .forEach { (busStopDescription, starredBusArrivalList) ->
 
-                listItems.add(HeaderItem(busStopDescription))
+                listItems.add(
+                    HeaderItem(
+                        busStopDescription
+                    )
+                )
 
                 starredBusArrivalList.forEach {
                     listItems.add(
@@ -89,7 +93,10 @@ class StarredBusArrivalsViewModel @Inject constructor(
                                 it, ::onStarredItemClicked, ::onLongClick
                             )
                         else
-                            StarredBusArrivalCompactSmallErrorItem(it, ::onLongClick)
+                            StarredBusArrivalCompactSmallErrorItem(
+                                it,
+                                ::onLongClick
+                            )
                     )
                 }
             }

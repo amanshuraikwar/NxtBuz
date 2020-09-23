@@ -42,7 +42,7 @@
             android:windowSoftInputMode="adjustNothing" />
 
         <activity
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity"
+            android:name="io.github.amanshuraikwar.nxtbuz.search.SearchActivity"
             android:windowSoftInputMode="stateAlwaysVisible"/>
 
         <activity android:name="io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity" />

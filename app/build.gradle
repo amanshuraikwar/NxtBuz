@@ -117,6 +117,8 @@ dependencies {
     implementation project(':launcher')
     implementation project(':onboarding')
     implementation project(':ltaapi')
+    implementation project(':listitem')
+    implementation project(':search')
 
     implementation Libs.Kotlin.stdlib
 

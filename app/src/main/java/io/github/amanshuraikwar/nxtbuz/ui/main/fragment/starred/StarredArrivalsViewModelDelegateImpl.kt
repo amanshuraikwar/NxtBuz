@@ -8,14 +8,14 @@ import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.Event
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.result.Event
 import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
-import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalBtnItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalErrorItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.StarredBusArrivalItem
+import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalBtnItem
+import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalErrorItem
+import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalItem
 import io.github.amanshuraikwar.nxtbuz.ui.starred.model.StarredBusArrivalClicked
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.util.post
@@ -78,15 +78,24 @@ class StarredArrivalsViewModelDelegateImpl @Inject constructor(
             starredBusArrivalList
                 .map {
                     if (it.arrivals is Arrivals.Arriving)
-                        StarredBusArrivalItem(it, ::onStarredItemClicked, ::onLongClick)
+                        StarredBusArrivalItem(
+                            it,
+                            ::onStarredItemClicked,
+                            ::onLongClick
+                        )
                     else
-                        StarredBusArrivalErrorItem(it, ::onLongClick)
+                        StarredBusArrivalErrorItem(
+                            it,
+                            ::onLongClick
+                        )
                 }
                 .toMutableList()
                 .also {
                     if (it.isNotEmpty()) {
                         it.add(
-                            StarredBusArrivalBtnItem("See All") {
+                            StarredBusArrivalBtnItem(
+                                "See All"
+                            ) {
                                 _startStarredBusArrivalActivity.post()
                             }
                         )

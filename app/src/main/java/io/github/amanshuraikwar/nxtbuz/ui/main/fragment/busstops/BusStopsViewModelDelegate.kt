@@ -10,7 +10,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
-import io.github.amanshuraikwar.nxtbuz.ui.list.BusStopItem
+import io.github.amanshuraikwar.nxtbuz.listitem.BusStopItem
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate

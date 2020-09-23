@@ -10,6 +10,7 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
+import kotlin.jvm.Throws
 
 @Suppress("unused")
 @AutoService(Processor::class) // For registering the service
@@ -241,7 +242,7 @@ class ListItemsProcessor: AbstractProcessor() {
                                     ClassName.bestGuess("kotlin.jvm.JvmStatic")
                                 )
                                 .initializer(
-                                    "${variable.getAnnotation(ListItem::class.java).layoutResId}",
+                                    "R.layout.${variable.getAnnotation(ListItem::class.java).layoutResName}",
                                     Int::class.java
                                 )
                                 .build()

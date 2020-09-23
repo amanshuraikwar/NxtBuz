@@ -3,7 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.util
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
-import io.github.amanshuraikwar.nxtbuz.domain.result.Event
+import io.github.amanshuraikwar.nxtbuz.common.model.Event
 
 // region ViewModels
 

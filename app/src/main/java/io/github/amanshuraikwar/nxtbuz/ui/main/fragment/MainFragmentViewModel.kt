@@ -8,6 +8,7 @@ import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.Event
 import io.github.amanshuraikwar.nxtbuz.data.starred.model.StarToggleState
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
@@ -74,7 +75,7 @@ class MainFragmentViewModel @Inject constructor(
     val onBackPressed = _onBackPressed.asEvent()
     val starredListItems = _starredListItems.map { it }
     val collapseBottomSheet = _collapseBottomSheet.asEvent()
-    val error = _error
+    val error: LiveData<Event<Alert>> = _error
         .map {
             Log.e(TAG, "onError: $it")
             it

@@ -11,10 +11,10 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
-import io.github.amanshuraikwar.nxtbuz.ui.list.BusArrivalCompactItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.BusArrivalErrorItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.BusStopHeaderItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.HeaderItem
+import io.github.amanshuraikwar.nxtbuz.listitem.BusArrivalCompactItem
+import io.github.amanshuraikwar.nxtbuz.listitem.BusArrivalErrorItem
+import io.github.amanshuraikwar.nxtbuz.listitem.BusStopHeaderItem
+import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
