@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.util
+package io.github.amanshuraikwar.nxtbuz.common.util
 
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.OffsetDateTime

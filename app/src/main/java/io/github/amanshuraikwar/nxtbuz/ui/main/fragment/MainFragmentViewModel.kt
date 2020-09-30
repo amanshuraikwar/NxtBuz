@@ -9,7 +9,7 @@ import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.Event
-import io.github.amanshuraikwar.nxtbuz.data.starred.model.StarToggleState
+import io.github.amanshuraikwar.nxtbuz.common.model.StarToggleState
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase

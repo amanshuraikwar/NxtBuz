@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.data.starred.delegate
+package io.github.amanshuraikwar.nxtbuz.starred.data.delegate
 
 import io.github.amanshuraikwar.ltaapi.LtaApi
 import io.github.amanshuraikwar.ltaapi.model.ArrivingBusItemDto
@@ -9,8 +9,8 @@ import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.common.model.room.OperatingBusEntity
+import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
-import io.github.amanshuraikwar.nxtbuz.util.TimeUtil
 import kotlinx.coroutines.withContext
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetTime
