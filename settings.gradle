@@ -1,3 +1,4 @@
+include ':starred'
 include ':listitem'
 include ':search'
 include ':onboarding'

@@ -1,12 +1,12 @@
 package io.github.amanshuraikwar.nxtbuz.domain.starred
 
-import io.github.amanshuraikwar.nxtbuz.data.starred.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.starred.data.StarredBusArrivalRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class ShowErrorStarredBusArrivalsUseCase @Inject constructor(
-    private val repo: StarredBusArrivalRepository
+    private val repo: io.github.amanshuraikwar.nxtbuz.starred.data.StarredBusArrivalRepository
 ) {
     suspend operator fun invoke(): Boolean {
         return repo.shouldShowErrorStarredBusArrivals()

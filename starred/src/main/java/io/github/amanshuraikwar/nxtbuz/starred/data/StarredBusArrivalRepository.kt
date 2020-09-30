@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.data.starred
+package io.github.amanshuraikwar.nxtbuz.starred.data
 
 import android.util.Log
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
@@ -8,8 +8,8 @@ import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.common.model.room.StarredBusStopEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
-import io.github.amanshuraikwar.nxtbuz.data.starred.delegate.BusArrivalsDelegate
-import io.github.amanshuraikwar.nxtbuz.data.starred.model.StarToggleState
+import io.github.amanshuraikwar.nxtbuz.starred.data.delegate.BusArrivalsDelegate
+import io.github.amanshuraikwar.nxtbuz.common.model.StarToggleState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
@@ -197,9 +197,10 @@ class StarredBusArrivalRepository @Inject constructor(
                 )
             }
 
-            starToggleState.value = StarToggleState(
-                busStopCode, busServiceNumber, !isAlreadyStarred
-            )
+            starToggleState.value =
+                StarToggleState(
+                    busStopCode, busServiceNumber, !isAlreadyStarred
+                )
 
             coroutineScope.launch { getArrivalsAndEmit() }
         }
@@ -235,7 +236,12 @@ class StarredBusArrivalRepository @Inject constructor(
                 )
             }
 
-            starToggleState.value = StarToggleState(busStopCode, busServiceNumber, toggleTo)
+            starToggleState.value =
+                StarToggleState(
+                    busStopCode,
+                    busServiceNumber,
+                    toggleTo
+                )
         }
 
         coroutineScope.launch { getArrivalsAndEmit() }

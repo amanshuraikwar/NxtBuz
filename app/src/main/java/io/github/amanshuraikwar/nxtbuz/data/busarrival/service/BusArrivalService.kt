@@ -19,7 +19,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.room.BusArrivalEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusOperatorDao
 import io.github.amanshuraikwar.nxtbuz.common.model.room.BusOperatorEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
-import io.github.amanshuraikwar.nxtbuz.util.TimeUtil
+import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf

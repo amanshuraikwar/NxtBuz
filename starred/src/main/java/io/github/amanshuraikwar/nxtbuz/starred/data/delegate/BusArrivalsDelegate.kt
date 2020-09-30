@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.data.starred.delegate
+package io.github.amanshuraikwar.nxtbuz.starred.data.delegate
 
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 

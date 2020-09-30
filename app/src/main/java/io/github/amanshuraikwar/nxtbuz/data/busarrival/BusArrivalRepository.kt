@@ -11,7 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.common.model.room.OperatingBusEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
-import io.github.amanshuraikwar.nxtbuz.util.TimeUtil
+import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

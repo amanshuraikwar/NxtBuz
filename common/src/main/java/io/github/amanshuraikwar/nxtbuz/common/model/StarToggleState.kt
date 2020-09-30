@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.data.starred.model
+package io.github.amanshuraikwar.nxtbuz.common.model
 
 data class StarToggleState(
     val busStopCode: String,
