@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import io.github.amanshuraikwar.nxtbuz.di.ViewModelKey
+import io.github.amanshuraikwar.nxtbuz.common.di.ViewModelKey
 
 @Module
 internal abstract class SettingsModule {

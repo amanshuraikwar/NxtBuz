@@ -10,7 +10,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.Event
 import io.github.amanshuraikwar.nxtbuz.common.model.StarToggleState
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.starred.domain.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
@@ -36,7 +36,7 @@ import javax.inject.Named
 class MainFragmentViewModel @Inject constructor(
     private val getLocationUseCase: GetLocationUseCase,
     private val defaultLocationUseCase: DefaultLocationUseCase,
-    private val toggleBusStopStar: ToggleBusStopStarUseCase,
+    private val toggleBusStopStar: io.github.amanshuraikwar.nxtbuz.starred.domain.ToggleBusStopStarUseCase,
     @Named("listItems") _listItems: MutableLiveData<MutableList<RecyclerViewListItem>>,
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("onBackPressed") _onBackPressed: MutableLiveData<Unit>,

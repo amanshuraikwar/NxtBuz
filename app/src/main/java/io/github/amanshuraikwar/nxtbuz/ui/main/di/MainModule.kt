@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
-import io.github.amanshuraikwar.nxtbuz.di.ViewModelKey
+import io.github.amanshuraikwar.nxtbuz.common.di.ViewModelKey
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainViewModel
@@ -17,7 +17,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragment
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragmentViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegateImpl
-import io.github.amanshuraikwar.nxtbuz.ui.starred.options.StarredBusArrivalOptionsDialogFragment
+import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsDialogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi

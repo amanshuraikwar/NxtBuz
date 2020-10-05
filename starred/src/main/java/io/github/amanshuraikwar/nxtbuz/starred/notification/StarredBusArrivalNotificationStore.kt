@@ -1,5 +1,6 @@
-package io.github.amanshuraikwar.nxtbuz.data.busarrival.notification
+package io.github.amanshuraikwar.nxtbuz.starred.notification
 
+import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalNotification
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.util.concurrent.ConcurrentHashMap

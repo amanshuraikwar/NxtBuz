@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.starred.options
+package io.github.amanshuraikwar.nxtbuz.starred.ui.options
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
-import io.github.amanshuraikwar.nxtbuz.util.asEvent
+import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
+import io.github.amanshuraikwar.nxtbuz.starred.domain.ToggleBusStopStarUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject

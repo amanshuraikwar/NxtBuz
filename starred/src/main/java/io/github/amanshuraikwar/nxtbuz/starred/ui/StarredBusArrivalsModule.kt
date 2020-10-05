@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.starred
+package io.github.amanshuraikwar.nxtbuz.starred.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -6,16 +6,15 @@ import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
-import io.github.amanshuraikwar.nxtbuz.di.ViewModelKey
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragment
-import io.github.amanshuraikwar.nxtbuz.ui.starred.options.StarredBusArrivalOptionsDialogFragment
+import io.github.amanshuraikwar.nxtbuz.common.di.ViewModelKey
+import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsDialogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @Module
-internal abstract class StarredBusArrivalsModule {
+abstract class StarredBusArrivalsModule {
 
     @Binds
     @IntoMap

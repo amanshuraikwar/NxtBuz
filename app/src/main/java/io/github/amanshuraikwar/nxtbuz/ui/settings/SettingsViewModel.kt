@@ -11,10 +11,10 @@ import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.MaxDistanceOfClosesBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.AlertStarredBusArrivalsFrequency
-import io.github.amanshuraikwar.nxtbuz.domain.starred.AlertStarredBusArrivalsMinutes
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ShouldAlertStarredBusArrivals
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.starred.domain.AlertStarredBusArrivalsFrequency
+import io.github.amanshuraikwar.nxtbuz.starred.domain.AlertStarredBusArrivalsMinutes
+import io.github.amanshuraikwar.nxtbuz.starred.domain.ShouldAlertStarredBusArrivals
+import io.github.amanshuraikwar.nxtbuz.starred.domain.ShowErrorStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.listitem.BooleanSettingsItem
 import io.github.amanshuraikwar.nxtbuz.listitem.SettingsHeadingItem
 import io.github.amanshuraikwar.nxtbuz.listitem.SettingsItem
@@ -34,10 +34,10 @@ private const val TAG = "SettingsViewModel"
 class SettingsViewModel @Inject constructor(
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
     private val maxDistanceOfClosesBusStopUseCase: MaxDistanceOfClosesBusStopUseCase,
-    private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
-    private val shouldAlertStarredBusArrivals: ShouldAlertStarredBusArrivals,
-    private val alertStarredBusArrivalsMinutes: AlertStarredBusArrivalsMinutes,
-    private val alertStarredBusArrivalsFrequency: AlertStarredBusArrivalsFrequency,
+    private val showErrorStarredBusArrivalsUseCase: io.github.amanshuraikwar.nxtbuz.starred.domain.ShowErrorStarredBusArrivalsUseCase,
+    private val shouldAlertStarredBusArrivals: io.github.amanshuraikwar.nxtbuz.starred.domain.ShouldAlertStarredBusArrivals,
+    private val alertStarredBusArrivalsMinutes: io.github.amanshuraikwar.nxtbuz.starred.domain.AlertStarredBusArrivalsMinutes,
+    private val alertStarredBusArrivalsFrequency: io.github.amanshuraikwar.nxtbuz.starred.domain.AlertStarredBusArrivalsFrequency,
     private val dialogViewModelDelegate: DialogViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {

@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.starred
+package io.github.amanshuraikwar.nxtbuz.starred.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -8,15 +8,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
-import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
+import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
 import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallErrorItem
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallItem
-import io.github.amanshuraikwar.nxtbuz.ui.list.*
-import io.github.amanshuraikwar.nxtbuz.ui.starred.options.StarredBusArrivalOptionsDialogFragment
-import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
+import io.github.amanshuraikwar.nxtbuz.starred.R
+import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsDialogFragment
 import kotlinx.android.synthetic.main.activity_starred_bus_arrivals.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -72,7 +71,10 @@ class StarredBusArrivalsActivity : DaggerAppCompatActivity() {
         viewModel.starredBusArrivalOptionsDialog.observe(
             this,
             EventObserver { (busStop, busServiceNumber) ->
-                StarredBusArrivalOptionsDialogFragment(busStop, busServiceNumber).show(
+                StarredBusArrivalOptionsDialogFragment(
+                    busStop,
+                    busServiceNumber
+                ).show(
                     supportFragmentManager, "starred-bus-arrival-options"
                 )
             }

@@ -19,8 +19,10 @@ import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusArrivalDao
 import io.github.amanshuraikwar.nxtbuz.common.model.room.BusArrivalEntity
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalStatus
+import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalNotification
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
+import io.github.amanshuraikwar.nxtbuz.starred.notification.StarredBusArrivalNotificationStore
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.withContext
 import org.threeten.bp.OffsetDateTime
@@ -47,7 +49,8 @@ class BusArrivalNotificationManager @Inject constructor(
     private val starredBusArrivalNotificationIdMap =
         ConcurrentHashMap<String, StarredBusArrivalNotification>()
 
-    private val starredBusArrivalNotificationStore = StarredBusArrivalNotificationStore()
+    private val starredBusArrivalNotificationStore =
+        StarredBusArrivalNotificationStore()
 
     suspend fun createNotification(
         busStopCode: String
@@ -258,11 +261,12 @@ class BusArrivalNotificationManager @Inject constructor(
                     }
                     ?: run {
 
-                        val notification = StarredBusArrivalNotification(
-                            starredBusArrivalNotificationStore.createNewNotificationId(),
-                            arrivalTimeStamp,
-                            arrivalTimeStamp.asArrivingInMin()
-                        )
+                        val notification =
+                            StarredBusArrivalNotification(
+                                starredBusArrivalNotificationStore.createNewNotificationId(),
+                                arrivalTimeStamp,
+                                arrivalTimeStamp.asArrivingInMin()
+                            )
 
                         starredBusArrivalNotificationStore.putNotification(
                             busStopCode,

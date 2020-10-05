@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.domain.starred
+package io.github.amanshuraikwar.nxtbuz.starred.domain
 
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage

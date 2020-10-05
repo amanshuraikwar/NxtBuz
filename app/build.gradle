@@ -119,6 +119,7 @@ dependencies {
     implementation project(':ltaapi')
     implementation project(':listitem')
     implementation project(':search')
+    implementation project(':starred')
 
     implementation Libs.Kotlin.stdlib
 

@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.starred.di
+package io.github.amanshuraikwar.nxtbuz.starred.ui.di
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import javax.inject.Named
 import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
 import io.github.amanshuraikwar.nxtbuz.common.model.Event
-import io.github.amanshuraikwar.nxtbuz.util.asEvent
+import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 
 @Module
 class StarredBusArrivalsProvides {
