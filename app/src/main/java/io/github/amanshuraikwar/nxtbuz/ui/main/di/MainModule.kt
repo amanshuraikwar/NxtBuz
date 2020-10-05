@@ -15,8 +15,8 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragment
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragmentViewModel
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegateImpl
+import io.github.amanshuraikwar.nxtbuz.starred.ui.delegate.StarredArrivalsViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.starred.ui.delegate.StarredArrivalsViewModelDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsDialogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

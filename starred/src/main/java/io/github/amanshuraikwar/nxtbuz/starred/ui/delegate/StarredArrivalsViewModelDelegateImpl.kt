@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred
+package io.github.amanshuraikwar.nxtbuz.starred.ui.delegate
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -15,8 +15,8 @@ import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalBtnItem
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalErrorItem
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalItem
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalClicked
-import io.github.amanshuraikwar.nxtbuz.util.asEvent
-import io.github.amanshuraikwar.nxtbuz.util.post
+import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
+import io.github.amanshuraikwar.nxtbuz.common.util.post
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi

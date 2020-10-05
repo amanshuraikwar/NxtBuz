@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred
+package io.github.amanshuraikwar.nxtbuz.starred.ui.delegate
 
 import androidx.lifecycle.LiveData
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
