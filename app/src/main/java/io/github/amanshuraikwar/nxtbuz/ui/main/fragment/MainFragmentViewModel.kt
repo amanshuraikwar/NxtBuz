@@ -10,7 +10,6 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.Event
 import io.github.amanshuraikwar.nxtbuz.common.model.StarToggleState
-import io.github.amanshuraikwar.nxtbuz.starred.domain.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
@@ -20,7 +19,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstoparrivals.BusStopA
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstops.BusStopsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.Alert
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.starred.StarredArrivalsViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.starred.ui.delegate.StarredArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
