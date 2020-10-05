@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.starred.model
+package io.github.amanshuraikwar.nxtbuz.common.model
 
 import android.os.Parcelable
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop

@@ -27,14 +27,12 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.BusService
 import io.github.amanshuraikwar.nxtbuz.listitem.*
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionDialog
-import io.github.amanshuraikwar.nxtbuz.ui.list.*
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalUpdate
 import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
-import io.github.amanshuraikwar.nxtbuz.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
-import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsActivity
-import io.github.amanshuraikwar.nxtbuz.ui.starred.model.StarredBusArrivalClicked
-import io.github.amanshuraikwar.nxtbuz.ui.starred.options.StarredBusArrivalOptionsDialogFragment
+import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
+import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalClicked
+import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsDialogFragment
 import io.github.amanshuraikwar.nxtbuz.util.lerp
 import io.github.amanshuraikwar.nxtbuz.util.setMarginTop
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
@@ -318,7 +316,10 @@ class MainFragment : DaggerFragment() {
             viewModel.starredBusArrivalOptionsDialog.observe(
                 viewLifecycleOwner,
                 EventObserver { (busStop, busServiceNumber) ->
-                    StarredBusArrivalOptionsDialogFragment(busStop, busServiceNumber).show(
+                    StarredBusArrivalOptionsDialogFragment(
+                        busStop,
+                        busServiceNumber
+                    ).show(
                         childFragmentManager, "starred-bus-arrival-options"
                     )
                 }

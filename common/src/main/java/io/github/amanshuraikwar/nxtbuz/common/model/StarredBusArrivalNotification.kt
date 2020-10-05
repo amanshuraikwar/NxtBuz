@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.data.busarrival.notification
+package io.github.amanshuraikwar.nxtbuz.common.model
 
 import org.threeten.bp.OffsetDateTime
 

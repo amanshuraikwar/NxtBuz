@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.starred
+package io.github.amanshuraikwar.nxtbuz.starred.ui
 
 import android.util.Log
 import androidx.lifecycle.*
@@ -9,13 +9,12 @@ import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.Event
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
-import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallErrorItem
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallItem
-import io.github.amanshuraikwar.nxtbuz.ui.starred.model.StarredBusArrivalClicked
-import io.github.amanshuraikwar.nxtbuz.util.asEvent
+import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalClicked
+import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -29,7 +28,7 @@ import javax.inject.Named
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class StarredBusArrivalsViewModel @Inject constructor(
-    private val attachStarredBusArrivalsUseCase: AttachStarredBusArrivalsUseCase,
+    private val attachStarredBusArrivalsUseCase: io.github.amanshuraikwar.nxtbuz.starred.domain.AttachStarredBusArrivalsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
     @Named("starred-bus-arrival-removed-event") val remove: LiveData<Event<Pair<BusStop, String>>>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
@@ -50,7 +49,9 @@ class StarredBusArrivalsViewModel @Inject constructor(
     }
 
     init {
-        FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
+        FirebaseCrashlytics.getInstance().setCustomKey("viewModel",
+            TAG
+        )
         start()
     }
 

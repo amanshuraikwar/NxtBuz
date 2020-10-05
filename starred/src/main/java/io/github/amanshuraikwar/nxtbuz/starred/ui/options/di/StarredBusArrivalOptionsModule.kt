@@ -1,18 +1,18 @@
-package io.github.amanshuraikwar.nxtbuz.ui.starred.options.di
+package io.github.amanshuraikwar.nxtbuz.starred.ui.options.di
 
 import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import io.github.amanshuraikwar.nxtbuz.di.ViewModelKey
-import io.github.amanshuraikwar.nxtbuz.ui.starred.options.StarredBusArrivalOptionsViewModel
+import io.github.amanshuraikwar.nxtbuz.common.di.ViewModelKey
+import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @Module
-internal abstract class StarredBusArrivalOptionsModule {
+abstract class StarredBusArrivalOptionsModule {
 
     @Binds
     @IntoMap

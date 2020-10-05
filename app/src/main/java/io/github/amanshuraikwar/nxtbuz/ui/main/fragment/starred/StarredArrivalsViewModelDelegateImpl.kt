@@ -11,12 +11,10 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.Event
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalBtnItem
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalErrorItem
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalItem
-import io.github.amanshuraikwar.nxtbuz.ui.starred.model.StarredBusArrivalClicked
+import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalClicked
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.util.post
 import kotlinx.coroutines.CoroutineScope
@@ -31,9 +29,9 @@ import javax.inject.Named
 
 @ExperimentalCoroutinesApi
 class StarredArrivalsViewModelDelegateImpl @Inject constructor(
-    private val attachStarredBusArrivalsUseCase: AttachStarredBusArrivalsUseCase,
+    private val attachStarredBusArrivalsUseCase: io.github.amanshuraikwar.nxtbuz.starred.domain.AttachStarredBusArrivalsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
-    private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
+    private val showErrorStarredBusArrivalsUseCase: io.github.amanshuraikwar.nxtbuz.starred.domain.ShowErrorStarredBusArrivalsUseCase,
     @Named("starredListItems") private val _starredListItems: MutableLiveData<MutableList<RecyclerViewListItem>>,
     @Named("startStarredBusArrivalActivity") private val _startStarredBusArrivalActivity: MutableLiveData<Unit>,
     @Named("starred-bus-arrival-removed-event") override val starredBusArrivalRemoved: LiveData<Event<Pair<BusStop, String>>>,

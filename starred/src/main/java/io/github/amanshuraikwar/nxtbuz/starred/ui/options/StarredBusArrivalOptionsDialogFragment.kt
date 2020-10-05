@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.starred.options
+package io.github.amanshuraikwar.nxtbuz.starred.ui.options
 
 import android.content.Context
 import android.os.Bundle
@@ -14,10 +14,10 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
-import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
-import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
+import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
+import io.github.amanshuraikwar.nxtbuz.starred.R
 import kotlinx.android.synthetic.main.dialog_starred_bus_arrival_options.*
 import javax.inject.Inject
 
@@ -38,7 +38,8 @@ class StarredBusArrivalOptionsDialogFragment : BottomSheetDialogFragment(), HasA
             busServiceNumber: String
         ): StarredBusArrivalOptionsDialogFragment {
 
-            return StarredBusArrivalOptionsDialogFragment().apply {
+            return StarredBusArrivalOptionsDialogFragment()
+                .apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_BUS_STOP, busStop)
                     putString(KEY_BUS_SERVICE_NUMBER, busServiceNumber)

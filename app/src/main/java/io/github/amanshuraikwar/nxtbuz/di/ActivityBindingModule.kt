@@ -16,10 +16,10 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainModule
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsModule
-import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsActivity
-import io.github.amanshuraikwar.nxtbuz.ui.starred.StarredBusArrivalsModule
-import io.github.amanshuraikwar.nxtbuz.ui.starred.di.StarredBusArrivalsProvides
-import io.github.amanshuraikwar.nxtbuz.ui.starred.options.di.StarredBusArrivalOptionsModule
+import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
+import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsModule
+import io.github.amanshuraikwar.nxtbuz.starred.ui.di.StarredBusArrivalsProvides
+import io.github.amanshuraikwar.nxtbuz.starred.ui.options.di.StarredBusArrivalOptionsModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 

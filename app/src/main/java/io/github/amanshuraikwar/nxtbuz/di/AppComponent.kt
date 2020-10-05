@@ -40,8 +40,8 @@ import javax.inject.Singleton
         RoomProvides::class,
         BusArrivalProvides::class,
         BusArrivalModule::class,
-        io.github.amanshuraikwar.nxtbuz.starred.data.di.StarredBusArrivalModule::class,
-        io.github.amanshuraikwar.nxtbuz.starred.data.di.StarredBusArrivalProvides::class,
+        StarredBusArrivalModule::class,
+        StarredBusArrivalProvides::class,
     ]
 )
 interface AppComponent : AndroidInjector<MainApplication> {
