@@ -45,4 +45,7 @@ dependencies {
     androidTestImplementation Libs.AndroidX.Room.testing
 
     implementation Libs.threeTenAbp
+
+    implementation Libs.Google.playServicesMap
+    implementation Libs.Google.playServicesLocation
 }

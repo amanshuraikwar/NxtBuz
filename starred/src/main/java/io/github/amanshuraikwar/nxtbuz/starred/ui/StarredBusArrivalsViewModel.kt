@@ -15,6 +15,7 @@ import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallIte
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalClicked
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -28,7 +29,7 @@ import javax.inject.Named
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class StarredBusArrivalsViewModel @Inject constructor(
-    private val attachStarredBusArrivalsUseCase: io.github.amanshuraikwar.nxtbuz.starred.domain.AttachStarredBusArrivalsUseCase,
+    private val attachStarredBusArrivalsUseCase: AttachStarredBusArrivalsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
     @Named("starred-bus-arrival-removed-event") val remove: LiveData<Event<Pair<BusStop, String>>>,
     private val dispatcherProvider: CoroutinesDispatcherProvider

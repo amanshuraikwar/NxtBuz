@@ -29,12 +29,12 @@ import io.github.amanshuraikwar.nxtbuz.listitem.*
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalUpdate
 import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
-import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
+import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalClicked
 import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsDialogFragment
 import io.github.amanshuraikwar.nxtbuz.util.lerp
-import io.github.amanshuraikwar.nxtbuz.util.setMarginTop
+import io.github.amanshuraikwar.nxtbuz.common.util.setMarginTop
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
 import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
 import kotlinx.android.synthetic.main.fragment_overview.*

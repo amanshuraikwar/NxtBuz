@@ -17,6 +17,8 @@ import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalItem
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalClicked
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.common.util.post
+import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -29,9 +31,9 @@ import javax.inject.Named
 
 @ExperimentalCoroutinesApi
 class StarredArrivalsViewModelDelegateImpl @Inject constructor(
-    private val attachStarredBusArrivalsUseCase: io.github.amanshuraikwar.nxtbuz.starred.domain.AttachStarredBusArrivalsUseCase,
+    private val attachStarredBusArrivalsUseCase: AttachStarredBusArrivalsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
-    private val showErrorStarredBusArrivalsUseCase: io.github.amanshuraikwar.nxtbuz.starred.domain.ShowErrorStarredBusArrivalsUseCase,
+    private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
     @Named("starredListItems") private val _starredListItems: MutableLiveData<MutableList<RecyclerViewListItem>>,
     @Named("startStarredBusArrivalActivity") private val _startStarredBusArrivalActivity: MutableLiveData<Unit>,
     @Named("starred-bus-arrival-removed-event") override val starredBusArrivalRemoved: LiveData<Event<Pair<BusStop, String>>>,

@@ -16,7 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
-import io.github.amanshuraikwar.nxtbuz.util.map.MapUtil
+import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.util.post
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
