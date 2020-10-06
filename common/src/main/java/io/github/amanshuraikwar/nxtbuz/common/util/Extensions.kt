@@ -7,6 +7,9 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
+import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
@@ -61,6 +64,12 @@ fun Activity.makeStatusBarTransparent() {
 fun View.setMarginTop(marginTop: Int) {
     val layoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
     layoutParams.setMargins(0, marginTop, 0, 0)
+    this.layoutParams = layoutParams
+}
+
+fun View.setMarginBottom(marginBottom: Int) {
+    val layoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
+    layoutParams.setMargins(marginLeft, this.marginTop, this.marginRight, marginBottom)
     this.layoutParams = layoutParams
 }
 

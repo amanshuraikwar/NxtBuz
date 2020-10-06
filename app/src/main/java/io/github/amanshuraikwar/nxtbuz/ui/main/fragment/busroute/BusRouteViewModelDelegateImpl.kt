@@ -26,7 +26,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapUpdate
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
-import io.github.amanshuraikwar.nxtbuz.util.map.MapUtil
+import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.util.post
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.FlowCollector

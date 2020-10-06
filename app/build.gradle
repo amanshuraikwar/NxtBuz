@@ -120,6 +120,7 @@ dependencies {
     implementation project(':listitem')
     implementation project(':search')
     implementation project(':starred')
+    implementation project(':settings')
 
     implementation Libs.Kotlin.stdlib
 

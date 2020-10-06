@@ -45,7 +45,7 @@
             android:name="io.github.amanshuraikwar.nxtbuz.search.SearchActivity"
             android:windowSoftInputMode="stateAlwaysVisible"/>
 
-        <activity android:name="io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity" />
+        <activity android:name="io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity" />
 
         <activity android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity"
             android:exported="true"/>

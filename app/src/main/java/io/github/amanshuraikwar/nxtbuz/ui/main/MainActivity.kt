@@ -7,7 +7,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
-import io.github.amanshuraikwar.nxtbuz.util.makeStatusBarTransparent
+import io.github.amanshuraikwar.nxtbuz.common.util.makeStatusBarTransparent
 import io.github.amanshuraikwar.nxtbuz.util.viewModelProvider
 import javax.inject.Inject
 

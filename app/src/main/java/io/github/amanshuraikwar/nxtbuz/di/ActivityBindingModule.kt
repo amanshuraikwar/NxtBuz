@@ -14,8 +14,8 @@ import io.github.amanshuraikwar.nxtbuz.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainLiveDataProvides
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainModule
-import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity
-import io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsModule
+import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
+import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsModule
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsModule
 import io.github.amanshuraikwar.nxtbuz.starred.ui.di.StarredBusArrivalsProvides
