@@ -11,9 +11,9 @@ import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity
 import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingModule
 import io.github.amanshuraikwar.nxtbuz.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.search.SearchModule
-import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainLiveDataProvides
-import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
-import io.github.amanshuraikwar.nxtbuz.ui.main.di.MainModule
+import io.github.amanshuraikwar.nxtbuz.ui.di.MainLiveDataProvides
+import io.github.amanshuraikwar.nxtbuz.ui.MainActivity
+import io.github.amanshuraikwar.nxtbuz.ui.di.MainModule
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsModule
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity

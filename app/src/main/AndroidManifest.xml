@@ -38,7 +38,7 @@
             android:name="io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity" />
 
         <activity
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity"
+            android:name="io.github.amanshuraikwar.nxtbuz.ui.MainActivity"
             android:windowSoftInputMode="adjustNothing" />
 
         <activity
