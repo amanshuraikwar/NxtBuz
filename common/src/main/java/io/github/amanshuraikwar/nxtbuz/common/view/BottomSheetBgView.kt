@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.fragment
+package io.github.amanshuraikwar.nxtbuz.common.view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,8 +6,8 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
-import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.util.lerp
+import io.github.amanshuraikwar.nxtbuz.common.R
+import io.github.amanshuraikwar.nxtbuz.common.util.lerp
 
 class BottomSheetBgView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 

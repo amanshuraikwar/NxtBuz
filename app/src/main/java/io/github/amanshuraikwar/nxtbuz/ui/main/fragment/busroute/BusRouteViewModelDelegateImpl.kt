@@ -12,14 +12,13 @@ import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
+import io.github.amanshuraikwar.nxtbuz.common.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.listitem.*
 import io.github.amanshuraikwar.nxtbuz.common.model.Loading
 import io.github.amanshuraikwar.nxtbuz.common.model.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalUpdate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.loop.ArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.loop.ArrivalsLoopData
-import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.common.model.map.ArrivingBusMapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker

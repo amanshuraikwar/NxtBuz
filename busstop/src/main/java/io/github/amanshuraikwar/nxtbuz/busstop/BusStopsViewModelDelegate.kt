@@ -1,10 +1,9 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstops
+package io.github.amanshuraikwar.nxtbuz.busstop
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
-import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
@@ -13,11 +12,10 @@ import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.listitem.BusStopItem
 import io.github.amanshuraikwar.nxtbuz.common.model.Loading
 import io.github.amanshuraikwar.nxtbuz.common.model.ScreenState
-import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
-import io.github.amanshuraikwar.nxtbuz.util.post
+import io.github.amanshuraikwar.nxtbuz.common.util.post
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
