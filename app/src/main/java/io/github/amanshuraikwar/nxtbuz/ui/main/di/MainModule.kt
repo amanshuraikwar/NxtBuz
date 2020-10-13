@@ -11,8 +11,8 @@ import io.github.amanshuraikwar.nxtbuz.common.di.ViewModelKey
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.main.MainViewModel
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegateImpl
+import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragment
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.MainFragmentViewModel
 import io.github.amanshuraikwar.nxtbuz.starred.ui.delegate.StarredArrivalsViewModelDelegate
@@ -54,7 +54,7 @@ internal abstract class MainModule {
 
     @Binds
     @ActivityScoped
-    internal abstract fun h(a: MapViewModelDelegateImpl): MapViewModelDelegate
+    internal abstract fun h(a: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegateImpl): io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
 
     @ExperimentalCoroutinesApi
     @Binds

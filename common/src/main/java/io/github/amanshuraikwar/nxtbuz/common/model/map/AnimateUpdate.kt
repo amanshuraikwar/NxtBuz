@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.model
+package io.github.amanshuraikwar.nxtbuz.common.model.map
 
 import com.google.android.gms.maps.model.LatLng
 

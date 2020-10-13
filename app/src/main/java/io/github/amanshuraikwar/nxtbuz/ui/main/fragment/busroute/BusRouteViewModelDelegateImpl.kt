@@ -14,16 +14,16 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.listitem.*
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
+import io.github.amanshuraikwar.nxtbuz.common.model.Loading
+import io.github.amanshuraikwar.nxtbuz.common.model.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalUpdate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.loop.ArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.loop.ArrivalsLoopData
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.ArrivingBusMapMarker
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapUpdate
+import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.common.model.map.ArrivingBusMapMarker
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapUpdate
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
@@ -49,7 +49,7 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
-    private val mapViewModelDelegate: MapViewModelDelegate,
+    private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
     private val mapUtil: MapUtil,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : BusRouteViewModelDelegate {
@@ -456,17 +456,18 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
             if (curIndex >= mapMarkerList.size) {
 
-                val mapMarker = ArrivingBusMapMarker(
-                    busArrival.serviceNumber,
-                    (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.latitude,
-                    (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.longitude,
-                    if ((busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival == "Arr") {
-                        "ARRIVING"
-                    } else {
-                        "${(busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival} MINS"
-                    },
-                    busArrival.serviceNumber,
-                )
+                val mapMarker =
+                    ArrivingBusMapMarker(
+                        busArrival.serviceNumber,
+                        (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.latitude,
+                        (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.longitude,
+                        if ((busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival == "Arr") {
+                            "ARRIVING"
+                        } else {
+                            "${(busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival} MINS"
+                        },
+                        busArrival.serviceNumber,
+                    )
                 mapMarkerList.add(mapMarker)
                 busAddList.add(mapMarker)
             } else {
@@ -493,17 +494,18 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
             (busArrival.arrivals as Arrivals.Arriving).followingArrivingBusList.forEach { arrivingBus ->
                 if (curIndex >= mapMarkerList.size) {
 
-                    val mapMarker = ArrivingBusMapMarker(
-                        busArrival.serviceNumber,
-                        arrivingBus.latitude,
-                        arrivingBus.longitude,
-                        if (arrivingBus.arrival == "Arr") {
-                            "ARRIVING"
-                        } else {
-                            "${arrivingBus.arrival} MINS"
-                        },
-                        busArrival.serviceNumber,
-                    )
+                    val mapMarker =
+                        ArrivingBusMapMarker(
+                            busArrival.serviceNumber,
+                            arrivingBus.latitude,
+                            arrivingBus.longitude,
+                            if (arrivingBus.arrival == "Arr") {
+                                "ARRIVING"
+                            } else {
+                                "${arrivingBus.arrival} MINS"
+                            },
+                            busArrival.serviceNumber,
+                        )
                     mapMarkerList.add(mapMarker)
                     busAddList.add(mapMarker)
 

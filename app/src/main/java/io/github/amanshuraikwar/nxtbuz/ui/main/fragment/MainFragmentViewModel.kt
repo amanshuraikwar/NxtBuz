@@ -6,10 +6,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.common.model.Event
-import io.github.amanshuraikwar.nxtbuz.common.model.StarToggleState
+import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
@@ -18,8 +15,6 @@ import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.BusRouteViewMod
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.BusRouteViewModelDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstoparrivals.BusStopArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstops.BusStopsViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.Alert
 import io.github.amanshuraikwar.nxtbuz.starred.ui.delegate.StarredArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.*
@@ -46,12 +41,12 @@ class MainFragmentViewModel @Inject constructor(
     @Named("starToggleState") _starToggleStateFlow: MutableStateFlow<StarToggleState>,
     private val busStopsViewModelDelegate: BusStopsViewModelDelegate,
     private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
-    private val mapViewModelDelegate: MapViewModelDelegate,
+    private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
     private val busRouteViewModelDelegate: BusRouteViewModelDelegateImpl,
     starredArrivalsViewModelDelegate: StarredArrivalsViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(),
-    MapViewModelDelegate by mapViewModelDelegate,
+    io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate by mapViewModelDelegate,
     StarredArrivalsViewModelDelegate by starredArrivalsViewModelDelegate,
     BusRouteViewModelDelegate by busRouteViewModelDelegate {
 

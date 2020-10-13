@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.fragment
+package io.github.amanshuraikwar.nxtbuz.common.model
 
 import androidx.annotation.DrawableRes
 

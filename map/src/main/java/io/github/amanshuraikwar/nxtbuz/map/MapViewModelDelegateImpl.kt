@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map
+package io.github.amanshuraikwar.nxtbuz.map
 
 import android.animation.Animator
 import android.animation.AnimatorSet
@@ -11,17 +11,16 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
-import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.model.AnimateUpdate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.model.MapInitData
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.util.LatLngInterpolator
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.AnimateMarker
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.ArrivingBusMapMarker
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
+import io.github.amanshuraikwar.nxtbuz.common.model.map.AnimateUpdate
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapInitData
+import io.github.amanshuraikwar.nxtbuz.common.util.LatLngInterpolator
+import io.github.amanshuraikwar.nxtbuz.common.model.map.AnimateMarker
+import io.github.amanshuraikwar.nxtbuz.common.model.map.ArrivingBusMapMarker
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
+import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
-import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MarkerUtil
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -175,14 +174,16 @@ class MapViewModelDelegateImpl @Inject constructor(
                 .forEach { mapUpdate ->
 
                     if (mapUpdate.newIconDrawableRes != null) {
+                        // TODO: 13/10/20 remove !!
                         mapMarkerIdBitmapDescriptorList.add(
                             mapUpdate.id to
-                                    mapUtil.bitmapDescriptorFromVector(mapUpdate.newIconDrawableRes)
+                                    mapUtil.bitmapDescriptorFromVector(mapUpdate.newIconDrawableRes!!)
                         )
                     }
 
                     if (mapUpdate.newDescription != null) {
-                        mapMarkerIdTitleList.add(mapUpdate.id to mapUpdate.newDescription)
+                        // TODO: 13/10/20 remove !!
+                        mapMarkerIdTitleList.add(mapUpdate.id to mapUpdate.newDescription!!)
                     }
 
                     if (mapUpdate.newLat != null || mapUpdate.newLng != null) {
@@ -206,7 +207,7 @@ class MapViewModelDelegateImpl @Inject constructor(
                         if (mapUpdate.animatePosition is AnimateMarker.Animate) {
                             mapMarkerIdPositionAnimatedList.add(
                                 mapUpdate.id to AnimateUpdate(
-                                    LatLng(newLat, newLng), mapUpdate.animatePosition.duration
+                                    LatLng(newLat, newLng), (mapUpdate.animatePosition as AnimateMarker.Animate).duration
                                 )
                             )
                         } else {
