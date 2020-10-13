@@ -1,10 +1,10 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map
+package io.github.amanshuraikwar.nxtbuz.map
 
 import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import io.github.amanshuraikwar.nxtbuz.common.model.Event
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.model.MapInitData
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapInitData
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 
 interface MapViewModelDelegate {
 

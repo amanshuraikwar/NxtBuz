@@ -5,16 +5,16 @@ import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.ArrivingBus
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.ArrivingBusMapMarker
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapUpdate
+import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.common.model.map.ArrivingBusMapMarker
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapUpdate
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class BusStopArrivalsMapMarkerHelper @Inject constructor(
-    private val mapViewModelDelegate: MapViewModelDelegate,
+    private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) {
 
@@ -61,13 +61,14 @@ class BusStopArrivalsMapMarkerHelper @Inject constructor(
 
                         } ?: run {
 
-                            val mapMarker = ArrivingBusMapMarker(
-                                busArrival.serviceNumber,
-                                nextArrivingBus.latitude,
-                                nextArrivingBus.longitude,
-                                nextArrivingBus.getMarkerDescription(),
-                                busServiceNumber = busArrival.serviceNumber,
-                            )
+                            val mapMarker =
+                                ArrivingBusMapMarker(
+                                    busArrival.serviceNumber,
+                                    nextArrivingBus.latitude,
+                                    nextArrivingBus.longitude,
+                                    nextArrivingBus.getMarkerDescription(),
+                                    busServiceNumber = busArrival.serviceNumber,
+                                )
 
                             serviceNumberMapMarkerMap[busArrival.serviceNumber] = mapMarker
                             busAddList.add(mapMarker)

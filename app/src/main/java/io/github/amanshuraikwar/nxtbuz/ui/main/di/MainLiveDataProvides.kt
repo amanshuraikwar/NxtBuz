@@ -5,8 +5,8 @@ import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.Alert
+import io.github.amanshuraikwar.nxtbuz.common.model.Loading
+import io.github.amanshuraikwar.nxtbuz.common.model.Alert
 import javax.inject.Named
 
 @Module

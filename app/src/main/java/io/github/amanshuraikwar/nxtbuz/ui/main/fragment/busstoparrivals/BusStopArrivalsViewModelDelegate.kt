@@ -6,19 +6,21 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.model.Alert
 import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.listitem.BusArrivalCompactItem
 import io.github.amanshuraikwar.nxtbuz.listitem.BusArrivalErrorItem
 import io.github.amanshuraikwar.nxtbuz.listitem.BusStopHeaderItem
 import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.*
+import io.github.amanshuraikwar.nxtbuz.common.model.Loading
+import io.github.amanshuraikwar.nxtbuz.common.model.ScreenState
+import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.util.post
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.FlowCollector
@@ -36,7 +38,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
     @Named("error") private val _error: MutableLiveData<Alert>,
-    private val mapViewModelDelegate: MapViewModelDelegate,
+    private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
     private val busStopArrivalsMapMarkerHelper: BusStopArrivalsMapMarkerHelper,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -114,7 +116,11 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
         getBusArrivalFlowUseCase(busStopState.busStop.code)
             .catch { throwable ->
                 FirebaseCrashlytics.getInstance().recordException(throwable)
-                _error.postValue(Alert("Something went wrong. Please restart the app."))
+                _error.postValue(
+                    Alert(
+                        "Something went wrong. Please restart the app."
+                    )
+                )
             }
             .onCompletion {
                 Log.i(TAG, "start: onCompletion")

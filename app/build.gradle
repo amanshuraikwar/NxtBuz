@@ -121,6 +121,7 @@ dependencies {
     implementation project(':search')
     implementation project(':starred')
     implementation project(':settings')
+    implementation project(':map')
 
     implementation Libs.Kotlin.stdlib
 

@@ -1,7 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.main.fragment
-
-import io.github.amanshuraikwar.nxtbuz.common.model.BusRoute
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+package io.github.amanshuraikwar.nxtbuz.common.model
 
 sealed class ScreenState {
 

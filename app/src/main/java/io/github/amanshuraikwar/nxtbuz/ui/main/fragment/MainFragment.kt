@@ -23,15 +23,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.R
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.common.model.BusService
+import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.listitem.*
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionDialog
-import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalUpdate
-import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
-import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalClicked
 import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsDialogFragment
 import io.github.amanshuraikwar.nxtbuz.util.lerp
 import io.github.amanshuraikwar.nxtbuz.common.util.setMarginTop

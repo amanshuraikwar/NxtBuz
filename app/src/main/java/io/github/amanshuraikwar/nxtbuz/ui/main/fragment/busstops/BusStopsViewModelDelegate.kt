@@ -11,11 +11,11 @@ import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.listitem.BusStopItem
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.Loading
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.ScreenState
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.map.MapViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapEvent
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.model.MapMarker
+import io.github.amanshuraikwar.nxtbuz.common.model.Loading
+import io.github.amanshuraikwar.nxtbuz.common.model.ScreenState
+import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.util.post
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -32,7 +32,7 @@ class BusStopsViewModelDelegate @Inject constructor(
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
-    private val mapViewModelDelegate: MapViewModelDelegate,
+    private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
     private val mapUtil: MapUtil,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
