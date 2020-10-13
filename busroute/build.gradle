@@ -26,28 +26,24 @@ android {
 
 dependencies {
     implementation project(":common")
-    implementation project(":ltaapi")
+    implementation project(":domain")
+    implementation project(":multiitemadapter")
+    implementation project(":listitem")
+    implementation project(":map")
 
-    implementation Libs.Kotlin.stdlib
+    Libs.Kotlin.stdlib
 
-    implementation Libs.AndroidX.coreKtx
+    implementation Libs.Coroutines.core
+    implementation Libs.Coroutines.android
 
     implementation Libs.Dagger.library
     implementation Libs.Dagger.androidSupport
     kapt Libs.Dagger.compiler
     kapt Libs.Dagger.androidProcessor
 
-    implementation Libs.Coroutines.core
-
-    implementation Libs.AndroidX.Room.runtime
-    kapt Libs.AndroidX.Room.compiler
-    implementation Libs.AndroidX.Room.ktx
-    androidTestImplementation Libs.AndroidX.Room.testing
-
-    implementation Libs.threeTenAbp
-
-    implementation Libs.Google.playServicesMap
-    implementation Libs.Google.playServicesLocation
+    implementation Libs.AndroidX.Lifecycle.viewmodel
+    implementation Libs.AndroidX.Lifecycle.livedata
+    implementation Libs.AndroidX.Lifecycle.extensions
 
     implementation Libs.Google.crashlytics
 }

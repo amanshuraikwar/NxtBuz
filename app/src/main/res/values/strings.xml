@@ -17,12 +17,4 @@
     <string name="subtitle_setup">We are setting things up for you…</string>
     <string name="btn_txt_retry">RETRY</string>
     <string name="subtitle_permission">We need your permission…</string>
-
-    <string name="channel_name_bus_arrival">Bus Arrivals</string>
-    <string name="channel_description_bus_arrival">Displays buses arriving at the current bus stop.</string>
-
-    <string name="channel_name_starred_bus_arrival">Starred Bus Arrivals</string>
-    <string name="channel_description_starred_bus_arrival">Alerts if starred buses are arriving now at the current bus stop.</string>
-
-    <string name="star">\u2605</string>
 </resources>

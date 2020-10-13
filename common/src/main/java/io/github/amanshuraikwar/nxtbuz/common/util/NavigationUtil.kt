@@ -8,7 +8,7 @@ fun Activity.startMainActivity() {
     startActivity(
         Intent(
             this,
-            getActivityClass("io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity")
+            getActivityClass("io.github.amanshuraikwar.nxtbuz.ui.MainActivity")
         )
     )
 }

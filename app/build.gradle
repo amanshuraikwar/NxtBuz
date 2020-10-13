@@ -123,6 +123,7 @@ dependencies {
     implementation project(':settings')
     implementation project(':map')
     implementation project(':busstop')
+    implementation project(':busroute')
 
     implementation Libs.Kotlin.stdlib
 
