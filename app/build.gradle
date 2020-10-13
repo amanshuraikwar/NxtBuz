@@ -122,6 +122,7 @@ dependencies {
     implementation project(':starred')
     implementation project(':settings')
     implementation project(':map')
+    implementation project(':busstop')
 
     implementation Libs.Kotlin.stdlib
 

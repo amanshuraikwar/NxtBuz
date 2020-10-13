@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.util
+package io.github.amanshuraikwar.nxtbuz.common.util
 
 import androidx.annotation.FloatRange
 
@@ -31,5 +31,9 @@ fun lerp(
     if (fraction < startFraction) return startValue
     if (fraction > endFraction) return endValue
 
-    return lerp(startValue, endValue, (fraction - startFraction) / (endFraction - startFraction))
+    return lerp(
+        startValue,
+        endValue,
+        (fraction - startFraction) / (endFraction - startFraction)
+    )
 }

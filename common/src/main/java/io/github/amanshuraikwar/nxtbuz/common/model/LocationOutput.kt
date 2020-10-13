@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.domain.location.model
+package io.github.amanshuraikwar.nxtbuz.common.model
 
 sealed class LocationOutput {
     object PermissionsNotGranted : LocationOutput()

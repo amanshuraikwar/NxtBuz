@@ -9,12 +9,12 @@ import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.model.LocationOutput
+import io.github.amanshuraikwar.nxtbuz.common.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.BusRouteViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busroute.BusRouteViewModelDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstoparrivals.BusStopArrivalsViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.ui.main.fragment.busstops.BusStopsViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.busstop.BusStopsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.starred.ui.delegate.StarredArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.util.asEvent
 import kotlinx.coroutines.*
