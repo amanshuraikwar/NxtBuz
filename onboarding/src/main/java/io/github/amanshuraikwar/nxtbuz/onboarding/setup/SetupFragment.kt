@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
@@ -61,7 +60,7 @@ class SetupFragment : DaggerFragment() {
                     try {
                         setupIv.postDelayed({ animated.start() }, 800)
                     } catch (e: Exception) {
-
+                        // do nothing
                     }
                 }
             }
@@ -76,23 +75,20 @@ class SetupFragment : DaggerFragment() {
 
             viewModel = viewModelProvider(viewModelFactory)
 
-            viewModel.userState.observe(
-                this,
-                Observer { userState ->
-                    when (userState) {
-                        is UserState.New -> {
-                            // do nothing
-                        }
-                        is UserState.SetupComplete -> {
-                            activity.startMainActivity()
-                            activity.finish()
-                        }
+            viewModel.userState.observe(viewLifecycleOwner) { userState ->
+                when (userState) {
+                    is UserState.New -> {
+                        // do nothing
+                    }
+                    is UserState.SetupComplete -> {
+                        activity.startMainActivity()
+                        activity.finish()
                     }
                 }
-            )
+            }
 
             viewModel.error.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver { errorMsg ->
 
                     val view = activity.layoutInflater.inflate(R.layout.dialog_error, null)
@@ -112,15 +108,15 @@ class SetupFragment : DaggerFragment() {
                     dialog.show()
                 }
             )
-            setupPb.max = 100
+
             viewModel.setupProgress.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver {
                     ObjectAnimator.ofInt(
                         setupPb,
                         "progress",
                         setupPb.progress,
-                        (it*100).toInt()
+                        (it * 100).toInt()
                     ).run {
                         duration = 300
                         start()

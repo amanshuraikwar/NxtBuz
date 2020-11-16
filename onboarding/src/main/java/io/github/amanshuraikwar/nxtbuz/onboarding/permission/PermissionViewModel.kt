@@ -10,8 +10,10 @@ import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.PermissionStatus
 import io.github.amanshuraikwar.nxtbuz.common.model.SettingsState
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
+import io.github.amanshuraikwar.nxtbuz.common.util.asLiveData
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
+import io.github.amanshuraikwar.nxtbuz.onboarding.R
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,28 +24,23 @@ class PermissionViewModel @Inject constructor(
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    private val _error = MutableLiveData<Throwable>()
-    val error =
-        _error
-            .map {
-                "Something went wrong. Please try again."
-            }
-            .asEvent()
-
     private val _nextPage = MutableLiveData<Unit>()
     val nextPage = _nextPage.asEvent()
 
     private val _showSkipBtn = MutableLiveData<Unit>()
-    val showSkipBtn = _showSkipBtn.map { it }
+    val showSkipBtn = _showSkipBtn.asLiveData()
 
     private val _showGoToSettingsBtn = MutableLiveData<Unit>()
-    val showGoToSettingsBtn = _showGoToSettingsBtn.map { it }
+    val showGoToSettingsBtn = _showGoToSettingsBtn.asLiveData()
 
     private val _showContinueBtn = MutableLiveData<Unit>()
-    val showContinueBtn = _showContinueBtn.map { it }
+    val showContinueBtn = _showContinueBtn.asLiveData()
 
     private val _showEnableSettingsBtn = MutableLiveData<Unit>()
-    val showEnableSettingsBtn = _showEnableSettingsBtn.map { it }
+    val showEnableSettingsBtn = _showEnableSettingsBtn.asLiveData()
+
+    private val _error = MutableLiveData<Throwable>()
+    val error = _error.map { R.string.error_msg_default }.asEvent()
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
@@ -55,7 +52,7 @@ class PermissionViewModel @Inject constructor(
         FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
     }
 
-    fun checkPermissions() =
+    fun checkPermissions() {
         viewModelScope.launch(dispatcherProvider.io + errorHandler) {
             when (permissionUtil.hasLocationPermission()) {
                 PermissionStatus.GRANTED -> {
@@ -74,6 +71,7 @@ class PermissionViewModel @Inject constructor(
                 }
             }
         }
+    }
 
     fun askPermissions() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
         val permissionResult = permissionUtil.askPermission()
@@ -97,17 +95,21 @@ class PermissionViewModel @Inject constructor(
     }
 
     fun enableSettings() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
-        when (val settingsState = locationUtil.enableSettings()) {
+        when (locationUtil.enableSettings()) {
             is SettingsState.Enabled -> {
                 _nextPage.postValue(Unit)
             }
             SettingsState.Resolvable -> {
+                FirebaseCrashlytics.getInstance().log(
+                    "enableSettings: Resulted in SettingsState.Resolvable")
                 Log.wtf(TAG, "enableSettings: Resulted in SettingsState.Resolvable")
             }
             SettingsState.UserCancelled -> {
                 _showSkipBtn.postValue(Unit)
             }
             is SettingsState.UnResolvable -> {
+                FirebaseCrashlytics.getInstance().log(
+                    "enableSettings: Resulted in SettingsState.UnResolvable")
                 Log.e(TAG, "enableSettings: Resulted in SettingsState.UnResolvable")
             }
         }

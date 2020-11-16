@@ -1,16 +1,13 @@
 package io.github.amanshuraikwar.nxtbuz.onboarding.permission
 
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
+import io.github.amanshuraikwar.nxtbuz.common.util.goToApplicationSettings
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.onboarding.R
 import kotlinx.android.synthetic.main.dialog_permission.view.*
@@ -35,55 +32,40 @@ class PermissionDialog @Inject constructor(
             }
         )
 
-        viewModel.showSkipBtn.observe(
-            lifecycleOwner,
-            Observer {
-                // do nothing
+        viewModel.showGoToSettingsBtn.observe(lifecycleOwner) {
+            view.actionBtn.setText(R.string.onboarding_btn_go_to_settings)
+            view.actionBtn.setOnClickListener {
+                activity.goToApplicationSettings()
+                dialog.dismiss()
             }
-        )
+        }
 
-        viewModel.showGoToSettingsBtn.observe(
-            lifecycleOwner,
-            Observer {
-                view.actionBtn.text = "Go to settings"
-                view.actionBtn.setOnClickListener {
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    val uri = Uri.fromParts(
-                        "package", activity.packageName, null
-                    )
-                    intent.data = uri
-                    activity.startActivity(intent)
-                    dialog.dismiss()
-                }
-            }
-        )
 
-        viewModel.showContinueBtn.observe(
-            lifecycleOwner,
-            Observer {
-                view.descriptionTv.text = "We use your location to fetch bus stops nearby."
-                view.actionBtn.text = "Done"
-                view.actionBtn.setOnClickListener {
-                    dialog.dismiss()
-                }
+        viewModel.showContinueBtn.observe(lifecycleOwner) {
+            view.descriptionTv.setText(
+                R.string.onboarding_dialog_description_location_permission
+            )
+            view.actionBtn.setText(R.string.onboarding_btn_done)
+            view.actionBtn.setOnClickListener {
+                dialog.dismiss()
             }
-        )
+        }
 
-        viewModel.showEnableSettingsBtn.observe(
-            lifecycleOwner,
-            Observer {
-                view.descriptionTv.text = "We use your location to fetch bus stops nearby."
-                view.actionBtn.text = "Enable location settings"
-                view.actionBtn.setOnClickListener {
-                    viewModel.enableSettings()
-                }
+
+        viewModel.showEnableSettingsBtn.observe(lifecycleOwner) {
+            view.descriptionTv.setText(
+                R.string.onboarding_dialog_description_location_permission
+            )
+            view.actionBtn.setText(R.string.onboarding_btn_enable_location_settings)
+            view.actionBtn.setOnClickListener {
+                viewModel.enableSettings()
             }
-        )
+        }
     }
 
     fun show(onDismiss: () -> Unit) {
 
+        // TODO: 4/11/20 remove this warning?
         view = activity.layoutInflater.inflate(R.layout.dialog_permission, null)
 
         view.actionBtn.setOnClickListener {

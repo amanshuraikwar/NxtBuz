@@ -9,13 +9,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
+import io.github.amanshuraikwar.nxtbuz.common.util.goToApplicationSettings
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.onboarding.R
 import kotlinx.android.synthetic.main.fragment_permission.*
@@ -39,7 +39,7 @@ class PermissionFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupViewModel()
-        startIllustrationAnim()
+        startPermissionAvd()
         actionBtn.setOnClickListener {
             viewModel.askPermissions()
         }
@@ -53,7 +53,7 @@ class PermissionFragment : DaggerFragment() {
         viewModel.checkPermissions()
     }
 
-    private fun startIllustrationAnim() {
+    private fun startPermissionAvd() {
         val animated =
             AnimatedVectorDrawableCompat.create(
                 requireActivity(), R.drawable.avd_anim_permission_128
@@ -67,7 +67,7 @@ class PermissionFragment : DaggerFragment() {
                     } catch (e: Exception) {
                         Log.w(
                             TAG,
-                            "onAnimationEnd: Exception while starting illustration animation.",
+                            "onAnimationEnd: Exception while starting permission avd.",
                             e
                         )
                     }
@@ -85,62 +85,44 @@ class PermissionFragment : DaggerFragment() {
             viewModel = viewModelProvider(viewModelFactory)
 
             viewModel.error.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver { _ ->
                     // do nothing
                 }
             )
 
             viewModel.nextPage.observe(
-                this,
+                viewLifecycleOwner,
                 EventObserver {
                     goToNextPage()
                 }
             )
 
-            viewModel.showSkipBtn.observe(
-                this,
-                Observer {
-                    skipBtn.visibility = View.VISIBLE
-                }
-            )
+            viewModel.showSkipBtn.observe(viewLifecycleOwner) {
+                skipBtn.visibility = View.VISIBLE
+            }
 
-            viewModel.showGoToSettingsBtn.observe(
-                this,
-                Observer {
-                    actionBtn.text = "Go to settings"
-                    actionBtn.setOnClickListener {
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        val uri = Uri.fromParts(
-                            "package", activity.packageName, null
-                        )
-                        intent.data = uri
-                        startActivityForResult(intent, REQ_CODE_SETTINGS)
-                    }
+            viewModel.showGoToSettingsBtn.observe(viewLifecycleOwner) {
+                actionBtn.setText(R.string.onboarding_btn_go_to_settings)
+                actionBtn.setOnClickListener {
+                    activity.goToApplicationSettings(REQ_CODE_SETTINGS)
                 }
-            )
+            }
 
-            viewModel.showContinueBtn.observe(
-                this,
-                Observer {
-                    actionBtn.text = "Continue"
-                    actionBtn.setOnClickListener {
-                        goToNextPage()
-                    }
-                    skipBtn.visibility = View.INVISIBLE
+            viewModel.showContinueBtn.observe(viewLifecycleOwner) {
+                actionBtn.setText(R.string.onboarding_btn_continue)
+                actionBtn.setOnClickListener {
+                    goToNextPage()
                 }
-            )
+                skipBtn.visibility = View.INVISIBLE
+            }
 
-            viewModel.showEnableSettingsBtn.observe(
-                this,
-                Observer {
-                    actionBtn.text = "Enable location settings"
-                    actionBtn.setOnClickListener {
-                        viewModel.enableSettings()
-                    }
+            viewModel.showEnableSettingsBtn.observe(viewLifecycleOwner) {
+                actionBtn.setText(R.string.onboarding_btn_enable_location_settings)
+                actionBtn.setOnClickListener {
+                    viewModel.enableSettings()
                 }
-            )
+            }
         }
     }
 

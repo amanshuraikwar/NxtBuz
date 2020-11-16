@@ -5,7 +5,8 @@
     android:id="@+id/parentCl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    tools:background="@drawable/bg_onboarding">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/helpTv"
@@ -15,9 +16,8 @@
         android:paddingStart="@dimen/padding_large"
         android:paddingTop="72dp"
         android:paddingEnd="@dimen/padding_large"
-        android:text="@string/subtitle_setup"
+        android:text="@string/onboarding_title_setup"
         android:textAppearance="?textAppearanceHeadline4"
-        android:textColor="?colorControlNormal"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -26,9 +26,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:padding="@dimen/padding_large"
-        android:text="This may take up to one minute"
+        android:text="@string/onboarding_description_setup"
         android:textAppearance="?textAppearanceBody1"
-        android:textColor="?colorControlNormal"
         app:layout_constraintTop_toBottomOf="@id/helpTv" />
 
     <ProgressBar
@@ -36,9 +35,11 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:max="100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:progress="50" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/setupIv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

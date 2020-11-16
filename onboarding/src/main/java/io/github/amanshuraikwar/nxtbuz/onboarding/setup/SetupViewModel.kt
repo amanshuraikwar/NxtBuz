@@ -72,7 +72,7 @@ class SetupViewModel @Inject constructor(
                     }
                 }
             )
-            userState = getUserStateUseCase.invoke()
+            userState = getUserStateUseCase()
             _userState.postValue(userState)
         }
     }

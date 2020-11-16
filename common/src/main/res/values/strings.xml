@@ -13,4 +13,6 @@
 
     <string name="channel_name_starred_bus_arrival">Starred Bus Arrivals</string>
     <string name="channel_description_starred_bus_arrival">Alerts if starred buses are arriving now at the current bus stop.</string>
+
+    <string name="error_msg_default">Something went wrong.</string>
 </resources>
