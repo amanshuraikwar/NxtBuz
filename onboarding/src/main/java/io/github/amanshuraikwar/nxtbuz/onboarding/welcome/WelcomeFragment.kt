@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.onboarding.welcome
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +11,14 @@ import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.nxtbuz.onboarding.R
+import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionFragment
 import kotlinx.android.synthetic.main.fragment_welcome.*
 import javax.inject.Inject
 import javax.inject.Named
 
 class WelcomeFragment : DaggerFragment() {
 
-    @field:[Inject Named("appVersionInfo")]
+    @[Inject Named("appVersionInfo")]
     lateinit var appVersionInfo: String
 
     override fun onCreateView(
@@ -33,10 +35,10 @@ class WelcomeFragment : DaggerFragment() {
             findNavController().navigate(R.id.action_welcomeFragment_to_permissionFragment)
         }
         versionTv.text = appVersionInfo
-        startSetupAnim()
+        startBusStoppingAvd()
     }
 
-    private fun startSetupAnim() {
+    private fun startBusStoppingAvd() {
         val animated =
             AnimatedVectorDrawableCompat.create(
                 requireActivity(), R.drawable.avd_anim_bus_stopping
@@ -44,16 +46,23 @@ class WelcomeFragment : DaggerFragment() {
         animated?.registerAnimationCallback(
             object : Animatable2Compat.AnimationCallback() {
                 override fun onAnimationEnd(drawable: Drawable?) {
-                    super.onAnimationEnd(drawable)
                     try {
                         iconIv.postDelayed({ animated.start() }, 600)
                     } catch (e: Exception) {
-
+                        Log.w(
+                            TAG,
+                            "onAnimationEnd: Exception while starting bus stopping avd.",
+                            e
+                        )
                     }
                 }
             }
         )
         iconIv.setImageDrawable(animated)
         iconIv.postDelayed({ animated?.start() }, 600)
+    }
+
+    companion object {
+        private const val TAG = "WelcomeFragment"
     }
 }

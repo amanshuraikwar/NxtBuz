@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="btn_txt_sign_in">Get Started</string>
-    <string name="subtitle_setup">We are setting things up for you…</string>
+    <string name="onboarding_btn_get_started">Get Started</string>
+    <string name="onboarding_title_setup">We are setting things up for you…</string>
+    <string name="onboarding_app_description">The easiest way to know the next arriving bus in Singapore</string>
+    <string name="onboarding_title_permission">We need your permission…</string>
+    <string name="onboarding_btn_give_permissions">Give Permissions</string>
+    <string name="onboarding_btn_skip">Skip</string>
+    <string name="onboarding_permission_description">Location permission helps us find bus stops near you</string>
+    <string name="onboarding_dialog_title_location_permission">Location permission</string>
+    <string name="onboarding_dialog_description_location_permission">We use your location to fetch bus stops nearby.</string>
+    <string name="onboarding_btn_give_permission">Give Permission</string>
+    <string name="onboarding_description_setup">This may take up to one minute</string>
+    <string name="onboarding_btn_go_to_settings">Go to settings</string>
+    <string name="onboarding_btn_continue">Continue</string>
+    <string name="onboarding_btn_enable_location_settings">Enable location settings</string>
+    <string name="onboarding_btn_done">Done</string>
 </resources>

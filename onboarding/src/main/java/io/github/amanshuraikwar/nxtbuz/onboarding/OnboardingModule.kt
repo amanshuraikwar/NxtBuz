@@ -15,30 +15,31 @@ import io.github.amanshuraikwar.nxtbuz.onboarding.welcome.WelcomeFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
+@Suppress("unused")
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 @Module
 abstract class OnboardingModule {
 
     @Binds
-    internal abstract fun b(a: OnboardingActivity): AppCompatActivity
+    internal abstract fun a(a: OnboardingActivity): AppCompatActivity
 
     @ContributesAndroidInjector
-    internal abstract fun c(): WelcomeFragment
+    internal abstract fun b(): WelcomeFragment
 
     @Binds
     @IntoMap
     @ViewModelKey(SetupViewModel::class)
-    internal abstract fun d(a: SetupViewModel): ViewModel
+    internal abstract fun c(a: SetupViewModel): ViewModel
 
     @ContributesAndroidInjector
-    internal abstract fun e(): SetupFragment
+    internal abstract fun d(): SetupFragment
 
     @Binds
     @IntoMap
     @ViewModelKey(PermissionViewModel::class)
-    internal abstract fun f(a: PermissionViewModel): ViewModel
+    internal abstract fun e(a: PermissionViewModel): ViewModel
 
     @ContributesAndroidInjector
-    internal abstract fun g(): PermissionFragment
+    internal abstract fun f(): PermissionFragment
 }

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/welcomeFragment"
         android:name="io.github.amanshuraikwar.nxtbuz.onboarding.welcome.WelcomeFragment"
-        android:label="SignInFragment"
+        android:label="WelcomeFragment"
         tools:layout="@layout/fragment_welcome" >
         <action
             android:id="@+id/action_welcomeFragment_to_permissionFragment"

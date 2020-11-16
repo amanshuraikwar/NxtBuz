@@ -23,4 +23,16 @@
     <style name="Widget.MyTheme.NavigationView" parent="Widget.MaterialComponents.NavigationView">
         <item name="itemTextAppearance">?textAppearanceBody2</item>
     </style>
+
+    <style name="Widget.AppTheme.PrimaryButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="backgroundTint">?colorSecondary</item>
+    </style>
+
+    <style name="Widget.AppTheme.SecondaryButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">?colorOnPrimarySurface</item>
+        <item name="android:textColor">?colorOnPrimarySurface</item>
+        <item name="rippleColor">?colorSecondary</item>
+    </style>
 </resources>

@@ -1,9 +1,12 @@
 package io.github.amanshuraikwar.nxtbuz.common.util
 
 import android.app.Activity
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -23,6 +26,10 @@ fun <X> LiveData<X>.asEvent(): LiveData<Event<X>> {
 
 fun MutableLiveData<Unit>.post() {
     postValue(Unit)
+}
+
+fun <X> MutableLiveData<X>.asLiveData(): LiveData<X> {
+    return this
 }
 
 //endregion
@@ -71,6 +78,20 @@ fun View.setMarginBottom(marginBottom: Int) {
     val layoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
     layoutParams.setMargins(marginLeft, this.marginTop, this.marginRight, marginBottom)
     this.layoutParams = layoutParams
+}
+
+fun Activity.goToApplicationSettings(requestCode: Int? = null) {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    val uri = Uri.fromParts(
+        "package", packageName, null
+    )
+    intent.data = uri
+    if (requestCode != null) {
+        startActivityForResult(intent, requestCode)
+    } else {
+        startActivity(intent)
+    }
 }
 
 //endregion

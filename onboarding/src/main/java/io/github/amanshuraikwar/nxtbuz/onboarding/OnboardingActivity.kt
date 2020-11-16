@@ -21,8 +21,8 @@ class OnboardingActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_onboarding)
         makeStatusBarTransparent()
+        setContentView(R.layout.activity_onboarding)
         ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { _, insets ->
             screenTopGuideline.setMarginTop(insets.systemWindowInsetTop)
             insets.consumeSystemWindowInsets()

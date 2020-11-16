@@ -5,7 +5,8 @@
     android:id="@+id/parentCl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    tools:background="@drawable/bg_onboarding">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iconIv"
@@ -25,7 +26,6 @@
         android:paddingTop="@dimen/padding_large"
         android:text="@string/app_name"
         android:textAppearance="?textAppearanceHeadline3"
-        android:textColor="?colorControlNormal"
         app:layout_constraintTop_toBottomOf="@id/iconIv" />
 
     <TextView
@@ -33,28 +33,17 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/padding_large"
-        android:text="The easiest way to get to know the next arriving bus in Singapore"
+        android:text="@string/onboarding_app_description"
         android:textAppearance="?textAppearanceBody1"
-        android:textColor="?colorControlNormal"
         app:layout_constraintTop_toBottomOf="@id/titleTv" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="top"
-        app:constraint_referenced_ids="getStartedBtn" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/getStartedBtn"
+        style="@style/Widget.AppTheme.PrimaryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_very_large"
-        android:paddingTop="@dimen/padding_sign_in_btn"
-        android:paddingBottom="@dimen/padding_sign_in_btn"
-        android:text="@string/btn_txt_sign_in"
-        android:visibility="visible"
-        app:backgroundTint="?colorSecondary"
+        android:text="@string/onboarding_btn_get_started"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -64,9 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:paddingBottom="@dimen/padding_small"
+        android:paddingBottom="@dimen/padding_normal"
         android:textAppearance="?textAppearanceSubtitle2"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:textColor="?colorControlNormal"
         tools:text="V1.0 (1) DEBUG" />
 </androidx.constraintlayout.widget.ConstraintLayout>

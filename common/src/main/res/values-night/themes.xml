@@ -22,13 +22,4 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
     </style>
-
-    <style name="AppTheme.Onboarding">
-        <item name="android:statusBarColor">?colorSurface</item>
-        <item name="android:navigationBarColor">?colorSurface</item>
-        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
-        <item name="android:windowLightStatusBar">false</item>
-<!--        <item name="android:windowBackground">@drawable/preview_window</item>-->
-    </style>
-
 </resources>

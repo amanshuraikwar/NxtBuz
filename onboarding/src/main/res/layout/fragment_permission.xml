@@ -5,7 +5,8 @@
     android:id="@+id/parentCl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    tools:background="@drawable/bg_onboarding">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/helpTv"
@@ -15,9 +16,8 @@
         android:paddingStart="@dimen/padding_large"
         android:paddingTop="72dp"
         android:paddingEnd="@dimen/padding_large"
-        android:text="@string/subtitle_permission"
+        android:text="@string/onboarding_title_permission"
         android:textAppearance="?textAppearanceHeadline4"
-        android:textColor="?colorControlNormal"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -26,12 +26,11 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:padding="@dimen/padding_large"
-        android:text="Location permission helps us find bus stops near you"
+        android:text="@string/onboarding_permission_description"
         android:textAppearance="?textAppearanceBody1"
-        android:textColor="?colorControlNormal"
         app:layout_constraintTop_toBottomOf="@id/helpTv" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/illustrationIv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,31 +41,24 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/actionBtn"
+        style="@style/Widget.AppTheme.PrimaryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_small"
-        android:paddingTop="@dimen/padding_sign_in_btn"
-        android:paddingBottom="@dimen/padding_sign_in_btn"
-        android:stateListAnimator="@null"
-        android:text="Give Permissions"
-        android:visibility="visible"
-        app:backgroundTint="?colorSecondary"
+        android:text="@string/onboarding_btn_give_permissions"
         app:layout_constraintBottom_toTopOf="@id/skipBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/skipBtn"
-        style="?materialButtonOutlinedStyle"
+        style="@style/Widget.AppTheme.SecondaryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_normal"
-        android:stateListAnimator="@null"
-        android:text="Skip"
-        android:textColor="?colorControlNormal"
-        android:visibility="invisible"
+        android:text="@string/onboarding_btn_skip"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="?colorControlNormal" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

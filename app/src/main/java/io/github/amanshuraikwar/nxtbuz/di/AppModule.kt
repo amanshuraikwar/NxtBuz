@@ -42,7 +42,14 @@ class AppModule {
     @Provides
     @Named("appVersionInfo")
     fun provideAppVersionInfo(): String {
-        return "V${BuildConfig.VERSION_NAME}  •  ${BuildConfig.VERSION_CODE}  •  ${BuildConfig.BUILD_TYPE.toUpperCase(
-            Locale.getDefault())}"
+        return if (BuildConfig.DEBUG) {
+            "V${BuildConfig.VERSION_NAME}" +
+                    "  •  " +
+                    "${BuildConfig.VERSION_CODE}" +
+                    "  •  " +
+                    BuildConfig.BUILD_TYPE.toUpperCase(Locale.getDefault())
+        } else {
+            "V${BuildConfig.VERSION_NAME}"
+        }
     }
 }
