@@ -113,7 +113,7 @@ class StarredBusArrivalOptionsDialogFragment : BottomSheetDialogFragment(), HasA
     }
 
     override fun getTheme(): Int {
-        return R.style.ThemeOverlay_MyTheme_BottomSheetDialog
+        return R.style.ThemeOverlay_AppTheme_BottomSheetDialog
     }
 
     @Inject
