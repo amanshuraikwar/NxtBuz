@@ -10,16 +10,16 @@ import io.github.amanshuraikwar.nxtbuz.common.model.room.OperatingBusEntity
 interface OperatingBusDao {
 
     @Insert
-    fun insertAll(entities: List<OperatingBusEntity>)
+    suspend fun insertAll(entities: List<OperatingBusEntity>)
 
     @Delete
-    fun delete(entity: OperatingBusEntity)
+    suspend fun delete(entity: OperatingBusEntity)
 
     @Query("DELETE from OperatingBusEntity")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Query("SELECT * FROM OperatingBusEntity")
-    fun findAll(): List<OperatingBusEntity>
+    suspend fun findAll(): List<OperatingBusEntity>
 
     @Query("SELECT * FROM OperatingBusEntity WHERE busStopCode = :busStopCode")
     suspend fun findByBusStopCode(busStopCode: String): List<OperatingBusEntity>

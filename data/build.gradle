@@ -50,4 +50,10 @@ dependencies {
     implementation Libs.Google.playServicesLocation
 
     implementation Libs.Google.crashlytics
+
+    testImplementation Libs.Retrofit.retrofit
+    testImplementation Libs.Retrofit.gsonConverter
+    testImplementation Libs.OkHttp.loggingInterceptor
+    testImplementation Libs.Coroutines.test
+    testImplementation Libs.junit
 }

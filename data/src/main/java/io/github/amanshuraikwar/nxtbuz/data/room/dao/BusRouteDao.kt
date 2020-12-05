@@ -8,19 +8,19 @@ import kotlin.math.max
 interface BusRouteDao {
 
     @Insert
-    fun insertAll(entities: List<BusRouteEntity>)
+    suspend fun insertAll(entities: List<BusRouteEntity>)
 
     @Delete
-    fun delete(entity: BusRouteEntity)
+    suspend fun delete(entity: BusRouteEntity)
 
     @Query("DELETE from BusRouteEntity")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Query("SELECT * FROM BusRouteEntity")
-    fun findAll(): List<BusRouteEntity>
+    suspend fun findAll(): List<BusRouteEntity>
 
     @Query("SELECT * FROM BusRouteEntity WHERE busServiceNumber = :busServiceNumber")
-    fun findByBusServiceNumber(busServiceNumber: String): List<BusRouteEntity>
+    suspend fun findByBusServiceNumber(busServiceNumber: String): List<BusRouteEntity>
 
     @Query("SELECT * FROM BusRouteEntity WHERE busServiceNumber = :busServiceNumber AND busStopCode = :busStopCode")
     suspend fun findByBusServiceNumberAndBusStopCode(busServiceNumber: String, busStopCode: String): List<BusRouteEntity>

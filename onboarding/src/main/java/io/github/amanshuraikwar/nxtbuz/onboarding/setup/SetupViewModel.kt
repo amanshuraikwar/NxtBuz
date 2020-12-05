@@ -11,7 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.SetupState
 import io.github.amanshuraikwar.nxtbuz.common.model.UserState
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetUserStateUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.user.SetupUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.DoSetupUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class SetupViewModel @Inject constructor(
     private val getUserStateUseCase: GetUserStateUseCase,
-    private val setupUseCase: SetupUseCase,
+    private val doSetupUseCase: DoSetupUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -58,7 +58,7 @@ class SetupViewModel @Inject constructor(
         var userState = getUserStateUseCase()
         _userState.postValue(userState)
         if (userState is UserState.New) {
-            setupUseCase().collect(
+            doSetupUseCase().collect(
                 object : FlowCollector<SetupState> {
                     override suspend fun emit(value: SetupState) {
                         when (value) {
