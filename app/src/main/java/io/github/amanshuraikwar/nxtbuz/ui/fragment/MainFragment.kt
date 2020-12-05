@@ -138,11 +138,11 @@ class MainFragment : DaggerFragment() {
     private fun showLoading(loading: Loading.Show) {
         val animated =
             AnimatedVectorDrawableCompat.create(
-                activity!!, loading.avd
+                activity!!, loading.avdResId
             )
         loadingIv.setImageDrawable(animated)
         animated?.start()
-        loadingTv.text = loading.txt
+        loadingTv.setText(loading.messageResId)
         itemsRv.visibility = View.GONE
         loadingIv.visibility = View.VISIBLE
         loadingTv.visibility = View.VISIBLE

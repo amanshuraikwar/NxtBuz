@@ -24,29 +24,35 @@ class BusApiProvides {
                 OkHttpClient
                     .Builder()
                     .addInterceptor { chain ->
-                        val request = chain.request()
-                        var string: String = request.url.toString()
-                        string = string.replace("%60%24%60", "$")
-                        val newRequest = Request
-                            .Builder()
-                                //todo
-                            .addHeader("AccountKey", BuildConfig.ltaAccountkey)
-                            .url(string)
-                            .build()
+
+                        // replace the encoded '$' back to normal
+                        // weird query param names required by the api -_-
+                        val newUrl =
+                            chain.request()
+                                .url.toString()
+                                .replace("%60%24%60", "$")
+
+                        // add account key aka the api key
+                        val newRequest =
+                            Request.Builder()
+                                .addHeader("AccountKey", BuildConfig.ltaAccountkey)
+                                .url(newUrl)
+                                .build()
+
                         chain.proceed(newRequest)
                     }
                     .apply {
+
+                        // log the api requests' body for debug and internal builds
                         @Suppress("ConstantConditionIf")
                         if (BuildConfig.BUILD_TYPE == "debug"
-                            || BuildConfig.BUILD_TYPE == "internal") {
+                            || BuildConfig.BUILD_TYPE == "internal"
+                        ) {
                             addInterceptor(
                                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
                             )
                         }
                     }
-//                    .apply {
-//                        FlipperHelper.addInterceptor(this)
-//                    }
                     .build()
             )
             .addConverterFactory(GsonConverterFactory.create())

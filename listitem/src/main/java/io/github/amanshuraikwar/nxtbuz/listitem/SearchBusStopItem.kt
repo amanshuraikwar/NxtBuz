@@ -28,7 +28,6 @@ class SearchBusStopItem(
         view.stopCodeTv.text = "${busStop.roadName} • ${busStop.code}"
         view.iconIv.setImageResource(iconResId)
         view.parentCv.setOnClickListener { onClick(busStop) }
-        view.gotoIv.setOnClickListener { onGotoClick(busStop) }
         view.busCodesTv.text = operatingBuses
     }
 }

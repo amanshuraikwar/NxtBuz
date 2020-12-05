@@ -19,12 +19,12 @@ import io.github.amanshuraikwar.nxtbuz.listitem.BusArrivalErrorItem
 import io.github.amanshuraikwar.nxtbuz.listitem.BusStopHeaderItem
 import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
 import io.github.amanshuraikwar.nxtbuz.common.model.Loading
-import io.github.amanshuraikwar.nxtbuz.common.model.ScreenState
+import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.util.post
+import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onCompletion
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -37,7 +37,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
     @Named("error") private val _error: MutableLiveData<Alert>,
-    private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
+    private val mapViewModelDelegate: MapViewModelDelegate,
     private val busStopArrivalsMapMarkerHelper: BusStopArrivalsMapMarkerHelper,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -77,7 +77,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
         _loading.postValue(
             Loading.Show(
                 R.drawable.avd_anim_arrivals_loading_128,
-                "Finding bus arrivals..."
+                R.string.bus_stop_message_loading_arrivals
             )
         )
         _collapseBottomSheet.post()
@@ -121,13 +121,9 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
                     )
                 )
             }
-            .onCompletion {
-                Log.i(TAG, "start: onCompletion")
-            }
             .collect(
                 object : FlowCollector<List<BusArrival>> {
                     override suspend fun emit(value: List<BusArrival>) {
-                        Log.d(TAG, "emit: ")
                         handleBusArrivalList(
                             busStopState.busStop,
                             onStarToggle,
@@ -144,40 +140,56 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
         busArrivals: List<BusArrival>
     ) = withContext(dispatcherProvider.computation) {
 
-        val listItems: MutableList<RecyclerViewListItem> =
-            busArrivals
-                .map {
-                    if (it.arrivals is Arrivals.Arriving) {
-                        BusArrivalCompactItem(
-                            busStop.code,
-                            it,
-                            onStarToggle,
-                            onBusServiceClicked
-                        )
-                    } else {
-                        BusArrivalErrorItem(
-                            busStop.code,
-                            it,
-                            onStarToggle
-                        )
-                    }
-                }
-                .toMutableList()
+        val listItems = mutableListOf<RecyclerViewListItem>()
 
         listItems.add(
-            0,
             BusStopHeaderItem(
                 busStop,
                 R.drawable.ic_bus_stop_24
             )
         )
 
-        listItems.add(
-            1,
-            HeaderItem(
-                "Arrivals"
+        val arrivingBusListItems = mutableListOf<RecyclerViewListItem>()
+        val notArrivingBusListItems = mutableListOf<RecyclerViewListItem>()
+
+        busArrivals.forEach {
+            if (it.arrivals is Arrivals.Arriving) {
+                arrivingBusListItems.add(
+                    BusArrivalCompactItem(
+                        busStop.code,
+                        it,
+                        onStarToggle,
+                        onBusServiceClicked
+                    )
+                )
+            } else {
+                notArrivingBusListItems.add(
+                    BusArrivalErrorItem(
+                        busStop.code,
+                        it,
+                        onStarToggle
+                    )
+                )
+            }
+        }
+
+        if (arrivingBusListItems.isNotEmpty()) {
+            listItems.add(
+                HeaderItem(
+                    "Arriving"
+                )
             )
-        )
+            listItems.addAll(arrivingBusListItems)
+        }
+
+        if (notArrivingBusListItems.isNotEmpty()) {
+            listItems.add(
+                HeaderItem(
+                    "Not Arriving"
+                )
+            )
+            listItems.addAll(notArrivingBusListItems)
+        }
 
         if (isActive) {
             _listItems.postValue(listItems)
@@ -190,11 +202,13 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
         stopBusArrivalFlowUseCase()
     }
 
-    private fun onMapMarkerClicked(markerId: String) = viewModelScope.launch(errorHandler) {
-        onBusServiceClicked(markerId)
+    private fun onMapMarkerClicked(markerId: String) {
+        viewModelScope.launch(errorHandler) {
+            onBusServiceClicked(markerId)
+        }
     }
 
     companion object {
-        private const val TAG = "BusStopViewModelDelegat"
+        private const val TAG = "BusStopArrvlsVmDelegate"
     }
 }

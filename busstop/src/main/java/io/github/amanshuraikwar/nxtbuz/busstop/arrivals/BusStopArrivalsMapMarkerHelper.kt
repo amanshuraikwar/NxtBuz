@@ -9,11 +9,12 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.ArrivingBusMapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapUpdate
+import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class BusStopArrivalsMapMarkerHelper @Inject constructor(
-    private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
+    private val mapViewModelDelegate: MapViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) {
 

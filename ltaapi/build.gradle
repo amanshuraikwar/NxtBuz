@@ -42,9 +42,6 @@ android {
 dependencies {
     Libs.Kotlin.stdlib
 
-    implementation Libs.Coroutines.core
-    implementation Libs.Coroutines.android
-
     implementation Libs.Dagger.library
     implementation Libs.Dagger.androidSupport
     kapt Libs.Dagger.compiler

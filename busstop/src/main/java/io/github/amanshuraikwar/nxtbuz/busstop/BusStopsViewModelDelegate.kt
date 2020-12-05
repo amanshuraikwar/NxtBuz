@@ -11,11 +11,12 @@ import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.listitem.BusStopItem
 import io.github.amanshuraikwar.nxtbuz.common.model.Loading
-import io.github.amanshuraikwar.nxtbuz.common.model.ScreenState
+import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.post
+import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -30,7 +31,7 @@ class BusStopsViewModelDelegate @Inject constructor(
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
-    private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
+    private val mapViewModelDelegate: MapViewModelDelegate,
     private val mapUtil: MapUtil,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -59,7 +60,7 @@ class BusStopsViewModelDelegate @Inject constructor(
         _loading.postValue(
             Loading.Show(
                 R.drawable.avd_anim_nearby_bus_stops_loading_128,
-                "Finding bus stops nearby..."
+                R.string.bus_stop_message_loading_nearby
             )
         )
         _collapseBottomSheet.post()
@@ -145,20 +146,16 @@ class BusStopsViewModelDelegate @Inject constructor(
                         it,
                         R.drawable.ic_bus_stop_24,
                         onBusStopClicked,
-                        // todo remove this variable
-                        ::onGotoClicked
                     )
                 )
             }
             listItems
         }
 
-    // todo remove this
-    private fun onGotoClicked(busStop: BusStop) {
-    }
-
-    private fun onMapMarkerClicked(markerId: String) = coroutineScope.launch(errorHandler) {
-        onBusStopClicked(getBusStopUseCase(markerId))
+    private fun onMapMarkerClicked(markerId: String) {
+        coroutineScope.launch(errorHandler) {
+            onBusStopClicked(getBusStopUseCase(markerId))
+        }
     }
 
     companion object {
