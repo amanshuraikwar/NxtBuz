@@ -11,12 +11,15 @@ import io.github.amanshuraikwar.nxtbuz.common.model.room.BusRouteEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.common.model.room.OperatingBusEntity
+import io.github.amanshuraikwar.nxtbuz.data.busroute.BusRouteRepository.Companion.toTime
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import org.threeten.bp.OffsetTime
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,22 +33,45 @@ class BusRouteRepository @Inject constructor(
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
 
-    @ExperimentalCoroutinesApi
-    fun setup(): Flow<Double> =
-        flow {
-            setupActual(this)
-        }
+    fun setup(): Flow<Double> = flow {
 
-    private suspend fun setupActual(flowCollector: FlowCollector<Double>) = coroutineScope {
-
-        flowCollector.emit(0.0)
+        emit(0.0)
 
         busRouteDao.deleteAll()
         operatingBusDao.deleteAll()
 
         val startTimeMillis = System.currentTimeMillis()
-        val busStopServiceNumberMap = mutableMapOf<String, MutableSet<BusRouteItemDto>>()
-        val serviceNumberBusRouteMap = mutableMapOf<String, MutableSet<BusRouteItemDto>>()
+
+        val (busStopCodeMap, busServiceNumberMap) = getBusRouteApiOutput(this)
+
+        saveOperatingBusData(busStopCodeMap)
+
+        emit(0.9)
+
+        saveBusRouteData(busServiceNumberMap)
+
+        Log.i(
+            TAG,
+            "setup: Setup took ${(System.currentTimeMillis() - startTimeMillis) / 1000} seconds"
+        )
+
+        emit(1.0)
+
+    }.flowOn(dispatcherProvider.computation)
+
+    private data class BusRouteApiOutput(
+        val busStopCodeBusRouteItemListMap: Map<String, MutableSet<BusRouteItemDto>>,
+        val busServiceNumberBusRouteItemListMap: Map<String, MutableSet<BusRouteItemDto>>
+    )
+
+    private suspend fun getBusRouteApiOutput(
+        flowCollector: FlowCollector<Double>
+    ): BusRouteApiOutput = coroutineScope {
+
+        val busStopCodeBusRouteItemListMap = mutableMapOf<String, MutableSet<BusRouteItemDto>>()
+        val busServiceNumberBusRouteItemListMap =
+            mutableMapOf<String, MutableSet<BusRouteItemDto>>()
+
         val remoteBusRouteDeferredList = mutableListOf<Deferred<Unit>>()
 
         var skip = 0
@@ -62,8 +88,9 @@ class BusRouteRepository @Inject constructor(
             remoteBusRouteDeferredList.add(
                 async(dispatcherProvider.pool8 + threadLocal.asContextElement(skip)) {
 
-                    val threadLocalSkip =
-                        threadLocal.get() ?: throw Exception("Something went wrong.")
+                    val threadLocalSkip = threadLocal.get() ?: throw IOException(
+                        "Something went wrong while getting skip param."
+                    )
 
                     val busRouteItemList = busApi.getBusRoutes(threadLocalSkip).busRouteList
 
@@ -73,20 +100,24 @@ class BusRouteRepository @Inject constructor(
                         shouldStop = true
                     }
 
-                    busRouteItemList.forEach {
+                    busRouteItemList.forEach { busRouteItemDto ->
 
-                        synchronized(busStopServiceNumberMap) {
-                            if (!busStopServiceNumberMap.containsKey(it.busStopCode)) {
-                                busStopServiceNumberMap[it.busStopCode] = mutableSetOf()
-                            }
-                            busStopServiceNumberMap[it.busStopCode]?.add(it)
+                        synchronized(busStopCodeBusRouteItemListMap) {
+                            busStopCodeBusRouteItemListMap[busRouteItemDto.busStopCode]
+                                ?.add(busRouteItemDto)
+                                ?: run {
+                                    busStopCodeBusRouteItemListMap[busRouteItemDto.busStopCode] =
+                                        mutableSetOf(busRouteItemDto)
+                                }
                         }
 
-                        synchronized(serviceNumberBusRouteMap) {
-                            if (!serviceNumberBusRouteMap.containsKey(it.serviceNumber)) {
-                                serviceNumberBusRouteMap[it.serviceNumber] = mutableSetOf()
-                            }
-                            serviceNumberBusRouteMap[it.serviceNumber]?.add(it)
+                        synchronized(busServiceNumberBusRouteItemListMap) {
+                            busServiceNumberBusRouteItemListMap[busRouteItemDto.serviceNumber]
+                                ?.add(busRouteItemDto)
+                                ?: run {
+                                    busServiceNumberBusRouteItemListMap[busRouteItemDto.serviceNumber] =
+                                        mutableSetOf(busRouteItemDto)
+                                }
                         }
                     }
                 }
@@ -112,8 +143,18 @@ class BusRouteRepository @Inject constructor(
         // wait for any remaining coroutine jobs to complete
         remoteBusRouteDeferredList.awaitAll()
 
+        BusRouteApiOutput(
+            busStopCodeBusRouteItemListMap,
+            busServiceNumberBusRouteItemListMap
+        )
+    }
+
+    private suspend fun saveOperatingBusData(
+        busStopCodeBusRouteItemListMap: Map<String, MutableSet<BusRouteItemDto>>
+    ) = coroutineScope {
+
         // add all operating buses for every bus stop to local DB
-        busStopServiceNumberMap
+        busStopCodeBusRouteItemListMap
             .map { (busStopCode, busRouteItem) ->
                 async(dispatcherProvider.pool8) {
                     operatingBusDao.insertAll(
@@ -157,11 +198,14 @@ class BusRouteRepository @Inject constructor(
                 }
             }
             .awaitAll()
+    }
 
-        flowCollector.emit(0.9)
+    private suspend fun saveBusRouteData(
+        busServiceNumberBusRouteItemListMap: Map<String, MutableSet<BusRouteItemDto>>
+    ) = coroutineScope {
 
         // store bus route info in local DB
-        serviceNumberBusRouteMap
+        busServiceNumberBusRouteItemListMap
             .map { (serviceNumber, busRouteItem) ->
                 async(dispatcherProvider.pool8) {
                     busRouteDao.insertAll(
@@ -178,13 +222,6 @@ class BusRouteRepository @Inject constructor(
                 }
             }
             .awaitAll()
-
-        Log.i(
-            TAG,
-            "setupActual: Setup took ${(System.currentTimeMillis() - startTimeMillis) / 1000} seconds"
-        )
-
-        flowCollector.emit(1.0)
     }
 
     suspend fun getBusRoute(

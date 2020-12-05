@@ -13,9 +13,7 @@ import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,45 +27,40 @@ class BusStopRepository @Inject constructor(
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
 
-    @ExperimentalCoroutinesApi
-    fun setup(): Flow<Double> =
-        flow {
-            setupActual(this)
+    fun setup(): Flow<Double> = flow {
+
+        emit(0.0)
+
+        busStopDao.deleteAll()
+
+        // fetch bus stops from the api until the api returns an empty list
+        var skip = 0
+        val busStopItemList = mutableListOf<BusStopItemDto>()
+        while (true) {
+            val fetchedBusStops = busApi.getBusStops(skip).busStops
+            if (fetchedBusStops.isEmpty()) break
+            busStopItemList.addAll(fetchedBusStops)
+            skip += 500
         }
 
-    private suspend fun setupActual(flowCollector: FlowCollector<Double>) =
-        withContext(dispatcherProvider.io) {
+        emit(0.5)
 
-            flowCollector.emit(0.0)
-
-            busStopDao.deleteAll()
-
-            var skip = 0
-
-            val busStopItemList = mutableListOf<BusStopItemDto>()
-            while (true) {
-                val fetchedBusStops = busApi.getBusStops(skip).busStops
-                if (fetchedBusStops.isEmpty()) break
-                busStopItemList.addAll(fetchedBusStops)
-                skip += 500
+        // save all bus stops in local db
+        busStopDao.insertAll(
+            busStopItemList.map {
+                BusStopEntity(
+                    it.code,
+                    it.roadName,
+                    it.description,
+                    it.latitude,
+                    it.longitude
+                )
             }
+        )
 
-            flowCollector.emit(0.5)
+        emit(1.0)
 
-            busStopDao.insertAll(
-                busStopItemList.map {
-                    BusStopEntity(
-                        it.code,
-                        it.roadName,
-                        it.description,
-                        it.latitude,
-                        it.longitude
-                    )
-                }
-            )
-
-            flowCollector.emit(1.0)
-        }
+    }.flowOn(dispatcherProvider.computation)
 
     suspend fun getCloseBusStops(
         latitude: Double,
