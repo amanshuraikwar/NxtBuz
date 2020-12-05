@@ -28,24 +28,6 @@
             app:srcCompat="@drawable/ic_bus_stop_24"
             app:tint="@color/white" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/gotoIv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="0dp"
-            android:paddingEnd="@dimen/margin_normal"
-            android:paddingTop="@dimen/margin_normal"
-            android:paddingBottom="@dimen/margin_normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0"
-            app:srcCompat="@drawable/ic_round_directions_walk_24"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?selectableItemBackgroundBorderless"
-            android:visibility="gone"/>
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/stopNameTv"
             android:layout_width="0dp"
@@ -54,10 +36,10 @@
             android:paddingTop="@dimen/padding_normal"
             android:paddingEnd="@dimen/padding_normal"
             android:textAppearance="?textAppearanceSubtitle1"
-            app:layout_constraintEnd_toStartOf="@id/gotoIv"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iconIv"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Springdale Condo" />
+            tools:text="Opp Blk 19" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/stopCodeTv"
@@ -69,14 +51,14 @@
             android:textAppearance="?textAppearanceOverline"
             app:layout_constraintStart_toEndOf="@id/iconIv"
             app:layout_constraintTop_toBottomOf="@id/stopNameTv"
-            tools:text="5431"/>
+            tools:text="Jln Jurong Kechil • 42169"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/busCodesTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/padding_normal"
-            android:paddingTop="@dimen/padding_normal"
+            android:paddingTop="@dimen/padding_small"
             android:paddingEnd="@dimen/padding_normal"
             android:paddingBottom="@dimen/padding_normal"
             android:textAppearance="?textAppearanceBody2"
@@ -88,7 +70,7 @@
             android:textStyle="bold"
             android:textColor="@color/blue"
             app:lineHeight="20sp"
-            tools:text="123  456  961  170  173" />
+            tools:text="985  970  66   77   66B  61   41   174e 174  173  157" />
 
         <View
             android:layout_width="match_parent"

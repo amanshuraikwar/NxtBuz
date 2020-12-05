@@ -14,8 +14,7 @@ import kotlinx.android.synthetic.main.item_info_small.view.stopNameTv
 class BusStopItem(
     private val busStop: BusStop,
     @DrawableRes private val iconResId: Int = R.drawable.ic_round_info_24,
-    private val onClick: (BusStop) -> Unit,
-    private val onGotoClick: (BusStop) -> Unit
+    private val onClick: (BusStop) -> Unit
 ) : RecyclerViewListItem {
 
     private val operatingBuses =
@@ -28,7 +27,6 @@ class BusStopItem(
         view.stopCodeTv.text = "${busStop.roadName} • ${busStop.code}"
         view.iconIv.setImageResource(iconResId)
         view.parentCv.setOnClickListener { onClick(busStop) }
-        view.gotoIv.setOnClickListener { onGotoClick(busStop) }
         view.busCodesTv.text = operatingBuses
     }
 }

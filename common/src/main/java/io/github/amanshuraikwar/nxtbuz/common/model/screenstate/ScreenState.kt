@@ -1,4 +1,7 @@
-package io.github.amanshuraikwar.nxtbuz.common.model
+package io.github.amanshuraikwar.nxtbuz.common.model.screenstate
+
+import io.github.amanshuraikwar.nxtbuz.common.model.BusRoute
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 
 sealed class ScreenState {
 

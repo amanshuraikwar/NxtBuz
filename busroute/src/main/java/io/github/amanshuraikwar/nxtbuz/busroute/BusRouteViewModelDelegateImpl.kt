@@ -14,7 +14,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.common.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.listitem.*
 import io.github.amanshuraikwar.nxtbuz.common.model.Loading
-import io.github.amanshuraikwar.nxtbuz.common.model.ScreenState
+import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalUpdate
 import io.github.amanshuraikwar.nxtbuz.busroute.loop.ArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.busroute.loop.ArrivalsLoopData
@@ -97,7 +97,7 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
         _loading.postValue(
             Loading.Show(
                 R.drawable.avd_anim_arrivals_loading_128,
-                "Gathering bus route info..."
+                R.string.bus_route_message_loading_info
             )
         )
 

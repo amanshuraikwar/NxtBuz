@@ -142,37 +142,12 @@ class BusArrivalCompactItem(
 
     override fun bind(view: View, activity: FragmentActivity) {
 
-        val busInfo =
-            busArrival.operator +
-                    "  •  ${busArrival.stopSequence} bus stops" +
-                    "  •  ${busArrival.distance}KM" +
-                    "\n${
-                    if (busArrival.direction == 1)
-                        activity.getString(R.string.bus_direction_1)
-                    else 
-                        activity.getString(R.string.bus_direction_2)
-                    }" +
-                    "${busArrival.originStopDescription}"
+        val busInfo = busArrival.destinationStopDescription
 
         view.parentCv.setOnClickListener { onBusServiceClicked(busArrival.serviceNumber) }
 
         view.serviceNumberTv.text = busArrival.serviceNumber
         view.busInfoTv.text = busInfo
-
-        view.nextDeparture1Tv.text = nextDeparture1Tv
-        view.crowdedIv1.setImageResource(crowdedIv1)
-        view.wheelChairAccessIv1.setImageResource(wheelChairAccessIv1)
-        view.busTypeIv1.setImageResource(busTypeIv1)
-
-        view.nextDeparture2Tv.text = nextDeparture2Tv
-        view.crowdedIv2.setImageResource(crowdedIv2)
-        view.wheelChairAccessIv2.setImageResource(wheelChairAccessIv2)
-        view.busTypeIv2.setImageResource(busTypeIv2)
-
-        view.nextDeparture3Tv.text = nextDeparture3Tv
-        view.crowdedIv3.setImageResource(crowdedIv3)
-        view.wheelChairAccessIv3.setImageResource(wheelChairAccessIv3)
-        view.busTypeIv3.setImageResource(busTypeIv3)
 
         if (busArrival.starred) {
             view.starIv.setImageResource(R.drawable.ic_round_star_24)
@@ -183,6 +158,12 @@ class BusArrivalCompactItem(
         view.starIv.setOnClickListener {
             view.starIv.toggleStar()
             onStarToggle(busStopCode, busArrival)
+        }
+
+        view.nextDepartureTv.text = if (nextDeparture1Tv == "Arr") {
+            "arriving now"
+        } else {
+            "in $nextDeparture1Tv mins"
         }
     }
 }

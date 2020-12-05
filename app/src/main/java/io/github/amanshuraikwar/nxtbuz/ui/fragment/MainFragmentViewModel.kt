@@ -13,6 +13,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.busstop.BusStopsViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.starred.ui.delegate.StarredArrivalsViewModelDelegate
 import kotlinx.coroutines.*
@@ -88,12 +89,12 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     private fun init() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
-        _loading.postValue(
-            Loading.Show(
-                R.drawable.avd_anim_nearby_bus_stops_loading_128,
-                "Finding bus stops nearby..."
-            )
-        )
+//        _loading.postValue(
+//            Loading.Show(
+//                R.drawable.avd_anim_nearby_bus_stops_loading_128,
+//                "Finding bus stops nearby..."
+//            )
+//        )
         val (defaultLat, defaultLng) = defaultLocationUseCase()
         mapViewModelDelegate.initMap(defaultLat, defaultLng) { lat, lng ->
             fetchBusStopsForLatLon(lat, lng)
