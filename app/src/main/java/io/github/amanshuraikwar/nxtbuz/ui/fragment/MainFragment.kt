@@ -33,7 +33,7 @@ import io.github.amanshuraikwar.nxtbuz.common.util.lerp
 import io.github.amanshuraikwar.nxtbuz.common.util.setMarginTop
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
-import kotlinx.android.synthetic.main.fragment_overview.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -62,7 +62,7 @@ class MainFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_overview, container, false)
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -90,7 +90,7 @@ class MainFragment : DaggerFragment() {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.halfExpandedRatio = 0.5f
         bottomSheetBehavior.peekHeight =
-            Point().let { activity!!.windowManager.defaultDisplay.getSize(it); it.y } / 3
+            Point().let { requireActivity().windowManager.defaultDisplay.getSize(it); it.y } / 3
         bottomSheetBehavior.isHideable = false
         bottomSheetBehavior.addBottomSheetCallback(
             object : BottomSheetBehavior.BottomSheetCallback() {
@@ -138,7 +138,7 @@ class MainFragment : DaggerFragment() {
     private fun showLoading(loading: Loading.Show) {
         val animated =
             AnimatedVectorDrawableCompat.create(
-                activity!!, loading.avdResId
+                requireActivity(), loading.avdResId
             )
         loadingIv.setImageDrawable(animated)
         animated?.start()
@@ -369,7 +369,7 @@ class MainFragment : DaggerFragment() {
                 }
             )
 
-            viewModel.primaryBusArrivalUpdate.observe(this) { busArrivalUpdate ->
+            viewModel.primaryBusArrivalUpdate.observe(viewLifecycleOwner) { busArrivalUpdate ->
                 adapter
                     ?.items
                     ?.indexOfFirst { item ->
@@ -383,7 +383,7 @@ class MainFragment : DaggerFragment() {
                     }
             }
 
-            viewModel.secondaryBusArrivalUpdate.observe(this) { busArrivalUpdate ->
+            viewModel.secondaryBusArrivalUpdate.observe(viewLifecycleOwner) { busArrivalUpdate ->
                 adapter
                     ?.items
                     ?.forEachIndexed { index, item ->

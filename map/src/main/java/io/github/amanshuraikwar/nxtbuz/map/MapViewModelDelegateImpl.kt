@@ -58,7 +58,7 @@ class MapViewModelDelegateImpl @Inject constructor(
                 MapInitData(
                     LatLng(lat, lng),
                     // todo get from use case
-                    14f
+                    16f
                 ) { googleMap: GoogleMap? ->
                     map = googleMap
                     map?.let { mapUtil.updateMapStyle(it) }

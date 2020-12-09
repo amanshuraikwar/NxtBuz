@@ -9,5 +9,5 @@
         android:id="@+id/overview"
         android:name="io.github.amanshuraikwar.nxtbuz.ui.fragment.MainFragment"
         android:label="OverviewFragment"
-        tools:layout="@layout/fragment_overview"/>
+        tools:layout="@layout/fragment_main"/>
 </navigation>
