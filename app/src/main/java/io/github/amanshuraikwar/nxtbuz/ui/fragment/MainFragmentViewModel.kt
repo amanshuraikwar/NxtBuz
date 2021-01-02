@@ -15,6 +15,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.BusStopsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
+import io.github.amanshuraikwar.nxtbuz.map.LocationViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.starred.ui.delegate.StarredArrivalsViewModelDelegate
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,6 +44,7 @@ class MainFragmentViewModel @Inject constructor(
     private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
     private val busRouteViewModelDelegate: io.github.amanshuraikwar.nxtbuz.busroute.BusRouteViewModelDelegateImpl,
     starredArrivalsViewModelDelegate: StarredArrivalsViewModelDelegate,
+    private val locationViewModelDelegate: LocationViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(),
     io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate by mapViewModelDelegate,
@@ -89,12 +91,6 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     private fun init() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
-//        _loading.postValue(
-//            Loading.Show(
-//                R.drawable.avd_anim_nearby_bus_stops_loading_128,
-//                "Finding bus stops nearby..."
-//            )
-//        )
         val (defaultLat, defaultLng) = defaultLocationUseCase()
         mapViewModelDelegate.initMap(defaultLat, defaultLng) { lat, lng ->
             fetchBusStopsForLatLon(lat, lng)
@@ -105,6 +101,7 @@ class MainFragmentViewModel @Inject constructor(
                 _starToggleState.postValue(it)
             }
         }
+        locationViewModelDelegate.init(viewModelScope)
     }
 
     private fun fetchBusStopsForLatLon(lat: Double, lng: Double) {

@@ -1,17 +1,12 @@
 package io.github.amanshuraikwar.nxtbuz.onboarding.welcome
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.nxtbuz.onboarding.R
-import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionFragment
 import kotlinx.android.synthetic.main.fragment_welcome.*
 import javax.inject.Inject
 import javax.inject.Named
@@ -35,10 +30,12 @@ class WelcomeFragment : DaggerFragment() {
             findNavController().navigate(R.id.action_welcomeFragment_to_permissionFragment)
         }
         versionTv.text = appVersionInfo
-        startBusStoppingAvd()
+        startIconAnimation()
     }
 
-    private fun startBusStoppingAvd() {
+    private fun startIconAnimation() {
+        // TODO: 2/1/21 new animation
+        /*
         val animated =
             AnimatedVectorDrawableCompat.create(
                 requireActivity(), R.drawable.avd_anim_bus_stopping
@@ -60,6 +57,7 @@ class WelcomeFragment : DaggerFragment() {
         )
         iconIv.setImageDrawable(animated)
         iconIv.postDelayed({ animated?.start() }, 600)
+         */
     }
 
     companion object {

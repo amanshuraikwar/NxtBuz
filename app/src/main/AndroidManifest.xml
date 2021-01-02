@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
 
     <application
         android:name="io.github.amanshuraikwar.nxtbuz.MainApplication"
@@ -14,7 +15,7 @@
         android:label="${appName}"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.DayNight"
+        android:theme="@style/AppTheme.NxtBuz"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
 
@@ -24,7 +25,7 @@
 
         <activity
             android:name=".launcher.LauncherActivity"
-            android:theme="@style/AppTheme.Launcher">
+            android:theme="@style/AppTheme.NxtBuz.Launcher">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +35,7 @@
         </activity>
 
         <activity
-            android:theme="@style/AppTheme.Onboarding"
+            android:theme="@style/AppTheme.NxtBuz.Onboarding"
             android:name="io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity" />
 
         <activity

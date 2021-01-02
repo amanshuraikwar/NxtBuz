@@ -109,6 +109,18 @@ class MapUtil @Inject constructor(
             .strokeColor(ContextCompat.getColor(activity, R.color.orange))
     }
 
+    fun getLocationCircleOptions(lat: Double, lng: Double, radius: Double): CircleOptions {
+        return CircleOptions()
+            .center(LatLng(lat, lng))
+            .radius(radius)
+            // todo get from settings
+            .fillColor(ContextCompat.getColor(activity, R.color.blue))
+            // todo get from settings
+            .strokeWidth(4f)
+            // todo get from settings
+            .strokeColor(ContextCompat.getColor(activity, R.color.white))
+    }
+
     fun updateMapStyle(googleMap: GoogleMap) {
         googleMap.setMapStyle(
             if (isDarkTheme(activity)) {

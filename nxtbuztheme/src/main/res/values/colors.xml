@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/blue</color>
+    <color name="colorPrimaryVariant">@color/blue_dark</color>
+
+    <color name="colorSecondary">@color/colorPrimary</color>
+    <color name="colorSecondaryVariant">@color/colorPrimaryVariant</color>
+
+    <color name="colorBackground">#eef0f2</color>
+    <color name="colorSurface">@color/white</color>
+    <color name="colorError">#b00020</color>
+
+    <color name="colorOnPrimary">@color/white</color>
+    <color name="colorOnSecondary">@color/colorOnPrimary</color>
+    <color name="colorOnBackground">#263238</color>
+    <color name="colorOnSurface">#263238</color>
+    <color name="colorOnError">#ffffff</color>
+
+    <color name="colorOutline">#1e263238</color>
+
+    <color name="white">#ffffff</color>
+
+    <color name="blue">#08ACFD</color>
+    <color name="blue_dark">#0288D1</color>
+
+    <color name="yellow">#FBC02D</color>
+    <color name="orange_light">#FFCC80</color>
+    <color name="orange">#FE9657</color>
+    <color name="orange_variant">#FA6E18</color>
+    <color name="pink">#E91E63</color>
+    <color name="green">#4CAF50</color>
+
+    <color name="purple">#673AB7</color>
+    <color name="navy_blue">#3F51B5</color>
+    <color name="teal">#009688</color>
+
+    <color name="red">#F44336</color>
+
+    <color name="orange_transparent">#22FF9800</color>
+
+    <color name="colorScrim">#dd000000</color>
+
+    <color name="colorBusRoutePrimary">@color/blue</color>
+    <color name="colorBusRouteSecondary">#BDBDBD</color>
+</resources>

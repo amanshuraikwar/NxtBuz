@@ -25,10 +25,12 @@ android {
 }
 
 dependencies {
-    Libs.Kotlin.stdlib
-
     implementation project(':multiitemadapter')
     implementation project(':common')
+    debugImplementation project(':basetheme')
+    implementation project(':nxtbuztheme')
+
+    Libs.Kotlin.stdlib
 
     implementation Libs.Google.material
 

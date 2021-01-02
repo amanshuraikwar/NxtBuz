@@ -30,6 +30,8 @@ dependencies {
     implementation project(":multiitemadapter")
     implementation project(":listitem")
     implementation project(":map")
+    debugImplementation project(':basetheme')
+    implementation project(':nxtbuztheme')
 
     Libs.Kotlin.stdlib
 

@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             app:layout_constraintTop_toBottomOf="@id/stopCodeTv"
             android:layout_height="@dimen/margin_small"
-            android:background="@color/color_background"
+            android:background="@color/colorBackground"
             app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

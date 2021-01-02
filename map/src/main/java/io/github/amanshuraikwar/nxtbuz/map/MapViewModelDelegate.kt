@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.map
 
 import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
+import com.google.android.gms.maps.model.Circle
 import io.github.amanshuraikwar.nxtbuz.common.model.Event
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapInitData
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
@@ -27,4 +28,6 @@ interface MapViewModelDelegate {
     fun onReCreate()
 
     fun detach()
+
+    suspend fun addCircle(mapCircle: MapEvent.MapCircle): Circle?
 }

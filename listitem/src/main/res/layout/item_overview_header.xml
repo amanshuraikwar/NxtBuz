@@ -10,7 +10,7 @@
     android:paddingBottom="12dp"
     android:paddingEnd="@dimen/padding_normal"
     android:textAppearance="?textAppearanceOverline"
-    android:background="@color/color_background"
+    android:background="@color/colorBackground"
     tools:text="Alert"
     tools:drawableEnd="@drawable/ic_round_unfold_less_16"
     app:drawableTint="?colorSecondary" />

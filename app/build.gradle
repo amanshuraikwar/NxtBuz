@@ -125,6 +125,10 @@ dependencies {
     implementation project(':busstop')
     implementation project(':busroute')
 
+    debugImplementation project(':basetheme')
+    internalImplementation project(':basetheme')
+    implementation project(':nxtbuztheme')
+
     implementation Libs.Kotlin.stdlib
 
     implementation Libs.Coroutines.core

@@ -14,7 +14,7 @@ class BottomSheetBgView(context: Context, attrs: AttributeSet) : View(context, a
     private val maxCornerRadius: Float
 
     private val paint: Paint = Paint().apply {
-        color = ContextCompat.getColor(context, R.color.color_surface)
+        color = ContextCompat.getColor(context, R.color.colorSurface)
     }
 
     private var cornerRadius: Float

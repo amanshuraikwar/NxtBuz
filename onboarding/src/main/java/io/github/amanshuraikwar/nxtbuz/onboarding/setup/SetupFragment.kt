@@ -1,15 +1,12 @@
 package io.github.amanshuraikwar.nxtbuz.onboarding.setup
 
 import android.animation.ObjectAnimator
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.support.DaggerFragment
@@ -45,10 +42,12 @@ class SetupFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupViewModel()
-        startSetupAnim()
+        startIconAnimation()
     }
 
-    private fun startSetupAnim() {
+    private fun startIconAnimation() {
+        // TODO: 2/1/21 update size of setup avd to 72dp
+        /*
         val animated =
             AnimatedVectorDrawableCompat.create(
                 requireActivity(), R.drawable.avd_anim_setup_128
@@ -67,6 +66,7 @@ class SetupFragment : DaggerFragment() {
         )
         setupIv.setImageDrawable(animated)
         animated?.start()
+         */
     }
 
     private fun setupViewModel() {
@@ -125,5 +125,4 @@ class SetupFragment : DaggerFragment() {
             )
         }
     }
-
 }

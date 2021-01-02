@@ -29,6 +29,8 @@ dependencies {
     implementation project(":domain")
     implementation project(":multiitemadapter")
     implementation project(":listitem")
+    debugImplementation project(':basetheme')
+    implementation project(':nxtbuztheme')
 
     Libs.Kotlin.stdlib
 

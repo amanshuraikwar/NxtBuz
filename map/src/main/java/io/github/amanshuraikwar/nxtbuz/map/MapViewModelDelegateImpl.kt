@@ -22,6 +22,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MarkerUtil
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -52,7 +53,7 @@ class MapViewModelDelegateImpl @Inject constructor(
         onMapLongClick: (lat: Double, lng: Double) -> Unit
     ) {
         if (map != null) return
-        else return suspendCoroutine { cont ->
+        else return suspendCancellableCoroutine { cont ->
 
             _initMap.postValue(
                 MapInitData(
@@ -104,10 +105,10 @@ class MapViewModelDelegateImpl @Inject constructor(
                 addMarkers(mapEvent)
             }
             is MapEvent.MapCircle -> {
-                addCircle(mapEvent)
+                addCircleEvent(mapEvent)
             }
             is MapEvent.ClearMap -> {
-                clearMap()
+                //clearMap()
             }
             is MapEvent.UpdateMapMarkers -> {
                 updateMarkers(mapEvent)
@@ -278,7 +279,7 @@ class MapViewModelDelegateImpl @Inject constructor(
             mapMarkerIdMapMarkerMap.clear()
         }
 
-    private suspend fun addCircle(mapEvent: MapEvent.MapCircle) =
+    private suspend fun addCircleEvent(mapEvent: MapEvent.MapCircle) =
         withContext(dispatcherProvider.main) {
             map?.addCircle(mapUtil.getCircleOptions(mapEvent.lat, mapEvent.lng, mapEvent.radius))
         }
@@ -309,9 +310,9 @@ class MapViewModelDelegateImpl @Inject constructor(
 
             withContext(dispatcherProvider.main) {
                 markerList.forEach { (mapMarker, markerOptions) ->
-                    val marker = map?.addMarker(markerOptions)
-                    mapMarkerIdMarkerMap[mapMarker.id] = marker ?: return@forEach
-                    mapMarkerIdMapMarkerMap[mapMarker.id] = mapMarker
+//                    val marker = map?.addMarker(markerOptions)
+//                    mapMarkerIdMarkerMap[mapMarker.id] = marker ?: return@forEach
+//                    mapMarkerIdMapMarkerMap[mapMarker.id] = mapMarker
                 }
             }
         }
@@ -340,6 +341,12 @@ class MapViewModelDelegateImpl @Inject constructor(
 
     override fun detach() {
         // todo
+    }
+
+    override suspend fun addCircle(mapCircle: MapEvent.MapCircle): Circle? {
+        return withContext(dispatcherProvider.main) {
+            map?.addCircle(mapUtil.getLocationCircleOptions(mapCircle.lat, mapCircle.lng, mapCircle.radius))
+        }
     }
 
     companion object {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppTheme.Launcher">
+    <style name="AppTheme.NxtBuz.Launcher">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">?colorSurface</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>

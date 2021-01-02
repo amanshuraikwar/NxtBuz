@@ -1,3 +1,5 @@
+include ':nxtbuztheme'
+include ':basetheme'
 include ':busroute'
 include ':busstop'
 include ':map'
