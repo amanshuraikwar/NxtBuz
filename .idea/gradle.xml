@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/annotationProcessors" />
             <option value="$PROJECT_DIR$/annotations" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/basetheme" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/busroute" />
             <option value="$PROJECT_DIR$/busstop" />
@@ -25,6 +26,7 @@
             <option value="$PROJECT_DIR$/ltaapi" />
             <option value="$PROJECT_DIR$/map" />
             <option value="$PROJECT_DIR$/multiitemadapter" />
+            <option value="$PROJECT_DIR$/nxtbuztheme" />
             <option value="$PROJECT_DIR$/onboarding" />
             <option value="$PROJECT_DIR$/search" />
             <option value="$PROJECT_DIR$/settings" />

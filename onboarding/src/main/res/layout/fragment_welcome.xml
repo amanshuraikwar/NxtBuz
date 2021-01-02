@@ -5,56 +5,66 @@
     android:id="@+id/parentCl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    tools:background="@drawable/bg_onboarding">
+    android:animateLayoutChanges="true">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iconIv"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="128dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/welcome_screen_logo" />
+        app:srcCompat="@drawable/ic_bus_72" />
 
     <TextView
         android:id="@+id/titleTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
         android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_large"
         android:text="@string/app_name"
         android:textAppearance="?textAppearanceHeadline3"
+        android:textColor="?colorOnSurface"
         app:layout_constraintTop_toBottomOf="@id/iconIv" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginEnd="@dimen/margin_large"
         android:gravity="center"
-        android:padding="@dimen/padding_large"
         android:text="@string/onboarding_app_description"
         android:textAppearance="?textAppearanceBody1"
+        android:textColor="?colorOnSurface"
         app:layout_constraintTop_toBottomOf="@id/titleTv" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/getStartedBtn"
-        style="@style/Widget.AppTheme.PrimaryButton"
-        android:layout_width="wrap_content"
+        style="@style/Widget.AppTheme.NxtBuz.PrimaryButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_very_large"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginBottom="24dp"
         android:text="@string/onboarding_btn_get_started"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/versionTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/versionTv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingBottom="@dimen/padding_normal"
-        android:textAppearance="?textAppearanceSubtitle2"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:textAppearance="?textAppearanceBody2"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="V1.0 (1) DEBUG" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="V1.3.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

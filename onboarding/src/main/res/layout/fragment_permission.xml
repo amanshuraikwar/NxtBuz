@@ -1,64 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parentCl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    tools:background="@drawable/bg_onboarding">
+    android:animateLayoutChanges="true">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/helpTv"
+        android:id="@+id/titleTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="@dimen/margin_large"
         android:gravity="center_horizontal"
-        android:paddingStart="@dimen/padding_large"
-        android:paddingTop="72dp"
-        android:paddingEnd="@dimen/padding_large"
         android:text="@string/onboarding_title_permission"
         android:textAppearance="?textAppearanceHeadline4"
+        android:textColor="?colorOnSurface"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/descriptionTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginEnd="@dimen/margin_large"
         android:gravity="center_horizontal"
-        android:padding="@dimen/padding_large"
-        android:text="@string/onboarding_permission_description"
+        android:text="@string/onboarding_description_permission"
         android:textAppearance="?textAppearanceBody1"
-        app:layout_constraintTop_toBottomOf="@id/helpTv" />
+        android:textColor="?colorOnSurface"
+        app:layout_constraintTop_toBottomOf="@id/titleTv" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/illustrationIv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
-        android:src="@drawable/avd_anim_permission_128"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionTv"
-        app:tint="?colorControlNormal"/>
+        android:id="@+id/iconIv"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_pin_drop_72"
+        app:layout_constraintBottom_toTopOf="@id/actionBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/actionBtn"
-        style="@style/Widget.AppTheme.PrimaryButton"
-        android:layout_width="wrap_content"
+        style="@style/Widget.AppTheme.NxtBuz.PrimaryButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
         android:text="@string/onboarding_btn_give_permissions"
         app:layout_constraintBottom_toTopOf="@id/skipBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_goneMarginBottom="24dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/skipBtn"
-        style="@style/Widget.AppTheme.SecondaryButton"
-        android:layout_width="wrap_content"
+        style="@style/Widget.AppTheme.NxtBuz.SecondaryButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_normal"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginBottom="24dp"
         android:text="@string/onboarding_btn_skip"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -51,7 +51,7 @@
             android:textAppearance="?textAppearanceHeadline6"
             android:textColor="#fff"
             android:textStyle="bold"
-            app:fontFamily="@font/cabin_bold"
+            app:fontFamily="@font/cabin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -82,7 +82,7 @@
             android:layout_margin="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
-            android:background="@color/divider"
+            android:background="@color/colorOutline"
             app:layout_constraintBottom_toBottomOf="@id/horizontalDivider"
             app:layout_constraintStart_toEndOf="@id/barrier1"
             app:layout_constraintTop_toTopOf="parent" />
@@ -149,7 +149,7 @@
             android:layout_marginStart="72dp"
             android:layout_marginTop="@dimen/margin_normal"
             android:layout_marginEnd="@dimen/margin_normal"
-            android:background="@color/divider"
+            android:background="@color/colorOutline"
             app:layout_constraintTop_toBottomOf="@id/barrier2" />
 
         <androidx.appcompat.widget.AppCompatTextView

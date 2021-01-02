@@ -6,7 +6,7 @@
     <string name="onboarding_title_permission">We need your permission…</string>
     <string name="onboarding_btn_give_permissions">Give Permissions</string>
     <string name="onboarding_btn_skip">Skip</string>
-    <string name="onboarding_permission_description">Location permission helps us find bus stops near you</string>
+    <string name="onboarding_description_permission">Location permission helps us find bus stops near you</string>
     <string name="onboarding_dialog_title_location_permission">Location permission</string>
     <string name="onboarding_dialog_description_location_permission">We use your location to fetch bus stops nearby.</string>
     <string name="onboarding_btn_give_permission">Give Permission</string>

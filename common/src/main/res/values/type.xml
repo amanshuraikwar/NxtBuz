@@ -21,56 +21,56 @@
     <!--letterSpacing, etc. to define a custom appearance for each and see how they are -->
     <!--applied globally across your app.-->
 
-    <style name="TextAppearance.AppTheme.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="fontFamily">@font/rubik</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Headline1" parent="TextAppearance.MaterialComponents.Headline1">-->
+<!--        <item name="fontFamily">@font/rubik</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
-        <item name="fontFamily">@font/rubik</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Headline2" parent="TextAppearance.MaterialComponents.Headline2">-->
+<!--        <item name="fontFamily">@font/rubik</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
-        <item name="fontFamily">@font/rubik_medium</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Headline3" parent="TextAppearance.MaterialComponents.Headline3">-->
+<!--        <item name="fontFamily">@font/rubik_medium</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
-        <item name="fontFamily">@font/rubik</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Headline4" parent="TextAppearance.MaterialComponents.Headline4">-->
+<!--        <item name="fontFamily">@font/rubik</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="fontFamily">@font/rubik</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Headline5" parent="TextAppearance.MaterialComponents.Headline5">-->
+<!--        <item name="fontFamily">@font/rubik</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="fontFamily">@font/rubik</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Headline6" parent="TextAppearance.MaterialComponents.Headline6">-->
+<!--        <item name="fontFamily">@font/rubik</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="fontFamily">@font/rubik_medium</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">-->
+<!--        <item name="fontFamily">@font/rubik_medium</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="fontFamily">@font/rubik</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">-->
+<!--        <item name="fontFamily">@font/rubik</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Body1" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">@font/rubik</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Body1" parent="TextAppearance.MaterialComponents.Body1">-->
+<!--        <item name="fontFamily">@font/rubik</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Body2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="fontFamily">@font/rubik</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Body2" parent="TextAppearance.MaterialComponents.Body2">-->
+<!--        <item name="fontFamily">@font/rubik</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Button" parent="TextAppearance.MaterialComponents.Button">
-        <item name="fontFamily">@font/cabin</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Button" parent="TextAppearance.MaterialComponents.Button">-->
+<!--        <item name="fontFamily">@font/cabin</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="fontFamily">@font/cabin</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Caption" parent="TextAppearance.MaterialComponents.Caption">-->
+<!--        <item name="fontFamily">@font/cabin</item>-->
+<!--    </style>-->
 
-    <style name="TextAppearance.AppTheme.Overline" parent="TextAppearance.MaterialComponents.Overline">
-        <item name="fontFamily">@font/cabin</item>
-        <item name="android:textStyle">bold</item>
-    </style>
+<!--    <style name="TextAppearance.AppTheme.Overline" parent="TextAppearance.MaterialComponents.Overline">-->
+<!--        <item name="fontFamily">@font/cabin</item>-->
+<!--        <item name="android:textStyle">bold</item>-->
+<!--    </style>-->
 </resources>

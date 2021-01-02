@@ -44,10 +44,11 @@ class AppModule {
     fun provideAppVersionInfo(): String {
         return if (BuildConfig.DEBUG) {
             "V${BuildConfig.VERSION_NAME}" +
-                    "  •  " +
+                    " <<" +
                     "${BuildConfig.VERSION_CODE}" +
-                    "  •  " +
-                    BuildConfig.BUILD_TYPE.toUpperCase(Locale.getDefault())
+                    " • " +
+                    BuildConfig.BUILD_TYPE.toUpperCase(Locale.getDefault()) +
+                    ">>"
         } else {
             "V${BuildConfig.VERSION_NAME}"
         }

@@ -113,7 +113,6 @@ class PermissionViewModel @Inject constructor(
                 Log.e(TAG, "enableSettings: Resulted in SettingsState.UnResolvable")
             }
         }
-
     }
 
     companion object {

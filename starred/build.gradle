@@ -31,6 +31,8 @@ dependencies {
     implementation project(":listitem")
     implementation project(":ltaapi")
     implementation project(":data")
+    debugImplementation project(':basetheme')
+    implementation project(':nxtbuztheme')
 
     Libs.Kotlin.stdlib
 

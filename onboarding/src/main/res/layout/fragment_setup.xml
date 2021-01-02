@@ -5,46 +5,51 @@
     android:id="@+id/parentCl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    tools:background="@drawable/bg_onboarding">
+    android:animateLayoutChanges="true">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/helpTv"
+        android:id="@+id/titleTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="@dimen/margin_large"
         android:gravity="center_horizontal"
-        android:paddingStart="@dimen/padding_large"
-        android:paddingTop="72dp"
-        android:paddingEnd="@dimen/padding_large"
         android:text="@string/onboarding_title_setup"
         android:textAppearance="?textAppearanceHeadline4"
+        android:textColor="?colorOnSurface"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/descriptionTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginEnd="@dimen/margin_large"
         android:gravity="center_horizontal"
-        android:padding="@dimen/padding_large"
         android:text="@string/onboarding_description_setup"
         android:textAppearance="?textAppearanceBody1"
-        app:layout_constraintTop_toBottomOf="@id/helpTv" />
+        android:textColor="?colorOnSurface"
+        app:layout_constraintTop_toBottomOf="@id/titleTv" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iconIv"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_setup_72"
+        app:layout_constraintBottom_toTopOf="@id/setupPb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
 
     <ProgressBar
         android:id="@+id/setupPb"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:max="100"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:progress="50" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/setupIv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
-        android:src="@drawable/avd_anim_setup_128"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

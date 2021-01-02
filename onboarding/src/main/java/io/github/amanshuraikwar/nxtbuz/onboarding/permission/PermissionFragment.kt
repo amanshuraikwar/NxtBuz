@@ -1,18 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.onboarding.permission
 
-import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
 import io.github.amanshuraikwar.nxtbuz.common.util.goToApplicationSettings
@@ -39,7 +32,7 @@ class PermissionFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupViewModel()
-        startPermissionAvd()
+        startIconAnimation()
         actionBtn.setOnClickListener {
             viewModel.askPermissions()
         }
@@ -53,7 +46,9 @@ class PermissionFragment : DaggerFragment() {
         viewModel.checkPermissions()
     }
 
-    private fun startPermissionAvd() {
+    private fun startIconAnimation() {
+        // TODO: 2/1/21 new animation
+        /*
         val animated =
             AnimatedVectorDrawableCompat.create(
                 requireActivity(), R.drawable.avd_anim_permission_128
@@ -63,7 +58,7 @@ class PermissionFragment : DaggerFragment() {
                 override fun onAnimationEnd(drawable: Drawable?) {
                     super.onAnimationEnd(drawable)
                     try {
-                        illustrationIv.postDelayed({ animated.start() }, 1600)
+                        iconIv.postDelayed({ animated.start() }, 1600)
                     } catch (e: Exception) {
                         Log.w(
                             TAG,
@@ -74,8 +69,9 @@ class PermissionFragment : DaggerFragment() {
                 }
             }
         )
-        illustrationIv.setImageDrawable(animated)
+        iconIv.setImageDrawable(animated)
         animated?.start()
+         */
     }
 
     private fun setupViewModel() {
@@ -114,7 +110,7 @@ class PermissionFragment : DaggerFragment() {
                 actionBtn.setOnClickListener {
                     goToNextPage()
                 }
-                skipBtn.visibility = View.INVISIBLE
+                skipBtn.visibility = View.GONE
             }
 
             viewModel.showEnableSettingsBtn.observe(viewLifecycleOwner) {
