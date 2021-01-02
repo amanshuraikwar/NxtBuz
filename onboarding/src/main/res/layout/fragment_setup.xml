@@ -35,9 +35,9 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iconIv"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:src="@drawable/ic_setup_72"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:src="@drawable/avd_setup_128"
         app:layout_constraintBottom_toTopOf="@id/setupPb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
