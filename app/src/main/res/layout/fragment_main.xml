@@ -9,7 +9,7 @@
         android:id="@+id/nxtBuzMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="io.github.amanshuraikwar.nxtbuz.map.NxtBuzMapFragment" />
+        android:name="io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMapFragment" />
 
     <View
         android:id="@+id/searchBg"
