@@ -1,11 +1,15 @@
 package io.github.amanshuraikwar.nxtbuz.onboarding.permission
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
 import io.github.amanshuraikwar.nxtbuz.common.util.goToApplicationSettings
@@ -47,11 +51,9 @@ class PermissionFragment : DaggerFragment() {
     }
 
     private fun startIconAnimation() {
-        // TODO: 2/1/21 new animation
-        /*
         val animated =
             AnimatedVectorDrawableCompat.create(
-                requireActivity(), R.drawable.avd_anim_permission_128
+                requireActivity(), R.drawable.avd_location_permission_72
             )
         animated?.registerAnimationCallback(
             object : Animatable2Compat.AnimationCallback() {
@@ -71,7 +73,6 @@ class PermissionFragment : DaggerFragment() {
         )
         iconIv.setImageDrawable(animated)
         animated?.start()
-         */
     }
 
     private fun setupViewModel() {
