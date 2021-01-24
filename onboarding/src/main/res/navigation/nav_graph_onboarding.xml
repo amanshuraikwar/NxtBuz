@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_welcome" >
         <action
             android:id="@+id/action_welcomeFragment_to_permissionFragment"
-            app:destination="@id/permissionFragment" />
+            app:destination="@id/permissionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
 
     <fragment
@@ -22,7 +24,9 @@
         tools:layout="@layout/fragment_permission" >
         <action
             android:id="@+id/action_permissionFragment_to_setupFragment"
-            app:destination="@id/setupFragment" />
+            app:destination="@id/setupFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
 
     <fragment
