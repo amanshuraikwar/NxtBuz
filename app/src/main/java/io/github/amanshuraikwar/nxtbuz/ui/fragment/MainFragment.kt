@@ -81,9 +81,9 @@ class MainFragment : DaggerFragment() {
         setupViewModel()
         setupBottomSheet()
 
-        if (savedInstanceState != null) {
-            viewModel.onReCreate()
-        }
+//        if (savedInstanceState != null) {
+//            viewModel.onReCreate()
+//        }
     }
 
     private fun setupBottomSheet() {
@@ -155,30 +155,30 @@ class MainFragment : DaggerFragment() {
 
             viewModel = viewModelProvider(viewModelFactory)
 
-            viewModel.initMap.observe(
-                viewLifecycleOwner,
-                EventObserver { mapInitData ->
-                    val fragment = SupportMapFragment.newInstance(
-                        GoogleMapOptions()
-                            .camera(
-                                CameraPosition.Builder().target(mapInitData.latLng)
-                                    .zoom(mapInitData.zoom)
-                                    .build()
-                            )
-                            .compassEnabled(false)
-                            .mapToolbarEnabled(false)
-                            .minZoomPreference(mapInitData.zoom)
-                    )
-                    fragment.getMapAsync { googleMap: GoogleMap? ->
-                        mapInitData.onMapReady(googleMap)
-                    }
-                    fragment.retainInstance = true
-                    childFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.mapFragment, fragment)
-                        .commit()
-                }
-            )
+//            viewModel.initMap.observe(
+//                viewLifecycleOwner,
+//                EventObserver { mapInitData ->
+//                    val fragment = SupportMapFragment.newInstance(
+//                        GoogleMapOptions()
+//                            .camera(
+//                                CameraPosition.Builder().target(mapInitData.latLng)
+//                                    .zoom(mapInitData.zoom)
+//                                    .build()
+//                            )
+//                            .compassEnabled(false)
+//                            .mapToolbarEnabled(false)
+//                            .minZoomPreference(mapInitData.zoom)
+//                    )
+//                    fragment.getMapAsync { googleMap: GoogleMap? ->
+//                        mapInitData.onMapReady(googleMap)
+//                    }
+//                    fragment.retainInstance = true
+//                    childFragmentManager
+//                        .beginTransaction()
+//                        .replace(R.id.mapFragment, fragment)
+//                        .commit()
+//                }
+//            )
 
             viewModel.error.observe(
                 viewLifecycleOwner,

@@ -7,7 +7,8 @@ open class MapMarker(
     val lat: Double,
     val lng: Double,
     @DrawableRes val iconDrawableRes: Int,
-    val description: String
+    val description: String,
+    val isFlat: Boolean = false,
 ) {
     override fun hashCode(): Int {
         return id.hashCode()

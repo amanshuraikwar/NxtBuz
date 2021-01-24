@@ -1,5 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.common
 
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -12,6 +17,21 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val flow = MutableSharedFlow<Int>()
+
+        fun main() {
+            runBlocking {
+                launch {
+                    for (i in 0..10) {
+                        delay(100)
+                        flow.emit(i)
+                    }
+                }
+                delay(500)
+                flow.collect {
+                    println(it)
+                }
+            }
+        }
     }
 }

@@ -47,7 +47,7 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
-    private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
+    //private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
     private val mapUtil: MapUtil,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : BusRouteViewModelDelegate {
@@ -115,12 +115,12 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
         mapMarkerList.clear()
 
-        mapStateId = mapViewModelDelegate.newState()
-
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.ClearMap
-        )
+//        mapStateId = mapViewModelDelegate.newState()
+//
+//        mapViewModelDelegate.pushMapEvent(
+//            mapStateId,
+//            MapEvent.ClearMap
+//        )
 
 //        mapViewModelDelegate.pushMapEvent(
 //            mapStateId,
@@ -184,31 +184,31 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
         //region add route to map
 
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.AddRoute(
-                mapUtil.getRouteLineColorLight(),
-                mapUtil.getRouteLineWidthSmall(),
-                busRoute.busRouteNodeList
-                    .subList(0, currentBusRouteNodeIndex + 1)
-                    .map { busRouteNode ->
-                        busRouteNode.busStopLat to busRouteNode.busStopLng
-                    }
-            )
-        )
-
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.AddRoute(
-                mapUtil.getRouteLineColor(),
-                mapUtil.getRouteLineWidth(),
-                busRoute.busRouteNodeList
-                    .subList(max(0, currentBusRouteNodeIndex), busRoute.busRouteNodeList.size)
-                    .map { busRouteNode ->
-                        busRouteNode.busStopLat to busRouteNode.busStopLng
-                    }
-            )
-        )
+//        mapViewModelDelegate.pushMapEvent(
+//            mapStateId,
+//            MapEvent.AddRoute(
+//                mapUtil.getRouteLineColorLight(),
+//                mapUtil.getRouteLineWidthSmall(),
+//                busRoute.busRouteNodeList
+//                    .subList(0, currentBusRouteNodeIndex + 1)
+//                    .map { busRouteNode ->
+//                        busRouteNode.busStopLat to busRouteNode.busStopLng
+//                    }
+//            )
+//        )
+//
+//        mapViewModelDelegate.pushMapEvent(
+//            mapStateId,
+//            MapEvent.AddRoute(
+//                mapUtil.getRouteLineColor(),
+//                mapUtil.getRouteLineWidth(),
+//                busRoute.busRouteNodeList
+//                    .subList(max(0, currentBusRouteNodeIndex), busRoute.busRouteNodeList.size)
+//                    .map { busRouteNode ->
+//                        busRouteNode.busStopLat to busRouteNode.busStopLng
+//                    }
+//            )
+//        )
 
         //endregion
 
@@ -351,13 +351,13 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
                 }
                 ?: throw Exception("Cannot find closest bus route node.")
 
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.MoveCenter(
-                closestBusRouteNode.busStopLat,
-                closestBusRouteNode.busStopLng
-            )
-        )
+//        mapViewModelDelegate.pushMapEvent(
+//            mapStateId,
+//            MapEvent.MoveCenter(
+//                closestBusRouteNode.busStopLat,
+//                closestBusRouteNode.busStopLng
+//            )
+//        )
     }
 
     private var displayedBusStopMapMarker: MapMarker? = null
@@ -365,10 +365,10 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
     private suspend fun showBusStop(busStop: BusStop) {
 
         displayedBusStopMapMarker?.let {
-            mapViewModelDelegate.pushMapEvent(
-                mapStateId,
-                MapEvent.DeleteMarker(listOf(it.id))
-            )
+//            mapViewModelDelegate.pushMapEvent(
+//                mapStateId,
+//                MapEvent.DeleteMarker(listOf(it.id))
+//            )
         }
 
         val marker = MapMarker(
@@ -379,17 +379,17 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
             busStop.description
         )
 
-        mapViewModelDelegate.pushMapEvent(mapStateId, MapEvent.AddMapMarkers(listOf(marker)))
+//        mapViewModelDelegate.pushMapEvent(mapStateId, MapEvent.AddMapMarkers(listOf(marker)))
 
         displayedBusStopMapMarker = marker
 
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.MoveCenter(
-                busStop.latitude,
-                busStop.longitude
-            )
-        )
+//        mapViewModelDelegate.pushMapEvent(
+//            mapStateId,
+//            MapEvent.MoveCenter(
+//                busStop.latitude,
+//                busStop.longitude
+//            )
+//        )
     }
 
     private suspend fun startPrimaryBusArrivalsLoop(primaryBusStop: BusStop) {
@@ -561,28 +561,28 @@ class BusRouteViewModelDelegateImpl @Inject constructor(
 
         withContext(dispatcherProvider.main) {
             if (busAddList.isNotEmpty()) {
-                mapViewModelDelegate.pushMapEvent(
-                    mapStateId,
-                    MapEvent.AddMapMarkers(
-                        busAddList
-                    )
-                )
+//                mapViewModelDelegate.pushMapEvent(
+//                    mapStateId,
+//                    MapEvent.AddMapMarkers(
+//                        busAddList
+//                    )
+//                )
             }
             if (busDeleteList.isNotEmpty()) {
-                mapViewModelDelegate.pushMapEvent(
-                    mapStateId,
-                    MapEvent.DeleteMarker(
-                        busDeleteList
-                    )
-                )
+//                mapViewModelDelegate.pushMapEvent(
+//                    mapStateId,
+//                    MapEvent.DeleteMarker(
+//                        busDeleteList
+//                    )
+//                )
             }
             if (busUpdateList.isNotEmpty()) {
-                mapViewModelDelegate.pushMapEvent(
-                    mapStateId,
-                    MapEvent.UpdateMapMarkers(
-                        busUpdateList
-                    )
-                )
+//                mapViewModelDelegate.pushMapEvent(
+//                    mapStateId,
+//                    MapEvent.UpdateMapMarkers(
+//                        busUpdateList
+//                    )
+//                )
             }
         }
 

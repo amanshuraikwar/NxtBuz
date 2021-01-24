@@ -21,7 +21,7 @@ import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
 import io.github.amanshuraikwar.nxtbuz.common.model.Loading
 import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.util.post
-import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
+//import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.catch
@@ -37,7 +37,7 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
     @Named("error") private val _error: MutableLiveData<Alert>,
-    private val mapViewModelDelegate: MapViewModelDelegate,
+    //private val mapViewModelDelegate: MapViewModelDelegate,
     private val busStopArrivalsMapMarkerHelper: BusStopArrivalsMapMarkerHelper,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -84,34 +84,34 @@ class BusStopArrivalsViewModelDelegate @Inject constructor(
         curBusStopState = busStopState
         busStopArrivalsMapMarkerHelper.clear()
 
-        mapStateId = mapViewModelDelegate.newState(::onMapMarkerClicked)
-        busStopArrivalsMapMarkerHelper.mapStateId = mapStateId
+//        mapStateId = mapViewModelDelegate.newState(::onMapMarkerClicked)
+//        busStopArrivalsMapMarkerHelper.mapStateId = mapStateId
 
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.ClearMap
-        )
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.AddMapMarkers(
-                listOf(
-                    MapMarker(
-                        curBusStopState.busStop.code,
-                        curBusStopState.busStop.latitude,
-                        curBusStopState.busStop.longitude,
-                        R.drawable.ic_marker_bus_stop_48,
-                        curBusStopState.busStop.description
-                    )
-                )
-            )
-        )
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.MoveCenter(
-                curBusStopState.busStop.latitude,
-                curBusStopState.busStop.longitude
-            )
-        )
+//        mapViewModelDelegate.pushMapEvent(
+//            mapStateId,
+//            MapEvent.ClearMap
+//        )
+//        mapViewModelDelegate.pushMapEvent(
+//            mapStateId,
+//            MapEvent.AddMapMarkers(
+//                listOf(
+//                    MapMarker(
+//                        curBusStopState.busStop.code,
+//                        curBusStopState.busStop.latitude,
+//                        curBusStopState.busStop.longitude,
+//                        R.drawable.ic_marker_bus_stop_48,
+//                        curBusStopState.busStop.description
+//                    )
+//                )
+//            )
+//        )
+//        mapViewModelDelegate.pushMapEvent(
+//            mapStateId,
+//            MapEvent.MoveCenter(
+//                curBusStopState.busStop.latitude,
+//                curBusStopState.busStop.longitude
+//            )
+//        )
         getBusArrivalFlowUseCase(busStopState.busStop.code)
             .catch { throwable ->
                 FirebaseCrashlytics.getInstance().recordException(throwable)
