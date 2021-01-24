@@ -72,7 +72,7 @@ class PermissionFragment : DaggerFragment() {
             }
         )
         iconIv.setImageDrawable(animated)
-        animated?.start()
+        iconIv.postDelayed({ animated?.start() }, 800)
     }
 
     private fun setupViewModel() {
