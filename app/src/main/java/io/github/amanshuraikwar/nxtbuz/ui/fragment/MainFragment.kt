@@ -242,11 +242,11 @@ class MainFragment : DaggerFragment() {
             viewModel.showBack.observe(
                 viewLifecycleOwner,
                 Observer { show ->
-                    backFab.visibility = if (show) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
+//                    backFab.visibility = if (show) {
+//                        View.VISIBLE
+//                    } else {
+//                        View.GONE
+//                    }
                 }
             )
 
@@ -258,9 +258,9 @@ class MainFragment : DaggerFragment() {
                             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                             itemsRv.scrollToPosition(0)
                         }
-                        backFab.isVisible -> {
-                            viewModel.onBackPressed()
-                        }
+//                        backFab.isVisible -> {
+//                            viewModel.onBackPressed()
+//                        }
                         else -> {
                             activity.finish()
                         }
@@ -493,20 +493,20 @@ class MainFragment : DaggerFragment() {
                 }
             }
 
-            searchMtv.setOnClickListener {
-                startActivityForResult(
-                    Intent(activity, io.github.amanshuraikwar.nxtbuz.search.SearchActivity::class.java),
-                    REQUEST_SEARCH_BUS_STOPS
-                )
-            }
+//            searchMtv.setOnClickListener {
+//                startActivityForResult(
+//                    Intent(activity, io.github.amanshuraikwar.nxtbuz.search.SearchActivity::class.java),
+//                    REQUEST_SEARCH_BUS_STOPS
+//                )
+//            }
 
-            backFab.setOnClickListener {
-                activity.onBackPressed()
-            }
-
-            settingsFab.setOnClickListener {
-                startActivity(Intent(activity, SettingsActivity::class.java))
-            }
+//            backFab.setOnClickListener {
+//                activity.onBackPressed()
+//            }
+//
+//            settingsFab.setOnClickListener {
+//                startActivity(Intent(activity, SettingsActivity::class.java))
+//            }
         }
     }
 

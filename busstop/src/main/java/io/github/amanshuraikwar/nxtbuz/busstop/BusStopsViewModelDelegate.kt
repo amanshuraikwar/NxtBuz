@@ -17,6 +17,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.post
 import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
+import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -143,7 +144,9 @@ class BusStopsViewModelDelegate @Inject constructor(
         onBusStopClicked: (BusStop) -> Unit
     ): MutableList<RecyclerViewListItem> =
         withContext(dispatcherProvider.computation) {
-            val listItems = mutableListOf<RecyclerViewListItem>()
+            val listItems = mutableListOf<RecyclerViewListItem>(
+                HeaderItem("Nearby Bus Stops")
+            )
             busStopList.forEach {
                 listItems.add(
                     BusStopItem(

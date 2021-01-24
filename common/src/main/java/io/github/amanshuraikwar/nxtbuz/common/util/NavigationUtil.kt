@@ -26,3 +26,12 @@ private fun Context.getActivityClass(target: String): Class<out Activity?>? {
     @Suppress("UNCHECKED_CAST")
     return classLoader.loadClass(target) as Class<out Activity?>
 }
+
+fun Activity.startSettingsActivity() {
+    startActivity(
+        Intent(
+            this,
+            getActivityClass("io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity")
+        )
+    )
+}
