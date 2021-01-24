@@ -16,7 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.post
-import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -28,10 +28,11 @@ class BusStopsViewModelDelegate @Inject constructor(
     private val getBusStopsUseCase: GetBusStopsUseCase,
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
+    private val pushMapEventUseCase: PushMapEventUseCase,
     @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     @Named("loading") private val _loading: MutableLiveData<Loading>,
     @Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
-    private val mapViewModelDelegate: MapViewModelDelegate,
+//    private val mapViewModelDelegate: MapViewModelDelegate,
     private val mapUtil: MapUtil,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -66,35 +67,37 @@ class BusStopsViewModelDelegate @Inject constructor(
         _collapseBottomSheet.post()
         curBusStopsState = busStopsState
 
-        val mapStateId = mapViewModelDelegate.newState(::onMapMarkerClicked)
 
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.ClearMap
-        )
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.MoveCenter(curBusStopsState.lat, curBusStopsState.lng)
-        )
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.AddMapMarkers(
-                listOf(
-                    MapMarker(
-                        "center",
-                        curBusStopsState.lat,
-                        curBusStopsState.lng,
-                        R.drawable.ic_location_marker_24_32,
-                        "center"
-                    )
-                )
-            )
-        )
+        //val mapStateId = mapViewModelDelegate.newState(::onMapMarkerClicked)
+
+//        pushMapEventUseCase(
+//            MapEvent.ClearMap
+//        )
+//        pushMapEventUseCase(
+//            MapEvent.MoveCenter(curBusStopsState.lat, curBusStopsState.lng)
+//        )
+//        pushMapEventUseCase(
+//            MapEvent.AddMapMarkers(
+//                listOf(
+//                    MapMarker(
+//                        "center",
+//                        curBusStopsState.lat,
+//                        curBusStopsState.lng,
+//                        R.drawable.ic_location_marker_24_32,
+//                        "center"
+//                    )
+//                )
+//            )
+//        )
+
+
         val busStopList = getBusStopsUseCase(
             lat = curBusStopsState.lat,
             lon = curBusStopsState.lng,
             limit = busStopsQueryLimitUseCase()
         )
+
+        /*
         mapViewModelDelegate.pushMapEvent(
             mapStateId,
             MapEvent.MapCircle(
@@ -108,8 +111,8 @@ class BusStopsViewModelDelegate @Inject constructor(
                 )
             )
         )
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
+        */
+        pushMapEventUseCase(
             MapEvent.AddMapMarkers(
                 busStopList.map { busStop ->
                     mapMarkerIdBusStopMap[busStop.code] = busStop
@@ -123,6 +126,7 @@ class BusStopsViewModelDelegate @Inject constructor(
                 }
             )
         )
+
         val listItems = getListItems(busStopList, onBusStopClicked)
         _listItems.postValue(listItems)
         _loading.postValue(Loading.Hide)

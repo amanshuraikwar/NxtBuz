@@ -10,7 +10,7 @@ import dagger.Provides
 class LocationModuleProvides {
 
     @Provides
-    fun a(context: Context): FusedLocationProviderClient {
+    fun getFusedLocationProviderClient(context: Context): FusedLocationProviderClient {
         return LocationServices.getFusedLocationProviderClient(context)
     }
 }

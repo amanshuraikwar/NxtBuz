@@ -36,8 +36,7 @@ class LocationEmitter @Inject constructor(
     private val locationCallback: LocationCallback by lazy {
         object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
-                locationResult ?: return
-                val lastLocation = locationResult.lastLocation
+                val lastLocation = locationResult?.lastLocation ?: return
                 locationStateFlow.value = Location(
                     lastLocation.latitude,
                     lastLocation.longitude
@@ -51,7 +50,6 @@ class LocationEmitter @Inject constructor(
         // make thread safe to avoid attaching multiple location callbacks
         synchronized(this@LocationEmitter) {
             if (!started) {
-                //Looper.prepare()
                 fusedLocationProviderClient.requestLocationUpdates(
                     LocationRequest.create(),
                     locationCallback,

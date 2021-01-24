@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/mapFragment"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nxtBuzMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:name="io.github.amanshuraikwar.nxtbuz.map.NxtBuzMapFragment" />
 
     <View
         android:id="@+id/searchBg"

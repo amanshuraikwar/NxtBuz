@@ -9,12 +9,12 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.ArrivingBusMapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapUpdate
-import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
+//import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class BusStopArrivalsMapMarkerHelper @Inject constructor(
-    private val mapViewModelDelegate: MapViewModelDelegate,
+    //private val mapViewModelDelegate: MapViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) {
 
@@ -86,30 +86,30 @@ class BusStopArrivalsMapMarkerHelper @Inject constructor(
             }
 
             if (busAddList.isNotEmpty()) {
-                mapViewModelDelegate.pushMapEvent(
-                    mapStateId,
-                    MapEvent.AddMapMarkers(
-                        busAddList
-                    )
-                )
+//                mapViewModelDelegate.pushMapEvent(
+//                    mapStateId,
+//                    MapEvent.AddMapMarkers(
+//                        busAddList
+//                    )
+//                )
             }
 
             if (busDeleteList.isNotEmpty()) {
-                mapViewModelDelegate.pushMapEvent(
-                    mapStateId,
-                    MapEvent.DeleteMarker(
-                        busDeleteList
-                    )
-                )
+//                mapViewModelDelegate.pushMapEvent(
+//                    mapStateId,
+//                    MapEvent.DeleteMarker(
+//                        busDeleteList
+//                    )
+//                )
             }
 
             if (busUpdateList.isNotEmpty()) {
-                mapViewModelDelegate.pushMapEvent(
-                    mapStateId,
-                    MapEvent.UpdateMapMarkers(
-                        busUpdateList
-                    )
-                )
+//                mapViewModelDelegate.pushMapEvent(
+//                    mapStateId,
+//                    MapEvent.UpdateMapMarkers(
+//                        busUpdateList
+//                    )
+//                )
             }
 
             Log.i(TAG, "showMapMarkers: added ${busAddList.size} marker(s).")

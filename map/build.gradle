@@ -47,4 +47,8 @@ dependencies {
     implementation Libs.AndroidX.Lifecycle.extensions
 
     implementation Libs.Google.playServicesMap
+
+    implementation Libs.Google.crashlytics
+
+    testImplementation Libs.junit
 }

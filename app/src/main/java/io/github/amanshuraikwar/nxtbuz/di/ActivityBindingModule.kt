@@ -7,6 +7,8 @@ import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtilProvides
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtilProvides
 import io.github.amanshuraikwar.nxtbuz.launcher.LauncherActivity
 import io.github.amanshuraikwar.nxtbuz.launcher.LauncherModule
+import io.github.amanshuraikwar.nxtbuz.map.di.MapModule
+import io.github.amanshuraikwar.nxtbuz.map.di.MapProvides
 import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity
 import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingModule
 import io.github.amanshuraikwar.nxtbuz.search.SearchActivity
@@ -59,7 +61,8 @@ abstract class ActivityBindingModule {
         PermissionUtilProvides::class,
         LocationUtilProvides::class,
         StarredBusArrivalsProvides::class,
-        StarredBusArrivalOptionsModule::class
+        StarredBusArrivalOptionsModule::class,
+        MapModule::class,
     ])
     internal abstract fun c(): MainActivity
 

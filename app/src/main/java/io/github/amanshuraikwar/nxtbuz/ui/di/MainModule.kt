@@ -50,9 +50,9 @@ internal abstract class MainModule {
     @ContributesAndroidInjector
     internal abstract fun g(): MainFragment
 
-    @Binds
-    @ActivityScoped
-    internal abstract fun h(a: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegateImpl): io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
+//    @Binds
+//    @ActivityScoped
+//    internal abstract fun h(a: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegateImpl): io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
 
     @ExperimentalCoroutinesApi
     @Binds

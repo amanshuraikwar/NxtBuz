@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
-import io.github.amanshuraikwar.nxtbuz.R
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
@@ -41,13 +40,11 @@ class MainFragmentViewModel @Inject constructor(
     @Named("starToggleState") _starToggleStateFlow: MutableStateFlow<StarToggleState>,
     private val busStopsViewModelDelegate: BusStopsViewModelDelegate,
     private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
-    private val mapViewModelDelegate: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate,
     private val busRouteViewModelDelegate: io.github.amanshuraikwar.nxtbuz.busroute.BusRouteViewModelDelegateImpl,
     starredArrivalsViewModelDelegate: StarredArrivalsViewModelDelegate,
     private val locationViewModelDelegate: LocationViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(),
-    io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate by mapViewModelDelegate,
     StarredArrivalsViewModelDelegate by starredArrivalsViewModelDelegate,
     io.github.amanshuraikwar.nxtbuz.busroute.BusRouteViewModelDelegate by busRouteViewModelDelegate {
 
@@ -91,10 +88,6 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     private fun init() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
-        val (defaultLat, defaultLng) = defaultLocationUseCase()
-        mapViewModelDelegate.initMap(defaultLat, defaultLng) { lat, lng ->
-            fetchBusStopsForLatLon(lat, lng)
-        }
         onRecenterClicked(true)
         launch {
             starToggleStateFlow.collect {
