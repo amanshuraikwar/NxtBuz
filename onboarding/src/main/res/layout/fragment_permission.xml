@@ -36,7 +36,7 @@
         android:id="@+id/iconIv"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:src="@drawable/ic_pin_drop_72"
+        android:src="@drawable/avd_location_permission_72"
         app:layout_constraintBottom_toTopOf="@id/actionBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
