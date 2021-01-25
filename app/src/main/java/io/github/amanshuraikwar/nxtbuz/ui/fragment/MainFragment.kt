@@ -73,19 +73,20 @@ class MainFragment : DaggerFragment() {
             insets.consumeSystemWindowInsets()
         }
 
-        itemsRv.layoutManager = LinearLayoutManager(activity)
+        //itemsRv.layoutManager = LinearLayoutManager(activity)
         starredBusArrivalsRv.layoutManager = LinearLayoutManager(
             activity, RecyclerView.HORIZONTAL, false
         )
 
         setupViewModel()
-        setupBottomSheet()
+        //setupBottomSheet()
 
 //        if (savedInstanceState != null) {
 //            viewModel.onReCreate()
 //        }
     }
 
+    /*
     private fun setupBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.halfExpandedRatio = 0.5f
@@ -95,10 +96,10 @@ class MainFragment : DaggerFragment() {
         bottomSheetBehavior.addBottomSheetCallback(
             object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    searchBg.alpha =
-                        lerp(
-                            0f, 1f, 0f, 1f, slideOffset
-                        )
+//                    searchBg.alpha =
+//                        lerp(
+//                            0f, 1f, 0f, 1f, slideOffset
+//                        )
                     bottomSheetHandle.alpha =
                         lerp(
                             1f, 0f, 0f, 1f, slideOffset
@@ -128,6 +129,7 @@ class MainFragment : DaggerFragment() {
             }
         )
     }
+     */
 
     private fun hideLoading() {
         loadingIv.visibility = View.INVISIBLE
