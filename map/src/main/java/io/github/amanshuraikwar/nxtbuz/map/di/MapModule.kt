@@ -13,7 +13,7 @@ import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMapViewModel
 abstract class MapModule {
 
     @ContributesAndroidInjector
-    internal abstract fun nxtBuzMapFragment(): NxtBuzMapFragment
+    abstract fun nxtBuzMapFragment(): NxtBuzMapFragment
 
     @Binds
     @IntoMap

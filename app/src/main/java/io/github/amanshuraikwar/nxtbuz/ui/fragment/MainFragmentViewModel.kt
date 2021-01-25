@@ -11,7 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.common.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.busstop.BusStopsViewModelDelegate
+import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsViewModel
 import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.map.LocationViewModelDelegate
@@ -38,7 +38,7 @@ class MainFragmentViewModel @Inject constructor(
     @Named("collapseBottomSheet") _collapseBottomSheet: MutableLiveData<Unit>,
     @Named("error") private val _error: MutableLiveData<Alert>,
     @Named("starToggleState") _starToggleStateFlow: MutableStateFlow<StarToggleState>,
-    private val busStopsViewModelDelegate: BusStopsViewModelDelegate,
+    //private val busStopsViewModel: BusStopsViewModel,
     private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
     private val busRouteViewModelDelegate: io.github.amanshuraikwar.nxtbuz.busroute.BusRouteViewModelDelegateImpl,
     starredArrivalsViewModelDelegate: StarredArrivalsViewModelDelegate,
@@ -173,9 +173,9 @@ class MainFragmentViewModel @Inject constructor(
 
             when (screenState) {
                 is ScreenState.BusStopsState -> {
-                    busStopsViewModelDelegate.start(
-                        screenState, ::onBusStopClicked, viewModelScope
-                    )
+//                    busStopsViewModel.start(
+//                        screenState, ::onBusStopClicked, viewModelScope
+//                    )
                 }
                 is ScreenState.BusStopState -> {
                     busStopArrivalsViewModelDelegate.start(
@@ -206,7 +206,7 @@ class MainFragmentViewModel @Inject constructor(
         withContext(dispatcherProvider.io) {
             when (screenState) {
                 is ScreenState.BusStopsState -> {
-                    busStopsViewModelDelegate.stop(screenState)
+                    //busStopsViewModel.stop(screenState)
                 }
                 is ScreenState.BusStopState -> {
                     busStopArrivalsViewModelDelegate.stop(screenState)
