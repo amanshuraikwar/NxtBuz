@@ -43,9 +43,8 @@ class BusStopsViewModel @Inject constructor(
 
     private var onBusStopClicked: (BusStop) -> Unit = {
         viewModelScope.launch(coroutineContext) {
-            // TODO-amanshuraikwar (27 Jan 2021 05:31:49 PM): redirect to bus stop screen
             _busStopScreenState.emit(
-                BusStopsScreenState.Failed(Error(errorTitle = R.string.app_name))
+                BusStopsScreenState.Finish(it)
             )
         }
     }
@@ -152,5 +151,9 @@ class BusStopsViewModel @Inject constructor(
         if (markerIdMap.containsKey(markerId)) {
             onBusStopClicked(getBusStopUseCase(markerIdBusStopCodeMap[markerId] ?: return))
         }
+    }
+
+    fun onFinish(toBusStop: BusStop) {
+        failed(Error())
     }
 }
