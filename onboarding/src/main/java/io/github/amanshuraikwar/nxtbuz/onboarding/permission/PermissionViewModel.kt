@@ -40,7 +40,7 @@ class PermissionViewModel @Inject constructor(
     val showEnableSettingsBtn = _showEnableSettingsBtn.asLiveData()
 
     private val _error = MutableLiveData<Throwable>()
-    val error = _error.map { R.string.error_msg_default }.asEvent()
+    val error = _error.map { R.string.error_title_default }.asEvent()
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)

@@ -20,6 +20,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultMapZoomUseCase
 import io.github.amanshuraikwar.nxtbuz.map.LocationViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.map.R
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import javax.inject.Named
 import kotlin.coroutines.suspendCoroutine
@@ -35,6 +36,7 @@ class NxtBuzMapViewModel @Inject constructor(
     private val defaultLocationUseCase: DefaultLocationUseCase,
     private val defaultMapZoomUseCase: DefaultMapZoomUseCase,
     @Named("mapEventFlow") private val mapEventFlow: ReturnableFlow<MapEvent, MapResult>,
+    @Named("markerClicked") private val markerClickedFlow: MutableStateFlow<Marker?>,
     private val mapViewModelDelegate: LocationViewModelDelegate,
     private val mapUtil: MapUtil,
     private val markerUtil: MarkerUtil,
@@ -85,6 +87,10 @@ class NxtBuzMapViewModel @Inject constructor(
                     ) { googleMap: GoogleMap? ->
                         map = googleMap
                         map?.let { mapUtil.updateMapStyle(it) }
+                        map?.setOnMarkerClickListener {
+                            onMarkerClicked(it)
+                            true
+                        }
                         cont.resumeWith(Result.success(Unit))
                     }
                 )
@@ -92,6 +98,12 @@ class NxtBuzMapViewModel @Inject constructor(
         }
 
         startCollectingEvents(viewModelScope)
+    }
+
+    private fun onMarkerClicked(marker: Marker) {
+        viewModelScope.launch(dispatcherProvider.computation) {
+            markerClickedFlow.value = marker
+        }
     }
 
     private fun startCollectingEvents(coroutineScope: CoroutineScope) {

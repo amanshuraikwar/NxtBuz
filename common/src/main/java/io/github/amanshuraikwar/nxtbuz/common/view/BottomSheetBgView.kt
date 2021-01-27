@@ -24,7 +24,7 @@ class BottomSheetBgView(context: Context, attrs: AttributeSet) : View(context, a
 
     init {
         val resources = context.resources
-        maxCornerRadius = resources.getDimension(R.dimen.shape_corner_size_medium_component)
+        maxCornerRadius = resources.getDimension(R.dimen.cornerSizeMediumComponent)
         cornerRadius = maxCornerRadius
     }
 

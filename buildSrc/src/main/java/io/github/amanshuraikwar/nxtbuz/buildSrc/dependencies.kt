@@ -70,6 +70,7 @@ object Libs {
             const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
+            const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
         }
 
         object Room {

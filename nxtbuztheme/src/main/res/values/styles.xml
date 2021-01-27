@@ -5,7 +5,7 @@
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
         <item name="backgroundTint">?colorPrimary</item>
-        <item name="cornerRadius">8dp</item>
+        <item name="cornerRadius">16dp</item>
     </style>
 
     <style name="Widget.AppTheme.NxtBuz.SecondaryButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
@@ -14,6 +14,15 @@
         <item name="strokeColor">?colorOnSurface</item>
         <item name="android:textColor">?colorOnSurface</item>
         <item name="rippleColor">?colorPrimary</item>
-        <item name="cornerRadius">8dp</item>
+        <item name="cornerRadius">16dp</item>
+    </style>
+
+    <style name="Widget.AppTheme.NxtBuz.Error" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="strokeColor">?colorError</item>
+        <item name="android:textColor">?colorError</item>
+        <item name="rippleColor">?colorError</item>
+        <item name="cornerRadius">16dp</item>
     </style>
 </resources>

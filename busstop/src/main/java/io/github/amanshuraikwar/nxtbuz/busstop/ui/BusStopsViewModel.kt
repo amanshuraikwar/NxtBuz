@@ -1,32 +1,26 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.ui
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.Marker
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapResult
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
-import io.github.amanshuraikwar.nxtbuz.listitem.BusStopItem
-import io.github.amanshuraikwar.nxtbuz.common.model.Loading
-import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
-import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
-import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
-import io.github.amanshuraikwar.nxtbuz.common.util.lerp
-import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
-import io.github.amanshuraikwar.nxtbuz.common.util.post
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUpdatesUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
+import io.github.amanshuraikwar.nxtbuz.listitem.BusStopItem
 import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -36,43 +30,56 @@ class BusStopsViewModel @Inject constructor(
     private val getLocationUpdatesUseCase: GetLocationUpdatesUseCase,
     private val getBusStopsUseCase: GetBusStopsUseCase,
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
+    private val pushMapEventUseCase: PushMapEventUseCase,
     @Named("bottomSheetSlideOffset")
     private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
-//    private val getBusStopUseCase: GetBusStopUseCase,
-//    private val pushMapEventUseCase: PushMapEventUseCase,
-    //@Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
-    //@Named("loading") private val _loading: MutableLiveData<Loading>,
-    //@Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
-//    private val mapViewModelDelegate: MapViewModelDelegate,
-    //private val mapUtil: MapUtil,
+    @Named("markerClicked") private val markerClickedFlow: MutableStateFlow<Marker?>,
+    private val getBusStopUseCase: GetBusStopUseCase,
     dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    private val _listItems = MutableLiveData<MutableList<RecyclerViewListItem>>()
-    val listItems: LiveData<MutableList<RecyclerViewListItem>> = _listItems
-
-
-    //private lateinit var curBusStopsState: ScreenState.BusStopsState
-    //private lateinit var coroutineScope: CoroutineScope
+    private val _busStopScreenState = MutableSharedFlow<BusStopsScreenState>(replay = 1)
+    val busStopScreenState: SharedFlow<BusStopsScreenState> = _busStopScreenState
 
     private var onBusStopClicked: (BusStop) -> Unit = {
-        // TODO-amanshuraikwar (25 Jan 2021 10:07:46 PM):
+        viewModelScope.launch(coroutineContext) {
+            // TODO-amanshuraikwar (27 Jan 2021 05:31:49 PM): redirect to bus stop screen
+            _busStopScreenState.emit(
+                BusStopsScreenState.Failed(Error(errorTitle = R.string.app_name))
+            )
+        }
     }
 
-    //private val mapMarkerIdBusStopMap = mutableMapOf<String, BusStop>()
+    private val markerIdMap = mutableMapOf<String, Marker>()
+    private val markerIdBusStopCodeMap = mutableMapOf<String, String>()
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
+        failed(
+            Error()
+        )
     }
     private val coroutineContext = errorHandler + dispatcherProvider.computation
 
     init {
-        init()
+        fetchBusStops()
+        collectMarkerClicks()
     }
 
-    private fun init() {
+    private fun collectMarkerClicks() {
         viewModelScope.launch(coroutineContext) {
+            markerClickedFlow.collect { marker ->
+                onMapMarkerClicked(markerId = marker?.id ?: return@collect)
+            }
+        }
+    }
+
+    fun fetchBusStops() {
+        viewModelScope.launch(coroutineContext) {
+            _busStopScreenState.emit(
+                BusStopsScreenState.Loading(R.string.bus_stop_message_loading_nearby)
+            )
             getLocationUpdatesUseCase().collect { location ->
                 val busStopList = getBusStopsUseCase(
                     lat = location.lat,
@@ -80,8 +87,32 @@ class BusStopsViewModel @Inject constructor(
                     limit = busStopsQueryLimitUseCase()
                 )
                 val listItems = getListItems(busStopList, onBusStopClicked)
-                _listItems.postValue(listItems)
+                _busStopScreenState.emit(BusStopsScreenState.Success(listItems))
+                val mapResult = pushMapEventUseCase(
+                    MapEvent.AddMapMarkers(
+                        busStopList.map { busStop ->
+                            //mapMarkerIdBusStopMap[busStop.code] = busStop
+                            MapMarker(
+                                busStop.code,
+                                busStop.latitude,
+                                busStop.longitude,
+                                R.drawable.ic_marker_bus_stop_48,
+                                busStop.description
+                            )
+                        }
+                    )
+                )
+                (mapResult as? MapResult.AddMapMarkersResult)?.markerList?.forEachIndexed { index, marker ->
+                    markerIdMap[marker.id] = marker
+                    markerIdBusStopCodeMap[marker.id] = busStopList[index].code
+                }
             }
+        }
+    }
+
+    private fun failed(error: Error) {
+        viewModelScope.launch {
+            _busStopScreenState.emit(BusStopsScreenState.Failed(error))
         }
     }
 
@@ -90,95 +121,6 @@ class BusStopsViewModel @Inject constructor(
             bottomSheetSlideOffsetFlow.value = slideOffset
         }
     }
-
-    /*
-    suspend fun start(
-        busStopsState: ScreenState.BusStopsState,
-        onBusStopClicked: (BusStop) -> Unit,
-        coroutineScope: CoroutineScope,
-    ) = withContext(dispatcherProvider.io) {
-        this@BusStopsViewModel.coroutineScope = coroutineScope
-        this@BusStopsViewModel.onBusStopClicked = onBusStopClicked
-        _loading.postValue(
-            Loading.Show(
-                R.drawable.avd_anim_nearby_bus_stops_loading_128,
-                R.string.bus_stop_message_loading_nearby
-            )
-        )
-        _collapseBottomSheet.post()
-        curBusStopsState = busStopsState
-
-
-        //val mapStateId = mapViewModelDelegate.newState(::onMapMarkerClicked)
-
-//        pushMapEventUseCase(
-//            MapEvent.ClearMap
-//        )
-//        pushMapEventUseCase(
-//            MapEvent.MoveCenter(curBusStopsState.lat, curBusStopsState.lng)
-//        )
-//        pushMapEventUseCase(
-//            MapEvent.AddMapMarkers(
-//                listOf(
-//                    MapMarker(
-//                        "center",
-//                        curBusStopsState.lat,
-//                        curBusStopsState.lng,
-//                        R.drawable.ic_location_marker_24_32,
-//                        "center"
-//                    )
-//                )
-//            )
-//        )
-
-
-        val busStopList = getBusStopsUseCase(
-            lat = curBusStopsState.lat,
-            lon = curBusStopsState.lng,
-            limit = busStopsQueryLimitUseCase()
-        )
-
-        /*
-        mapViewModelDelegate.pushMapEvent(
-            mapStateId,
-            MapEvent.MapCircle(
-                curBusStopsState.lat,
-                curBusStopsState.lng,
-                measureDistanceMetres(
-                    curBusStopsState.lat,
-                    curBusStopsState.lng,
-                    busStopList.last().latitude,
-                    busStopList.last().longitude
-                )
-            )
-        )
-        */
-//        pushMapEventUseCase(
-//            MapEvent.AddMapMarkers(
-//                busStopList.map { busStop ->
-//                    mapMarkerIdBusStopMap[busStop.code] = busStop
-//                    MapMarker(
-//                        busStop.code,
-//                        busStop.latitude,
-//                        busStop.longitude,
-//                        R.drawable.ic_marker_bus_stop_48,
-//                        busStop.description
-//                    )
-//                }
-//            )
-//        )
-
-        val listItems = getListItems(busStopList, onBusStopClicked)
-        _listItems.postValue(listItems)
-        _loading.postValue(Loading.Hide)
-    }
-     */
-
-//    private suspend fun measureDistanceMetres(
-//        lat1: Double, lon1: Double, lat2: Double, lon2: Double
-//    ) = withContext(dispatcherProvider.computation) {
-//        mapUtil.measureDistanceMetres(lat1, lon1, lat2, lon2)
-//    }
 
     private fun getListItems(
         busStopList: List<BusStop>,
@@ -199,9 +141,9 @@ class BusStopsViewModel @Inject constructor(
         return listItems
     }
 
-    private fun onMapMarkerClicked(markerId: String) {
-//        coroutineScope.launch(errorHandler) {
-//            onBusStopClicked(getBusStopUseCase(markerId))
-//        }
+    private suspend fun onMapMarkerClicked(markerId: String) {
+        if (markerIdMap.containsKey(markerId)) {
+            onBusStopClicked(getBusStopUseCase(markerIdBusStopCodeMap[markerId] ?: return))
+        }
     }
 }

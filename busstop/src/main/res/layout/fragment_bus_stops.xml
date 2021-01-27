@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:behavior_hideable="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -32,5 +33,11 @@
             android:clipToPadding="false"
             android:paddingTop="@dimen/padding_small"
             android:paddingBottom="128dp" />
+
     </FrameLayout>
+
+    <include layout="@layout/layout_loading_bottom_sheet" />
+
+    <include layout="@layout/layout_error_bottom_sheet" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
