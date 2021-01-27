@@ -77,17 +77,23 @@ class BusStopsViewModel @Inject constructor(
 
     fun fetchBusStops() {
         viewModelScope.launch(coroutineContext) {
+
             _busStopScreenState.emit(
                 BusStopsScreenState.Loading(R.string.bus_stop_message_loading_nearby)
             )
+
             getLocationUpdatesUseCase().collect { location ->
+
                 val busStopList = getBusStopsUseCase(
                     lat = location.lat,
                     lon = location.lng,
                     limit = busStopsQueryLimitUseCase()
                 )
+
                 val listItems = getListItems(busStopList, onBusStopClicked)
+
                 _busStopScreenState.emit(BusStopsScreenState.Success(listItems))
+
                 val mapResult = pushMapEventUseCase(
                     MapEvent.AddMapMarkers(
                         busStopList.map { busStop ->
@@ -102,6 +108,7 @@ class BusStopsViewModel @Inject constructor(
                         }
                     )
                 )
+
                 (mapResult as? MapResult.AddMapMarkersResult)?.markerList?.forEachIndexed { index, marker ->
                     markerIdMap[marker.id] = marker
                     markerIdBusStopCodeMap[marker.id] = busStopList[index].code
