@@ -8,7 +8,7 @@
 
     <color name="colorBackground">#eef0f2</color>
     <color name="colorSurface">@color/white</color>
-    <color name="colorError">#b00020</color>
+    <color name="colorError">#C62828</color>
 
     <color name="colorOnPrimary">@color/white</color>
     <color name="colorOnSecondary">@color/colorOnPrimary</color>

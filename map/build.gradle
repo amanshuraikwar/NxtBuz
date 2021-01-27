@@ -52,7 +52,7 @@ dependencies {
     implementation Libs.AndroidX.Lifecycle.livedata
     implementation Libs.AndroidX.Lifecycle.extensions
 
-    implementation Libs.Google.playServicesMap
+    api Libs.Google.playServicesMap
 
     implementation Libs.Google.crashlytics
 
