@@ -38,6 +38,8 @@ class MainFragmentViewModel @Inject constructor(
     @Named("collapseBottomSheet") _collapseBottomSheet: MutableLiveData<Unit>,
     @Named("error") private val _error: MutableLiveData<Alert>,
     @Named("starToggleState") _starToggleStateFlow: MutableStateFlow<StarToggleState>,
+    @Named("bottomSheetSlideOffset")
+    private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
     //private val busStopsViewModel: BusStopsViewModel,
     private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
     private val busRouteViewModelDelegate: io.github.amanshuraikwar.nxtbuz.busroute.BusRouteViewModelDelegateImpl,
@@ -79,6 +81,9 @@ class MainFragmentViewModel @Inject constructor(
     private val _showBack = MutableLiveData<Boolean>()
     val showBack = _showBack
 
+    private val _bottomSheetSlideOffset = MutableLiveData<Float>()
+    val bottomSheetSlideOffset: LiveData<Float> = _bottomSheetSlideOffset
+
     init {
         FirebaseCrashlytics.getInstance().setCustomKey("viewModel",
             TAG
@@ -95,6 +100,11 @@ class MainFragmentViewModel @Inject constructor(
             }
         }
         locationViewModelDelegate.init(viewModelScope)
+        launch {
+            bottomSheetSlideOffsetFlow.collect {
+                _bottomSheetSlideOffset.postValue(it)
+            }
+        }
     }
 
     private fun fetchBusStopsForLatLon(lat: Double, lng: Double) {

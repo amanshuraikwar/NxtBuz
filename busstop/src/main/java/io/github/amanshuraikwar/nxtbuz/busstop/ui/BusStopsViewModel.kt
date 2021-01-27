@@ -18,12 +18,14 @@ import io.github.amanshuraikwar.nxtbuz.common.model.Loading
 import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
+import io.github.amanshuraikwar.nxtbuz.common.util.lerp
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.post
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUpdatesUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
 import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 import javax.inject.Named
@@ -34,6 +36,8 @@ class BusStopsViewModel @Inject constructor(
     private val getLocationUpdatesUseCase: GetLocationUpdatesUseCase,
     private val getBusStopsUseCase: GetBusStopsUseCase,
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
+    @Named("bottomSheetSlideOffset")
+    private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
 //    private val getBusStopUseCase: GetBusStopUseCase,
 //    private val pushMapEventUseCase: PushMapEventUseCase,
     //@Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
@@ -78,6 +82,12 @@ class BusStopsViewModel @Inject constructor(
                 val listItems = getListItems(busStopList, onBusStopClicked)
                 _listItems.postValue(listItems)
             }
+        }
+    }
+
+    fun updateBottomSheetSlideOffset(slideOffset: Float) {
+        viewModelScope.launch(coroutineContext) {
+            bottomSheetSlideOffsetFlow.value = slideOffset
         }
     }
 
