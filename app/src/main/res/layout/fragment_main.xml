@@ -11,16 +11,7 @@
         android:name="io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMapFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-<!--    <View-->
-<!--        android:id="@+id/searchBg"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:alpha="0"-->
-<!--        android:background="?colorSurface"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/nxtBuzMapFragment"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/screenTopGuideline"
@@ -28,12 +19,21 @@
         android:layout_height="1dp"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <androidx.fragment.app.FragmentContainerView-->
-<!--        android:id="@+id/searchBarFragment"-->
-<!--        android:name="io.github.amanshuraikwar.nxtbuz.search.ui.SearchBarFragment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/screenTopGuideline" />-->
+    <!--    <androidx.fragment.app.FragmentContainerView-->
+    <!--        android:id="@+id/searchBarFragment"-->
+    <!--        android:name="io.github.amanshuraikwar.nxtbuz.search.ui.SearchBarFragment"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/screenTopGuideline" />-->
+
+    <View
+        android:id="@+id/searchBg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:alpha="0"
+        android:background="?colorSurface"
+        app:layout_constraintBottom_toBottomOf="@id/nxtBuzMapFragment"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/starredBusArrivalsRv"
@@ -51,35 +51,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_normal"
-        android:src="@drawable/ic_round_my_location_24"
+        android:src="@drawable/ic_near_me_24"
         app:backgroundTint="?colorSurface"
         app:fabSize="mini"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchBarFragment"
-        app:tint="?colorControlNormal"
+        app:tint="?colorOnSurface"
+        android:tint="?colorOnSurface"
         tools:ignore="ContentDescription" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/screenStateFragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchBarFragment"
         app:navGraph="@navigation/nav_graph_screen_state" />
 
-<!--    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
-<!--        android:id="@+id/bottomSheetCl"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
+    <!--    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
+    <!--        android:id="@+id/bottomSheetCl"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
 
-<!--        <include-->
-<!--            android:id="@+id/bottomSheet"-->
-<!--            layout="@layout/bus_stops_bottom_sheet"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:behavior_hideable="true"-->
-<!--            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />-->
-<!--    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
+    <!--        <include-->
+    <!--            android:id="@+id/bottomSheet"-->
+    <!--            layout="@layout/bus_stops_bottom_sheet"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            app:behavior_hideable="true"-->
+    <!--            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />-->
+    <!--    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/searchBarFragment"

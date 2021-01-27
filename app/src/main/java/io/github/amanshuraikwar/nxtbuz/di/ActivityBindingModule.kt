@@ -3,6 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.di
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import io.github.amanshuraikwar.nxtbuz.busstop.di.BusStopsModule
+import io.github.amanshuraikwar.nxtbuz.busstop.di.BusStopsProvides
 import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtilProvides
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtilProvides
@@ -64,7 +65,7 @@ abstract class ActivityBindingModule {
         StarredBusArrivalsProvides::class,
         StarredBusArrivalOptionsModule::class,
         MapModule::class,
-        BusStopsModule::class
+        BusStopsModule::class,
     ])
     internal abstract fun c(): MainActivity
 

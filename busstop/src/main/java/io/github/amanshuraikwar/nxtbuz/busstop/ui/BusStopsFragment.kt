@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.busstop.R
+import io.github.amanshuraikwar.nxtbuz.common.util.lerp
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
 import kotlinx.android.synthetic.main.fragment_bus_stops.*
@@ -72,5 +73,42 @@ class BusStopsFragment : DaggerFragment() {
         bottomSheetBehavior.peekHeight =
             Point().let { requireActivity().windowManager.defaultDisplay.getSize(it); it.y } / 3
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        bottomSheetBehavior.addBottomSheetCallback(
+            object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                    viewModel.updateBottomSheetSlideOffset(slideOffset)
+                    bottomSheetHandle.alpha =
+                        lerp(
+                            1f, 0f, 0f, 1f, slideOffset
+                        )
+//                    bottomSheetHandle.alpha =
+//                        lerp(
+//                            1f, 0f, 0f, 1f, slideOffset
+//                        )
+//                    recenterFab.alpha =
+//                        lerp(
+//                            1f, 0f, 0f, 1f, slideOffset
+//                        )
+//                    starredBusArrivalsRv.alpha =
+//                        lerp(
+//                            1f, 0f, 0f, 1f, slideOffset
+//                        )
+                    bottomSheetBgView.update(slideOffset)
+                }
+
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                    if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+//                        recenterFab.visibility = View.INVISIBLE
+//                    } else {
+//                        recenterFab.visibility = View.VISIBLE
+//                    }
+//                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+//                        viewModel.bottomSheetCollapsed()
+//                    }
+                }
+
+            }
+        )
     }
 }

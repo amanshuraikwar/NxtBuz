@@ -182,64 +182,74 @@ class MainFragment : DaggerFragment() {
 //                }
 //            )
 
-            viewModel.error.observe(
+            viewModel.bottomSheetSlideOffset.observe(
                 viewLifecycleOwner,
-                EventObserver {
-                    itemsRv.visibility = View.GONE
-                    loadingIv.visibility = View.VISIBLE
-                    loadingTv.visibility = View.VISIBLE
-                    loadingIv.setImageResource(it.iconResId)
-                    loadingTv.text = it.msg
-                }
-            )
-
-            viewModel.listItems.observe(
-                viewLifecycleOwner,
-                Observer { listItems ->
-                    val layoutState = itemsRv.layoutManager?.onSaveInstanceState()
-                    adapter =
-                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
-                    itemsRv.layoutManager?.onRestoreInstanceState(layoutState)
-                    itemsRv.adapter = adapter ?: return@Observer
-                }
-            )
-
-            viewModel.collapseBottomSheet.observe(
-                viewLifecycleOwner,
-                EventObserver {
-                    itemsRv.smoothScrollToPosition(0)
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                }
-            )
-
-            viewModel.loading.observe(
-                viewLifecycleOwner,
-                Observer { loading ->
-                    if (loading is Loading.Show) {
-                        showLoading(loading)
-                    } else {
-                        hideLoading()
-                    }
-                }
-            )
-
-            viewModel.locationStatus.observe(
-                viewLifecycleOwner,
-                Observer {
-                    recenterFab.setImageResource(
-                        if (it) {
-                            R.drawable.ic_round_my_location_24
-                        } else {
-                            R.drawable.ic_round_gps_off_24
-                        }
+                { slideOffset ->
+                    searchBg.alpha = lerp(
+                        0f, 1f, 0f, 1f, slideOffset
                     )
-                    recenterFab.tag = if (it) {
-                        "no_error"
-                    } else {
-                        "error"
-                    }
+                    recenterFab.alpha = lerp(
+                        1f, 0f, 0f, 1f, slideOffset
+                    )
                 }
             )
+
+//            viewModel.error.observe(
+//                viewLifecycleOwner,
+//                EventObserver {
+//                    itemsRv.visibility = View.GONE
+//                    loadingIv.visibility = View.VISIBLE
+//                    loadingTv.visibility = View.VISIBLE
+//                    loadingIv.setImageResource(it.iconResId)
+//                    loadingTv.text = it.msg
+//                }
+//            )
+
+//            viewModel.listItems.observe(
+//                viewLifecycleOwner,
+//                Observer { listItems ->
+//                    val layoutState = itemsRv.layoutManager?.onSaveInstanceState()
+//                    adapter =
+//                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
+//                    itemsRv.layoutManager?.onRestoreInstanceState(layoutState)
+//                    itemsRv.adapter = adapter ?: return@Observer
+//                }
+//            )
+//
+//            viewModel.collapseBottomSheet.observe(
+//                viewLifecycleOwner,
+//                EventObserver {
+//                    itemsRv.smoothScrollToPosition(0)
+//                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+//                }
+//            )
+//
+//            viewModel.loading.observe(
+//                viewLifecycleOwner,
+//                Observer { loading ->
+//                    if (loading is Loading.Show) {
+//                        showLoading(loading)
+//                    } else {
+//                        hideLoading()
+//                    }
+//                }
+//            )
+//
+            viewModel.locationStatus.observe(viewLifecycleOwner) {
+                recenterFab.setImageResource(
+                    if (it) {
+                        R.drawable.ic_near_me_24
+                    } else {
+                        R.drawable.ic_near_me_disabled_24
+                    }
+                )
+                recenterFab.tag = if (it) {
+                    "no_error"
+                } else {
+                    "error"
+                }
+            }
+
 
             viewModel.showBack.observe(
                 viewLifecycleOwner,
