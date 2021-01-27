@@ -251,4 +251,31 @@ class NxtBuzBottomSheet @JvmOverloads constructor(
             bottomSheetBehavior.isHideable = false
         }
     }
+
+    suspend fun hideItemList() = suspendCancellableCoroutine<Unit>{
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN) {
+            it.resumeWith(Result.success(Unit))
+            return@suspendCancellableCoroutine
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(
+            object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                        bottomSheetBehavior.removeBottomSheetCallback(this)
+                        it.resumeWith(Result.success(Unit))
+                    }
+                }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                    // do nothing
+                }
+            }
+        )
+
+        bottomSheet.post {
+            bottomSheetBehavior.isHideable = true
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+    }
 }
