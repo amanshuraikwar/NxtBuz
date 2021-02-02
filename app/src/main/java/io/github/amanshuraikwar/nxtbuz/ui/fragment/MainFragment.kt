@@ -12,6 +12,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
@@ -23,6 +26,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.R
+import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsFragmentDirections
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.listitem.*
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionDialog
@@ -37,6 +41,8 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -131,6 +137,11 @@ class MainFragment : DaggerFragment() {
     }
      */
 
+    private fun goToBusStopArrivals(busStop: BusStop) {
+        val action = BusStopsFragmentDirections.actionBusStopsToBusStopArrivals(busStop)
+        screenStateFragment.findNavController().navigate(action)
+    }
+
     private fun hideLoading() {
         loadingIv.visibility = View.INVISIBLE
         loadingTv.visibility = View.INVISIBLE
@@ -193,6 +204,12 @@ class MainFragment : DaggerFragment() {
                     )
                 }
             )
+
+            lifecycleScope.launch {
+                viewModel.navigateToBusStopArrivals.collect { busStop ->
+                    goToBusStopArrivals(busStop)
+                }
+            }
 
 //            viewModel.error.observe(
 //                viewLifecycleOwner,

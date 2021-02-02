@@ -8,8 +8,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class GetBusArrivalFlowUseCase @Inject constructor(
     private val busArrivalRepository: BusArrivalRepository,
     private val helper: BusArrivalService.Helper

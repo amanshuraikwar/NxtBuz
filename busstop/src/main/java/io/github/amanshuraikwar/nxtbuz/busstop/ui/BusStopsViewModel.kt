@@ -34,6 +34,8 @@ class BusStopsViewModel @Inject constructor(
     @Named("bottomSheetSlideOffset")
     private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
     @Named("markerClicked") private val markerClickedFlow: MutableStateFlow<Marker?>,
+    @Named("navigateToBusStopArrivals")
+    private val navigateToBusStopArrivals: MutableSharedFlow<BusStop>,
     private val getBusStopUseCase: GetBusStopUseCase,
     dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
@@ -41,7 +43,7 @@ class BusStopsViewModel @Inject constructor(
     private val _busStopScreenState = MutableSharedFlow<BusStopsScreenState>(replay = 1)
     val busStopScreenState: SharedFlow<BusStopsScreenState> = _busStopScreenState
 
-    private var onBusStopClicked: (BusStop) -> Unit = {
+    private val onBusStopClicked: (BusStop) -> Unit = {
         viewModelScope.launch(coroutineContext) {
             _busStopScreenState.emit(
                 BusStopsScreenState.Finish(it)
@@ -64,14 +66,6 @@ class BusStopsViewModel @Inject constructor(
     init {
         fetchBusStops()
         collectMarkerClicks()
-    }
-
-    private fun collectMarkerClicks() {
-        viewModelScope.launch(coroutineContext) {
-            markerClickedFlow.collect { marker ->
-                onMapMarkerClicked(markerId = marker?.id ?: return@collect)
-            }
-        }
     }
 
     fun fetchBusStops() {
@@ -116,6 +110,14 @@ class BusStopsViewModel @Inject constructor(
         }
     }
 
+    private fun collectMarkerClicks() {
+        viewModelScope.launch(coroutineContext) {
+            markerClickedFlow.collect { marker ->
+                onMapMarkerClicked(markerId = marker?.id ?: return@collect)
+            }
+        }
+    }
+
     private fun failed(error: Error) {
         viewModelScope.launch {
             _busStopScreenState.emit(BusStopsScreenState.Failed(error))
@@ -154,6 +156,8 @@ class BusStopsViewModel @Inject constructor(
     }
 
     fun onFinish(toBusStop: BusStop) {
-        failed(Error())
+        viewModelScope.launch(coroutineContext) {
+            navigateToBusStopArrivals.emit(toBusStop)
+        }
     }
 }
