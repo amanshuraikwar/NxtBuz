@@ -10,16 +10,12 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.common.model.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModelDelegate
-import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsViewModel
 import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.map.LocationViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.starred.ui.delegate.StarredArrivalsViewModelDelegate
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
@@ -40,8 +36,10 @@ class MainFragmentViewModel @Inject constructor(
     @Named("starToggleState") _starToggleStateFlow: MutableStateFlow<StarToggleState>,
     @Named("bottomSheetSlideOffset")
     private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
+    @Named("navigateToBusStopArrivals")
+    _navigateToBusStopArrivals: MutableSharedFlow<BusStop>,
     //private val busStopsViewModel: BusStopsViewModel,
-    private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
+    //private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
     private val busRouteViewModelDelegate: io.github.amanshuraikwar.nxtbuz.busroute.BusRouteViewModelDelegateImpl,
     starredArrivalsViewModelDelegate: StarredArrivalsViewModelDelegate,
     private val locationViewModelDelegate: LocationViewModelDelegate,
@@ -64,6 +62,8 @@ class MainFragmentViewModel @Inject constructor(
         FirebaseCrashlytics.getInstance().recordException(th)
         _error.postValue(Alert())
     }
+
+    val navigateToBusStopArrivals: SharedFlow<BusStop> = _navigateToBusStopArrivals
 
     val listItems = _listItems.map { it }
     val loading = _loading.map { it }
@@ -188,12 +188,12 @@ class MainFragmentViewModel @Inject constructor(
 //                    )
                 }
                 is ScreenState.BusStopState -> {
-                    busStopArrivalsViewModelDelegate.start(
-                        screenState,
-                        ::onStarToggle,
-                        ::onBusServiceClicked,
-                        viewModelScope
-                    )
+//                    busStopArrivalsViewModelDelegate.start(
+//                        screenState,
+//                        ::onStarToggle,
+//                        ::onBusServiceClicked,
+//                        viewModelScope
+//                    )
                 }
                 is ScreenState.BusRouteState -> {
                     busRouteViewModelDelegate.start(
@@ -219,7 +219,7 @@ class MainFragmentViewModel @Inject constructor(
                     //busStopsViewModel.stop(screenState)
                 }
                 is ScreenState.BusStopState -> {
-                    busStopArrivalsViewModelDelegate.stop(screenState)
+                    //busStopArrivalsViewModelDelegate.stop(screenState)
                 }
                 is ScreenState.BusRouteState -> {
                     busRouteViewModelDelegate.stop(screenState)
@@ -281,7 +281,7 @@ class MainFragmentViewModel @Inject constructor(
     @ExperimentalCoroutinesApi
     override fun onCleared() {
         super.onCleared()
-        busStopArrivalsViewModelDelegate.clear()
+        //busStopArrivalsViewModelDelegate.clear()
     }
 
     fun bottomSheetCollapsed() = viewModelScope.launch(dispatcherProvider.computation) {

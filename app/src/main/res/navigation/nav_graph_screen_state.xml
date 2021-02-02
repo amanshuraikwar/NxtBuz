@@ -9,5 +9,21 @@
         android:id="@+id/busStops"
         android:name="io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsFragment"
         android:label="BusStopsFragment"
-        tools:layout="@layout/fragment_bus_stops"/>
+        tools:layout="@layout/fragment_bus_stops">
+        <action
+            android:id="@+id/action_busStops_to_busStopArrivals"
+            app:destination="@id/busStopArrivals" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/busStopArrivals"
+        android:name="io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsFragment"
+        android:label="BusStopArrivalsFragment"
+        tools:layout="@layout/fragment_bus_stop_arrivals">
+        <argument
+            android:name="busStop"
+            app:argType="io.github.amanshuraikwar.nxtbuz.common.model.BusStop"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>

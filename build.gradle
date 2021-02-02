@@ -74,6 +74,8 @@ buildscript {
         classpath Libs.Google.gmsGoogleServices
         classpath Libs.Google.crashlyticsGradle
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        classpath Libs.AndroidX.Navigation.safeArgs
     }
 }
 

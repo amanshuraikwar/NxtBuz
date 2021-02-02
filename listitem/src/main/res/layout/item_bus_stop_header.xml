@@ -1,82 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parentCv"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="0dp">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iconIv"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:background="@drawable/bg_icon"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:srcCompat="@drawable/ic_bus_stop_24"
+        app:tint="@color/white" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/gotoIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingStart="0dp"
+        android:paddingTop="@dimen/margin_normal"
+        android:paddingEnd="@dimen/margin_normal"
+        android:paddingBottom="@dimen/margin_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:srcCompat="@drawable/ic_directions_24" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/stopNameTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:layout_marginEnd="@dimen/padding_normal"
+        android:textAppearance="?textAppearanceHeadline5"
+        app:layout_constraintEnd_toStartOf="@id/gotoIv"
+        app:layout_constraintStart_toEndOf="@id/iconIv"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Springdale Condo" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/stopCodeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/margin_very_small"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:textAppearance="?textAppearanceBody2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iconIv"
+        app:layout_constraintTop_toBottomOf="@id/stopNameTv"
+        tools:text="5431" />
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iconIv"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:background="@drawable/bg_icon"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0"
-            app:srcCompat="@drawable/ic_bus_stop_24"
-            app:tint="@color/white" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/gotoIv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="0dp"
-            android:paddingEnd="@dimen/margin_normal"
-            android:paddingTop="@dimen/margin_normal"
-            android:paddingBottom="@dimen/margin_normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0"
-            app:srcCompat="@drawable/ic_round_directions_walk_24"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?selectableItemBackgroundBorderless"
-            android:visibility="gone"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/stopNameTv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingTop="@dimen/padding_normal"
-            android:paddingEnd="@dimen/padding_normal"
-            android:textAppearance="?textAppearanceHeadline5"
-            app:layout_constraintEnd_toStartOf="@id/gotoIv"
-            app:layout_constraintStart_toEndOf="@id/iconIv"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Springdale Condo" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/stopCodeTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingTop="2dp"
-            android:paddingEnd="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_normal"
-            android:textAppearance="?textAppearanceOverline"
-            app:layout_constraintStart_toEndOf="@id/iconIv"
-            app:layout_constraintTop_toBottomOf="@id/stopNameTv"
-            tools:text="5431"/>
-
-        <View
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/stopCodeTv"
-            android:layout_height="@dimen/margin_small"
-            android:background="@color/colorBackground"
-            app:layout_constraintBottom_toBottomOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>
+        android:layout_height="1dp"
+        android:background="@color/colorOutline"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
