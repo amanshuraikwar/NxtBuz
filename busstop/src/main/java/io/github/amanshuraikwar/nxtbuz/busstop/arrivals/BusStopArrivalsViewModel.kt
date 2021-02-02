@@ -96,11 +96,9 @@ class BusStopArrivalsViewModel @Inject constructor(
                 BusArrivalCompactItem(
                     busStopCode = busStop.code,
                     busServiceNumber = bus.serviceNumber,
-                    nextBusArrival = "fetching arrivals",
-                    "",
-                    false,
-                    onStarToggle,
-                    onBusServiceClicked
+                    starred = false,
+                    onStarToggle = onStarToggle,
+                    onClicked = onBusServiceClicked
                 )
             )
         }
@@ -234,12 +232,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                     BusArrivalCompactItem(
                         busStopCode = busStop.code,
                         busServiceNumber = busArrival.serviceNumber,
-                        nextBusArrival = if (arrivals.nextArrivingBus.arrival == "Arr") {
-                            "Arriving Now"
-                        } else {
-                            "${arrivals.nextArrivingBus.arrival} mins"
-                        },
-                        arrivals.nextArrivingBus.destination.busStopDescription,
+                        arrivingBus = arrivals.nextArrivingBus,
                         busArrival.starred,
                         onStarToggle,
                         onBusServiceClicked

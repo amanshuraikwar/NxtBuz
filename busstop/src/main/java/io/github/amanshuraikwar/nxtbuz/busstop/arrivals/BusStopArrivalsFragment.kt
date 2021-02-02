@@ -39,11 +39,17 @@ class BusStopArrivalsFragment : DaggerFragment() {
         nxtBuzBottomSheet.setupItemListUi(requireActivity()) { slideOffset ->
             viewModel.updateBottomSheetSlideOffset(slideOffset)
         }
-        nxtBuzBottomSheet.setupErrorUi {
-            //viewModel.fetchBusStops()
+        nxtBuzBottomSheet.setupErrorUi onRetry@{
+            viewModel.init(
+                busStop = getBusStop() ?: return@onRetry
+            )
         }
         nxtBuzBottomSheet.setupLoadingUi()
         setupViewModel()
+    }
+
+    private fun getBusStop(): BusStop? {
+        return arguments?.getParcelable("busStop")
     }
 
     private fun setupViewModel() {
@@ -51,12 +57,12 @@ class BusStopArrivalsFragment : DaggerFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.busStopArrivalsScreenState.collect { screenState ->
                 when (screenState) {
-                    is Loading -> {
-                        nxtBuzBottomSheet.hideError()
-                        nxtBuzBottomSheet.showLoading(screenState.loadingTitle)
-                    }
+//                    is Loading -> {
+//                        nxtBuzBottomSheet.hideError()
+//                        nxtBuzBottomSheet.showLoading(screenState.loadingTitle)
+//                    }
                     is Success -> {
-                        nxtBuzBottomSheet.hideLoading()
+                        nxtBuzBottomSheet.hideError()
                         if (nxtBuzBottomSheet.isItemListVisible()) {
                             nxtBuzBottomSheet.updateItemList(
                                 requireActivity(),
@@ -70,7 +76,7 @@ class BusStopArrivalsFragment : DaggerFragment() {
                         }
                     }
                     is Failed -> {
-                        nxtBuzBottomSheet.hideLoading()
+                        nxtBuzBottomSheet.hideItemList()
                         nxtBuzBottomSheet.showError(screenState.error)
                     }
 //                    is Finish -> {
@@ -81,7 +87,7 @@ class BusStopArrivalsFragment : DaggerFragment() {
                 delay(300)
             }
         }
-        viewModel.init(arguments?.getParcelable<BusStop>("busStop") ?: return)
+        viewModel.init(getBusStop() ?: return)
     }
 
 
