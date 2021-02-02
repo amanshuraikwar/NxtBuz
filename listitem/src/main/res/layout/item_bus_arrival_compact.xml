@@ -59,12 +59,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
-        android:fontFamily="@font/rubik_medium"
-        android:textAppearance="?textAppearanceHeadline6"
-        android:textStyle="bold"
+
+        android:textAppearance="@style/TextAppearance.AppTheme.Headline6.Bold"
+
         app:layout_constraintBottom_toBottomOf="@id/serviceProxyTv"
         app:layout_constraintStart_toEndOf="@id/serviceProxyTv"
         app:layout_constraintTop_toTopOf="@id/serviceProxyTv"
+        android:textColor="?colorOnSurface"
         tools:text="in 04 mins" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -79,6 +80,7 @@
         app:layout_constraintEnd_toStartOf="@id/starIv"
         app:layout_constraintStart_toStartOf="@id/nextDepartureTv"
         app:layout_constraintTop_toBottomOf="@id/nextDepartureTv"
+        android:textColor="?colorOnSurface"
         tools:text="Marine Ctr Rd" />
 
     <View

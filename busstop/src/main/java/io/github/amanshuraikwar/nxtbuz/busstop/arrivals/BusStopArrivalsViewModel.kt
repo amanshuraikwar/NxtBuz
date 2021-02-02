@@ -19,6 +19,7 @@ import io.github.amanshuraikwar.nxtbuz.listitem.BusStopHeaderItem
 import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -28,6 +29,8 @@ private const val TAG = "BusStopArrivalsVM"
 
 class BusStopArrivalsViewModel @Inject constructor(
     private val getBusArrivalFlowUseCase: GetBusArrivalFlowUseCase,
+    @Named("bottomSheetSlideOffset")
+    private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
     //private val stopBusArrivalFlowUseCase: StopBusArrivalFlowUseCase,
 //    @Named("loading") private val _loading: MutableLiveData<Loading>,
 //    @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
@@ -38,7 +41,7 @@ class BusStopArrivalsViewModel @Inject constructor(
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    private val onStarToggle: (busStopCode: String, busArrival: BusArrival) -> Unit = { _, _ ->
+    private val onStarToggle: (busStopCode: String, busServiceNumber: String) -> Unit = { _, _ ->
 
     }
     private val onBusServiceClicked: (busServiceNumber: String) -> Unit = {
@@ -59,6 +62,7 @@ class BusStopArrivalsViewModel @Inject constructor(
 
     fun init(busStop: BusStop) {
         viewModelScope.launch(coroutineContext) {
+            pushInitListItems(busStop)
             getBusArrivalFlowUseCase(busStop.code)
                 .collect { busArrivalList ->
                     handleBusArrivalList(
@@ -69,9 +73,50 @@ class BusStopArrivalsViewModel @Inject constructor(
         }
     }
 
+    private suspend fun pushInitListItems(busStop: BusStop) {
+        val listItems = mutableListOf<RecyclerViewListItem>()
+
+        listItems.add(
+            HeaderItem("Bus Stop")
+        )
+
+        listItems.add(
+            BusStopHeaderItem(
+                busStop,
+                R.drawable.ic_bus_stop_24
+            )
+        )
+
+        listItems.add(
+            HeaderItem("Departures")
+        )
+
+        busStop.operatingBusList.forEach { bus ->
+            listItems.add(
+                BusArrivalCompactItem(
+                    busStopCode = busStop.code,
+                    busServiceNumber = bus.serviceNumber,
+                    nextBusArrival = "fetching arrivals",
+                    "",
+                    false,
+                    onStarToggle,
+                    onBusServiceClicked
+                )
+            )
+        }
+
+        _busStopArrivalsScreenState.emit(BusStopArrivalsScreenState.Success(listItems))
+    }
+
     private fun failed(error: Error) {
         viewModelScope.launch {
             _busStopArrivalsScreenState.emit(BusStopArrivalsScreenState.Failed(error))
+        }
+    }
+
+    fun updateBottomSheetSlideOffset(slideOffset: Float) {
+        viewModelScope.launch(coroutineContext) {
+            bottomSheetSlideOffsetFlow.value = slideOffset
         }
     }
 
@@ -175,27 +220,39 @@ class BusStopArrivalsViewModel @Inject constructor(
             )
         )
 
+        listItems.add(
+            HeaderItem("Departures")
+        )
+
         val arrivingBusListItems = mutableListOf<RecyclerViewListItem>()
         val notArrivingBusListItems = mutableListOf<RecyclerViewListItem>()
 
-        busArrivals.forEach {
-            if (it.arrivals is Arrivals.Arriving) {
+        busArrivals.forEach { busArrival ->
+            if (busArrival.arrivals is Arrivals.Arriving) {
+                val arrivals = busArrival.arrivals as Arrivals.Arriving
                 arrivingBusListItems.add(
                     BusArrivalCompactItem(
-                        busStop.code,
-                        it,
+                        busStopCode = busStop.code,
+                        busServiceNumber = busArrival.serviceNumber,
+                        nextBusArrival = if (arrivals.nextArrivingBus.arrival == "Arr") {
+                            "Arriving Now"
+                        } else {
+                            "${arrivals.nextArrivingBus.arrival} mins"
+                        },
+                        arrivals.nextArrivingBus.destination.busStopDescription,
+                        busArrival.starred,
                         onStarToggle,
                         onBusServiceClicked
                     )
                 )
             } else {
-                notArrivingBusListItems.add(
-                    BusArrivalErrorItem(
-                        busStop.code,
-                        it,
-                        onStarToggle
-                    )
-                )
+//                notArrivingBusListItems.add(
+//                    BusArrivalErrorItem(
+//                        busStop.code,
+//                        it,
+//                        onStarToggle
+//                    )
+//                )
             }
         }
 

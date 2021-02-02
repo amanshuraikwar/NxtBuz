@@ -357,16 +357,16 @@ class MainFragment : DaggerFragment() {
                         ?.items
                         ?.indexOfFirst { item ->
 
-                            if (item is BusArrivalCompactItem) {
-                                if (
-                                    item.busStopCode == busStopCode
-                                    && item.busArrival.serviceNumber == busServiceNumber
-                                    && item.busArrival.starred != newToggleState
-                                ) {
-                                    item.busArrival.starred = newToggleState
-                                    return@indexOfFirst true
-                                }
-                            }
+//                            if (item is BusArrivalCompactItem) {
+//                                if (
+//                                    item.busStopCode == busStopCode
+//                                    && item.busArrival.serviceNumber == busServiceNumber
+//                                    && item.busArrival.starred != newToggleState
+//                                ) {
+//                                    item.busArrival.starred = newToggleState
+//                                    return@indexOfFirst true
+//                                }
+//                            }
 
                             if (item is BusArrivalErrorItem) {
                                 if (
