@@ -37,7 +37,7 @@ class BusStopArrivalsFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         nxtBuzBottomSheet.setupItemListUi(requireActivity()) { slideOffset ->
-            //viewModel.updateBottomSheetSlideOffset(slideOffset)
+            viewModel.updateBottomSheetSlideOffset(slideOffset)
         }
         nxtBuzBottomSheet.setupErrorUi {
             //viewModel.fetchBusStops()
@@ -57,7 +57,17 @@ class BusStopArrivalsFragment : DaggerFragment() {
                     }
                     is Success -> {
                         nxtBuzBottomSheet.hideLoading()
-                        nxtBuzBottomSheet.showItemList(requireActivity(), screenState.itemList)
+                        if (nxtBuzBottomSheet.isItemListVisible()) {
+                            nxtBuzBottomSheet.updateItemList(
+                                requireActivity(),
+                                screenState.itemList
+                            )
+                        } else {
+                            nxtBuzBottomSheet.showItemList(
+                                requireActivity(),
+                                screenState.itemList
+                            )
+                        }
                     }
                     is Failed -> {
                         nxtBuzBottomSheet.hideLoading()

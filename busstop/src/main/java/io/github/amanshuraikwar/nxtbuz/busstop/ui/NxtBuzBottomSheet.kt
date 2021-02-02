@@ -210,6 +210,25 @@ class NxtBuzBottomSheet @JvmOverloads constructor(
         }
     }
 
+    fun isItemListVisible(): Boolean {
+        return bottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN
+    }
+
+    fun updateItemList(
+        activity: FragmentActivity,
+        itemList: MutableList<RecyclerViewListItem>
+    ) {
+        val layoutState = itemsRv.layoutManager?.onSaveInstanceState()
+        adapter =
+            MultiItemAdapter(
+                activity,
+                RecyclerViewTypeFactoryGenerated(),
+                itemList
+            )
+        itemsRv.layoutManager?.onRestoreInstanceState(layoutState)
+        itemsRv.adapter = adapter ?: return
+    }
+
     suspend fun showItemList(
         activity: FragmentActivity,
         itemList: MutableList<RecyclerViewListItem>
@@ -252,7 +271,7 @@ class NxtBuzBottomSheet @JvmOverloads constructor(
         }
     }
 
-    suspend fun hideItemList() = suspendCancellableCoroutine<Unit>{
+    suspend fun hideItemList() = suspendCancellableCoroutine<Unit> {
         if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN) {
             it.resumeWith(Result.success(Unit))
             return@suspendCancellableCoroutine

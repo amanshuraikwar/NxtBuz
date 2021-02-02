@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0"
         app:srcCompat="@drawable/ic_bus_stop_24"
-        app:tint="@color/white" />
+        app:tint="?colorOnPrimary" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/gotoIv"
@@ -47,6 +47,7 @@
         android:layout_marginTop="@dimen/padding_normal"
         android:layout_marginEnd="@dimen/padding_normal"
         android:textAppearance="?textAppearanceHeadline5"
+        android:textColor="?colorOnSurface"
         app:layout_constraintEnd_toStartOf="@id/gotoIv"
         app:layout_constraintStart_toEndOf="@id/iconIv"
         app:layout_constraintTop_toTopOf="parent"
@@ -61,14 +62,9 @@
         android:layout_marginEnd="@dimen/margin_normal"
         android:layout_marginBottom="@dimen/margin_normal"
         android:textAppearance="?textAppearanceBody2"
+        android:textColor="?colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/iconIv"
         app:layout_constraintTop_toBottomOf="@id/stopNameTv"
         tools:text="5431" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorOutline"
-        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
