@@ -23,7 +23,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_round_star_border_24" />
 
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/serviceNumberTv"
         android:layout_width="0dp"
@@ -59,28 +58,59 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
-
         android:textAppearance="@style/TextAppearance.AppTheme.Headline6.Bold"
-
+        android:textColor="?colorOnSurface"
         app:layout_constraintBottom_toBottomOf="@id/serviceProxyTv"
         app:layout_constraintStart_toEndOf="@id/serviceProxyTv"
         app:layout_constraintTop_toTopOf="@id/serviceProxyTv"
-        android:textColor="?colorOnSurface"
         tools:text="in 04 mins" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/crowdedIv"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:tint="?colorOnSurface"
+        app:layout_constraintTop_toTopOf="@id/nextDepartureTv"
+        app:layout_constraintStart_toEndOf="@id/nextDepartureTv"
+        app:layout_constraintBottom_toBottomOf="@id/nextDepartureTv"
+        tools:srcCompat="@drawable/ic_bus_load_2_16" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/wheelChairAccessIv"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:tint="?colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="@id/crowdedIv"
+        app:layout_constraintStart_toEndOf="@id/crowdedIv"
+        app:layout_constraintTop_toTopOf="@id/crowdedIv"
+        tools:srcCompat="@drawable/ic_not_accessible_16" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/busTypeIv"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:tint="?colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="@id/wheelChairAccessIv"
+        app:layout_constraintStart_toEndOf="@id/wheelChairAccessIv"
+        app:layout_constraintTop_toTopOf="@id/wheelChairAccessIv"
+        tools:srcCompat="@drawable/ic_bus_dd_16" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/busInfoTv"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_normal"
-        android:ellipsize="end"
-        android:lines="1"
+        android:ellipsize="marquee"
+        android:singleLine="true"
         android:textAppearance="?textAppearanceOverline"
+        android:textColor="?colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/starIv"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@id/nextDepartureTv"
         app:layout_constraintTop_toBottomOf="@id/nextDepartureTv"
-        android:textColor="?colorOnSurface"
+        app:layout_constraintVertical_bias="0"
         tools:text="Marine Ctr Rd" />
 
     <View

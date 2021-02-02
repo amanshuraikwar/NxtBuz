@@ -40,26 +40,26 @@ class StarredBusArrivalCompactSmallItem(
                     crowdedIv1 =
                         when (it.load) {
                             BusLoad.SEA -> {
-                                R.drawable.ic_load_1_24
+                                R.drawable.ic_bus_load_1_16
                             }
                             BusLoad.SDA -> {
-                                R.drawable.ic_load_2_24
+                                R.drawable.ic_bus_load_2_16
                             }
                             BusLoad.LSD -> {
-                                R.drawable.ic_load_3_24
+                                R.drawable.ic_bus_load_3_16
                             }
                         }
                     wheelChairAccessIv1 =
                         if (it.feature == "WAB") {
-                            R.drawable.ic_round_accessible_24
+                            R.drawable.ic_accessible_16
                         } else {
-                            R.drawable.ic_round_accessible_inactive_24
+                            R.drawable.ic_not_accessible_16
                         }
                     busTypeIv1 =
                         when (it.type) {
-                            BusType.SD -> R.drawable.ic_round_directions_bus_24
-                            BusType.DD -> R.drawable.ic_bus_dd_24
-                            BusType.BD -> R.drawable.ic_bus_feeder_24
+                            BusType.SD -> R.drawable.ic_bus_normal_16
+                            BusType.DD -> R.drawable.ic_bus_dd_16
+                            BusType.BD -> R.drawable.ic_bus_feeder_16
                         }
                 }
                 if ((busArrival.arrivals as Arrivals.Arriving).followingArrivingBusList.isNotEmpty()) {
@@ -68,26 +68,26 @@ class StarredBusArrivalCompactSmallItem(
                         crowdedIv2 =
                             when (it.load) {
                                 BusLoad.SEA -> {
-                                    R.drawable.ic_load_1_24
+                                    R.drawable.ic_bus_load_1_16
                                 }
                                 BusLoad.SDA -> {
-                                    R.drawable.ic_load_2_24
+                                    R.drawable.ic_bus_load_2_16
                                 }
                                 BusLoad.LSD -> {
-                                    R.drawable.ic_load_3_24
+                                    R.drawable.ic_bus_load_3_16
                                 }
                             }
                         wheelChairAccessIv2 =
                             if (it.feature == "WAB") {
-                                R.drawable.ic_round_accessible_24
+                                R.drawable.ic_accessible_16
                             } else {
-                                R.drawable.ic_round_accessible_inactive_24
+                                R.drawable.ic_not_accessible_16
                             }
                         busTypeIv2 =
                             when (it.type) {
-                                BusType.SD -> R.drawable.ic_round_directions_bus_24
-                                BusType.DD -> R.drawable.ic_bus_dd_24
-                                BusType.BD -> R.drawable.ic_bus_feeder_24
+                                BusType.SD -> R.drawable.ic_bus_normal_16
+                                BusType.DD -> R.drawable.ic_bus_dd_16
+                                BusType.BD -> R.drawable.ic_bus_feeder_16
                             }
                     }
                 }
@@ -97,26 +97,26 @@ class StarredBusArrivalCompactSmallItem(
                         crowdedIv3 =
                             when (it.load) {
                                 BusLoad.SEA -> {
-                                    R.drawable.ic_load_1_24
+                                    R.drawable.ic_bus_load_1_16
                                 }
                                 BusLoad.SDA -> {
-                                    R.drawable.ic_load_2_24
+                                    R.drawable.ic_bus_load_2_16
                                 }
                                 BusLoad.LSD -> {
-                                    R.drawable.ic_load_3_24
+                                    R.drawable.ic_bus_load_3_16
                                 }
                             }
                         wheelChairAccessIv3 =
                             if (it.feature == "WAB") {
-                                R.drawable.ic_round_accessible_24
+                                R.drawable.ic_accessible_16
                             } else {
-                                R.drawable.ic_round_accessible_inactive_24
+                                R.drawable.ic_not_accessible_16
                             }
                         busTypeIv3 =
                             when (it.type) {
-                                BusType.SD -> R.drawable.ic_round_directions_bus_24
-                                BusType.DD -> R.drawable.ic_bus_dd_24
-                                BusType.BD -> R.drawable.ic_bus_feeder_24
+                                BusType.SD -> R.drawable.ic_bus_normal_16
+                                BusType.DD -> R.drawable.ic_bus_dd_16
+                                BusType.BD -> R.drawable.ic_bus_feeder_16
                             }
                     }
                 }

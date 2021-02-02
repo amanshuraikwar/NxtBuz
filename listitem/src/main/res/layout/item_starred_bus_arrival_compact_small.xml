@@ -66,7 +66,6 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginBottom="@dimen/margin_normal"
                 android:padding="4dp"
-                android:src="@drawable/ic_load_1_24"
                 android:tint="?colorControlActivated"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/nextBusIv0"
@@ -81,7 +80,7 @@
                 android:tint="?colorControlActivated"
                 app:layout_constraintStart_toEndOf="@id/crowdedIv1"
                 app:layout_constraintTop_toTopOf="@id/crowdedIv1"
-                app:srcCompat="@drawable/ic_round_accessible_24" />
+                 />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/busTypeIv1"
@@ -91,7 +90,7 @@
                 android:tint="?colorControlActivated"
                 app:layout_constraintStart_toEndOf="@id/wheelChairAccessIv1"
                 app:layout_constraintTop_toTopOf="@id/wheelChairAccessIv1"
-                app:srcCompat="@drawable/ic_bus_dd_24" />
+                 />
 
             <ImageView
                 android:id="@+id/nextBusIv1"
@@ -127,7 +126,6 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginBottom="@dimen/margin_normal"
                 android:padding="4dp"
-                android:src="@drawable/ic_load_1_24"
                 android:tint="?colorControlActivated"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/nextBusIv1"
@@ -141,8 +139,7 @@
                 android:tint="?colorControlActivated"
                 app:layout_constraintStart_toEndOf="@id/crowdedIv2"
                 app:layout_constraintTop_toBottomOf="@id/nextDeparture2Tv"
-                app:layout_constraintTop_toTopOf="@id/crowdedIv2"
-                app:srcCompat="@drawable/ic_round_accessible_inactive_24" />
+                app:layout_constraintTop_toTopOf="@id/crowdedIv2"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/busTypeIv2"
@@ -152,7 +149,7 @@
                 android:tint="?colorControlActivated"
                 app:layout_constraintStart_toEndOf="@id/wheelChairAccessIv2"
                 app:layout_constraintTop_toTopOf="@id/wheelChairAccessIv2"
-                app:srcCompat="@drawable/ic_bus_feeder_24" />
+                />
 
             <ImageView
                 android:id="@+id/nextBusIv2"
@@ -188,7 +185,6 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginBottom="@dimen/margin_normal"
                 android:padding="4dp"
-                android:src="@drawable/ic_load_1_24"
                 android:tint="?colorControlActivated"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/nextBusIv2"
@@ -203,7 +199,7 @@
                 app:layout_constraintStart_toEndOf="@id/crowdedIv3"
                 app:layout_constraintTop_toBottomOf="@id/nextDeparture3Tv"
                 app:layout_constraintTop_toTopOf="@id/crowdedIv3"
-                app:srcCompat="@drawable/ic_round_accessible_inactive_24" />
+                />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/busTypeIv3"
@@ -213,7 +209,7 @@
                 android:tint="?colorControlActivated"
                 app:layout_constraintStart_toEndOf="@id/wheelChairAccessIv3"
                 app:layout_constraintTop_toTopOf="@id/wheelChairAccessIv3"
-                app:srcCompat="@drawable/ic_bus_feeder_24" />
+                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </FrameLayout>
