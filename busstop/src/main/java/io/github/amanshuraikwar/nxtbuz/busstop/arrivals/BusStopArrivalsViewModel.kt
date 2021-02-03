@@ -233,19 +233,28 @@ class BusStopArrivalsViewModel @Inject constructor(
                         busStopCode = busStop.code,
                         busServiceNumber = busArrival.serviceNumber,
                         arrivingBus = arrivals.nextArrivingBus,
-                        busArrival.starred,
+                        starred = busArrival.starred,
                         onStarToggle,
                         onBusServiceClicked
                     )
                 )
             } else {
-//                notArrivingBusListItems.add(
-//                    BusArrivalErrorItem(
-//                        busStop.code,
-//                        it,
-//                        onStarToggle
-//                    )
-//                )
+                notArrivingBusListItems.add(
+                    BusArrivalErrorItem(
+                        busStopCode = busStop.code,
+                        busServiceNumber = busArrival.serviceNumber,
+                        errorReason = when (busArrival.arrivals) {
+                            is Arrivals.NotOperating -> {
+                                "Not Operating"
+                            }
+                            else -> {
+                                "No Data"
+                            }
+                        },
+                        starred = busArrival.starred,
+                        onStarToggle
+                    )
+                )
             }
         }
 

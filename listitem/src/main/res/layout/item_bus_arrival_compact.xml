@@ -41,7 +41,6 @@
         android:id="@+id/serviceProxyTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_normal"
         android:layout_marginTop="@dimen/margin_normal"
         android:paddingStart="2dp"
         android:paddingTop="4dp"
@@ -50,7 +49,7 @@
         android:text="MMMM"
         android:textAppearance="?textAppearanceHeadline6"
         android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/busTypeIv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -71,9 +70,9 @@
         android:layout_height="16dp"
         android:layout_marginStart="@dimen/margin_small"
         android:tint="?colorOnSurface"
-        app:layout_constraintTop_toTopOf="@id/nextDepartureTv"
-        app:layout_constraintStart_toEndOf="@id/nextDepartureTv"
         app:layout_constraintBottom_toBottomOf="@id/nextDepartureTv"
+        app:layout_constraintStart_toEndOf="@id/nextDepartureTv"
+        app:layout_constraintTop_toTopOf="@id/nextDepartureTv"
         tools:srcCompat="@drawable/ic_bus_load_2_16" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -90,16 +89,28 @@
         android:id="@+id/busTypeIv"
         android:layout_width="16dp"
         android:layout_height="16dp"
+        android:layout_marginStart="@dimen/margin_normal"
         android:tint="?colorOnSurface"
-        app:layout_constraintBottom_toBottomOf="@id/wheelChairAccessIv"
-        app:layout_constraintStart_toEndOf="@id/wheelChairAccessIv"
-        app:layout_constraintTop_toTopOf="@id/wheelChairAccessIv"
+        app:layout_constraintBottom_toBottomOf="@id/serviceProxyTv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/serviceProxyTv"
         tools:srcCompat="@drawable/ic_bus_dd_16" />
+
+    <ImageView
+        android:id="@+id/destinationIv"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_destination_16"
+        app:layout_constraintStart_toStartOf="@id/nextDepartureTv"
+        app:layout_constraintTop_toTopOf="@id/busInfoTv"
+        tools:ignore="ContentDescription" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/busInfoTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="@dimen/margin_normal"
         android:ellipsize="marquee"
         android:singleLine="true"
@@ -108,7 +119,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/starIv"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@id/nextDepartureTv"
+        app:layout_constraintStart_toEndOf="@id/destinationIv"
         app:layout_constraintTop_toBottomOf="@id/nextDepartureTv"
         app:layout_constraintVertical_bias="0"
         tools:text="Marine Ctr Rd" />

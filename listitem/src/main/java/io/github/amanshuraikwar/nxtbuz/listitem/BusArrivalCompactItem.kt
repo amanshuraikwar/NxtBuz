@@ -56,10 +56,9 @@ class BusArrivalCompactItem(
     }
 
     private val busTypeIv: Int = when (arrivingBus?.type) {
-        BusType.SD -> R.drawable.ic_bus_normal_16
         BusType.DD -> R.drawable.ic_bus_dd_16
         BusType.BD -> R.drawable.ic_bus_feeder_16
-        else -> 0
+        else -> R.drawable.ic_bus_normal_16
     }
 
     private val nextBusArrival: String = when {

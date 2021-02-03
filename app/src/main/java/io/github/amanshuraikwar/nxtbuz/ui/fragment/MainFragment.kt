@@ -368,16 +368,16 @@ class MainFragment : DaggerFragment() {
 //                                }
 //                            }
 
-                            if (item is BusArrivalErrorItem) {
-                                if (
-                                    item.busStopCode == busStopCode
-                                    && item.busArrival.serviceNumber == busServiceNumber
-                                    && item.busArrival.starred != newToggleState
-                                ) {
-                                    item.busArrival.starred = newToggleState
-                                    return@indexOfFirst true
-                                }
-                            }
+//                            if (item is BusArrivalErrorItem) {
+//                                if (
+//                                    item.busStopCode == busStopCode
+//                                    && item.busArrival.serviceNumber == busServiceNumber
+//                                    && item.busArrival.starred != newToggleState
+//                                ) {
+//                                    item.busArrival.starred = newToggleState
+//                                    return@indexOfFirst true
+//                                }
+//                            }
 
                             if (item is BusRouteHeaderItem) {
                                 if (

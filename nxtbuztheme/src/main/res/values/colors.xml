@@ -14,6 +14,8 @@
     <color name="colorOnSecondary">@color/colorOnPrimary</color>
     <color name="colorOnBackground">#263238</color>
     <color name="colorOnSurface">#263238</color>
+    <color name="colorOnSurfaceMedium">#99263238</color>
+    <color name="colorOnSurfaceDisabled">#60263238</color>
     <color name="colorOnError">#ffffff</color>
 
     <color name="colorOutline">#1e263238</color>
