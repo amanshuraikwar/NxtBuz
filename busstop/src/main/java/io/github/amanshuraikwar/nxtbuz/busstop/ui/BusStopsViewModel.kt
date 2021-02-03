@@ -87,26 +87,29 @@ class BusStopsViewModel @Inject constructor(
 
                 _busStopScreenState.emit(BusStopsScreenState.Success(listItems))
 
-                val mapResult = pushMapEventUseCase(
-                    MapEvent.AddMapMarkers(
-                        busStopList.map { busStop ->
-                            //mapMarkerIdBusStopMap[busStop.code] = busStop
-                            MapMarker(
-                                busStop.code,
-                                busStop.latitude,
-                                busStop.longitude,
-                                R.drawable.ic_marker_bus_stop_48,
-                                busStop.description
-                            )
-                        }
-                    )
-                )
-
-                (mapResult as? MapResult.AddMapMarkersResult)?.markerList?.forEachIndexed { index, marker ->
-                    markerIdMap[marker.id] = marker
-                    markerIdBusStopCodeMap[marker.id] = busStopList[index].code
-                }
+                addBusStopMarkers(busStopList)
             }
+        }
+    }
+
+    private suspend fun addBusStopMarkers(busStopList: List<BusStop>) {
+        val mapResult = pushMapEventUseCase(
+            MapEvent.AddMapMarkers(
+                busStopList.map { busStop ->
+                    MapMarker(
+                        busStop.code,
+                        busStop.latitude,
+                        busStop.longitude,
+                        R.drawable.ic_marker_bus_stop_48,
+                        busStop.description
+                    )
+                }
+            )
+        )
+
+        (mapResult as? MapResult.AddMapMarkersResult)?.markerList?.forEachIndexed { index, marker ->
+            markerIdMap[marker.id] = marker
+            markerIdBusStopCodeMap[marker.id] = busStopList[index].code
         }
     }
 
