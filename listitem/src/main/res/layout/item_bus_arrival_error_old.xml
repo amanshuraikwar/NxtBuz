@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBackground">
+
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/parentCv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_small"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/starIv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingStart="0dp"
+                android:paddingTop="@dimen/padding_normal"
+                android:paddingEnd="@dimen/margin_normal"
+                android:paddingBottom="@dimen/padding_normal"
+                android:tint="@color/yellow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:srcCompat="@drawable/ic_round_star_border_24" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="@id/serviceNumberTv"
+                app:layout_constraintBottom_toBottomOf="@id/serviceNumberTv"
+                app:layout_constraintStart_toStartOf="@id/serviceNumberTv"
+                app:layout_constraintEnd_toEndOf="@id/warnIv"
+                android:background="@drawable/bg_icon_warn" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/serviceNumberTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="2dp"
+                android:textAppearance="?textAppearanceHeadline6"
+                android:textColor="?android:textColorPrimaryInverse"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="961" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/warnIv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_round_warning_16"
+                android:layout_marginStart="4dp"
+                android:paddingEnd="6dp"
+                android:paddingStart="0dp"
+                android:tint="?android:textColorPrimaryInverse"
+                app:layout_constraintTop_toTopOf="@id/serviceNumberTv"
+                app:layout_constraintBottom_toBottomOf="@id/serviceNumberTv"
+                app:layout_constraintStart_toEndOf="@id/serviceNumberTv"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/busInfoTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:ellipsize="end"
+                android:lines="2"
+                android:textAppearance="?textAppearanceOverline"
+                app:layout_constraintBottom_toBottomOf="@id/serviceNumberTv"
+                app:layout_constraintEnd_toStartOf="@id/starIv"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/warnIv"
+                app:layout_constraintTop_toTopOf="@id/serviceNumberTv"
+                app:lineHeight="14sp"
+                tools:text="19  •  6.6KM  •  1\nNot Operating" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>
