@@ -13,6 +13,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.listitem.BusArrivalCompactItem
 import io.github.amanshuraikwar.nxtbuz.listitem.BusArrivalErrorItem
 import io.github.amanshuraikwar.nxtbuz.listitem.BusStopHeaderItem
@@ -31,7 +32,7 @@ class BusStopArrivalsViewModel @Inject constructor(
     private val getBusArrivalFlowUseCase: GetBusArrivalFlowUseCase,
     @Named("bottomSheetSlideOffset")
     private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
-    //private val stopBusArrivalFlowUseCase: StopBusArrivalFlowUseCase,
+    private val stopBusArrivalFlowUseCase: StopBusArrivalFlowUseCase,
 //    @Named("loading") private val _loading: MutableLiveData<Loading>,
 //    @Named("listItems") private val _listItems: MutableLiveData<List<RecyclerViewListItem>>,
     //@Named("collapseBottomSheet") private val _collapseBottomSheet: MutableLiveData<Unit>,
@@ -116,6 +117,10 @@ class BusStopArrivalsViewModel @Inject constructor(
         viewModelScope.launch(coroutineContext) {
             bottomSheetSlideOffsetFlow.value = slideOffset
         }
+    }
+
+    override fun onCleared() {
+        stopBusArrivalFlowUseCase()
     }
 
     fun stop() {

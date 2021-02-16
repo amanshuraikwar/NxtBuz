@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_bus_stops">
         <action
             android:id="@+id/action_busStops_to_busStopArrivals"
-            app:destination="@id/busStopArrivals" />
+            app:destination="@id/busStopArrivals"
+            app:enterAnim="@anim/bottom_sheet_slide_in"
+            app:exitAnim="@anim/bottom_sheet_slide_out"
+            app:popEnterAnim="@anim/bottom_sheet_slide_in"
+            app:popExitAnim="@anim/bottom_sheet_slide_out"/>
     </fragment>
 
     <fragment

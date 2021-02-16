@@ -42,14 +42,14 @@ class BottomSheetBgView(context: Context, attrs: AttributeSet) : View(context, a
         )
     }
 
-    override fun onSaveInstanceState(): Parcelable {
-        super.onSaveInstanceState()
-        return bundleOf("cornerRadius" to cornerRadius)
-    }
-
-    override fun onRestoreInstanceState(state: Parcelable?) {
-        super.onRestoreInstanceState(state)
-        cornerRadius = (state as? Bundle)?.getFloat("cornerRadius") ?: return
-        invalidate()
-    }
+//    override fun onSaveInstanceState(): Parcelable {
+//        super.onSaveInstanceState()
+//        return bundleOf("cornerRadius" to cornerRadius)
+//    }
+//
+//    override fun onRestoreInstanceState(state: Parcelable?) {
+//        super.onRestoreInstanceState(state)
+//        cornerRadius = (state as? Bundle)?.getFloat("cornerRadius") ?: return
+//        invalidate()
+//    }
 }
