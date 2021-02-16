@@ -9,6 +9,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.common.model.LocationOutput
+import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNavigationParams
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
@@ -38,6 +39,8 @@ class MainFragmentViewModel @Inject constructor(
     private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
     @Named("navigateToBusStopArrivals")
     _navigateToBusStopArrivals: MutableSharedFlow<BusStop>,
+    @Named("navigateToBusRoute")
+    _navigateToBusRoute: MutableSharedFlow<BusRouteNavigationParams>,
     //private val busStopsViewModel: BusStopsViewModel,
     //private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
     private val busRouteViewModelDelegate: io.github.amanshuraikwar.nxtbuz.busroute.BusRouteViewModelDelegateImpl,
@@ -64,6 +67,7 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     val navigateToBusStopArrivals: SharedFlow<BusStop> = _navigateToBusStopArrivals
+    val navigateToBusRoute: SharedFlow<BusRouteNavigationParams> = _navigateToBusRoute
 
     val listItems = _listItems.map { it }
     val loading = _loading.map { it }

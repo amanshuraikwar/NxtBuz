@@ -26,6 +26,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.R
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsFragmentDirections
 import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsFragmentDirections
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.listitem.*
@@ -142,6 +143,14 @@ class MainFragment : DaggerFragment() {
         screenStateFragment.findNavController().navigate(action)
     }
 
+    private fun goToBusRoute(busServiceNumber: String, busStop: BusStop?) {
+        val action = BusStopArrivalsFragmentDirections.actionBusStopArrivalsToBusRoute(
+            busServiceNumber = busServiceNumber,
+            busStop = busStop
+        )
+        screenStateFragment.findNavController().navigate(action)
+    }
+
     private fun hideLoading() {
         loadingIv.visibility = View.INVISIBLE
         loadingTv.visibility = View.INVISIBLE
@@ -208,6 +217,13 @@ class MainFragment : DaggerFragment() {
             lifecycleScope.launch {
                 viewModel.navigateToBusStopArrivals.collect { busStop ->
                     goToBusStopArrivals(busStop)
+                }
+            }
+
+            lifecycleScope.launch {
+                // TODO-amanshuraikwar (17 Feb 2021 12:06:37 AM): do not de-construct here
+                viewModel.navigateToBusRoute.collect { (busServiceNumber, busStop) ->
+                    goToBusRoute(busServiceNumber, busStop)
                 }
             }
 

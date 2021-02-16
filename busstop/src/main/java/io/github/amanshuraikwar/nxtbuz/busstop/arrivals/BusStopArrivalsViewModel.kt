@@ -11,6 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNavigationParams
 import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
@@ -39,15 +40,27 @@ class BusStopArrivalsViewModel @Inject constructor(
     //@Named("error") private val _error: MutableLiveData<Alert>,
     //private val mapViewModelDelegate: MapViewModelDelegate,
     private val busStopArrivalsMapMarkerHelper: BusStopArrivalsMapMarkerHelper,
+    @Named("navigateToBusRoute")
+    private val navigateToBusRoute: MutableSharedFlow<BusRouteNavigationParams>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
     private val onStarToggle: (busStopCode: String, busServiceNumber: String) -> Unit = { _, _ ->
 
     }
+
     private val onBusServiceClicked: (busServiceNumber: String) -> Unit = {
-        // TODO-amanshuraikwar (27 Jan 2021 08:36:07 PM):
+        viewModelScope.launch(coroutineContext) {
+            navigateToBusRoute.emit(
+                BusRouteNavigationParams(
+                    busServiceNumber = it,
+                    busStop = busStop
+                )
+            )
+        }
     }
+
+    private lateinit var busStop: BusStop
 
     private val _busStopArrivalsScreenState =
         MutableSharedFlow<BusStopArrivalsScreenState>(replay = 1)
@@ -62,6 +75,7 @@ class BusStopArrivalsViewModel @Inject constructor(
     private val coroutineContext = errorHandler + dispatcherProvider.computation
 
     fun init(busStop: BusStop) {
+        this.busStop = busStop
         viewModelScope.launch(coroutineContext) {
             pushInitListItems(busStop)
             getBusArrivalFlowUseCase(busStop.code)

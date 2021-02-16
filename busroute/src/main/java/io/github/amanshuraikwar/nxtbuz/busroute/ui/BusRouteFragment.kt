@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.arrivals
+package io.github.amanshuraikwar.nxtbuz.busroute.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,23 +8,22 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import dagger.android.support.DaggerFragment
-import io.github.amanshuraikwar.nxtbuz.busstop.R
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreenState.*
+import io.github.amanshuraikwar.nxtbuz.busroute.R
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
-import kotlinx.android.synthetic.main.fragment_bus_stop_arrivals.*
+import kotlinx.android.synthetic.main.fragment_bus_route.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class BusStopArrivalsFragment : DaggerFragment() {
+class BusRouteFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var viewModel: BusStopArrivalsViewModel
+    private lateinit var viewModel: BusRouteViewModel
 
     @SuppressLint("InflateParams")
     override fun onCreateView(
@@ -32,7 +31,7 @@ class BusStopArrivalsFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_bus_stop_arrivals, null)
+        return inflater.inflate(R.layout.fragment_bus_route, null)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -42,7 +41,8 @@ class BusStopArrivalsFragment : DaggerFragment() {
         }
         nxtBuzBottomSheet.setupErrorUi onRetry@{
             viewModel.init(
-                busStop = getBusStop() ?: return@onRetry
+                busServiceNumber = getBusServiceNumber() ?: return@onRetry,
+                busStop = getBusStop()
             )
         }
         nxtBuzBottomSheet.setupLoadingUi()
@@ -53,12 +53,16 @@ class BusStopArrivalsFragment : DaggerFragment() {
         return arguments?.getParcelable("busStop")
     }
 
+    private fun getBusServiceNumber(): String? {
+        return arguments?.getString("busServiceNumber")
+    }
+
     private fun setupViewModel() {
         viewModel = viewModelProvider(viewModelFactory)
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.busStopArrivalsScreenState.collect { screenState ->
+            viewModel.screenState.collect { screenState ->
                 when (screenState) {
-                    is Success -> {
+                    is BusRouteScreenState.Success -> {
                         nxtBuzBottomSheet.hideError()
                         if (nxtBuzBottomSheet.isItemListVisible()) {
                             nxtBuzBottomSheet.updateItemList(
@@ -74,7 +78,7 @@ class BusStopArrivalsFragment : DaggerFragment() {
                             )
                         }
                     }
-                    is Failed -> {
+                    is BusRouteScreenState.Failed -> {
                         nxtBuzBottomSheet.hideItemList()
                         nxtBuzBottomSheet.showError(screenState.error)
                     }
@@ -82,8 +86,9 @@ class BusStopArrivalsFragment : DaggerFragment() {
                 delay(300)
             }
         }
-        viewModel.init(getBusStop() ?: return)
+        viewModel.init(
+            busServiceNumber = getBusServiceNumber() ?: return,
+            busStop = getBusStop()
+        )
     }
-
-
 }
