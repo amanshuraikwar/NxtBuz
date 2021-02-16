@@ -30,8 +30,6 @@ import org.threeten.bp.OffsetTime
 import javax.inject.Inject
 import javax.inject.Named
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class BusArrivalService : DaggerService() {
 
     @Inject

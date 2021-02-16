@@ -62,10 +62,6 @@ class BusStopsFragment : DaggerFragment() {
                         nxtBuzBottomSheet.hideLoading()
                         nxtBuzBottomSheet.showError(screenState.error)
                     }
-                    is Finish -> {
-                        nxtBuzBottomSheet.hideItemList()
-                        viewModel.onFinish(screenState.toBusStop)
-                    }
                 }
                 delay(300)
             }

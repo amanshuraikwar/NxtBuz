@@ -5,8 +5,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class StopBusArrivalFlowUseCase @Inject constructor(
     private val helper: BusArrivalService.Helper
 ) {

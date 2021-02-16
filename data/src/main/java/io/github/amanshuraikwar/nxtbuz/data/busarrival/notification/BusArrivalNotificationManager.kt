@@ -30,7 +30,6 @@ import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@ExperimentalCoroutinesApi
 @Singleton
 class BusArrivalNotificationManager @Inject constructor(
     private val context: Context,

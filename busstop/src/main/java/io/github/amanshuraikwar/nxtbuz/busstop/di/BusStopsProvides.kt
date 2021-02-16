@@ -25,6 +25,6 @@ class BusStopsProvides {
     @Singleton
     @Named("navigateToBusStopArrivals")
     fun provideNavigateToBusStopArrivals(): MutableSharedFlow<BusStop> {
-        return MutableSharedFlow()
+        return MutableSharedFlow(replay = 0)
     }
 }

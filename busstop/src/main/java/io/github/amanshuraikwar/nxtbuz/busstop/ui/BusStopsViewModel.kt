@@ -45,9 +45,7 @@ class BusStopsViewModel @Inject constructor(
 
     private val onBusStopClicked: (BusStop) -> Unit = {
         viewModelScope.launch(coroutineContext) {
-            _busStopScreenState.emit(
-                BusStopsScreenState.Finish(it)
-            )
+            navigateToBusStopArrivals.emit(it)
         }
     }
 
@@ -155,12 +153,6 @@ class BusStopsViewModel @Inject constructor(
     private suspend fun onMapMarkerClicked(markerId: String) {
         if (markerIdMap.containsKey(markerId)) {
             onBusStopClicked(getBusStopUseCase(markerIdBusStopCodeMap[markerId] ?: return))
-        }
-    }
-
-    fun onFinish(toBusStop: BusStop) {
-        viewModelScope.launch(coroutineContext) {
-            navigateToBusStopArrivals.emit(toBusStop)
         }
     }
 }

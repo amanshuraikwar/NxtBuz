@@ -282,18 +282,24 @@ class MainFragment : DaggerFragment() {
             viewModel.onBackPressed.observe(
                 viewLifecycleOwner,
                 EventObserver {
-                    when {
-                        bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED -> {
-                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                            itemsRv.scrollToPosition(0)
-                        }
+                    if (!screenStateFragment.findNavController().navigateUp()) {
+                        activity.finish()
+                    }
+                    //requireActivity().findNavController(R.id.screenStateFragment).navigateUp()
+//                    screenStateFragment.findNavController().popBackStack()
+//                    screenStateFragment.findNavController().navigateUp()
+//                    when {
+//                        bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED -> {
+//                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+//                            itemsRv.scrollToPosition(0)
+//                        }
 //                        backFab.isVisible -> {
 //                            viewModel.onBackPressed()
 //                        }
-                        else -> {
-                            activity.finish()
-                        }
-                    }
+//                        else -> {
+//                            activity.finish()
+//                        }
+//                    }
                 }
             )
 
