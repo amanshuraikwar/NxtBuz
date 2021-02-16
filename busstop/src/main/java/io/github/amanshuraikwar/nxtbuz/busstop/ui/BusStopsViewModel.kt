@@ -12,6 +12,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapResult
+import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase

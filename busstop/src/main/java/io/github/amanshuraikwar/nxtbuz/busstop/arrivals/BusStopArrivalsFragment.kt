@@ -12,6 +12,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreenState.*
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
+import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
 import kotlinx.android.synthetic.main.fragment_bus_stop_arrivals.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -66,12 +67,14 @@ class BusStopArrivalsFragment : DaggerFragment() {
                         if (nxtBuzBottomSheet.isItemListVisible()) {
                             nxtBuzBottomSheet.updateItemList(
                                 requireActivity(),
-                                screenState.itemList
+                                screenState.itemList,
+                                RecyclerViewTypeFactoryGenerated()
                             )
                         } else {
                             nxtBuzBottomSheet.showItemList(
                                 requireActivity(),
-                                screenState.itemList
+                                screenState.itemList,
+                                RecyclerViewTypeFactoryGenerated()
                             )
                         }
                     }

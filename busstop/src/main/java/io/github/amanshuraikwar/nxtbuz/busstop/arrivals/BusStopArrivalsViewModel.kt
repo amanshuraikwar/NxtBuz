@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.busstop.R
-import io.github.amanshuraikwar.nxtbuz.busstop.ui.Error
+import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival

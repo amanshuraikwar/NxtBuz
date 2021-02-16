@@ -1,7 +1,7 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.ui
+package io.github.amanshuraikwar.nxtbuz.common.model.view
 
 import androidx.annotation.StringRes
-import io.github.amanshuraikwar.nxtbuz.busstop.R
+import io.github.amanshuraikwar.nxtbuz.common.R
 
 data class Error(
     @StringRes val errorTitle: Int = R.string.error_title_default,
