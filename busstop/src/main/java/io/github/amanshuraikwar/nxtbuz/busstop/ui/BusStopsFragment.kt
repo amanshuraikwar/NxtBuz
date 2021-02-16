@@ -11,6 +11,7 @@ import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsScreenState.*
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
+import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
 import kotlinx.android.synthetic.main.fragment_bus_stops.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -56,7 +57,11 @@ class BusStopsFragment : DaggerFragment() {
                     }
                     is Success -> {
                         nxtBuzBottomSheet.hideLoading()
-                        nxtBuzBottomSheet.showItemList(requireActivity(), screenState.itemList)
+                            nxtBuzBottomSheet.showItemList(
+                            requireActivity(),
+                            screenState.itemList,
+                            RecyclerViewTypeFactoryGenerated()
+                        )
                     }
                     is Failed -> {
                         nxtBuzBottomSheet.hideLoading()

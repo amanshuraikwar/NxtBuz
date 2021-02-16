@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.ui
+package io.github.amanshuraikwar.nxtbuz.common.view
 
 import android.app.Activity
 import android.content.Context
@@ -13,9 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
-import io.github.amanshuraikwar.nxtbuz.busstop.R
+import io.github.amanshuraikwar.multiitemadapter.RecyclerViewTypeFactory
+import io.github.amanshuraikwar.nxtbuz.common.R
+import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
 import io.github.amanshuraikwar.nxtbuz.common.util.lerp
-import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
 import kotlinx.android.synthetic.main.layout_error_bottom_sheet.*
 import kotlinx.android.synthetic.main.layout_error_bottom_sheet.view.*
 import kotlinx.android.synthetic.main.layout_loading_bottom_sheet.*
@@ -33,7 +34,7 @@ class NxtBuzBottomSheet @JvmOverloads constructor(
     private lateinit var errorBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var loadingBottomSheetBehaviour: BottomSheetBehavior<View>
 
-    private var adapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? = null
+    private var adapter: MultiItemAdapter<RecyclerViewTypeFactory>? = null
 
     init {
         (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as? LayoutInflater)
@@ -216,13 +217,14 @@ class NxtBuzBottomSheet @JvmOverloads constructor(
 
     fun updateItemList(
         activity: FragmentActivity,
-        itemList: MutableList<RecyclerViewListItem>
+        itemList: MutableList<RecyclerViewListItem>,
+        itemTypeFactory: RecyclerViewTypeFactory,
     ) {
         val layoutState = itemsRv.layoutManager?.onSaveInstanceState()
         adapter =
             MultiItemAdapter(
                 activity,
-                RecyclerViewTypeFactoryGenerated(),
+                itemTypeFactory,
                 itemList
             )
         itemsRv.layoutManager?.onRestoreInstanceState(layoutState)
@@ -231,13 +233,14 @@ class NxtBuzBottomSheet @JvmOverloads constructor(
 
     suspend fun showItemList(
         activity: FragmentActivity,
-        itemList: MutableList<RecyclerViewListItem>
+        itemList: MutableList<RecyclerViewListItem>,
+        itemTypeFactory: RecyclerViewTypeFactory,
     ) = suspendCancellableCoroutine<Unit> {
 
         adapter =
             MultiItemAdapter(
                 activity,
-                RecyclerViewTypeFactoryGenerated(),
+                itemTypeFactory,
                 itemList
             )
 
