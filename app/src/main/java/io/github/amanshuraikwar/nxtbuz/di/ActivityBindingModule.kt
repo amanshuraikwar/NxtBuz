@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import io.github.amanshuraikwar.nxtbuz.busroute.di.BusRouteModule
 import io.github.amanshuraikwar.nxtbuz.busstop.di.BusStopsModule
 import io.github.amanshuraikwar.nxtbuz.busstop.di.BusStopsProvides
 import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
@@ -66,6 +67,7 @@ abstract class ActivityBindingModule {
         StarredBusArrivalOptionsModule::class,
         MapModule::class,
         BusStopsModule::class,
+        BusRouteModule::class,
     ])
     internal abstract fun c(): MainActivity
 

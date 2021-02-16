@@ -14,17 +14,17 @@ import javax.inject.Singleton
 @Module
 class BusStopsProvides {
 
-    @Provides
-    @Singleton
-    @Named("bottomSheetSlideOffset")
-    fun provideBottomSheetSlideOffsetFlow(): MutableStateFlow<Float> {
-        return MutableStateFlow(0f)
-    }
-
-    @Provides
-    @Singleton
-    @Named("navigateToBusStopArrivals")
-    fun provideNavigateToBusStopArrivals(): MutableSharedFlow<BusStop> {
-        return MutableSharedFlow(replay = 0)
-    }
+//    @Provides
+//    @Singleton
+//    @Named("bottomSheetSlideOffset")
+//    fun provideBottomSheetSlideOffsetFlow(): MutableStateFlow<Float> {
+//        return MutableStateFlow(0f)
+//    }
+//
+//    @Provides
+//    @Singleton
+//    @Named("navigateToBusStopArrivals")
+//    fun provideNavigateToBusStopArrivals(): MutableSharedFlow<BusStop> {
+//        return MutableSharedFlow(replay = 0)
+//    }
 }
