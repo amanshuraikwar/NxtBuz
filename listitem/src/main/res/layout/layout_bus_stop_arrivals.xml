@@ -10,32 +10,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_arriving_bus_24"
-            app:tint="?colorSecondary" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small"
-            android:src="@drawable/ic_round_keyboard_arrow_right_24"
-            app:layout_constraintBottom_toBottomOf="@id/nextDeparture1Tv"
-            app:layout_constraintStart_toEndOf="@id/iconIv"
-            app:layout_constraintTop_toTopOf="@id/nextDeparture1Tv"
-            tools:ignore="ContentDescription" />
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/arrival1Tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/margin_small"
-            android:text="Fetching arrivals..."
-            android:textAppearance="?textAppearanceSubtitle1"
-            android:textColor="?android:textColorPrimary"
-            android:textStyle="bold" />
+            android:text="Arr"
+            android:textAppearance="@style/TextAppearance.AppTheme.Headline6.Bold"
+            android:textColor="?colorOnSurface" />
 
         <ImageView
             android:id="@+id/arrival2Iv"
@@ -43,10 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
             android:src="@drawable/ic_round_keyboard_arrow_right_24"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/nextDeparture1Tv"
-            app:layout_constraintStart_toEndOf="@id/iconIv"
-            app:layout_constraintTop_toTopOf="@id/nextDeparture1Tv"
+            android:visibility="visible"
             tools:ignore="ContentDescription" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -55,9 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/margin_small"
-            android:textAppearance="?textAppearanceSubtitle1"
-            android:textColor="?android:textColorSecondary"
-            android:visibility="invisible"
+            android:textAppearance="@style/TextAppearance.AppTheme.Headline6.Bold"
+            android:textColor="@color/colorOnSurfaceMedium"
+            android:visibility="visible"
             tools:text="05" />
 
         <ImageView
@@ -66,10 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
             android:src="@drawable/ic_round_keyboard_arrow_right_24"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/nextDeparture1Tv"
-            app:layout_constraintStart_toEndOf="@id/iconIv"
-            app:layout_constraintTop_toTopOf="@id/nextDeparture1Tv"
+            android:visibility="visible"
             tools:ignore="ContentDescription" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -78,9 +54,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/margin_small"
-            android:textAppearance="?textAppearanceSubtitle1"
-            android:textColor="?android:textColorSecondary"
-            android:visibility="invisible"
+            android:textAppearance="@style/TextAppearance.AppTheme.Headline6.Bold"
+            android:textColor="@color/colorOnSurfaceMedium"
+            android:visibility="visible"
             tools:text="13" />
     </LinearLayout>
 

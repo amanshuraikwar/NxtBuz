@@ -13,6 +13,7 @@ import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
 import io.github.amanshuraikwar.nxtbuz.listitem.*
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -128,7 +129,6 @@ class BusRouteViewModel @Inject constructor(
                 HeaderItem("Bus Stops")
             }
         )
-
 
         if (currentSequenceNumber > 1) {
             listItems.add(

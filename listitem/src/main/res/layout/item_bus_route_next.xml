@@ -29,16 +29,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/circle" />
 
-    <View
-        android:id="@+id/radar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/ic_arrivals_radar_small_primary_40"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@id/busStopDescriptionTv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/busStopDescriptionTv" />
+<!--    <View-->
+<!--        android:id="@+id/radar"-->
+<!--        android:layout_width="40dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:background="@drawable/ic_arrivals_radar_small_primary_40"-->
+<!--        android:visibility="invisible"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/busStopDescriptionTv"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@id/busStopDescriptionTv" />-->
 
     <View
         android:id="@+id/circle"
@@ -58,8 +58,8 @@
         android:paddingTop="@dimen/padding_normal"
         android:paddingEnd="@dimen/padding_normal"
         android:paddingBottom="@dimen/padding_normal"
-        android:textAppearance="?textAppearanceBody2"
-        android:textColor="?android:textColorSecondary"
+        android:textAppearance="?textAppearanceBody1"
+        android:textColor="@color/colorOnSurface"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Springdale Condo" />
 
