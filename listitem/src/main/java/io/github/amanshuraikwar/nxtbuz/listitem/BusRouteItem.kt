@@ -64,11 +64,11 @@ open class BusRouteItem(
                     view.arrival3Iv.visibility = View.INVISIBLE
                     view.arrival3Tv.visibility = View.INVISIBLE
                 }
-                view.radar.visibility = View.VISIBLE
+                //view.radar.visibility = View.VISIBLE
                 view.arrivals.visibility = View.VISIBLE
                 view.goToBusStopBtn.setOnClickListener { onGoToBusStopClick(busStopCode) }
             } else {
-                view.radar.visibility = View.INVISIBLE
+                //view.radar.visibility = View.INVISIBLE
                 view.arrivals.visibility = View.GONE
             }
             if (lastUpdatedAt.isEmpty()) {

@@ -32,10 +32,10 @@ class BusRouteHeaderItem(
     override fun bind(view: View, activity: FragmentActivity) {
 
         view.serviceNumberTv.text = busServiceNumber
-        view.destinationTv.text =
-            "$originBusStopDescription ${activity.getString(R.string.origin_destination)} $destinationBusStopDescription"
+        view.destinationTv.text = destinationBusStopDescription
+        view.originTv.text = "from $originBusStopDescription"
         view.destinationTv.isSelected = true
-        view.infoTv.text = "$totalBusStops Stops  •  $totalDistance KM"
+        //view.infoTv.text = "$totalBusStops Stops  •  $totalDistance KM"
         when (starred) {
             null -> {
                 view.starIv.visibility = View.GONE

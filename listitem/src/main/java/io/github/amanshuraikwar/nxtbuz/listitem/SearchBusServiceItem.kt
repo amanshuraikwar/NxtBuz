@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import io.github.amanshuraikwar.annotations.ListItem
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.common.model.BusService
-import kotlinx.android.synthetic.main.item_bus_route_header.view.*
+import kotlinx.android.synthetic.main.item_search_bus_service.view.*
 
 @ListItem(layoutResName = "item_search_bus_service")
 class SearchBusServiceItem(
