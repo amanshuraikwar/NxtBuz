@@ -5,7 +5,7 @@ import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
 buildscript {
 
     ext {
-        kotlin_version = '1.4-M2'
+        kotlin_version = '1.4.30'
     }
     ext.buildConfig = [
             'compileSdk': 29,
