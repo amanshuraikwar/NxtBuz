@@ -5,11 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreenState.*
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItems
+import io.github.amanshuraikwar.nxtbuz.busstop.theme.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
@@ -31,21 +35,27 @@ class BusStopArrivalsFragment : DaggerFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_bus_stop_arrivals, null)
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                NxtBuzTheme {
+                    BusStopArrivalItems()
+                }
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        nxtBuzBottomSheet.setupItemListUi(requireActivity()) { slideOffset ->
-            viewModel.updateBottomSheetSlideOffset(slideOffset)
-        }
-        nxtBuzBottomSheet.setupErrorUi onRetry@{
-            viewModel.init(
-                busStop = getBusStop() ?: return@onRetry
-            )
-        }
-        nxtBuzBottomSheet.setupLoadingUi()
+//        nxtBuzBottomSheet.setupItemListUi(requireActivity()) { slideOffset ->
+//            viewModel.updateBottomSheetSlideOffset(slideOffset)
+//        }
+//        nxtBuzBottomSheet.setupErrorUi onRetry@{
+//            viewModel.init(
+//                busStop = getBusStop() ?: return@onRetry
+//            )
+//        }
+//        nxtBuzBottomSheet.setupLoadingUi()
         setupViewModel()
     }
 
@@ -56,31 +66,31 @@ class BusStopArrivalsFragment : DaggerFragment() {
     private fun setupViewModel() {
         viewModel = viewModelProvider(viewModelFactory)
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.busStopArrivalsScreenState.collect { screenState ->
-                when (screenState) {
-                    is Success -> {
-                        nxtBuzBottomSheet.hideError()
-                        if (nxtBuzBottomSheet.isItemListVisible()) {
-                            nxtBuzBottomSheet.updateItemList(
-                                requireActivity(),
-                                screenState.itemList,
-                                RecyclerViewTypeFactoryGenerated()
-                            )
-                        } else {
-                            nxtBuzBottomSheet.showItemList(
-                                requireActivity(),
-                                screenState.itemList,
-                                RecyclerViewTypeFactoryGenerated()
-                            )
-                        }
-                    }
-                    is Failed -> {
-                        nxtBuzBottomSheet.hideItemList()
-                        nxtBuzBottomSheet.showError(screenState.error)
-                    }
-                }
-                delay(300)
-            }
+//            viewModel.busStopArrivalsScreenState.collect { screenState ->
+//                when (screenState) {
+//                    is Success -> {
+//                        nxtBuzBottomSheet.hideError()
+//                        if (nxtBuzBottomSheet.isItemListVisible()) {
+//                            nxtBuzBottomSheet.updateItemList(
+//                                requireActivity(),
+//                                screenState.itemList,
+//                                RecyclerViewTypeFactoryGenerated()
+//                            )
+//                        } else {
+//                            nxtBuzBottomSheet.showItemList(
+//                                requireActivity(),
+//                                screenState.itemList,
+//                                RecyclerViewTypeFactoryGenerated()
+//                            )
+//                        }
+//                    }
+//                    is Failed -> {
+//                        nxtBuzBottomSheet.hideItemList()
+//                        nxtBuzBottomSheet.showError(screenState.error)
+//                    }
+//                }
+//                delay(300)
+//            }
         }
         viewModel.init(getBusStop() ?: return)
     }
