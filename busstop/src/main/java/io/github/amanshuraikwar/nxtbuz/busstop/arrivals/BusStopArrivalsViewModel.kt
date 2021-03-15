@@ -1,16 +1,16 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals
 
 import android.util.Log
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.busstop.R
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.Data
 import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNavigationParams
 import io.github.amanshuraikwar.nxtbuz.common.model.screenstate.ScreenState
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
@@ -67,6 +67,8 @@ class BusStopArrivalsViewModel @Inject constructor(
     val busStopArrivalsScreenState: SharedFlow<BusStopArrivalsScreenState> =
         _busStopArrivalsScreenState
 
+    internal val listItems = SnapshotStateList<BusStopArrivalListItemData>()
+
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
@@ -89,36 +91,51 @@ class BusStopArrivalsViewModel @Inject constructor(
     }
 
     private suspend fun pushInitListItems(busStop: BusStop) {
-        val listItems = mutableListOf<RecyclerViewListItem>()
-
-        listItems.add(
-            HeaderItem("Bus Stop")
-        )
-
-        listItems.add(
-            BusStopHeaderItem(
-                busStop,
-                R.drawable.ic_bus_stop_24
-            )
-        )
-
-        listItems.add(
-            HeaderItem("Departures")
-        )
-
-        busStop.operatingBusList.forEach { bus ->
-            listItems.add(
-                BusArrivalCompactItem(
-                    busStopCode = busStop.code,
+        listItems.add(BusStopArrivalListItemData.Header("Bus Stop"))
+        listItems.add(BusStopArrivalListItemData.Header("Departures"))
+        listItems.addAll(
+            busStop.operatingBusList.map { bus ->
+                BusStopArrivalListItemData.BusStopArrival(
                     busServiceNumber = bus.serviceNumber,
-                    starred = false,
-                    onStarToggle = onStarToggle,
-                    onClicked = onBusServiceClicked
+                    destinationBusStopDescription = "Fetching...",
+                    busLoad = BusLoad.SEA,
+                    wheelchairAccess = false,
+                    busType = BusType.SD,
+                    arrival = "Fetching..."
                 )
-            )
-        }
+            }
+        )
 
-        _busStopArrivalsScreenState.emit(BusStopArrivalsScreenState.Success(listItems))
+//        val listItems = mutableListOf<RecyclerViewListItem>()
+//
+//        listItems.add(
+//            HeaderItem("Bus Stop")
+//        )
+//
+//        listItems.add(
+//            BusStopHeaderItem(
+//                busStop,
+//                R.drawable.ic_bus_stop_24
+//            )
+//        )
+//
+//        listItems.add(
+//            HeaderItem("Departures")
+//        )
+//
+//        busStop.operatingBusList.forEach { bus ->
+//            listItems.add(
+//                BusArrivalCompactItem(
+//                    busStopCode = busStop.code,
+//                    busServiceNumber = bus.serviceNumber,
+//                    starred = false,
+//                    onStarToggle = onStarToggle,
+//                    onClicked = onBusServiceClicked
+//                )
+//            )
+//        }
+//
+//        _busStopArrivalsScreenState.emit(BusStopArrivalsScreenState.Success(listItems))
     }
 
     private fun failed(error: Error) {
@@ -247,16 +264,37 @@ class BusStopArrivalsViewModel @Inject constructor(
         busArrivals.forEach { busArrival ->
             if (busArrival.arrivals is Arrivals.Arriving) {
                 val arrivals = busArrival.arrivals as Arrivals.Arriving
-                arrivingBusListItems.add(
-                    BusArrivalCompactItem(
-                        busStopCode = busStop.code,
-                        busServiceNumber = busArrival.serviceNumber,
-                        arrivingBus = arrivals.nextArrivingBus,
-                        starred = busArrival.starred,
-                        onStarToggle,
-                        onBusServiceClicked
-                    )
-                )
+                this@BusStopArrivalsViewModel.listItems
+                    .indexOfFirst {
+                        it is BusStopArrivalListItemData.BusStopArrival
+                                && it.busServiceNumber == busArrival.serviceNumber
+                    }
+                    .let { index ->
+                        if (index != -1) {
+                            val currentData =
+                                this@BusStopArrivalsViewModel.listItems[index]
+                                        as? BusStopArrivalListItemData.BusStopArrival
+                                    ?: return@let
+                            this@BusStopArrivalsViewModel.listItems[index] = currentData.copy(
+                                arrival = arrivals.nextArrivingBus.arrival,
+                                destinationBusStopDescription =
+                                arrivals.nextArrivingBus.destination.busStopDescription,
+                                busType = arrivals.nextArrivingBus.type,
+                                wheelchairAccess = arrivals.nextArrivingBus.feature == "WAB",
+                                busLoad = arrivals.nextArrivingBus.load
+                            )
+                        }
+                    }
+//                arrivingBusListItems.add(
+//                    BusArrivalCompactItem(
+//                        busStopCode = busStop.code,
+//                        busServiceNumber = busArrival.serviceNumber,
+//                        arrivingBus = arrivals.nextArrivingBus,
+//                        starred = busArrival.starred,
+//                        onStarToggle,
+//                        onBusServiceClicked
+//                    )
+//                )
             } else {
                 notArrivingBusListItems.add(
                     BusArrivalErrorItem(

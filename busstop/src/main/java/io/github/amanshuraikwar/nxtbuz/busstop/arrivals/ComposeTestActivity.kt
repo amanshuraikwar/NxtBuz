@@ -16,9 +16,9 @@ class ComposeTestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            NxtBuzTheme {
-                BusStopArrivalItems()
-            }
+//            NxtBuzTheme {
+//                BusStopArrivalItems()
+//            }
         }
     }
 }
