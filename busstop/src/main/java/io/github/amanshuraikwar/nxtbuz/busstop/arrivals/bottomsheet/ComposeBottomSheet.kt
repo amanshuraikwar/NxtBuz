@@ -27,11 +27,11 @@ fun ComposeBottomSheet(
     modifier: Modifier = Modifier,
     sheetContent: @Composable () -> Unit,
     sheetPeekHeight: Dp = BottomSheetScaffoldDefaults.SheetPeekHeight,
+    bottomSheetState: BottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed),
     backgroundColor: Color = MaterialTheme.colors.background,
     contentColor: Color = contentColorFor(backgroundColor),
     body: @Composable () -> Unit
 ) {
-    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
 
     BoxWithConstraints(modifier) {
         val fullHeight = constraints.maxHeight.toFloat()
