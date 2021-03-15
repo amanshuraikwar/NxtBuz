@@ -1,9 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
+import android.util.Log
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,27 +13,36 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.StarBorder
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.collapse
+import androidx.compose.ui.semantics.expand
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.theme.star
+import io.github.amanshuraikwar.nxtbuz.busstop.theme.white
 import io.github.amanshuraikwar.nxtbuz.busstop.util.PreviewSurface
 import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
 import io.github.amanshuraikwar.nxtbuz.common.model.BusType
+import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -41,9 +52,36 @@ fun BusStopArrivalItems(vm: ComposeTestViewModel = viewModel()) {
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
     )
 
-    BottomSheetScaffold(
-        backgroundColor = Color.Transparent,
-        scaffoldState = bottomSheetScaffoldState,
+//    Layout(
+//        modifier = Modifier
+//            .background(color = white)
+//            .fillMaxHeight()
+//            .fillMaxWidth(),
+//        content = {
+//            Text("hello helo helo heloheloheloheloheloheohkeo")
+//            Surface(
+//                color = Color.Black
+//            ) {
+//                Text("world")
+//            }
+//        }
+//    ) { measurables, constraints ->
+//        val placeables = measurables.map { it.measure(constraints.copy(minHeight = 0)) }
+//
+//        layout(placeables.maxOf { it.width }, placeables.sumBy { it.height }) {
+//            var y = 100
+//
+//            placeables.forEach {
+//                Log.d("yoyo", "$y")
+//                it.placeRelative(0, y)
+//                y += it.height
+//            }
+//        }
+//    }
+
+    ComposeBottomSheet(
+//        backgroundColor = Color.Transparent,
+//        scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
             LazyColumn {
                 items(vm.list) { item ->
@@ -55,6 +93,130 @@ fun BusStopArrivalItems(vm: ComposeTestViewModel = viewModel()) {
         }, sheetPeekHeight = 200.dp
     ) {
 
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun ComposeBottomSheet(
+    sheetContent: @Composable () -> Unit,
+    sheetPeekHeight: Dp,
+    body: @Composable () -> Unit = {
+        Surface(
+            color = Color.Transparent
+        ) {
+            Column(Modifier.fillMaxSize()) {
+
+            }
+        }
+    }
+) {
+    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
+
+    BoxWithConstraints(/*modifier*/) {
+        val fullHeight = constraints.maxHeight.toFloat()
+        val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() }
+        var bottomSheetHeight by remember { mutableStateOf(fullHeight) }
+
+        ComposeBottomSheetStack(
+            body = {
+                Box {
+                    body()
+                }
+            },
+            bottomSheet = {
+                Box(
+                    Modifier
+                        .nestedScroll(bottomSheetState.PreUpPostDownNestedScrollConnection)
+                        .swipeable(
+                            state = bottomSheetState,
+                            anchors = mapOf(
+                                fullHeight - peekHeightPx to BottomSheetValue.Collapsed,
+                                fullHeight - bottomSheetHeight to BottomSheetValue.Expanded
+                            ),
+                            orientation = Orientation.Vertical,
+                            enabled = true,
+                            resistance = null
+                        ).background(color = MaterialTheme.colors.surface)
+                ) {
+                    sheetContent()
+                }
+            },
+            bottomSheetOffset = bottomSheetState.offset
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+val <T> SwipeableState<T>.PreUpPostDownNestedScrollConnection: NestedScrollConnection
+    get() = object : NestedScrollConnection {
+        override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+            val delta = available.toFloat()
+            return if (delta < 0 && source == NestedScrollSource.Drag) {
+                performDrag(delta).toOffset()
+            } else {
+                Offset.Zero
+            }
+        }
+
+        override fun onPostScroll(
+            consumed: Offset,
+            available: Offset,
+            source: NestedScrollSource
+        ): Offset {
+            return if (source == NestedScrollSource.Drag) {
+                performDrag(available.toFloat()).toOffset()
+            } else {
+                Offset.Zero
+            }
+        }
+
+        override suspend fun onPreFling(available: Velocity): Velocity {
+            val toFling = Offset(available.x, available.y).toFloat()
+            return if (toFling < 0 && offset.value > Float.NEGATIVE_INFINITY) {
+                performFling(velocity = toFling)
+                // since we go to the anchor with tween settling, consume all for the best UX
+                available
+            } else {
+                Velocity.Zero
+            }
+        }
+
+        override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+            performFling(velocity = Offset(available.x, available.y).toFloat())
+            return available
+        }
+
+        private fun Float.toOffset(): Offset = Offset(0f, this)
+
+        private fun Offset.toFloat(): Float = this.y
+    }
+
+@Composable
+private fun ComposeBottomSheetStack(
+    body: @Composable () -> Unit,
+    bottomSheet: @Composable () -> Unit,
+    bottomSheetOffset: State<Float>
+) {
+    Layout(
+        content = {
+            body()
+            bottomSheet()
+        }
+    ) { measurables, constraints ->
+        val placeable = measurables.first().measure(constraints)
+        Log.d("yoyo", "ComposeBottomSheetStack: ${measurables.size}")
+        layout(placeable.width, placeable.height) {
+            placeable.placeRelative(0, 0)
+
+            val (sheetPlaceable) = measurables.drop(1).map {
+                it.measure(constraints.copy(minWidth = 0, minHeight = 0))
+            }
+
+            val sheetOffsetY = bottomSheetOffset.value.roundToInt()
+
+            sheetPlaceable.placeRelative(0, sheetOffsetY)
+        }
     }
 }
 
@@ -197,7 +359,7 @@ fun BusArrival(
 
         Icon(
             painter = painterResource(
-                when(busLoad){
+                when (busLoad) {
                     BusLoad.SEA -> R.drawable.ic_bus_load_1_16
                     BusLoad.SDA -> R.drawable.ic_bus_load_2_16
                     BusLoad.LSD -> R.drawable.ic_bus_load_3_16
