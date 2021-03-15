@@ -10,11 +10,17 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ComposeTestViewModel : ViewModel() {
-    val list = SnapshotStateList<Data>()
+    val list = SnapshotStateList<Data>().apply {
+        addAll(
+            List(20) {
+                Data()
+            }
+        )
+    }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(2000)
+            //delay(2000)
             list.addAll(
                 List(20) {
                     Data()

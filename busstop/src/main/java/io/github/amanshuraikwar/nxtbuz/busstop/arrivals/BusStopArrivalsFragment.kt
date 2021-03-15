@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -30,16 +31,18 @@ class BusStopArrivalsFragment : DaggerFragment() {
 
     private lateinit var viewModel: BusStopArrivalsViewModel
 
+    @ExperimentalMaterialApi
     @SuppressLint("InflateParams")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        setupViewModel()
         return ComposeView(requireContext()).apply {
             setContent {
                 NxtBuzTheme {
-                    BusStopArrivalItems()
+                    BusStopArrivalItems(viewModel)
                 }
             }
         }
@@ -56,7 +59,7 @@ class BusStopArrivalsFragment : DaggerFragment() {
 //            )
 //        }
 //        nxtBuzBottomSheet.setupLoadingUi()
-        setupViewModel()
+        //setupViewModel()
     }
 
     private fun getBusStop(): BusStop? {
