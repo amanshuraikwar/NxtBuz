@@ -1,15 +1,20 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -19,31 +24,24 @@ import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.bottomsheet.ComposeBottomSheet
-import io.github.amanshuraikwar.nxtbuz.busstop.theme.outline
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
 fun BusStopArrivalItems(vm: BusStopArrivalsViewModel) {
+    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
+    val coroutineScope = rememberCoroutineScope()
+
     ComposeBottomSheet(
+        bottomSheetState = bottomSheetState,
         backgroundColor = Color.Transparent,
         sheetContent = {
-            val puckColor = MaterialTheme.colors.outline
-
-            Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(12.dp),
-            ) {
-                drawRoundRect(
-                    color = puckColor,
-                    topLeft = Offset(center.x, size.height) - Offset(24.dp.toPx(), 4.dp.toPx()),
-                    size = Size(48.dp.toPx(), 4.dp.toPx()),
-                    cornerRadius = CornerRadius(2.dp.toPx())
-                )
-            }
-
+            Puck()
+            val lazyListState = rememberLazyListState()
             LazyColumn(
-                contentPadding = PaddingValues(bottom = 128.dp, top = 12.dp)
+                contentPadding = PaddingValues(bottom = 128.dp, top = 12.dp),
+                state = lazyListState,
             ) {
                 items(
                     items = vm.listItems,
@@ -58,6 +56,13 @@ fun BusStopArrivalItems(vm: BusStopArrivalsViewModel) {
                     when (item) {
                         is BusStopArrivalListItemData.BusStopArrival -> {
                             BusStopArrivalItem(
+                                modifier = Modifier.clickable {
+                                    coroutineScope.launch {
+                                        bottomSheetState.collapse()
+                                        vm.onBusServiceClicked(item.busServiceNumber)
+                                        lazyListState.scrollToItem(0)
+                                    }
+                                },
                                 data = item
                             )
                         }

@@ -37,7 +37,7 @@ class BusStopArrivalsViewModel @Inject constructor(
 
     }
 
-    private val onBusServiceClicked: (busServiceNumber: String) -> Unit = {
+    val onBusServiceClicked: (busServiceNumber: String) -> Unit = {
         viewModelScope.launch(coroutineContext) {
             navigateToBusRoute.emit(
                 BusRouteNavigationParams(
