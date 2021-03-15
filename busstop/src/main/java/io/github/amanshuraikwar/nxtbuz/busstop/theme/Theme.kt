@@ -60,6 +60,9 @@ val Color.medium: Color
 val Color.disabled: Color
     get() = this.copy(alpha = 0.38f)
 
+val Colors.outline: Color
+    get() = this.onSurface.disabled
+
 @Composable
 fun NxtBuzTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
     val colors = if (darkTheme) {
