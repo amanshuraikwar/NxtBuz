@@ -22,9 +22,9 @@ fun BusArrivalEntity.getArrivalTimeStr(): String {
         )
 
     return when {
-        timeDiff >= 60 -> "60+"
-        timeDiff > 0 -> String.format("%02d", timeDiff)
-        else -> "Arr"
+        timeDiff >= 60 -> "in 60+ mins"
+        timeDiff > 0 -> String.format("in %02d mins", timeDiff)
+        else -> "Arriving Now"
     }
 }
 

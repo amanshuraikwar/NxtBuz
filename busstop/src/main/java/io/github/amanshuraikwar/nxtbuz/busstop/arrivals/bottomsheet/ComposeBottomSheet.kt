@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
+package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.bottomsheet
 
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -65,7 +65,8 @@ fun ComposeBottomSheet(
                     shape = MaterialTheme.shapes.large.copy(
                         bottomEnd = CornerSize(0.dp),
                         bottomStart = CornerSize(0.dp)
-                    )
+                    ),
+                    elevation = BottomSheetScaffoldDefaults.SheetElevation
                 ) {
                     sheetContent()
                 }
