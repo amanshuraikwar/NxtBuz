@@ -9,11 +9,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.bottomsheet.ComposeBottomSheet
 
 @ExperimentalMaterialApi
 @Composable
 fun BusStopArrivalItems(vm: BusStopArrivalsViewModel) {
-
     ComposeBottomSheet(
         backgroundColor = Color.Transparent,
         sheetContent = {
@@ -35,6 +35,11 @@ fun BusStopArrivalItems(vm: BusStopArrivalsViewModel) {
                         is BusStopArrivalListItemData.Header -> {
                             Header(
                                 title = item.title
+                            )
+                        }
+                        is BusStopArrivalListItemData.BusStopHeader -> {
+                            BusStopHeaderItem(
+                                data = item
                             )
                         }
                     }

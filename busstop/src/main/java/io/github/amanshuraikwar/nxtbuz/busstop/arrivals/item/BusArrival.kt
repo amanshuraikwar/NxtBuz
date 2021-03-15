@@ -1,12 +1,12 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.theme.h6Bold
+import io.github.amanshuraikwar.nxtbuz.busstop.theme.medium
 import io.github.amanshuraikwar.nxtbuz.busstop.util.PreviewSurface
 import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
 
@@ -30,6 +31,7 @@ fun BusArrival(
             text = arrival,
             style = MaterialTheme.typography.h6Bold,
             color = MaterialTheme.colors.onSurface,
+            modifier = Modifier.animateContentSize()
         )
 
         Spacer(modifier = Modifier.size(16.dp))
@@ -58,6 +60,22 @@ fun BusArrival(
             modifier = Modifier.size(18.dp),
             contentDescription = "Wheelchair Access",
             tint = MaterialTheme.colors.onSurface
+        )
+    }
+}
+
+@Composable
+fun BusArrival(
+    arrival: String,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = arrival,
+            style = MaterialTheme.typography.h6Bold,
+            color = MaterialTheme.colors.onSurface.medium,
+            modifier = Modifier.animateContentSize()
         )
     }
 }

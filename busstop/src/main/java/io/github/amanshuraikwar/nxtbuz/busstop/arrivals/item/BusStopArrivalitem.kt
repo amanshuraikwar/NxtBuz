@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -48,25 +49,43 @@ fun BusStopArrivalItem(
                 .fillMaxWidth()
                 .padding(top = 16.dp, start = 16.dp, bottom = 16.dp)
         ) {
-            BusService(
-                busServiceNumber = data.busServiceNumber,
-                busType = data.busType
-            )
+            when (data) {
+                is BusStopArrivalListItemData.BusStopArrival.Arriving -> {
+                    BusService(
+                        busServiceNumber = data.busServiceNumber,
+                        busType = data.busType
+                    )
 
-            Column(
-                modifier = Modifier.padding(top = 4.dp, start = 16.dp)
-            ) {
-                BusArrival(
-                    arrival = data.arrival,
-                    busLoad = data.busLoad,
-                    wheelchairAccess = data.wheelchairAccess
-                )
+                    Column(
+                        modifier = Modifier.padding(top = 4.dp, start = 16.dp)
+                    ) {
+                        BusArrival(
+                            arrival = data.arrival,
+                            busLoad = data.busLoad,
+                            wheelchairAccess = data.wheelchairAccess
+                        )
 
-                Spacer(modifier = Modifier.size(2.dp))
+                        Spacer(modifier = Modifier.size(2.dp))
 
-                BusDestination(
-                    destinationBusStopDescription = data.destinationBusStopDescription
-                )
+                        BusDestination(
+                            destinationBusStopDescription = data.destinationBusStopDescription
+                        )
+                    }
+
+                }
+                is BusStopArrivalListItemData.BusStopArrival.NotArriving -> {
+                    BusService(
+                        busServiceNumber = data.busServiceNumber,
+                    )
+
+                    Column(
+                        modifier = Modifier.padding(top = 4.dp, start = 16.dp)
+                    ) {
+                        BusArrival(
+                            arrival = data.reason,
+                        )
+                    }
+                }
             }
         }
 

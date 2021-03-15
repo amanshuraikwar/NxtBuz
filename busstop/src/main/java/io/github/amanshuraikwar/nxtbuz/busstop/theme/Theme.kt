@@ -54,6 +54,12 @@ private val LightColorPalette = lightColors(
 val Colors.star: Color
     get() = if (isLight) yellow else yellowLighter
 
+val Color.medium: Color
+    get() = this.copy(alpha = 0.74f)
+
+val Color.disabled: Color
+    get() = this.copy(alpha = 0.38f)
+
 @Composable
 fun NxtBuzTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
     val colors = if (darkTheme) {
