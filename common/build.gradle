@@ -22,6 +22,21 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
     }
+
+    buildFeatures {
+        compose true
+
+        // Disable unused AGP features
+        buildConfig false
+        aidl false
+        renderScript false
+        resValues false
+        shaders false
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.0.0-beta02'
+    }
 }
 
 dependencies {
@@ -54,4 +69,8 @@ dependencies {
     implementation Libs.AndroidX.constraintlayout
 
     implementation Libs.AndroidX.coreKtx
+
+    for (dependency in Libs.AndroidX.Compose.all) {
+        implementation dependency
+    }
 }

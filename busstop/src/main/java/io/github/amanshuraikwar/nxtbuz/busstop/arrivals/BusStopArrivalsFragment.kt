@@ -14,7 +14,7 @@ import dagger.android.support.DaggerFragment
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreenState.*
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItems
-import io.github.amanshuraikwar.nxtbuz.busstop.theme.NxtBuzTheme
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
@@ -46,20 +46,6 @@ class BusStopArrivalsFragment : DaggerFragment() {
                 }
             }
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-//        nxtBuzBottomSheet.setupItemListUi(requireActivity()) { slideOffset ->
-//            viewModel.updateBottomSheetSlideOffset(slideOffset)
-//        }
-//        nxtBuzBottomSheet.setupErrorUi onRetry@{
-//            viewModel.init(
-//                busStop = getBusStop() ?: return@onRetry
-//            )
-//        }
-//        nxtBuzBottomSheet.setupLoadingUi()
-        //setupViewModel()
     }
 
     private fun getBusStop(): BusStop? {

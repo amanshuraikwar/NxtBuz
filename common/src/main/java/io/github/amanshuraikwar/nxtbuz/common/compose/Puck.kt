@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
+package io.github.amanshuraikwar.nxtbuz.common.compose
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +10,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.busstop.theme.outline
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.outline
 
 @Composable
 fun Puck() {

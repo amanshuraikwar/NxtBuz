@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
+package io.github.amanshuraikwar.nxtbuz.common.compose
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
@@ -12,7 +12,7 @@ import java.util.*
 fun Header(title: String) {
     Text(
         text = title.toUpperCase(Locale.ROOT),
-        Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp),
+        Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 8.dp),
         color = MaterialTheme.colors.onSurface,
         style = MaterialTheme.typography.overline
     )

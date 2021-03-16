@@ -20,13 +20,21 @@
         <entry key="../../../../layout/compose-model-1615803548284.xml" value="0.7045908183632734" />
         <entry key="../../../../layout/compose-model-1615806517702.xml" value="0.32685185185185184" />
         <entry key="../../../../layout/compose-model-1615806586775.xml" value="1.0" />
+        <entry key="../../../../layout/compose-model-1615818666019.xml" value="0.11903774367482373" />
+        <entry key="../../../../layout/compose-model-1615819260589.xml" value="0.7045908183632734" />
+        <entry key="../../../../layout/compose-model-1615870792155.xml" value="0.32685185185185184" />
+        <entry key="../../../../layout/compose-model-1615874037465.xml" value="0.20045700041545492" />
+        <entry key="../../../../layout/compose-model-1615874633980.xml" value="0.20045700041545492" />
         <entry key="../../../../layout/custom_preview.xml" value="0.35462962962962963" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1984375" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.14719202898550723" />
         <entry key="busstop/src/main/res/layout/fragment_bus_stop_arrivals.xml" value="0.22476142641888497" />
+        <entry key="common/src/main/res/drawable/ic_previous_bus_stops_4_25.xml" value="0.2875" />
         <entry key="common/src/main/res/layout/compose_nxt_buz_bottom_sheet.xml" value="0.26145833333333335" />
         <entry key="common/src/main/res/layout/nxt_buz_bottom_sheet.xml" value="0.4311594202898551" />
         <entry key="listitem/src/main/res/layout/item_bus_arrival_compact.xml" value="0.14066586013905222" />
+        <entry key="listitem/src/main/res/layout/item_bus_route_header.xml" value="0.12656956303365144" />
+        <entry key="listitem/src/main/res/layout/item_bus_route_previous_all.xml" value="0.38663171690694625" />
         <entry key="listitem/src/main/res/layout/item_bus_stop_header.xml" value="0.22476142641888497" />
         <entry key="listitem/src/main/res/layout/item_list_header.xml" value="0.22476142641888497" />
       </map>
