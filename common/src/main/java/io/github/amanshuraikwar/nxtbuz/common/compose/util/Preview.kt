@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.amanshuraikwar.nxtbuz.busstop.theme
+package io.github.amanshuraikwar.nxtbuz.common.compose.util
 
-import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.NxtBuzTheme
 
-
-val blueLighter = Color(0xFF64B5F6)
-val blue = Color(0xFF08ACFD)
-val blueDark = Color(0xFF0288D1)
-val white = Color(0xFFffffff)
-val blueGrey50 = Color(0xFFeef0f2)
-val redLighter = Color(0xFFE57373)
-val red = Color(0xFFC62828)
-val blueGreyDark = Color(0xFF263238)
-val yellow = Color(0xFFFBC02D)
-val yellowLighter = Color(0xFFFFF176)
-val gray900 = Color(0xFF212121)
-val black = Color(0xFF000000)
+@Composable
+fun PreviewSurface(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+    NxtBuzTheme(darkTheme) {
+        Surface(
+            color = MaterialTheme.colors.background
+        ) {
+            content()
+        }
+    }
+}

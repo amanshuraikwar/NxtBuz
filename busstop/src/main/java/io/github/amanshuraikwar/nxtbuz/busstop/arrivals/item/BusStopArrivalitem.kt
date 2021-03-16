@@ -18,8 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
-import io.github.amanshuraikwar.nxtbuz.busstop.theme.star
-import io.github.amanshuraikwar.nxtbuz.busstop.util.PreviewSurface
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
+import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
 
 @Composable
 fun BusStopArrivalItem(

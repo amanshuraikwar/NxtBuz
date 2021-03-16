@@ -1,30 +1,23 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.bottomsheet.ComposeBottomSheet
-import kotlinx.coroutines.delay
+import io.github.amanshuraikwar.nxtbuz.common.compose.ComposeBottomSheet
+import io.github.amanshuraikwar.nxtbuz.common.compose.Header
+import io.github.amanshuraikwar.nxtbuz.common.compose.Puck
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi

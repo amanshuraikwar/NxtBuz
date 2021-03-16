@@ -82,7 +82,7 @@ class BusStopArrivalsViewModel @Inject constructor(
 
     @WorkerThread
     private fun pushInitListItems(busStop: BusStop) {
-        listItems.add(BusStopArrivalListItemData.Header("Bus Stop"))
+//        listItems.add(BusStopArrivalListItemData.Header("Bus Stop"))
 
         listItems.add(
             BusStopArrivalListItemData.BusStopHeader(

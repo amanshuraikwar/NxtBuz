@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.amanshuraikwar.nxtbuz.busstop.theme
+package io.github.amanshuraikwar.nxtbuz.common.compose.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

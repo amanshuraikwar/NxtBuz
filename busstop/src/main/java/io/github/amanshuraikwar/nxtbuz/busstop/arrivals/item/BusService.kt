@@ -15,9 +15,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
-import io.github.amanshuraikwar.nxtbuz.busstop.theme.disabled
-import io.github.amanshuraikwar.nxtbuz.busstop.theme.h6Bold
-import io.github.amanshuraikwar.nxtbuz.busstop.theme.medium
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.common.model.BusType
 
 @Composable
@@ -69,38 +69,36 @@ fun BusService(
 fun BusService(
     busServiceNumber: String,
 ) {
-    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_bus_normal_16),
+            modifier = Modifier.size(16.dp),
+            contentDescription = "Bus Type",
+            tint = MaterialTheme.colors.onSurface.medium
+        )
+
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .background(
+                    shape = MaterialTheme.shapes.small,
+                    color = MaterialTheme.colors.primary.medium
+                )
+                .padding(vertical = 4.dp, horizontal = 8.dp)
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_bus_normal_16),
-                modifier = Modifier.size(16.dp),
-                contentDescription = "Bus Type",
-                tint = MaterialTheme.colors.onSurface.medium
+            Text(
+                text = "961M",
+                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Normal),
+                modifier = Modifier.alpha(0f)
             )
 
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .background(
-                        shape = MaterialTheme.shapes.small,
-                        color = MaterialTheme.colors.primary.medium
-                    )
-                    .padding(vertical = 4.dp, horizontal = 8.dp)
-            ) {
-                Text(
-                    text = "961M",
-                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Normal),
-                    modifier = Modifier.alpha(0f)
-                )
-
-                Text(
-                    text = busServiceNumber,
-                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Normal),
-                    color = MaterialTheme.colors.onPrimary.medium
-                )
-            }
+            Text(
+                text = busServiceNumber,
+                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Normal),
+                color = MaterialTheme.colors.onPrimary.medium
+            )
         }
     }
 }
