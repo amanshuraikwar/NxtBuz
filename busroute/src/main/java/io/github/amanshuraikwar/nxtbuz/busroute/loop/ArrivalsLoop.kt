@@ -6,10 +6,9 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-@ExperimentalCoroutinesApi
 class ArrivalsLoop(
     private val busServiceNumber: String,
-    private val busStopCode: String,
+    val busStopCode: String,
     private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
     private val dispatcher: CoroutineDispatcher,
 ) {
