@@ -64,7 +64,11 @@ fun BusRouteItems(vm: BusRouteViewModel) {
                             )
                         }
                         is BusRouteListItemData.BusRouteNode.Current -> {
-                            BusRouteCurrentItem(busStopDescription = item.busStopDescription)
+                            BusRouteCurrentItem(
+                                busStopDescription = item.busStopDescription,
+                                position = item.position,
+                                arrivalState = item.arrivalState,
+                            )
                         }
                         is BusRouteListItemData.BusRouteNode.Previous -> {
                             BusRoutePreviousItem(
@@ -75,7 +79,14 @@ fun BusRouteItems(vm: BusRouteViewModel) {
                         is BusRouteListItemData.BusRouteNode.Next -> {
                             BusRouteNextItem(
                                 busStopDescription = item.busStopDescription,
-                                position = item.position
+                                position = item.position,
+                                arrivalState = item.arrivalState,
+                                onExpand = {
+                                   vm.onExpand(item.busStopCode)
+                                },
+                                onCollapse = {
+                                    vm.onShrink(item.busStopCode)
+                                }
                             )
                         }
                     }
