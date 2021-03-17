@@ -85,7 +85,7 @@ fun BusRouteItems(vm: BusRouteViewModel) {
                                    vm.onExpand(item.busStopCode)
                                 },
                                 onCollapse = {
-                                    vm.onShrink(item.busStopCode)
+                                    vm.onCollapse(item.busStopCode)
                                 }
                             )
                         }

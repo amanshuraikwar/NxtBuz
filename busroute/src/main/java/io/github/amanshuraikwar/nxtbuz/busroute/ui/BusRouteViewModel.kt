@@ -44,7 +44,7 @@ class BusRouteViewModel @Inject constructor(
 
     val listItems = SnapshotStateList<BusRouteListItemData>()
 
-    lateinit var busStop: BusStop
+    lateinit var currentBusStop: BusStop
     lateinit var busRoute: BusRoute
     lateinit var busServiceNumber: String
 
@@ -53,38 +53,42 @@ class BusRouteViewModel @Inject constructor(
     private val listItemsLock = Mutex()
 
     fun init(busServiceNumber: String, busStop: BusStop?) {
-        this.busServiceNumber = busServiceNumber
-        this.busStop = busStop ?: return
         viewModelScope.launch(coroutineContext) {
-            busRoute = getBusRouteUseCase(
-                busServiceNumber = busServiceNumber,
-                busStopCode = busStop.code
-            )
             listItemsLock.withLock {
                 if (listItems.isNotEmpty()) {
                     return@launch
                 }
-                pushInitListItems(busServiceNumber)
+
+                this@BusRouteViewModel.busServiceNumber = busServiceNumber
+                this@BusRouteViewModel.currentBusStop = busStop ?: return@launch
+
+                busRoute = getBusRouteUseCase(
+                    busServiceNumber = this@BusRouteViewModel.busServiceNumber,
+                    busStopCode = this@BusRouteViewModel.currentBusStop.code
+                )
+
+                pushInitListItems()
+
+                startPrimaryBusArrivalsLoop()
             }
-            startPrimaryBusArrivalsLoop(busServiceNumber)
         }
     }
 
-    private fun pushInitListItems(busServiceNumber: String) {
+    private fun pushInitListItems() {
         val currentBusRouteNodeIndex = busRoute.busRouteNodeList.indexOfFirst {
-            it.busStopCode == busStop.code
+            it.busStopCode == currentBusStop.code
         }
 
         if (currentBusRouteNodeIndex == -1) {
             throw Exception(
                 "Current bus stop code " +
-                        "${busStop.code} for service " +
+                        "${currentBusStop.code} for service " +
                         "$busServiceNumber is -1."
             )
         }
 
         val lastBusStopSequence = busRoute.busRouteNodeList
-            .maxBy { it.stopSequence }
+            .maxByOrNull { it.stopSequence }
             ?.stopSequence
             ?: throw Exception("Could not find max bus stop sequence for route $busRoute.")
 
@@ -95,15 +99,16 @@ class BusRouteViewModel @Inject constructor(
                 originBusStopDescription = busRoute.originBusStopDescription,
             )
         )
+
         listItems.add(BusRouteListItemData.Header("Stops"))
 
-        val currentSequenceNumber = busRoute.busRouteNodeList
-            .find {
-                it.busStopCode == busStop.code
+        val currentSequenceNumber: Int = busRoute.busRouteNodeList
+            .findLast {
+                it.busStopCode == currentBusStop.code
             }
             ?.stopSequence
             ?: throw Exception(
-                "Current bus stop ${busStop.code} is not in the bus route."
+                "Current bus stop ${currentBusStop.code} is not in the bus route."
             )
 
         if (currentSequenceNumber > 1) {
@@ -121,29 +126,30 @@ class BusRouteViewModel @Inject constructor(
                         BusRouteListItemData.BusRouteNode.Current(
                             busRouteNode.busStopCode,
                             busRouteNode.busStopDescription,
-                            when (busRouteNode.stopSequence) {
-                                1 -> BusRouteListItemData.BusRouteNode.Position.ORIGIN
-                                lastBusStopSequence ->
-                                    BusRouteListItemData.BusRouteNode.Position.DESTINATION
-                                else -> BusRouteListItemData.BusRouteNode.Position.MIDDLE
-                            },
+                            busRouteNode.stopSequence.toPosition(lastBusStopSequence),
                         )
                     }
                     busRouteNode.stopSequence > currentSequenceNumber -> {
                         BusRouteListItemData.BusRouteNode.Next(
                             busRouteNode.busStopCode,
                             busRouteNode.busStopDescription,
-                            when (busRouteNode.stopSequence) {
-                                1 -> BusRouteListItemData.BusRouteNode.Position.ORIGIN
-                                lastBusStopSequence ->
-                                    BusRouteListItemData.BusRouteNode.Position.DESTINATION
-                                else -> BusRouteListItemData.BusRouteNode.Position.MIDDLE
-                            },
+                            busRouteNode.stopSequence.toPosition(lastBusStopSequence)
                         )
                     }
                     else -> return@forEachIndexed
                 }
             )
+        }
+    }
+
+    private fun Int.toPosition(
+        lastBusStopSequence: Int
+    ): BusRouteListItemData.BusRouteNode.Position {
+        return when (this) {
+            1 -> BusRouteListItemData.BusRouteNode.Position.ORIGIN
+            lastBusStopSequence ->
+                BusRouteListItemData.BusRouteNode.Position.DESTINATION
+            else -> BusRouteListItemData.BusRouteNode.Position.MIDDLE
         }
     }
 
@@ -153,7 +159,7 @@ class BusRouteViewModel @Inject constructor(
                 .busRouteNodeList.sortedBy { it.stopSequence }
                 .subList(
                     0,
-                    busRoute.busRouteNodeList.indexOfFirst { it.busStopCode == busStop.code }
+                    busRoute.busRouteNodeList.indexOfFirst { it.busStopCode == currentBusStop.code }
                 )
 
             if (previousBusRouteNodeList.isEmpty()) return@launch
@@ -191,155 +197,22 @@ class BusRouteViewModel @Inject constructor(
         }
     }
 
-    private suspend fun startPrimaryBusArrivalsLoop(
-        busServiceNumber: String,
-    ) {
-
-        primaryArrivalsLoop?.stop()
-
-        val arrivalsLoop =
-            ArrivalsLoop(
-                busServiceNumber = busServiceNumber,
-                busStopCode = busStop.code,
-                getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
-                dispatcher = dispatcherProvider.pool8
-            )
-
-        primaryArrivalsLoop = arrivalsLoop
-
-        arrivalsLoop
-            .start(viewModelScope)
-            .catch { throwable ->
-                FirebaseCrashlytics.getInstance().recordException(throwable)
-            }
-            .filterNotNull()
-            .collect { arrivalsLoopData ->
-                // check for busStopCode & busServiceNumber
-                // to prevent pushing any dangling loop output to UI
-                if (arrivalsLoopData.busStopCode == busStop.code
-                    && arrivalsLoopData.busServiceNumber == busServiceNumber
-                ) {
-                    handlePrimaryArrivals(arrivalsLoopData.busArrival)
-                } else {
-                    arrivalsLoop.stop()
-                }
-            }
-    }
-
-    private suspend fun handlePrimaryArrivals(busArrival: BusArrival) {
-
-        if (!listItemsLock.tryLock()) return
-
-        val listItemIndex = listItems.indexOfFirst {
-            it is BusRouteListItemData.BusRouteNode.Current
-                    // TODO: 16/03/21 update for bus stop code equality
-                    && it.busStopDescription == busStop.description
-        }
-
-        if (listItemIndex == -1) return
-        val currentListItemData =
-            listItems[listItemIndex] as? BusRouteListItemData.BusRouteNode.Current ?: return
-
-        listItems[listItemIndex] = currentListItemData.copy(
-            arrivalState = BusRouteListItemData.ArrivalState.Active(
-                arrivals = busArrival.arrivals,
-                lastUpdatedOn = "Last updated on ${TimeUtil.currentTimeStr()}"
-            )
-        )
-
-        listItemsLock.unlock()
-    }
-
-    private fun failed(error: Error) {
-        viewModelScope.launch {
-        }
-    }
-
-    fun updateBottomSheetSlideOffset(slideOffset: Float) {
+    private suspend fun startPrimaryBusArrivalsLoop() {
         viewModelScope.launch(coroutineContext) {
-            bottomSheetSlideOffsetFlow.value = slideOffset
-        }
-    }
-
-    fun onExpand(busStopCode: String) {
-        viewModelScope.launch(coroutineContext) {
-            secondaryArrivalsLoop?.stop()
-
-            secondaryArrivalsLoop?.busStopCode?.let { busStopCode ->
-                val listItemIndex = listItems.indexOfFirst {
-                    it is BusRouteListItemData.BusRouteNode.Next
-                            && it.busStopCode == busStopCode
-                }
-
-                val listItemData =
-                    listItems[listItemIndex] as? BusRouteListItemData.BusRouteNode.Next
-                        ?: return@launch
-
-                listItems[listItemIndex] = listItemData.copy(
-                    arrivalState = BusRouteListItemData.ArrivalState.Inactive
-                )
-            }
-
-            startSecondaryArrivals(busStopCode)
-        }
-    }
-
-    fun onShrink(busStopCode: String) {
-        viewModelScope.launch(coroutineContext) {
-            if (busStopCode == secondaryArrivalsLoop?.busStopCode) {
-                secondaryArrivalsLoop?.stop()
-
-                secondaryArrivalsLoop?.busStopCode?.let { busStopCode ->
-                    val listItemIndex = listItems.indexOfFirst {
-                        it is BusRouteListItemData.BusRouteNode.Next
-                                && it.busStopCode == busStopCode
-                    }
-
-                    val listItemData =
-                        listItems[listItemIndex] as? BusRouteListItemData.BusRouteNode.Next
-                            ?: return@launch
-
-                    listItems[listItemIndex] = listItemData.copy(
-                        arrivalState = BusRouteListItemData.ArrivalState.Inactive
-                    )
-                }
-
-                secondaryArrivalsLoop = null
-            }
-        }
-    }
-
-    private fun startSecondaryArrivals(busStopCode: String) {
-        viewModelScope.launch(dispatcherProvider.computation) {
-
-            listItemsLock.lock()
-
-            val listItemIndex = listItems.indexOfFirst {
-                it is BusRouteListItemData.BusRouteNode.Next
-                        && it.busStopCode == busStopCode
-            }
-
-            if (listItemIndex == -1) return@launch
-            val listItemData =
-                listItems[listItemIndex] as? BusRouteListItemData.BusRouteNode.Next ?: return@launch
-
-            listItems[listItemIndex] = listItemData.copy(
-                arrivalState = BusRouteListItemData.ArrivalState.Fetching
-            )
+            primaryArrivalsLoop?.stop()
 
             val arrivalsLoop =
                 ArrivalsLoop(
                     busServiceNumber = busServiceNumber,
-                    busStopCode = busStopCode,
+                    busStopCode = currentBusStop.code,
                     getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
                     dispatcher = dispatcherProvider.pool8
                 )
 
-            secondaryArrivalsLoop = arrivalsLoop
+            primaryArrivalsLoop = arrivalsLoop
 
-            listItemsLock.unlock()
-
-            arrivalsLoop.start(viewModelScope)
+            arrivalsLoop
+                .start(viewModelScope)
                 .catch { throwable ->
                     FirebaseCrashlytics.getInstance().recordException(throwable)
                 }
@@ -347,16 +220,262 @@ class BusRouteViewModel @Inject constructor(
                 .collect { arrivalsLoopData ->
                     // check for busStopCode & busServiceNumber
                     // to prevent pushing any dangling loop output to UI
-                    if (arrivalsLoopData.busStopCode == busStopCode
+                    if (arrivalsLoopData.busStopCode == currentBusStop.code
                         && arrivalsLoopData.busServiceNumber == busServiceNumber
                     ) {
-                        handleSecondaryArrivals(busStopCode, arrivalsLoopData.busArrival)
+                        if (!listItemsLock.tryLock()) return@collect
+                        //handlePrimaryArrivals(arrivalsLoopData.busArrival, currentBusStop.code)
+                        updateToActive<BusRouteListItemData.BusRouteNode.Current>(
+                            arrivalsLoopData.busArrival,
+                            currentBusStop.code
+                        )
+                        listItemsLock.unlock()
                     } else {
                         arrivalsLoop.stop()
                     }
                 }
-
         }
+    }
+
+    private inline fun <reified T> List<Any>.find(predicate: (T) -> Boolean): Pair<Int, T>? {
+        val listItemIndex = this.indexOfFirst {
+            it is T && predicate(it)
+        }
+
+        if (listItemIndex == -1) return null
+        val listItem = listItems[listItemIndex] as? T ?: return null
+
+        return Pair(listItemIndex, listItem)
+    }
+
+    private fun handlePrimaryArrivals(
+        busArrival: BusArrival,
+        busStopCode: String,
+    ) {
+        updateToActive<BusRouteListItemData.BusRouteNode.Current>(busArrival, busStopCode)
+//        val temp: Pair<Int, BusRouteListItemData.BusRouteNode.Current> =
+//            listItems.find { it.busStopCode == busStopCode } ?: return
+//
+//        val (listItemIndex, currentListItemData) = temp
+//
+//        listItems[listItemIndex] = currentListItemData.copy(
+//            arrivalState = BusRouteListItemData.ArrivalState.Active(
+//                arrivals = busArrival.arrivals,
+//                lastUpdatedOn = "Last updated on ${TimeUtil.currentTimeStr()}"
+//            )
+//        )
+    }
+
+    private inline fun <reified T : BusRouteListItemData.BusRouteNode> updateToActive(
+        busArrival: BusArrival,
+        busStopCode: String,
+    ): Boolean {
+        val temp: Pair<Int, T> =
+            listItems.find { it.busStopCode == busStopCode } ?: return false
+
+        val (listItemIndex, currentListItemData) = temp
+
+        if (currentListItemData is BusRouteListItemData.BusRouteNode.Current) {
+            listItems[listItemIndex] = currentListItemData.copy(
+                arrivalState = BusRouteListItemData.ArrivalState.Active(
+                    arrivals = busArrival.arrivals,
+                    lastUpdatedOn = "Last updated on ${TimeUtil.currentTimeStr()}"
+                )
+            )
+            return true
+        }
+
+        if (currentListItemData is BusRouteListItemData.BusRouteNode.Next) {
+            listItems[listItemIndex] = currentListItemData.copy(
+                arrivalState = BusRouteListItemData.ArrivalState.Active(
+                    arrivals = busArrival.arrivals,
+                    lastUpdatedOn = "Last updated on ${TimeUtil.currentTimeStr()}"
+                )
+            )
+            return true
+        }
+
+        return false
+    }
+
+    private inline fun <reified T : BusRouteListItemData.BusRouteNode> updateToFetching(
+        busStopCode: String,
+    ): Boolean {
+        val temp: Pair<Int, T> =
+            listItems.find { it.busStopCode == busStopCode } ?: return false
+
+        val (listItemIndex, currentListItemData) = temp
+
+        if (currentListItemData is BusRouteListItemData.BusRouteNode.Current) {
+            listItems[listItemIndex] = currentListItemData.copy(
+                arrivalState = BusRouteListItemData.ArrivalState.Fetching
+            )
+            return true
+        }
+
+        if (currentListItemData is BusRouteListItemData.BusRouteNode.Next) {
+            listItems[listItemIndex] = currentListItemData.copy(
+                arrivalState = BusRouteListItemData.ArrivalState.Fetching
+            )
+            return true
+        }
+
+        return false
+    }
+
+    private inline fun <reified T : BusRouteListItemData.BusRouteNode> updateToInactive(
+        busStopCode: String,
+    ): Boolean {
+        val temp: Pair<Int, T> =
+            listItems.find { it.busStopCode == busStopCode } ?: return false
+
+        val (listItemIndex, currentListItemData) = temp
+
+        if (currentListItemData is BusRouteListItemData.BusRouteNode.Current) {
+            listItems[listItemIndex] = currentListItemData.copy(
+                arrivalState = BusRouteListItemData.ArrivalState.Inactive
+            )
+            return true
+        }
+
+        if (currentListItemData is BusRouteListItemData.BusRouteNode.Next) {
+            listItems[listItemIndex] = currentListItemData.copy(
+                arrivalState = BusRouteListItemData.ArrivalState.Inactive
+            )
+            return true
+        }
+
+        return false
+    }
+
+    private fun failed(error: Error) {}
+
+    fun onExpand(expandingBusStopCode: String) {
+        viewModelScope.launch(coroutineContext) {
+            if (!(updateToFetching<BusRouteListItemData.BusRouteNode.Next>(
+                    expandingBusStopCode)
+                        || updateToFetching<BusRouteListItemData.BusRouteNode.Previous>(
+                    expandingBusStopCode))
+            ) {
+                return@launch
+            }
+
+            listItemsLock.withLock {
+                secondaryArrivalsLoop?.stop()
+
+                secondaryArrivalsLoop?.busStopCode?.let { currentSecondaryBusStopCode ->
+                    updateToInactive<BusRouteListItemData.BusRouteNode.Next>(
+                        currentSecondaryBusStopCode)
+                        || updateToInactive<BusRouteListItemData.BusRouteNode.Previous>(
+                        currentSecondaryBusStopCode)
+                }
+
+                startSecondaryArrivals(expandingBusStopCode)
+            }
+        }
+    }
+
+    fun onCollapse(busStopCode: String) {
+//        viewModelScope.launch(coroutineContext) {
+//            if (busStopCode == secondaryArrivalsLoop?.busStopCode) {
+//                secondaryArrivalsLoop?.stop()
+//
+//                secondaryArrivalsLoop?.busStopCode?.let { busStopCode ->
+//                    val listItemIndex = listItems.indexOfFirst {
+//                        it is BusRouteListItemData.BusRouteNode.Next
+//                                && it.busStopCode == busStopCode
+//                    }
+//
+//                    val listItemData =
+//                        listItems[listItemIndex] as? BusRouteListItemData.BusRouteNode.Next
+//                            ?: return@launch
+//
+//                    listItems[listItemIndex] = listItemData.copy(
+//                        arrivalState = BusRouteListItemData.ArrivalState.Inactive
+//                    )
+//                }
+//
+//                secondaryArrivalsLoop = null
+//            }
+//        }
+    }
+
+    private fun startSecondaryArrivals(secondaryBusStopCode: String) {
+        val arrivalsLoop =
+            ArrivalsLoop(
+                busServiceNumber = busServiceNumber,
+                busStopCode = secondaryBusStopCode,
+                getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
+                dispatcher = dispatcherProvider.pool8
+            )
+
+        secondaryArrivalsLoop = arrivalsLoop
+
+        arrivalsLoop.start(viewModelScope)
+            .catch { throwable ->
+                FirebaseCrashlytics.getInstance().recordException(throwable)
+            }
+            .filterNotNull()
+            .onEach { arrivalsLoopData ->
+                // check for busStopCode & busServiceNumber
+                // to prevent pushing any dangling loop output to UI
+                if (arrivalsLoopData.busStopCode == secondaryBusStopCode
+                    && arrivalsLoopData.busServiceNumber == busServiceNumber
+                ) {
+                    if (!listItemsLock.tryLock()) return@onEach
+                    updateToActive<BusRouteListItemData.BusRouteNode.Next>(
+                        arrivalsLoopData.busArrival,
+                        secondaryBusStopCode
+                    )
+                    updateToActive<BusRouteListItemData.BusRouteNode.Previous>(
+                        arrivalsLoopData.busArrival,
+                        secondaryBusStopCode
+                    )
+                    listItemsLock.unlock()
+                } else {
+                    arrivalsLoop.stop()
+                }
+            }
+            .launchIn(viewModelScope + coroutineContext)
+
+//        viewModelScope.launch(coroutineContext) {
+//            val arrivalsLoop =
+//                ArrivalsLoop(
+//                    busServiceNumber = busServiceNumber,
+//                    busStopCode = secondaryBusStopCode,
+//                    getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
+//                    dispatcher = dispatcherProvider.pool8
+//                )
+//
+//            secondaryArrivalsLoop = arrivalsLoop
+//
+//            arrivalsLoop.start(viewModelScope)
+//                .catch { throwable ->
+//                    FirebaseCrashlytics.getInstance().recordException(throwable)
+//                }
+//                .filterNotNull()
+//                .collect { arrivalsLoopData ->
+//                    // check for busStopCode & busServiceNumber
+//                    // to prevent pushing any dangling loop output to UI
+//                    if (arrivalsLoopData.busStopCode == secondaryBusStopCode
+//                        && arrivalsLoopData.busServiceNumber == busServiceNumber
+//                    ) {
+//                        if (!listItemsLock.tryLock()) return@collect
+//                        updateToActive<BusRouteListItemData.BusRouteNode.Next>(
+//                            arrivalsLoopData.busArrival,
+//                            secondaryBusStopCode
+//                        )
+//                        updateToActive<BusRouteListItemData.BusRouteNode.Previous>(
+//                            arrivalsLoopData.busArrival,
+//                            secondaryBusStopCode
+//                        )
+//                        listItemsLock.unlock()
+//                    } else {
+//                        arrivalsLoop.stop()
+//                    }
+//                }
+//
+//        }
     }
 
     private suspend fun handleSecondaryArrivals(busStopCode: String, busArrival: BusArrival) {
