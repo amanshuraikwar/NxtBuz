@@ -61,6 +61,13 @@
         tools:ignore="ContentDescription" />
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/searchBarFragment"
+        android:name="io.github.amanshuraikwar.nxtbuz.search.ui.SearchBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/screenTopGuideline" />
+
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/screenStateFragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
@@ -85,10 +92,5 @@
     <!--            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />-->
     <!--    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/searchBarFragment"
-        android:name="io.github.amanshuraikwar.nxtbuz.search.ui.SearchBarFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/screenTopGuideline" />
+
 </FrameLayout>
