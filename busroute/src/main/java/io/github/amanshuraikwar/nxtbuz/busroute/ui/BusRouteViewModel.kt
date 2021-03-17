@@ -155,6 +155,8 @@ class BusRouteViewModel @Inject constructor(
 
     fun previousAllClicked() {
         viewModelScope.launch(coroutineContext) {
+            if (!listItemsLock.tryLock()) return@launch
+
             val previousBusRouteNodeList = busRoute
                 .busRouteNodeList.sortedBy { it.stopSequence }
                 .subList(
@@ -194,6 +196,8 @@ class BusRouteViewModel @Inject constructor(
                 listItems.removeAt(previousAllIndex)
                 listItems.addAll(previousAllIndex, previousBusStopItemList)
             }
+
+            listItemsLock.unlock()
         }
     }
 
@@ -295,6 +299,16 @@ class BusRouteViewModel @Inject constructor(
             return true
         }
 
+        if (currentListItemData is BusRouteListItemData.BusRouteNode.Previous) {
+            listItems[listItemIndex] = currentListItemData.copy(
+                arrivalState = BusRouteListItemData.ArrivalState.Active(
+                    arrivals = busArrival.arrivals,
+                    lastUpdatedOn = "Last updated on ${TimeUtil.currentTimeStr()}"
+                )
+            )
+            return true
+        }
+
         return false
     }
 
@@ -320,6 +334,13 @@ class BusRouteViewModel @Inject constructor(
             return true
         }
 
+        if (currentListItemData is BusRouteListItemData.BusRouteNode.Previous) {
+            listItems[listItemIndex] = currentListItemData.copy(
+                arrivalState = BusRouteListItemData.ArrivalState.Fetching
+            )
+            return true
+        }
+
         return false
     }
 
@@ -339,6 +360,13 @@ class BusRouteViewModel @Inject constructor(
         }
 
         if (currentListItemData is BusRouteListItemData.BusRouteNode.Next) {
+            listItems[listItemIndex] = currentListItemData.copy(
+                arrivalState = BusRouteListItemData.ArrivalState.Inactive
+            )
+            return true
+        }
+
+        if (currentListItemData is BusRouteListItemData.BusRouteNode.Previous) {
             listItems[listItemIndex] = currentListItemData.copy(
                 arrivalState = BusRouteListItemData.ArrivalState.Inactive
             )

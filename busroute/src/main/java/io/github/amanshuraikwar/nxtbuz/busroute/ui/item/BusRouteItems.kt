@@ -73,7 +73,14 @@ fun BusRouteItems(vm: BusRouteViewModel) {
                         is BusRouteListItemData.BusRouteNode.Previous -> {
                             BusRoutePreviousItem(
                                 busStopDescription = item.busStopDescription,
-                                position = item.position
+                                position = item.position,
+                                arrivalState = item.arrivalState,
+                                onExpand = {
+                                    vm.onExpand(item.busStopCode)
+                                },
+                                onCollapse = {
+                                    vm.onCollapse(item.busStopCode)
+                                }
                             )
                         }
                         is BusRouteListItemData.BusRouteNode.Next -> {
