@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -76,8 +77,8 @@ class MainFragment : DaggerFragment() {
         super.onActivityCreated(savedInstanceState)
 
         ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { _, insets ->
-            screenTopGuideline.setMarginTop(insets.systemWindowInsetTop)
-            insets.consumeSystemWindowInsets()
+            searchBarFragment.setMarginTop(insets.getInsets(WindowInsetsCompat.Type.statusBars()).top)
+            insets
         }
 
         //itemsRv.layoutManager = LinearLayoutManager(activity)

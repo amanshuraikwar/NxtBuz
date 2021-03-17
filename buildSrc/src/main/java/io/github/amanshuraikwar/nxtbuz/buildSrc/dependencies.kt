@@ -138,4 +138,8 @@ object Libs {
         const val soloader = "com.facebook.soloader:soloader:0.9.0"
         const val networkPlugin = "com.facebook.flipper:flipper-network-plugin:0.35.0"
     }
+
+    object Accompanist {
+        const val insets = "dev.chrisbanes.accompanist:accompanist-insets:0.6.2"
+    }
 }
