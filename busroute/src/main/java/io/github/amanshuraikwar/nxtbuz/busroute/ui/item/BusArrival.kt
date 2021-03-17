@@ -21,6 +21,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.ArrivingBus
 import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
 import io.github.amanshuraikwar.nxtbuz.common.model.BusType
+import java.util.*
 
 @Composable
 fun BusArrival(
@@ -73,7 +74,7 @@ fun BusArrival(
 
                     Text(
                         modifier = Modifier.padding(top = 8.dp),
-                        text = lastUpdatedOn,
+                        text = lastUpdatedOn.toUpperCase(Locale.ROOT),
                         color = MaterialTheme.colors.onSurface.medium,
                         style = MaterialTheme.typography.overline,
                     )
