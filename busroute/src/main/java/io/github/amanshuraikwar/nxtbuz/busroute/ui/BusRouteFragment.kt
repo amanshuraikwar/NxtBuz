@@ -9,6 +9,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModelProvider
 import dagger.android.support.DaggerFragment
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.BusRouteItems
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
@@ -33,7 +34,9 @@ class BusRouteFragment : DaggerFragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 NxtBuzTheme {
-                    BusRouteItems(viewModel)
+                    ProvideWindowInsets {
+                        BusRouteItems(viewModel)
+                    }
                 }
             }
         }

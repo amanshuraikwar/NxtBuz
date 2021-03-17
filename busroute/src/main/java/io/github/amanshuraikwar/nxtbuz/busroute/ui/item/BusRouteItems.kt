@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.busroute.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteViewModel
 import io.github.amanshuraikwar.nxtbuz.common.compose.Header
@@ -25,7 +26,7 @@ fun BusRouteItems(vm: BusRouteViewModel) {
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
 
     ComposeBottomSheet(
-        modifier = Modifier.padding(top = 128.dp),
+        modifier = Modifier.statusBarsPadding().padding(top = 16.dp),
         bottomSheetState = bottomSheetState,
         backgroundColor = Color.Transparent,
         sheetContent = {

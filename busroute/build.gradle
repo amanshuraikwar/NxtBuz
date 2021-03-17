@@ -71,5 +71,7 @@ dependencies {
         implementation dependency
     }
 
+    implementation Libs.Accompanist.insets
+
     implementation Libs.Google.crashlytics
 }
