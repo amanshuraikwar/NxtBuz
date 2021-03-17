@@ -31,7 +31,9 @@ fun BusStopArrivalItems(vm: BusStopArrivalsViewModel) {
     val coroutineScope = rememberCoroutineScope()
 
     ComposeBottomSheet(
-        modifier = Modifier.statusBarsPadding().padding(top = 16.dp),
+        modifier = Modifier
+            .statusBarsPadding()
+            .padding(top = 16.dp),
         bottomSheetState = bottomSheetState,
         backgroundColor = Color.Transparent,
         sheetContent = {
