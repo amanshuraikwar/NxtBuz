@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -24,6 +25,7 @@ fun BusRouteItems(vm: BusRouteViewModel) {
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
 
     ComposeBottomSheet(
+        modifier = Modifier.padding(top = 128.dp),
         bottomSheetState = bottomSheetState,
         backgroundColor = Color.Transparent,
         sheetContent = {

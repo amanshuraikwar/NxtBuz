@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import dagger.android.support.DaggerFragment
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreenState.*
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItems
@@ -42,7 +43,9 @@ class BusStopArrivalsFragment : DaggerFragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 NxtBuzTheme {
-                    BusStopArrivalItems(viewModel)
+                    ProvideWindowInsets {
+                        BusStopArrivalItems(viewModel)
+                    }
                 }
             }
         }

@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -13,6 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
 import io.github.amanshuraikwar.nxtbuz.common.compose.ComposeBottomSheet
@@ -23,15 +25,20 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @Composable
 fun BusStopArrivalItems(vm: BusStopArrivalsViewModel) {
-    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
+    val bottomSheetState = rememberBottomSheetState(
+        BottomSheetValue.Collapsed
+    )
     val coroutineScope = rememberCoroutineScope()
 
     ComposeBottomSheet(
+        modifier = Modifier.padding(top = 128.dp),
         bottomSheetState = bottomSheetState,
         backgroundColor = Color.Transparent,
         sheetContent = {
             Puck()
+
             val lazyListState = rememberLazyListState()
+
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 128.dp, top = 12.dp),
                 state = lazyListState,
