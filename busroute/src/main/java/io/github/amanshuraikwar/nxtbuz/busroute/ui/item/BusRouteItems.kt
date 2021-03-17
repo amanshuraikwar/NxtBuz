@@ -26,7 +26,9 @@ fun BusRouteItems(vm: BusRouteViewModel) {
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
 
     ComposeBottomSheet(
-        modifier = Modifier.statusBarsPadding().padding(top = 16.dp),
+        modifier = Modifier
+            .statusBarsPadding()
+            .padding(top = 16.dp),
         bottomSheetState = bottomSheetState,
         backgroundColor = Color.Transparent,
         sheetContent = {
@@ -94,7 +96,7 @@ fun BusRouteItems(vm: BusRouteViewModel) {
                                 position = item.position,
                                 arrivalState = item.arrivalState,
                                 onExpand = {
-                                   vm.onExpand(item.busStopCode)
+                                    vm.onExpand(item.busStopCode)
                                 },
                                 onCollapse = {
                                     vm.onCollapse(item.busStopCode)

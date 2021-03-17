@@ -1,10 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.common.compose
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.CornerSize
@@ -36,7 +33,7 @@ fun ComposeBottomSheet(
     body: @Composable () -> Unit
 ) {
 
-    BoxWithConstraints(modifier.focusable(false)) {
+    BoxWithConstraints(modifier) {
         val fullHeight = constraints.maxHeight.toFloat()
         val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() }
 
@@ -44,8 +41,7 @@ fun ComposeBottomSheet(
             body = {
                 Surface(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .focusable(false),
+                        .fillMaxSize(),
                     color = backgroundColor,
                     contentColor = contentColor
                 ) {
@@ -56,7 +52,6 @@ fun ComposeBottomSheet(
                 Surface(
                     Modifier
                         .fillMaxWidth()
-                        //.fillMaxHeight()
                         .nestedScroll(bottomSheetState.PreUpPostDownNestedScrollConnection)
                         .swipeable(
                             state = bottomSheetState,
