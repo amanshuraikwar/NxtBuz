@@ -1,7 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
 
-import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -10,10 +8,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.StarBorder
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busroute.model.BusRouteListItemData
@@ -26,22 +23,8 @@ fun BusRouteHeaderItem(
     modifier: Modifier = Modifier,
     data: BusRouteListItemData.BusRouteHeader,
 ) {
-    var alpha by remember {
-        mutableStateOf(0f)
-    }
-
-    LaunchedEffect(data.busServiceNumber) {
-        animate(
-            initialValue = 0f,
-            targetValue = 1f,
-            animationSpec = tween(300, delayMillis = 300)
-        ) { animatedValue, _ ->
-            alpha = animatedValue
-        }
-    }
-
     Box(
-        modifier = modifier.alpha(alpha),
+        modifier = modifier,
         contentAlignment = Alignment.CenterEnd
     ) {
         Row(

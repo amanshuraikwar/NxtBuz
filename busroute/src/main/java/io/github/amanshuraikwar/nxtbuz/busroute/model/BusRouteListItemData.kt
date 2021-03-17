@@ -50,8 +50,17 @@ sealed class BusRouteListItemData {
             busStopCode: String,
             busStopDescription: String,
             position: Position = Position.MIDDLE,
-            // TODO: 16/03/21 arrival state
-        ) : BusRouteNode(busStopCode, busStopDescription, position, ArrivalState.Inactive)
+            arrivalState: ArrivalState = ArrivalState.Inactive,
+        ) : BusRouteNode(busStopCode, busStopDescription, position, arrivalState) {
+            fun copy(arrivalState: ArrivalState): Previous {
+                return Previous(
+                    busStopCode = busStopCode,
+                    busStopDescription = busStopDescription,
+                    position = position,
+                    arrivalState = arrivalState
+                )
+            }
+        }
 
         class Next(
             busStopCode: String,
