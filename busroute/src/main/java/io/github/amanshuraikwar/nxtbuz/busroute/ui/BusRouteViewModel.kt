@@ -375,29 +375,25 @@ class BusRouteViewModel @Inject constructor(
         }
     }
 
-    fun onCollapse(busStopCode: String) {
-//        viewModelScope.launch(coroutineContext) {
-//            if (busStopCode == secondaryArrivalsLoop?.busStopCode) {
-//                secondaryArrivalsLoop?.stop()
-//
-//                secondaryArrivalsLoop?.busStopCode?.let { busStopCode ->
-//                    val listItemIndex = listItems.indexOfFirst {
-//                        it is BusRouteListItemData.BusRouteNode.Next
-//                                && it.busStopCode == busStopCode
-//                    }
-//
-//                    val listItemData =
-//                        listItems[listItemIndex] as? BusRouteListItemData.BusRouteNode.Next
-//                            ?: return@launch
-//
-//                    listItems[listItemIndex] = listItemData.copy(
-//                        arrivalState = BusRouteListItemData.ArrivalState.Inactive
-//                    )
-//                }
-//
-//                secondaryArrivalsLoop = null
-//            }
-//        }
+    fun onCollapse(collapsingBusStopCode: String) {
+        viewModelScope.launch(coroutineContext) {
+            if (collapsingBusStopCode == secondaryArrivalsLoop?.busStopCode) {
+                if (!listItemsLock.tryLock()) return@launch
+
+                secondaryArrivalsLoop?.stop()
+
+                updateToInactive<BusRouteListItemData.BusRouteNode.Next>(
+                    collapsingBusStopCode
+                )
+                updateToInactive<BusRouteListItemData.BusRouteNode.Previous>(
+                    collapsingBusStopCode
+                )
+
+                secondaryArrivalsLoop = null
+
+                listItemsLock.unlock()
+            }
+        }
     }
 
     private fun startSecondaryArrivals(secondaryBusStopCode: String) {
