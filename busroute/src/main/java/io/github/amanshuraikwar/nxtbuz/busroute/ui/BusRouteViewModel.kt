@@ -228,7 +228,6 @@ class BusRouteViewModel @Inject constructor(
                         && arrivalsLoopData.busServiceNumber == busServiceNumber
                     ) {
                         if (!listItemsLock.tryLock()) return@collect
-                        //handlePrimaryArrivals(arrivalsLoopData.busArrival, currentBusStop.code)
                         updateToActive<BusRouteListItemData.BusRouteNode.Current>(
                             arrivalsLoopData.busArrival,
                             currentBusStop.code
@@ -250,24 +249,6 @@ class BusRouteViewModel @Inject constructor(
         val listItem = listItems[listItemIndex] as? T ?: return null
 
         return Pair(listItemIndex, listItem)
-    }
-
-    private fun handlePrimaryArrivals(
-        busArrival: BusArrival,
-        busStopCode: String,
-    ) {
-        updateToActive<BusRouteListItemData.BusRouteNode.Current>(busArrival, busStopCode)
-//        val temp: Pair<Int, BusRouteListItemData.BusRouteNode.Current> =
-//            listItems.find { it.busStopCode == busStopCode } ?: return
-//
-//        val (listItemIndex, currentListItemData) = temp
-//
-//        listItems[listItemIndex] = currentListItemData.copy(
-//            arrivalState = BusRouteListItemData.ArrivalState.Active(
-//                arrivals = busArrival.arrivals,
-//                lastUpdatedOn = "Last updated on ${TimeUtil.currentTimeStr()}"
-//            )
-//        )
     }
 
     private inline fun <reified T : BusRouteListItemData.BusRouteNode> updateToActive(
@@ -461,69 +442,5 @@ class BusRouteViewModel @Inject constructor(
                 }
             }
             .launchIn(viewModelScope + coroutineContext)
-
-//        viewModelScope.launch(coroutineContext) {
-//            val arrivalsLoop =
-//                ArrivalsLoop(
-//                    busServiceNumber = busServiceNumber,
-//                    busStopCode = secondaryBusStopCode,
-//                    getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
-//                    dispatcher = dispatcherProvider.pool8
-//                )
-//
-//            secondaryArrivalsLoop = arrivalsLoop
-//
-//            arrivalsLoop.start(viewModelScope)
-//                .catch { throwable ->
-//                    FirebaseCrashlytics.getInstance().recordException(throwable)
-//                }
-//                .filterNotNull()
-//                .collect { arrivalsLoopData ->
-//                    // check for busStopCode & busServiceNumber
-//                    // to prevent pushing any dangling loop output to UI
-//                    if (arrivalsLoopData.busStopCode == secondaryBusStopCode
-//                        && arrivalsLoopData.busServiceNumber == busServiceNumber
-//                    ) {
-//                        if (!listItemsLock.tryLock()) return@collect
-//                        updateToActive<BusRouteListItemData.BusRouteNode.Next>(
-//                            arrivalsLoopData.busArrival,
-//                            secondaryBusStopCode
-//                        )
-//                        updateToActive<BusRouteListItemData.BusRouteNode.Previous>(
-//                            arrivalsLoopData.busArrival,
-//                            secondaryBusStopCode
-//                        )
-//                        listItemsLock.unlock()
-//                    } else {
-//                        arrivalsLoop.stop()
-//                    }
-//                }
-//
-//        }
-    }
-
-    private suspend fun handleSecondaryArrivals(busStopCode: String, busArrival: BusArrival) {
-
-        if (!listItemsLock.tryLock()) return
-
-        //delay(3000)
-
-        val listItemIndex = listItems.indexOfFirst {
-            it is BusRouteListItemData.BusRouteNode.Next
-                    && it.busStopCode == busStopCode
-        }
-
-        if (listItemIndex == -1) return
-        val listItemData =
-            listItems[listItemIndex] as? BusRouteListItemData.BusRouteNode.Next ?: return
-
-        listItems[listItemIndex] = listItemData.copy(
-            arrivalState = BusRouteListItemData.ArrivalState.Active(
-                arrivals = busArrival.arrivals,
-                lastUpdatedOn = "Last updated on ${TimeUtil.currentTimeStr()}",
-            )
-        )
-
-        listItemsLock.unlock()
     }
 }

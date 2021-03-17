@@ -28,7 +28,9 @@ fun BusRouteItems(vm: BusRouteViewModel) {
         backgroundColor = Color.Transparent,
         sheetContent = {
             Puck()
+
             val lazyListState = rememberLazyListState()
+
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 128.dp, top = 12.dp),
                 state = lazyListState,
