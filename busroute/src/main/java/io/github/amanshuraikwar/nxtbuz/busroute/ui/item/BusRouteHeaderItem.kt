@@ -33,7 +33,6 @@ fun BusRouteHeaderItem(
                 .padding(top = 16.dp, start = 16.dp, bottom = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             BusService(
                 busServiceNumber = data.busServiceNumber,
             )
@@ -55,7 +54,6 @@ fun BusRouteHeaderItem(
                     color = MaterialTheme.colors.onSurface,
                 )
             }
-
         }
 
         Icon(

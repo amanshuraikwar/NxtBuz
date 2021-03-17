@@ -1,6 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
@@ -49,7 +48,7 @@ fun BusRoutePreviousItem(
             .fillMaxWidth()
             .animateContentSize(),
     ) {
-        BusRouteNode(
+        CircleAvatarItem(
             busStopDescription = busStopDescription,
             circleColor = MaterialTheme.colors.onSurface,
             bottomBarColor = MaterialTheme.colors.onSurface,
@@ -57,47 +56,10 @@ fun BusRoutePreviousItem(
             position = position,
         )
 
-        Crossfade(targetState = arrivalState) { state ->
-            when (state) {
-                is BusRouteListItemData.ArrivalState.Active -> {
-                    BusRouteNode(
-                        drawBar = position != BusRouteListItemData.BusRouteNode.Position.DESTINATION,
-                        barColor = MaterialTheme.colors.onSurface,
-                    ) {
-                        BusArrival(
-                            arrivals = state.arrivals,
-                            lastUpdatedOn = state.lastUpdatedOn
-                        )
-                    }
-                }
-                is BusRouteListItemData.ArrivalState.Fetching -> {
-                    BusRouteNode(
-                        drawBar = position != BusRouteListItemData.BusRouteNode.Position.DESTINATION,
-                        barColor = MaterialTheme.colors.onSurface,
-                    ) {
-                        BusArrivalFetching()
-                    }
-                }
-                BusRouteListItemData.ArrivalState.Inactive -> { }
-            }
-        }
+        BusArrivalItem(
+            arrivalState = arrivalState,
+            position = position,
+            contentColor = MaterialTheme.colors.onSurface,
+        )
     }
 }
-
-
-
-//@Composable
-//@Preview
-//fun BusRoutePreviousItemPreview() {
-//    PreviewSurface {
-//        BusRoutePreviousItem("Opp Blk 19")
-//    }
-//}
-//
-//@Composable
-//@Preview
-//fun BusRoutePreviousItemPreviewDark() {
-//    PreviewSurface(darkTheme = true) {
-//        BusRoutePreviousItem("Opp Blk 19")
-//    }
-//}

@@ -38,41 +38,15 @@ fun BusRouteCurrentItem(
             .fillMaxWidth()
             .animateContentSize(),
     ) {
-        BusRouteNode(
+        CircleAvatarItem(
             busStopDescription = busStopDescription,
             position = position,
         )
 
-        if (arrivalState !is BusRouteListItemData.ArrivalState.Inactive) {
-            BusRouteNode(
-                drawBar = position != BusRouteListItemData.BusRouteNode.Position.DESTINATION,
-                barColor = MaterialTheme.colors.primary,
-            ) {
-                if (arrivalState is BusRouteListItemData.ArrivalState.Active) {
-                    BusArrival(
-                        arrivals = arrivalState.arrivals,
-                        lastUpdatedOn = arrivalState.lastUpdatedOn
-                    )
-                } else if (arrivalState is BusRouteListItemData.ArrivalState.Fetching) {
-                    BusArrivalFetching()
-                }
-            }
-        }
+        BusArrivalItem(
+            arrivalState = arrivalState,
+            position = position,
+            contentColor = MaterialTheme.colors.primary,
+        )
     }
 }
-
-//@Composable
-//@Preview
-//fun BusRouteCurrentItemPreview() {
-//    PreviewSurface {
-//        BusRouteCurrentItem("Opp Blk 19", arrivals = Arrivals.NotOperating, lastUpdatedOn = "")
-//    }
-//}
-//
-//@Composable
-//@Preview
-//fun BusRouteCurrentItemPreviewDark() {
-//    PreviewSurface(darkTheme = true) {
-//        BusRouteCurrentItem("Opp Blk 19", arrivals = Arrivals.DataNotAvailable, lastUpdatedOn = "")
-//    }
-//}
