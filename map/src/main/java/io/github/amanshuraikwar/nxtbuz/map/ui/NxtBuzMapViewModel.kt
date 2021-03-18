@@ -20,7 +20,9 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultMapZoomUseCase
 import io.github.amanshuraikwar.nxtbuz.map.LocationViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.map.R
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import javax.inject.Inject
 import javax.inject.Named
 import kotlin.coroutines.suspendCoroutine
@@ -48,6 +50,9 @@ class NxtBuzMapViewModel @Inject constructor(
     private val _initMap = MutableLiveData<MapInitData>()
     val initMap = _initMap.asEvent()
 
+    private val _initMapFlow = MutableSharedFlow<MapInitData?>(replay = 1)
+    val initMapFlow: SharedFlow<MapInitData?> = _initMapFlow
+
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
@@ -63,6 +68,7 @@ class NxtBuzMapViewModel @Inject constructor(
             val (defaultLat, defaultLng) = defaultLocationUseCase()
             val defaultMapZoom = defaultMapZoomUseCase()
             initMap(defaultLat, defaultLng, defaultMapZoom)
+            Log.d(TAG, "init: initMap() complete")
         }
         mapViewModelDelegate.init(viewModelScope)
     }
@@ -78,23 +84,43 @@ class NxtBuzMapViewModel @Inject constructor(
         if (map != null) return
 
         withContext(dispatcherProvider.computation) {
-            // suspend until the map is initialised in the UI
-            suspendCancellableCoroutine<Unit> { cont ->
-                _initMap.postValue(
-                    MapInitData(
-                        LatLng(lat, lng),
-                        mapZoom,
-                    ) { googleMap: GoogleMap? ->
-                        map = googleMap
-                        map?.let { mapUtil.updateMapStyle(it) }
-                        map?.setOnMarkerClickListener {
-                            onMarkerClicked(it)
-                            true
-                        }
-                        cont.resumeWith(Result.success(Unit))
+            _initMapFlow.emit(
+                MapInitData(
+                    LatLng(lat, lng),
+                    mapZoom,
+                ) { googleMap: GoogleMap? ->
+                    map = googleMap
+                    Log.d(TAG, "initMap: onMapReady() called")
+                    //map?.let { mapUtil.updateMapStyle(it) }
+                    map?.setOnMarkerClickListener {
+                        onMarkerClicked(it)
+                        true
                     }
-                )
+                }
+            )
+
+            launch {
+                while (map == null) {
+                    delay(300)
+                }
             }
+            // suspend until the map is initialised in the UI
+//            suspendCancellableCoroutine<Unit> { cont ->
+//                _initMap.postValue(
+//                    MapInitData(
+//                        LatLng(lat, lng),
+//                        mapZoom,
+//                    ) { googleMap: GoogleMap? ->
+//                        map = googleMap
+//                        map?.let { mapUtil.updateMapStyle(it) }
+//                        map?.setOnMarkerClickListener {
+//                            onMarkerClicked(it)
+//                            true
+//                        }
+//                        cont.resumeWith(Result.success(Unit))
+//                    }
+//                )
+//            }
         }
 
         startCollectingEvents(viewModelScope)

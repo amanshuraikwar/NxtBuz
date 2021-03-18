@@ -55,6 +55,7 @@ import io.github.amanshuraikwar.nxtbuz.databinding.FragmentScreenStateContainerB
 import io.github.amanshuraikwar.nxtbuz.databinding.FragmentScreenStateContainerBinding.inflate
 import io.github.amanshuraikwar.nxtbuz.databinding.FragmentNxtBuzMapBinding
 import io.github.amanshuraikwar.nxtbuz.databinding.FragmentNxtBuzMapBinding.inflate
+import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
 //import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
 //import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -94,8 +95,9 @@ class MainFragment : DaggerFragment() {
                 NxtBuzTheme {
 
                     Box {
-                        val mapView = rememberMapViewWithLifecycle()
-                        MapViewContainer(mapView)
+//                        val mapView = rememberMapViewWithLifecycle()
+//                        MapViewContainer(mapView)
+                        NxtBuzMap(Modifier.fillMaxSize(), viewModelProvider(viewModelFactory))
 
                         ComposeBottomSheet(
                             modifier = Modifier
@@ -147,12 +149,12 @@ class MainFragment : DaggerFragment() {
         //return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
-    @Composable
-    private fun MapViewContainer(map: MapView) {
-        //val currentLocation = viewModel.location.observeAsState()
-
-        AndroidView({ map }) { mapView -> }
-    }
+//    @Composable
+//    private fun MapViewContainer(map: MapView) {
+//        //val currentLocation = viewModel.location.observeAsState()
+//
+//        AndroidView({ map }) { mapView -> }
+//    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

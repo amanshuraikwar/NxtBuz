@@ -22,6 +22,22 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
     }
+
+    buildFeatures {
+        compose true
+        buildConfig true
+        viewBinding true
+        resValues true
+
+        // Disable unused AGP features
+        aidl false
+        renderScript false
+        shaders false
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.0.0-beta02'
+    }
 }
 
 dependencies {
@@ -53,6 +69,12 @@ dependencies {
     implementation Libs.AndroidX.Lifecycle.extensions
 
     api Libs.Google.playServicesMap
+
+    for (dependency in Libs.AndroidX.Compose.all) {
+        implementation dependency
+    }
+
+    implementation Libs.Accompanist.insets
 
     implementation Libs.Google.crashlytics
 
