@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="map" type="id" />
+    <item name="composeMapView" type="id" />
 </resources>

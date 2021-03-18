@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui.fragment
+package io.github.amanshuraikwar.nxtbuz.map.utils
 
 import android.os.Bundle
 import androidx.compose.runtime.Composable
@@ -9,18 +9,18 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.google.android.gms.maps.MapView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Transformations.map
-import io.github.amanshuraikwar.nxtbuz.R
+import com.google.android.gms.maps.GoogleMapOptions
+import io.github.amanshuraikwar.nxtbuz.map.R
 
 /**
  * Remembers a MapView and gives it the lifecycle of the current LifecycleOwner
  */
 @Composable
-fun rememberMapViewWithLifecycle(): MapView {
+fun rememberMapViewWithLifecycle(googleMapOptions: GoogleMapOptions): MapView {
     val context = LocalContext.current
     val mapView = remember {
-        MapView(context).apply {
-            id = R.id.map
+        MapView(context, googleMapOptions).apply {
+            id = R.id.composeMapView
         }
     }
 
