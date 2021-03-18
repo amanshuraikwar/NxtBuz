@@ -8,12 +8,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.*
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -31,6 +41,9 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsFragmentD
 import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsFragmentDirections
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.listitem.*
+import androidx.compose.ui.graphics.Color
+import io.github.amanshuraikwar.nxtbuz.common.compose.ComposeBottomSheet
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
@@ -38,8 +51,12 @@ import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptio
 import io.github.amanshuraikwar.nxtbuz.common.util.lerp
 import io.github.amanshuraikwar.nxtbuz.common.util.setMarginTop
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
-import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
-import kotlinx.android.synthetic.main.fragment_main.*
+import io.github.amanshuraikwar.nxtbuz.databinding.FragmentScreenStateContainerBinding
+import io.github.amanshuraikwar.nxtbuz.databinding.FragmentScreenStateContainerBinding.inflate
+import io.github.amanshuraikwar.nxtbuz.databinding.FragmentNxtBuzMapBinding
+import io.github.amanshuraikwar.nxtbuz.databinding.FragmentNxtBuzMapBinding.inflate
+//import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
+//import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -64,27 +81,91 @@ class MainFragment : DaggerFragment() {
     private var starredBusArrivalsAdapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? =
         null
     private var adapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? = null
+    private lateinit var screenStateFragment: FragmentContainerView
 
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                NxtBuzTheme {
+
+                    Box {
+                        val mapView = rememberMapViewWithLifecycle()
+                        MapViewContainer(mapView)
+
+                        ComposeBottomSheet(
+                            modifier = Modifier
+                                .fillMaxSize(),
+//                            bottomSheetState = bottomSheetState,
+                            backgroundColor = Color.Transparent,
+                            sheetContent = {
+                                Text(text = "helo\nhelo\nhelo")
+                            }
+                        ) {
+                        }
+//                    FragmentAwareAndroidViewBinding(
+//                        FragmentScreenStateContainerBinding::inflate,
+//                        modifier = Modifier.fillMaxSize()
+//                    ) {
+//                        this@MainFragment.screenStateFragment = screenStateFragment
+//                    }
+                    }
+                }
+//                Box {
+//
+//                    AndroidView(
+//                        factory = { context ->
+//                            MapView(context).apply {
+//                                onCreate(Bundle())
+//                            }
+//                        },
+//                        modifier = Modifier.fillMaxSize()
+//                    ) { mapView ->
+////                        val lifecycleObserver = rememberMapLifecycleObserver(mapView)
+////                        val lifecycle = LifecycleOwnerAmbient.current.lifecycle
+////                        onCommit(lifecycle) {
+////                            lifecycle.addObserver(lifecycleObserver)
+////                            onDispose {
+////                                lifecycle.removeObserver(lifecycleObserver)
+////                            }
+////                        }
+//                    }
+//
+//                FragmentAwareAndroidViewBinding<FragmentNxtBuzMapBinding>(
+//                    FragmentNxtBuzMapBinding::inflate,
+//                    modifier = Modifier.fillMaxSize()
+//                ) {
+//                    //this@MainFragment.screenStateFragment = screenStateFragment
+//                }
+//                }
+            }
+        }
+        //return inflater.inflate(R.layout.fragment_main, container, false)
+    }
+
+    @Composable
+    private fun MapViewContainer(map: MapView) {
+        //val currentLocation = viewModel.location.observeAsState()
+
+        AndroidView({ map }) { mapView -> }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { _, insets ->
-            searchBarFragment.setMarginTop(insets.getInsets(WindowInsetsCompat.Type.statusBars()).top)
-            insets
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { _, insets ->
+//            searchBarFragment.setMarginTop(insets.getInsets(WindowInsetsCompat.Type.statusBars()).top)
+//            insets
+//        }
 
         //itemsRv.layoutManager = LinearLayoutManager(activity)
-        starredBusArrivalsRv.layoutManager = LinearLayoutManager(
-            activity, RecyclerView.HORIZONTAL, false
-        )
+//        starredBusArrivalsRv.layoutManager = LinearLayoutManager(
+//            activity, RecyclerView.HORIZONTAL, false
+//        )
 
         setupViewModel()
         //setupBottomSheet()
@@ -153,22 +234,22 @@ class MainFragment : DaggerFragment() {
     }
 
     private fun hideLoading() {
-        loadingIv.visibility = View.INVISIBLE
-        loadingTv.visibility = View.INVISIBLE
-        itemsRv.visibility = View.VISIBLE
+//        loadingIv.visibility = View.INVISIBLE
+//        loadingTv.visibility = View.INVISIBLE
+//        itemsRv.visibility = View.VISIBLE
     }
 
     private fun showLoading(loading: Loading.Show) {
-        val animated =
-            AnimatedVectorDrawableCompat.create(
-                requireActivity(), loading.avdResId
-            )
-        loadingIv.setImageDrawable(animated)
-        animated?.start()
-        loadingTv.setText(loading.messageResId)
-        itemsRv.visibility = View.GONE
-        loadingIv.visibility = View.VISIBLE
-        loadingTv.visibility = View.VISIBLE
+//        val animated =
+//            AnimatedVectorDrawableCompat.create(
+//                requireActivity(), loading.avdResId
+//            )
+//        loadingIv.setImageDrawable(animated)
+//        animated?.start()
+//        loadingTv.setText(loading.messageResId)
+//        itemsRv.visibility = View.GONE
+//        loadingIv.visibility = View.VISIBLE
+//        loadingTv.visibility = View.VISIBLE
     }
 
     @SuppressLint("SetTextI18n", "InflateParams")
@@ -206,12 +287,12 @@ class MainFragment : DaggerFragment() {
             viewModel.bottomSheetSlideOffset.observe(
                 viewLifecycleOwner,
                 { slideOffset ->
-                    searchBg.alpha = lerp(
-                        0f, 1f, 0f, 1f, slideOffset
-                    )
-                    recenterFab.alpha = lerp(
-                        1f, 0f, 0f, 1f, slideOffset
-                    )
+//                    searchBg.alpha = lerp(
+//                        0f, 1f, 0f, 1f, slideOffset
+//                    )
+//                    recenterFab.alpha = lerp(
+//                        1f, 0f, 0f, 1f, slideOffset
+//                    )
                 }
             )
 
@@ -270,18 +351,18 @@ class MainFragment : DaggerFragment() {
 //            )
 //
             viewModel.locationStatus.observe(viewLifecycleOwner) {
-                recenterFab.setImageResource(
-                    if (it) {
-                        R.drawable.ic_near_me_24
-                    } else {
-                        R.drawable.ic_near_me_disabled_24
-                    }
-                )
-                recenterFab.tag = if (it) {
-                    "no_error"
-                } else {
-                    "error"
-                }
+//                recenterFab.setImageResource(
+//                    if (it) {
+//                        R.drawable.ic_near_me_24
+//                    } else {
+//                        R.drawable.ic_near_me_disabled_24
+//                    }
+//                )
+//                recenterFab.tag = if (it) {
+//                    "no_error"
+//                } else {
+//                    "error"
+//                }
             }
 
 
@@ -323,11 +404,11 @@ class MainFragment : DaggerFragment() {
             viewModel.starredListItems.observe(
                 viewLifecycleOwner,
                 Observer { listItems ->
-                    val layoutState = starredBusArrivalsRv.layoutManager?.onSaveInstanceState()
-                    starredBusArrivalsAdapter =
-                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
-                    starredBusArrivalsRv.layoutManager?.onRestoreInstanceState(layoutState)
-                    starredBusArrivalsRv.adapter = starredBusArrivalsAdapter ?: return@Observer
+//                    val layoutState = starredBusArrivalsRv.layoutManager?.onSaveInstanceState()
+//                    starredBusArrivalsAdapter =
+//                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
+//                    starredBusArrivalsRv.layoutManager?.onRestoreInstanceState(layoutState)
+//                    starredBusArrivalsRv.adapter = starredBusArrivalsAdapter ?: return@Observer
                 }
             )
 
@@ -535,15 +616,15 @@ class MainFragment : DaggerFragment() {
 
             permissionDialog.init(this)
 
-            recenterFab.setOnClickListener {
-                if (recenterFab.tag == "error") {
-                    permissionDialog.show {
-                        viewModel.onRecenterClicked()
-                    }
-                } else {
-                    viewModel.onRecenterClicked()
-                }
-            }
+//            recenterFab.setOnClickListener {
+//                if (recenterFab.tag == "error") {
+//                    permissionDialog.show {
+//                        viewModel.onRecenterClicked()
+//                    }
+//                } else {
+//                    viewModel.onRecenterClicked()
+//                }
+//            }
 
 //            searchMtv.setOnClickListener {
 //                startActivityForResult(

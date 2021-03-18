@@ -94,6 +94,7 @@ object Libs {
             const val activity = "androidx.activity:activity-compose:1.3.0-alpha03"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02"
             const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
+            const val viewbinding = "androidx.compose.ui:ui-viewbinding:$version"
 
             val all = listOf(
                 ui,
@@ -104,7 +105,8 @@ object Libs {
                 materialIconsExtended,
                 activity,
                 viewModel,
-                livedata
+                livedata,
+                viewbinding
             )
         }
     }
