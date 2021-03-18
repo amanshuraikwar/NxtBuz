@@ -105,6 +105,22 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
     }
+
+    buildFeatures {
+        compose true
+        buildConfig true
+        viewBinding true
+        resValues true
+
+        // Disable unused AGP features
+        aidl false
+        renderScript false
+        shaders false
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.0.0-beta02'
+    }
 }
 
 dependencies {
@@ -170,6 +186,12 @@ dependencies {
 
     kapt project(':annotationProcessors')
     compileOnly project(':annotations')
+
+    for (dependency in Libs.AndroidX.Compose.all) {
+        implementation dependency
+    }
+
+    implementation Libs.Accompanist.insets
 
     implementation Libs.Google.analytics
     implementation Libs.Google.crashlytics
