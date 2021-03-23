@@ -90,8 +90,6 @@ class NxtBuzMapViewModel @Inject constructor(
                     mapZoom,
                 ) { googleMap: GoogleMap? ->
                     map = googleMap
-                    Log.d(TAG, "initMap: onMapReady() called")
-                    //map?.let { mapUtil.updateMapStyle(it) }
                     map?.setOnMarkerClickListener {
                         onMarkerClicked(it)
                         true
@@ -104,23 +102,6 @@ class NxtBuzMapViewModel @Inject constructor(
                     delay(300)
                 }
             }
-            // suspend until the map is initialised in the UI
-//            suspendCancellableCoroutine<Unit> { cont ->
-//                _initMap.postValue(
-//                    MapInitData(
-//                        LatLng(lat, lng),
-//                        mapZoom,
-//                    ) { googleMap: GoogleMap? ->
-//                        map = googleMap
-//                        map?.let { mapUtil.updateMapStyle(it) }
-//                        map?.setOnMarkerClickListener {
-//                            onMarkerClicked(it)
-//                            true
-//                        }
-//                        cont.resumeWith(Result.success(Unit))
-//                    }
-//                )
-//            }
         }
 
         startCollectingEvents(viewModelScope)
