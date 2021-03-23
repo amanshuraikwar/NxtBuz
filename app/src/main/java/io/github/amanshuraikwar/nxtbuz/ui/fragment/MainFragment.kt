@@ -24,6 +24,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.*
 import androidx.navigation.findNavController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +43,13 @@ import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsFragmentDirections
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.listitem.*
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavType
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
+import androidx.navigation.compose.rememberNavController
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItems
+import io.github.amanshuraikwar.nxtbuz.busstop.ui.items.BusStopsScreen
 import io.github.amanshuraikwar.nxtbuz.common.compose.ComposeBottomSheet
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionDialog
@@ -93,28 +101,51 @@ class MainFragment : DaggerFragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 NxtBuzTheme {
-
-                    Box {
+                    ProvideWindowInsets {
+                        Box {
 //                        val mapView = rememberMapViewWithLifecycle()
 //                        MapViewContainer(mapView)
-                        NxtBuzMap(Modifier.fillMaxSize(), viewModelProvider(viewModelFactory))
-
-                        ComposeBottomSheet(
-                            modifier = Modifier
-                                .fillMaxSize(),
-//                            bottomSheetState = bottomSheetState,
-                            backgroundColor = Color.Transparent,
-                            sheetContent = {
-                                Text(text = "helo\nhelo\nhelo")
+                            NxtBuzMap(Modifier.fillMaxSize(), viewModelProvider(viewModelFactory))
+                            val navController = rememberNavController()
+                            NavHost(navController, startDestination = "busStops") {
+                                composable("busStops") {
+                                    BusStopsScreen(
+                                        vm = viewModelProvider(viewModelFactory),
+                                        navController = navController
+                                    )
+                                }
+                                composable(
+                                    "busStopArrival",
+                                    arguments = listOf(
+                                        navArgument("busStop") {
+                                            type = NavType.ParcelableType(BusStop::class.java)
+                                        }
+                                    )
+                                ) { backStackEntry ->
+                                    BusStopArrivalItems(
+                                        vm = viewModelProvider(viewModelFactory),
+                                        busStop = backStackEntry.arguments?.getParcelable("busStop")!!,
+                                    )
+                                }
+                                //composable("friendslist") { FriendsList(...) }
                             }
-                        ) {
-                        }
+//                        ComposeBottomSheet(
+//                            modifier = Modifier
+//                                .fillMaxSize(),
+////                            bottomSheetState = bottomSheetState,
+//                            backgroundColor = Color.Transparent,
+//                            sheetContent = {
+//                                Text(text = "helo\nhelo\nhelo")
+//                            }
+//                        ) {
+//                        }
 //                    FragmentAwareAndroidViewBinding(
 //                        FragmentScreenStateContainerBinding::inflate,
 //                        modifier = Modifier.fillMaxSize()
 //                    ) {
 //                        this@MainFragment.screenStateFragment = screenStateFragment
 //                    }
+                        }
                     }
                 }
 //                Box {

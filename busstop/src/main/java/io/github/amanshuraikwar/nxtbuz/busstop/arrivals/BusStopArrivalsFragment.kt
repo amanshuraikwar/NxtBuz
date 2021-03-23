@@ -44,7 +44,7 @@ class BusStopArrivalsFragment : DaggerFragment() {
             setContent {
                 NxtBuzTheme {
                     ProvideWindowInsets {
-                        BusStopArrivalItems(viewModel)
+                        //BusStopArrivalItems(viewModel)
                     }
                 }
             }

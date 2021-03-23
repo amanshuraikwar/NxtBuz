@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.buildSrc
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha09"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha10"
 
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 
@@ -95,6 +95,7 @@ object Libs {
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02"
             const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
             const val viewbinding = "androidx.compose.ui:ui-viewbinding:$version"
+            const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha09"
 
             val all = listOf(
                 ui,
@@ -106,7 +107,8 @@ object Libs {
                 activity,
                 viewModel,
                 livedata,
-                viewbinding
+                viewbinding,
+                navigation
             )
         }
     }

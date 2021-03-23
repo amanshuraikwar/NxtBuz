@@ -1,11 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
-import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,10 +10,10 @@ import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Cyan
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
@@ -25,71 +21,78 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
 import io.github.amanshuraikwar.nxtbuz.common.compose.ComposeBottomSheet
 import io.github.amanshuraikwar.nxtbuz.common.compose.Header
 import io.github.amanshuraikwar.nxtbuz.common.compose.Puck
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun BusStopArrivalItems(vm: BusStopArrivalsViewModel) {
+fun BusStopArrivalItems(
+    vm: BusStopArrivalsViewModel,
+    busStop: BusStop,
+) {
+    LaunchedEffect(key1 = busStop.code) {
+        vm.init(busStop)
+    }
+
     val bottomSheetState = rememberBottomSheetState(
         BottomSheetValue.Collapsed
     )
     val coroutineScope = rememberCoroutineScope()
 
-    Box {
-        ComposeBottomSheet(
-            modifier = Modifier
-                .statusBarsPadding()
-                .padding(top = 16.dp),
-            bottomSheetState = bottomSheetState,
-            backgroundColor = Color.Transparent,
-            sheetContent = {
-                Puck()
+    ComposeBottomSheet(
+        modifier = Modifier
+            .statusBarsPadding()
+            .padding(top = 16.dp),
+        bottomSheetState = bottomSheetState,
+        backgroundColor = Color.Transparent,
+        sheetContent = {
+            Puck()
 
-                val lazyListState = rememberLazyListState()
+            val lazyListState = rememberLazyListState()
 
-                LazyColumn(
-                    contentPadding = PaddingValues(bottom = 128.dp, top = 12.dp),
-                    state = lazyListState,
-                ) {
-                    items(
-                        items = vm.listItems,
-                        key = { item ->
-                            when (item) {
-                                is BusStopArrivalListItemData.BusStopArrival -> item.busServiceNumber
-                                is BusStopArrivalListItemData.BusStopHeader -> item.busStopCode
-                                is BusStopArrivalListItemData.Header -> item.title
-                            }
-                        }
-                    ) { item ->
+            LazyColumn(
+                contentPadding = PaddingValues(bottom = 128.dp, top = 12.dp),
+                state = lazyListState,
+            ) {
+                items(
+                    items = vm.listItems,
+                    key = { item ->
                         when (item) {
-                            is BusStopArrivalListItemData.BusStopArrival -> {
-                                BusStopArrivalItem(
-                                    modifier = Modifier.clickable {
-                                        coroutineScope.launch {
-                                            bottomSheetState.collapse()
-                                            vm.onBusServiceClicked(item.busServiceNumber)
-                                            lazyListState.scrollToItem(0)
-                                        }
-                                    },
-                                    data = item
-                                )
-                            }
-                            is BusStopArrivalListItemData.Header -> {
-                                Header(
-                                    title = item.title
-                                )
-                            }
-                            is BusStopArrivalListItemData.BusStopHeader -> {
-                                BusStopHeaderItem(
-                                    data = item
-                                )
-                            }
+                            is BusStopArrivalListItemData.BusStopArrival -> item.busServiceNumber
+                            is BusStopArrivalListItemData.BusStopHeader -> item.busStopCode
+                            is BusStopArrivalListItemData.Header -> item.title
+                        }
+                    }
+                ) { item ->
+                    when (item) {
+                        is BusStopArrivalListItemData.BusStopArrival -> {
+                            BusStopArrivalItem(
+                                modifier = Modifier.clickable {
+                                    coroutineScope.launch {
+                                        bottomSheetState.collapse()
+                                        vm.onBusServiceClicked(item.busServiceNumber)
+                                        lazyListState.scrollToItem(0)
+                                    }
+                                },
+                                data = item
+                            )
+                        }
+                        is BusStopArrivalListItemData.Header -> {
+                            Header(
+                                title = item.title
+                            )
+                        }
+                        is BusStopArrivalListItemData.BusStopHeader -> {
+                            BusStopHeaderItem(
+                                data = item
+                            )
                         }
                     }
                 }
-            }, sheetPeekHeight = 256.dp
-        ) {
+            }
+        },
+        sheetPeekHeight = 256.dp
+    ) {
 
-        }
     }
 }
