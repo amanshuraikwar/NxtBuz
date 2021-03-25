@@ -35,7 +35,7 @@ class BusRouteFragment : DaggerFragment() {
             setContent {
                 NxtBuzTheme {
                     ProvideWindowInsets {
-                        BusRouteItems(viewModel)
+                        //BusRouteItems(viewModel)
                     }
                 }
             }

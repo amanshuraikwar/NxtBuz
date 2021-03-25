@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.ui.items
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsViewModel
@@ -57,7 +59,17 @@ fun BusStopsScreen(
                 ) { item ->
                     when (item) {
                         is BusStopsItemData.BusStop -> {
-                            BusStopItem(data = item)
+                            BusStopItem(
+                                Modifier.clickable {
+                                    // see: https://wajahatkarim.com/2021/03/pass-parcelable-compose-navigation/
+                                    navController.currentBackStackEntry?.arguments?.putParcelable(
+                                        "busStop",
+                                        item.busStop
+                                    )
+                                    navController.navigate("busStopArrival")
+                                },
+                                data = item
+                            )
                         }
                         is BusStopsItemData.Header -> {
                             Header(title = item.title)

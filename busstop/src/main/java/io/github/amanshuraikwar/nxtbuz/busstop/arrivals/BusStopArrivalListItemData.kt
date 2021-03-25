@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals
 
 import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.BusType
 
 sealed class BusStopArrivalListItemData {
@@ -8,18 +9,21 @@ sealed class BusStopArrivalListItemData {
 
     sealed class BusStopArrival(
         val busServiceNumber: String,
+        val busStop: BusStop,
     ) : BusStopArrivalListItemData() {
 
         class Arriving(
             busServiceNumber: String,
+            busStop: BusStop,
             val destinationBusStopDescription: String,
             val busLoad: BusLoad,
             val wheelchairAccess: Boolean,
             val busType: BusType,
             val arrival: String,
-        ) : BusStopArrival(busServiceNumber) {
+        ) : BusStopArrival(busServiceNumber, busStop) {
             fun copy(
                 arrival: String,
+                busStop: BusStop,
                 destinationBusStopDescription: String,
                 busType: BusType,
                 wheelchairAccess: Boolean,
@@ -31,34 +35,39 @@ sealed class BusStopArrivalListItemData {
                    busLoad = busLoad,
                    wheelchairAccess = wheelchairAccess,
                    busType = busType,
-                   arrival = arrival
+                   arrival = arrival,
+                   busStop = busStop,
                )
             }
         }
 
         class NotArriving(
             busServiceNumber: String,
+            busStop: BusStop,
             val reason: String,
         ) : BusStopArrival(
-            busServiceNumber
+            busServiceNumber,
+            busStop
         ) {
             fun copy(reason: String): NotArriving {
                 return NotArriving(
                     busServiceNumber = busServiceNumber,
-                    reason = reason
+                    reason = reason,
+                    busStop = busStop,
                 )
             }
         }
 
         companion object {
-            operator fun invoke() = BusStopArrival.Arriving(
-                "961M",
-                destinationBusStopDescription = "MARINE CTR RD",
-                busLoad = BusLoad.values().random(),
-                wheelchairAccess = listOf(true, false).random(),
-                busType = BusType.values().random(),
-                arrival = "in 04 mins"
-            )
+//            operator fun invoke() = BusStopArrival.Arriving(
+//                "961M",
+//                destinationBusStopDescription = "MARINE CTR RD",
+//                busLoad = BusLoad.values().random(),
+//                wheelchairAccess = listOf(true, false).random(),
+//                busType = BusType.values().random(),
+//                arrival = "in 04 mins",
+////                busStop = busStop,
+//            )
         }
     }
 

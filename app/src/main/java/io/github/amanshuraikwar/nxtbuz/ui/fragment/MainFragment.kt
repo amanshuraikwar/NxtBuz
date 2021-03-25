@@ -48,6 +48,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.BusRouteItems
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItems
 import io.github.amanshuraikwar.nxtbuz.busstop.ui.items.BusStopsScreen
 import io.github.amanshuraikwar.nxtbuz.common.compose.ComposeBottomSheet
@@ -114,17 +115,47 @@ class MainFragment : DaggerFragment() {
                                         navController = navController
                                     )
                                 }
+
                                 composable(
                                     "busStopArrival",
-                                    arguments = listOf(
-                                        navArgument("busStop") {
-                                            type = NavType.ParcelableType(BusStop::class.java)
-                                        }
-                                    )
+//                                    arguments = listOf(
+//                                        navArgument("busStop") {
+//                                            type = NavType.ParcelableType(BusStop::class.java)
+//                                        }
+//                                    )
+                                ) {
+                                    val busStop =
+                                        navController
+                                            .previousBackStackEntry
+                                            ?.arguments
+                                            ?.getParcelable<BusStop>(
+                                                "busStop"
+                                            )
+                                    if (busStop != null) {
+                                        BusStopArrivalItems(
+                                            navController = navController,
+                                            vm = viewModelProvider(viewModelFactory),
+                                            busStop = busStop,
+                                        )
+                                    }
+                                }
+
+                                composable(
+                                    "busRoute/{busServiceNumber}"
                                 ) { backStackEntry ->
-                                    BusStopArrivalItems(
+                                    BusRouteItems(
+                                        busServiceNumber = backStackEntry
+                                            .arguments
+                                            ?.getString("busServiceNumber")
+                                            ?: return@composable,
+                                        busStop = navController
+                                            .previousBackStackEntry
+                                            ?.arguments
+                                            ?.getParcelable(
+                                                "busStop"
+                                            ),
                                         vm = viewModelProvider(viewModelFactory),
-                                        busStop = backStackEntry.arguments?.getParcelable("busStop")!!,
+                                        //navController = navController
                                     )
                                 }
                                 //composable("friendslist") { FriendsList(...) }
