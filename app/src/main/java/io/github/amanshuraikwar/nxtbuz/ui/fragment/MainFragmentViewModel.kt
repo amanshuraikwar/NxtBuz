@@ -43,13 +43,13 @@ class MainFragmentViewModel @Inject constructor(
     _navigateToBusRoute: MutableSharedFlow<BusRouteNavigationParams>,
     //private val busStopsViewModel: BusStopsViewModel,
     //private val busStopArrivalsViewModelDelegate: BusStopArrivalsViewModelDelegate,
-    private val busRouteViewModelDelegate: io.github.amanshuraikwar.nxtbuz.busroute.BusRouteViewModelDelegateImpl,
+    //private val busRouteViewModelDelegate: io.github.amanshuraikwar.nxtbuz.busroute.BusRouteViewModelDelegateImpl,
     starredArrivalsViewModelDelegate: StarredArrivalsViewModelDelegate,
     private val locationViewModelDelegate: LocationViewModelDelegate,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(),
-    StarredArrivalsViewModelDelegate by starredArrivalsViewModelDelegate,
-    io.github.amanshuraikwar.nxtbuz.busroute.BusRouteViewModelDelegate by busRouteViewModelDelegate {
+    StarredArrivalsViewModelDelegate by starredArrivalsViewModelDelegate
+    /*io.github.amanshuraikwar.nxtbuz.busroute.BusRouteViewModelDelegate by busRouteViewModelDelegate*/ {
 
     private val starToggleStateFlow: StateFlow<StarToggleState> = _starToggleStateFlow
 
@@ -200,12 +200,12 @@ class MainFragmentViewModel @Inject constructor(
 //                    )
                 }
                 is ScreenState.BusRouteState -> {
-                    busRouteViewModelDelegate.start(
-                        screenState,
-                        viewModelScope,
-                        ::onBusStopClicked,
-                        ::onStarToggle
-                    )
+//                    busRouteViewModelDelegate.start(
+//                        screenState,
+//                        viewModelScope,
+//                        ::onBusStopClicked,
+//                        ::onStarToggle
+//                    )
                 }
             }
 
@@ -226,7 +226,7 @@ class MainFragmentViewModel @Inject constructor(
                     //busStopArrivalsViewModelDelegate.stop(screenState)
                 }
                 is ScreenState.BusRouteState -> {
-                    busRouteViewModelDelegate.stop(screenState)
+                    //busRouteViewModelDelegate.stop(screenState)
                 }
             }
         }

@@ -31,9 +31,9 @@ class MainActivity : DaggerAppCompatActivity() {
         viewModel = viewModelProvider(viewModelFactory)
     }
 
-    override fun onBackPressed() {
-        viewModel.onBackPressed()
-    }
+//    override fun onBackPressed() {
+//        viewModel.onBackPressed()
+//    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

@@ -8,18 +8,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.*
 import androidx.navigation.findNavController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -30,6 +42,17 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsFragmentD
 import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsFragmentDirections
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.listitem.*
+import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavType
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
+import androidx.navigation.compose.rememberNavController
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.BusRouteItems
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItems
+import io.github.amanshuraikwar.nxtbuz.busstop.ui.items.BusStopsScreen
+import io.github.amanshuraikwar.nxtbuz.common.compose.ComposeBottomSheet
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionDialog
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
@@ -37,8 +60,13 @@ import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptio
 import io.github.amanshuraikwar.nxtbuz.common.util.lerp
 import io.github.amanshuraikwar.nxtbuz.common.util.setMarginTop
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
-import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
-import kotlinx.android.synthetic.main.fragment_main.*
+import io.github.amanshuraikwar.nxtbuz.databinding.FragmentScreenStateContainerBinding
+import io.github.amanshuraikwar.nxtbuz.databinding.FragmentScreenStateContainerBinding.inflate
+import io.github.amanshuraikwar.nxtbuz.databinding.FragmentNxtBuzMapBinding
+import io.github.amanshuraikwar.nxtbuz.databinding.FragmentNxtBuzMapBinding.inflate
+import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
+//import kotlinx.android.synthetic.main.bus_stops_bottom_sheet.*
+//import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -63,27 +91,145 @@ class MainFragment : DaggerFragment() {
     private var starredBusArrivalsAdapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? =
         null
     private var adapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? = null
+    private lateinit var screenStateFragment: FragmentContainerView
 
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                NxtBuzTheme {
+                    ProvideWindowInsets {
+                        Box {
+//                        val mapView = rememberMapViewWithLifecycle()
+//                        MapViewContainer(mapView)
+                            NxtBuzMap(Modifier.fillMaxSize(), viewModelProvider(viewModelFactory))
+                            val navController = rememberNavController()
+                            NavHost(navController, startDestination = "busStops") {
+                                composable("busStops") {
+                                    BusStopsScreen(
+                                        vm = viewModelProvider(viewModelFactory),
+                                        navController = navController
+                                    )
+                                }
+
+                                composable(
+                                    "busStopArrival",
+//                                    arguments = listOf(
+//                                        navArgument("busStop") {
+//                                            type = NavType.ParcelableType(BusStop::class.java)
+//                                        }
+//                                    )
+                                ) {
+                                    val busStop =
+                                        navController
+                                            .previousBackStackEntry
+                                            ?.arguments
+                                            ?.getParcelable<BusStop>(
+                                                "busStop"
+                                            )
+                                    if (busStop != null) {
+                                        BusStopArrivalItems(
+                                            navController = navController,
+                                            vm = viewModelProvider(viewModelFactory),
+                                            busStop = busStop,
+                                        )
+                                    }
+                                }
+
+                                composable(
+                                    "busRoute/{busServiceNumber}"
+                                ) { backStackEntry ->
+                                    BusRouteItems(
+                                        busServiceNumber = backStackEntry
+                                            .arguments
+                                            ?.getString("busServiceNumber")
+                                            ?: return@composable,
+                                        busStop = navController
+                                            .previousBackStackEntry
+                                            ?.arguments
+                                            ?.getParcelable(
+                                                "busStop"
+                                            ),
+                                        vm = viewModelProvider(viewModelFactory),
+                                        //navController = navController
+                                    )
+                                }
+                                //composable("friendslist") { FriendsList(...) }
+                            }
+//                        ComposeBottomSheet(
+//                            modifier = Modifier
+//                                .fillMaxSize(),
+////                            bottomSheetState = bottomSheetState,
+//                            backgroundColor = Color.Transparent,
+//                            sheetContent = {
+//                                Text(text = "helo\nhelo\nhelo")
+//                            }
+//                        ) {
+//                        }
+//                    FragmentAwareAndroidViewBinding(
+//                        FragmentScreenStateContainerBinding::inflate,
+//                        modifier = Modifier.fillMaxSize()
+//                    ) {
+//                        this@MainFragment.screenStateFragment = screenStateFragment
+//                    }
+                        }
+                    }
+                }
+//                Box {
+//
+//                    AndroidView(
+//                        factory = { context ->
+//                            MapView(context).apply {
+//                                onCreate(Bundle())
+//                            }
+//                        },
+//                        modifier = Modifier.fillMaxSize()
+//                    ) { mapView ->
+////                        val lifecycleObserver = rememberMapLifecycleObserver(mapView)
+////                        val lifecycle = LifecycleOwnerAmbient.current.lifecycle
+////                        onCommit(lifecycle) {
+////                            lifecycle.addObserver(lifecycleObserver)
+////                            onDispose {
+////                                lifecycle.removeObserver(lifecycleObserver)
+////                            }
+////                        }
+//                    }
+//
+//                FragmentAwareAndroidViewBinding<FragmentNxtBuzMapBinding>(
+//                    FragmentNxtBuzMapBinding::inflate,
+//                    modifier = Modifier.fillMaxSize()
+//                ) {
+//                    //this@MainFragment.screenStateFragment = screenStateFragment
+//                }
+//                }
+            }
+        }
+        //return inflater.inflate(R.layout.fragment_main, container, false)
     }
+
+//    @Composable
+//    private fun MapViewContainer(map: MapView) {
+//        //val currentLocation = viewModel.location.observeAsState()
+//
+//        AndroidView({ map }) { mapView -> }
+//    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { _, insets ->
-            screenTopGuideline.setMarginTop(insets.systemWindowInsetTop)
-            insets.consumeSystemWindowInsets()
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { _, insets ->
+//            searchBarFragment.setMarginTop(insets.getInsets(WindowInsetsCompat.Type.statusBars()).top)
+//            insets
+//        }
 
         //itemsRv.layoutManager = LinearLayoutManager(activity)
-        starredBusArrivalsRv.layoutManager = LinearLayoutManager(
-            activity, RecyclerView.HORIZONTAL, false
-        )
+//        starredBusArrivalsRv.layoutManager = LinearLayoutManager(
+//            activity, RecyclerView.HORIZONTAL, false
+//        )
 
         setupViewModel()
         //setupBottomSheet()
@@ -152,22 +298,22 @@ class MainFragment : DaggerFragment() {
     }
 
     private fun hideLoading() {
-        loadingIv.visibility = View.INVISIBLE
-        loadingTv.visibility = View.INVISIBLE
-        itemsRv.visibility = View.VISIBLE
+//        loadingIv.visibility = View.INVISIBLE
+//        loadingTv.visibility = View.INVISIBLE
+//        itemsRv.visibility = View.VISIBLE
     }
 
     private fun showLoading(loading: Loading.Show) {
-        val animated =
-            AnimatedVectorDrawableCompat.create(
-                requireActivity(), loading.avdResId
-            )
-        loadingIv.setImageDrawable(animated)
-        animated?.start()
-        loadingTv.setText(loading.messageResId)
-        itemsRv.visibility = View.GONE
-        loadingIv.visibility = View.VISIBLE
-        loadingTv.visibility = View.VISIBLE
+//        val animated =
+//            AnimatedVectorDrawableCompat.create(
+//                requireActivity(), loading.avdResId
+//            )
+//        loadingIv.setImageDrawable(animated)
+//        animated?.start()
+//        loadingTv.setText(loading.messageResId)
+//        itemsRv.visibility = View.GONE
+//        loadingIv.visibility = View.VISIBLE
+//        loadingTv.visibility = View.VISIBLE
     }
 
     @SuppressLint("SetTextI18n", "InflateParams")
@@ -205,12 +351,12 @@ class MainFragment : DaggerFragment() {
             viewModel.bottomSheetSlideOffset.observe(
                 viewLifecycleOwner,
                 { slideOffset ->
-                    searchBg.alpha = lerp(
-                        0f, 1f, 0f, 1f, slideOffset
-                    )
-                    recenterFab.alpha = lerp(
-                        1f, 0f, 0f, 1f, slideOffset
-                    )
+//                    searchBg.alpha = lerp(
+//                        0f, 1f, 0f, 1f, slideOffset
+//                    )
+//                    recenterFab.alpha = lerp(
+//                        1f, 0f, 0f, 1f, slideOffset
+//                    )
                 }
             )
 
@@ -269,18 +415,18 @@ class MainFragment : DaggerFragment() {
 //            )
 //
             viewModel.locationStatus.observe(viewLifecycleOwner) {
-                recenterFab.setImageResource(
-                    if (it) {
-                        R.drawable.ic_near_me_24
-                    } else {
-                        R.drawable.ic_near_me_disabled_24
-                    }
-                )
-                recenterFab.tag = if (it) {
-                    "no_error"
-                } else {
-                    "error"
-                }
+//                recenterFab.setImageResource(
+//                    if (it) {
+//                        R.drawable.ic_near_me_24
+//                    } else {
+//                        R.drawable.ic_near_me_disabled_24
+//                    }
+//                )
+//                recenterFab.tag = if (it) {
+//                    "no_error"
+//                } else {
+//                    "error"
+//                }
             }
 
 
@@ -322,11 +468,11 @@ class MainFragment : DaggerFragment() {
             viewModel.starredListItems.observe(
                 viewLifecycleOwner,
                 Observer { listItems ->
-                    val layoutState = starredBusArrivalsRv.layoutManager?.onSaveInstanceState()
-                    starredBusArrivalsAdapter =
-                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
-                    starredBusArrivalsRv.layoutManager?.onRestoreInstanceState(layoutState)
-                    starredBusArrivalsRv.adapter = starredBusArrivalsAdapter ?: return@Observer
+//                    val layoutState = starredBusArrivalsRv.layoutManager?.onSaveInstanceState()
+//                    starredBusArrivalsAdapter =
+//                        MultiItemAdapter(activity, RecyclerViewTypeFactoryGenerated(), listItems)
+//                    starredBusArrivalsRv.layoutManager?.onRestoreInstanceState(layoutState)
+//                    starredBusArrivalsRv.adapter = starredBusArrivalsAdapter ?: return@Observer
                 }
             )
 
@@ -420,129 +566,129 @@ class MainFragment : DaggerFragment() {
                 }
             )
 
-            viewModel.primaryBusArrivalUpdate.observe(viewLifecycleOwner) { busArrivalUpdate ->
-                adapter
-                    ?.items
-                    ?.indexOfFirst { item ->
-                        item is BusRouteCurrentItem && item.busStopCode == busArrivalUpdate.busStopCode
-                    }?.let { index ->
-                        if (index != -1) {
-                            (adapter?.items?.get(index) as? BusRouteCurrentItem)
-                                ?.updateBusArrivals(busArrivalUpdate)
-                            adapter?.notifyItemChanged(index)
-                        }
-                    }
-            }
-
-            viewModel.secondaryBusArrivalUpdate.observe(viewLifecycleOwner) { busArrivalUpdate ->
-                adapter
-                    ?.items
-                    ?.forEachIndexed { index, item ->
-                        if (item is BusRouteItem) {
-                            if (item.busStopCode == busArrivalUpdate.busStopCode) {
-                                item.updateBusArrivals(busArrivalUpdate)
-                                adapter?.notifyItemChanged(index)
-                            } else if (item !is BusRouteCurrentItem && item.arrivals.isNotEmpty()) {
-                                item.updateBusArrivals(BusArrivalUpdate.noRadar(item.busStopCode))
-                                adapter?.notifyItemChanged(index)
-                            }
-                        }
-                    }
-            }
-
-            viewModel.previousBusStopItems.observe(
-                viewLifecycleOwner,
-                EventObserver { previousItems ->
-
-                    adapter?.items
-                        ?.takeIf { items ->
-                            items.isNotEmpty()
-                        }
-                        ?.let rvUpdate@{ items ->
-
-                            val previousAllItemIndex =
-                                items.indexOfFirst { it is BusRoutePreviousAllItem }
-
-                            if (previousAllItemIndex == -1) return@rvUpdate
-
-                            items.removeAt(previousAllItemIndex)
-                            adapter?.notifyItemRemoved(previousAllItemIndex)
-                            items.addAll(previousAllItemIndex, previousItems)
-                            adapter?.notifyItemRangeInserted(
-                                previousAllItemIndex,
-                                previousItems.size
-                            )
-
-                            items
-                                .indexOfFirst { it is HeaderItem }
-                                .takeIf { it != -1 }?.let { index ->
-                                    (items[index] as HeaderItem).icon =
-                                        R.drawable.ic_round_unfold_less_16
-                                    adapter?.notifyItemChanged(index)
-                                }
-                        }
-                }
-            )
-
-            viewModel.hidePreviousBusStopItems.observe(
-                viewLifecycleOwner,
-                EventObserver { previousAllItem ->
-
-                    adapter?.items
-                        ?.takeIf { items ->
-                            items.isNotEmpty()
-                                    // if we don't already have previous all item
-                                    && items.find { it is BusRoutePreviousAllItem } == null
-                        }
-                        ?.let rvUpdate@{ items ->
-
-                            val firstPreviousBusStopItemIndex =
-                                items.indexOfFirst { it is BusRoutePreviousItem }
-
-                            if (firstPreviousBusStopItemIndex == -1) return@rvUpdate
-
-                            var currentBusStopItemIndex =
-                                items.indexOfFirst { it is BusRouteCurrentItem }
-
-                            if (currentBusStopItemIndex == -1) return@rvUpdate
-
-                            items.removeAll { it is BusRoutePreviousItem }
-
-                            adapter?.notifyItemRangeRemoved(
-                                firstPreviousBusStopItemIndex,
-                                currentBusStopItemIndex - firstPreviousBusStopItemIndex
-                            )
-
-                            currentBusStopItemIndex =
-                                items.indexOfFirst { it is BusRouteCurrentItem }
-
-                            if (currentBusStopItemIndex == -1) return@rvUpdate
-
-                            items.add(currentBusStopItemIndex, previousAllItem)
-
-                            adapter?.notifyItemInserted(currentBusStopItemIndex)
-
-                            items
-                                .indexOfFirst { it is HeaderItem }
-                                .takeIf { it != -1 }?.let { index ->
-                                    (items[index] as HeaderItem).icon = null
-                                    adapter?.notifyItemChanged(index)
-                                }
-                        }
-                }
-            )
+//            viewModel.primaryBusArrivalUpdate.observe(viewLifecycleOwner) { busArrivalUpdate ->
+//                adapter
+//                    ?.items
+//                    ?.indexOfFirst { item ->
+//                        item is BusRouteCurrentItem && item.busStopCode == busArrivalUpdate.busStopCode
+//                    }?.let { index ->
+//                        if (index != -1) {
+//                            (adapter?.items?.get(index) as? BusRouteCurrentItem)
+//                                ?.updateBusArrivals(busArrivalUpdate)
+//                            adapter?.notifyItemChanged(index)
+//                        }
+//                    }
+//            }
+//
+//            viewModel.secondaryBusArrivalUpdate.observe(viewLifecycleOwner) { busArrivalUpdate ->
+//                adapter
+//                    ?.items
+//                    ?.forEachIndexed { index, item ->
+//                        if (item is BusRouteItem) {
+//                            if (item.busStopCode == busArrivalUpdate.busStopCode) {
+//                                item.updateBusArrivals(busArrivalUpdate)
+//                                adapter?.notifyItemChanged(index)
+//                            } else if (item !is BusRouteCurrentItem && item.arrivals.isNotEmpty()) {
+//                                item.updateBusArrivals(BusArrivalUpdate.noRadar(item.busStopCode))
+//                                adapter?.notifyItemChanged(index)
+//                            }
+//                        }
+//                    }
+//            }
+//
+//            viewModel.previousBusStopItems.observe(
+//                viewLifecycleOwner,
+//                EventObserver { previousItems ->
+//
+//                    adapter?.items
+//                        ?.takeIf { items ->
+//                            items.isNotEmpty()
+//                        }
+//                        ?.let rvUpdate@{ items ->
+//
+//                            val previousAllItemIndex =
+//                                items.indexOfFirst { it is BusRoutePreviousAllItem }
+//
+//                            if (previousAllItemIndex == -1) return@rvUpdate
+//
+//                            items.removeAt(previousAllItemIndex)
+//                            adapter?.notifyItemRemoved(previousAllItemIndex)
+//                            items.addAll(previousAllItemIndex, previousItems)
+//                            adapter?.notifyItemRangeInserted(
+//                                previousAllItemIndex,
+//                                previousItems.size
+//                            )
+//
+//                            items
+//                                .indexOfFirst { it is HeaderItem }
+//                                .takeIf { it != -1 }?.let { index ->
+//                                    (items[index] as HeaderItem).icon =
+//                                        R.drawable.ic_round_unfold_less_16
+//                                    adapter?.notifyItemChanged(index)
+//                                }
+//                        }
+//                }
+//            )
+//
+//            viewModel.hidePreviousBusStopItems.observe(
+//                viewLifecycleOwner,
+//                EventObserver { previousAllItem ->
+//
+//                    adapter?.items
+//                        ?.takeIf { items ->
+//                            items.isNotEmpty()
+//                                    // if we don't already have previous all item
+//                                    && items.find { it is BusRoutePreviousAllItem } == null
+//                        }
+//                        ?.let rvUpdate@{ items ->
+//
+//                            val firstPreviousBusStopItemIndex =
+//                                items.indexOfFirst { it is BusRoutePreviousItem }
+//
+//                            if (firstPreviousBusStopItemIndex == -1) return@rvUpdate
+//
+//                            var currentBusStopItemIndex =
+//                                items.indexOfFirst { it is BusRouteCurrentItem }
+//
+//                            if (currentBusStopItemIndex == -1) return@rvUpdate
+//
+//                            items.removeAll { it is BusRoutePreviousItem }
+//
+//                            adapter?.notifyItemRangeRemoved(
+//                                firstPreviousBusStopItemIndex,
+//                                currentBusStopItemIndex - firstPreviousBusStopItemIndex
+//                            )
+//
+//                            currentBusStopItemIndex =
+//                                items.indexOfFirst { it is BusRouteCurrentItem }
+//
+//                            if (currentBusStopItemIndex == -1) return@rvUpdate
+//
+//                            items.add(currentBusStopItemIndex, previousAllItem)
+//
+//                            adapter?.notifyItemInserted(currentBusStopItemIndex)
+//
+//                            items
+//                                .indexOfFirst { it is HeaderItem }
+//                                .takeIf { it != -1 }?.let { index ->
+//                                    (items[index] as HeaderItem).icon = null
+//                                    adapter?.notifyItemChanged(index)
+//                                }
+//                        }
+//                }
+//            )
 
             permissionDialog.init(this)
 
-            recenterFab.setOnClickListener {
-                if (recenterFab.tag == "error") {
-                    permissionDialog.show {
-                        viewModel.onRecenterClicked()
-                    }
-                } else {
-                    viewModel.onRecenterClicked()
-                }
-            }
+//            recenterFab.setOnClickListener {
+//                if (recenterFab.tag == "error") {
+//                    permissionDialog.show {
+//                        viewModel.onRecenterClicked()
+//                    }
+//                } else {
+//                    viewModel.onRecenterClicked()
+//                }
+//            }
 
 //            searchMtv.setOnClickListener {
 //                startActivityForResult(

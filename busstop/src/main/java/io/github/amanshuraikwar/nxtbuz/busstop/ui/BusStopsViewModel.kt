@@ -1,12 +1,15 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.ui
 
 import android.util.Log
+import androidx.annotation.WorkerThread
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.Marker
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.busstop.R
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
@@ -22,6 +25,8 @@ import io.github.amanshuraikwar.nxtbuz.listitem.BusStopItem
 import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -62,17 +67,20 @@ class BusStopsViewModel @Inject constructor(
     }
     private val coroutineContext = errorHandler + dispatcherProvider.computation
 
+    internal val listItems = SnapshotStateList<BusStopsItemData>()
+    private val listItemsLock = Mutex()
+
     init {
         fetchBusStops()
-        collectMarkerClicks()
+        //collectMarkerClicks()
     }
 
     fun fetchBusStops() {
         viewModelScope.launch(coroutineContext) {
 
-            _busStopScreenState.emit(
-                BusStopsScreenState.Loading(R.string.bus_stop_message_loading_nearby)
-            )
+//            _busStopScreenState.emit(
+//                BusStopsScreenState.Loading(R.string.bus_stop_message_loading_nearby)
+//            )
 
             getLocationUpdatesUseCase().collect { location ->
 
@@ -82,13 +90,38 @@ class BusStopsViewModel @Inject constructor(
                     limit = busStopsQueryLimitUseCase()
                 )
 
-                val listItems = getListItems(busStopList, onBusStopClicked)
+                //val listItems = getListItems(busStopList, onBusStopClicked)
 
-                _busStopScreenState.emit(BusStopsScreenState.Success(listItems))
+                //_busStopScreenState.emit(BusStopsScreenState.Success(listItems))
+                listItemsLock.withLock {
+                    updateListItems(busStopList)
+                }
 
                 addBusStopMarkers(busStopList)
             }
         }
+    }
+
+    @WorkerThread
+    private fun updateListItems(busStopList: List<BusStop>) {
+        listItems.clear()
+
+        listItems.add(
+            BusStopsItemData.Header("Nearby Bus Stops")
+        )
+
+        listItems.addAll(
+            busStopList.map { busStop ->
+                BusStopsItemData.BusStop(
+                    busStopDescription = busStop.description,
+                    busStopInfo = "${busStop.roadName} • ${busStop.code}",
+                    operatingBuses = busStop.operatingBusList
+                        .map { it.serviceNumber }
+                        .reduceRight { next, total -> "${if (total.length == 2) "$total  " else if (total.length == 3) "$total " else total}  ${if (next.length == 2) "$next  " else if (next.length == 3) "$next " else next}" },
+                    busStop = busStop
+                )
+            }
+        )
     }
 
     private suspend fun addBusStopMarkers(busStopList: List<BusStop>) {
