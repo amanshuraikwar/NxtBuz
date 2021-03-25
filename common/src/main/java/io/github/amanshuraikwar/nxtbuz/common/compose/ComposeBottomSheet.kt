@@ -1,15 +1,15 @@
 package io.github.amanshuraikwar.nxtbuz.common.compose
 
+import android.util.Log
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -19,7 +19,27 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.largeShapeSizeDp
 import kotlin.math.roundToInt
+
+@ExperimentalMaterialApi
+val BottomSheetState.expandProgressFraction: Float
+    get() = when (progress.to) {
+        progress.from -> {
+            if (progress.from == BottomSheetValue.Collapsed) {
+                0f
+            } else {
+                1f
+            }
+        }
+        BottomSheetValue.Collapsed -> {
+            1f - progress.fraction
+        }
+        BottomSheetValue.Expanded -> {
+            progress.fraction
+        }
+        else -> 0f
+    }
 
 @ExperimentalMaterialApi
 @Composable
@@ -30,8 +50,16 @@ fun ComposeBottomSheet(
     bottomSheetState: BottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed),
     backgroundColor: Color = MaterialTheme.colors.background,
     contentColor: Color = contentColorFor(backgroundColor),
+    bgOffset: Dp = 0.dp,
     body: @Composable () -> Unit
 ) {
+    val surfaceColor = MaterialTheme.colors.surface
+    val cornerRadius = MaterialTheme.shapes.largeShapeSizeDp
+
+    Log.d(
+        "yoyo",
+        "ComposeBottomSheet: ${bottomSheetState.expandProgressFraction} $bgOffset ${bottomSheetState.progress}"
+    )
 
     BoxWithConstraints(modifier) {
         val fullHeight = constraints.maxHeight.toFloat()
@@ -49,8 +77,8 @@ fun ComposeBottomSheet(
                 }
             },
             bottomSheet = {
-                Surface(
-                    Modifier
+                Layout(
+                    modifier = Modifier
                         .fillMaxWidth()
                         .nestedScroll(bottomSheetState.PreUpPostDownNestedScrollConnection)
                         .swipeable(
@@ -63,13 +91,59 @@ fun ComposeBottomSheet(
                             enabled = true,
                             resistance = null
                         ),
-                    shape = MaterialTheme.shapes.large.copy(
-                        bottomEnd = CornerSize(0.dp),
-                        bottomStart = CornerSize(0.dp)
-                    ),
-                    elevation = BottomSheetScaffoldDefaults.SheetElevation
-                ) {
-                    sheetContent()
+                    content = {
+                        Canvas(
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            drawRoundRect(
+                                color = surfaceColor,
+                                topLeft = Offset(
+                                    0f,
+                                    bgOffset.toPx() * (1 - bottomSheetState.expandProgressFraction)
+                                ),
+                                size = Size(
+                                    size.width,
+                                    size.height
+                                            - bgOffset.toPx()
+                                            * (1 - bottomSheetState.expandProgressFraction)
+                                ),
+                                cornerRadius = CornerRadius(
+                                    cornerRadius.toPx()
+                                            * (1 - bottomSheetState.expandProgressFraction)
+                                )
+                            )
+                        }
+
+                        Column {
+                            sheetContent()
+                        }
+                    }
+                ) { measurables, constraints ->
+                    val contentPlaceable = measurables[1].measure(
+                        constraints.copy(
+                            minWidth = constraints.maxWidth,
+                            maxWidth = constraints.maxWidth,
+                            minHeight = constraints.maxHeight,
+                            maxHeight = constraints.maxHeight,
+                        )
+                    )
+
+                    val bgPlaceable = measurables[0].measure(
+                        constraints.copy(
+                            minWidth = contentPlaceable.width,
+                            maxWidth = contentPlaceable.width,
+                            minHeight = contentPlaceable.height,
+                            maxHeight = contentPlaceable.height,
+                        )
+                    )
+
+                    layout(
+                        width = contentPlaceable.width,
+                        height = contentPlaceable.height
+                    ) {
+                        bgPlaceable.place(0, 0)
+                        contentPlaceable.place(0, 0)
+                    }
                 }
             },
             bottomSheetOffset = bottomSheetState.offset

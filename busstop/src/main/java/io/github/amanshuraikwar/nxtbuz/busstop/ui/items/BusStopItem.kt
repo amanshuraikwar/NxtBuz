@@ -78,7 +78,7 @@ fun BusStopItem(
             )
 
             Text(
-                text = data.busStopInfo,
+                text = data.busStopInfo.toUpperCase(),
                 style = MaterialTheme.typography.overline,
                 color = MaterialTheme.colors.onSurface,
                 modifier = Modifier.padding(top = 2.dp)
