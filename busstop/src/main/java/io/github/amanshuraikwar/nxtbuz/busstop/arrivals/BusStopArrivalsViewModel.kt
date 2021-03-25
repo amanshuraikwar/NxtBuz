@@ -102,7 +102,8 @@ class BusStopArrivalsViewModel @Inject constructor(
                     busLoad = BusLoad.SEA,
                     wheelchairAccess = false,
                     busType = BusType.SD,
-                    arrival = "Fetching..."
+                    arrival = "Fetching...",
+                    busStop = busStop,
                 )
             }
         )
@@ -147,7 +148,8 @@ class BusStopArrivalsViewModel @Inject constructor(
                                     arrivals.nextArrivingBus.destination.busStopDescription,
                                     busType = arrivals.nextArrivingBus.type,
                                     wheelchairAccess = arrivals.nextArrivingBus.feature == "WAB",
-                                    busLoad = arrivals.nextArrivingBus.load
+                                    busLoad = arrivals.nextArrivingBus.load,
+                                    busStop = busStop,
                                 )
                             }
                             else -> {
@@ -159,7 +161,8 @@ class BusStopArrivalsViewModel @Inject constructor(
                                             "Not Operating"
                                         } else {
                                             "No Data"
-                                        }
+                                        },
+                                        busStop = busStop,
                                     )
                                 )
                             }
@@ -184,7 +187,8 @@ class BusStopArrivalsViewModel @Inject constructor(
                                         arrival = arrivals.nextArrivingBus.arrival,
                                         busType = arrivals.nextArrivingBus.type,
                                         wheelchairAccess = arrivals.nextArrivingBus.feature == "WAB",
-                                        busLoad = arrivals.nextArrivingBus.load
+                                        busLoad = arrivals.nextArrivingBus.load,
+                                        busStop = busStop,
                                     )
                                 )
                             }

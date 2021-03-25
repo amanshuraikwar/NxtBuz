@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.ui
 
 import android.util.Log
+import androidx.annotation.WorkerThread
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -101,7 +102,10 @@ class BusStopsViewModel @Inject constructor(
         }
     }
 
+    @WorkerThread
     private fun updateListItems(busStopList: List<BusStop>) {
+        listItems.clear()
+
         listItems.add(
             BusStopsItemData.Header("Nearby Bus Stops")
         )
@@ -113,7 +117,8 @@ class BusStopsViewModel @Inject constructor(
                     busStopInfo = "${busStop.roadName} • ${busStop.code}",
                     operatingBuses = busStop.operatingBusList
                         .map { it.serviceNumber }
-                        .reduceRight { next, total -> "${if (total.length == 2) "$total  " else if (total.length == 3) "$total " else total}  ${if (next.length == 2) "$next  " else if (next.length == 3) "$next " else next}" }
+                        .reduceRight { next, total -> "${if (total.length == 2) "$total  " else if (total.length == 3) "$total " else total}  ${if (next.length == 2) "$next  " else if (next.length == 3) "$next " else next}" },
+                    busStop = busStop
                 )
             }
         )

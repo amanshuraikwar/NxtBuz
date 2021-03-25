@@ -15,6 +15,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
@@ -27,6 +29,8 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @Composable
 fun BusStopArrivalItems(
+    modifier: Modifier = Modifier,
+    navController: NavController,
     vm: BusStopArrivalsViewModel,
     busStop: BusStop,
 ) {
@@ -40,7 +44,7 @@ fun BusStopArrivalItems(
     val coroutineScope = rememberCoroutineScope()
 
     ComposeBottomSheet(
-        modifier = Modifier
+        modifier = modifier
             .statusBarsPadding()
             .padding(top = 16.dp),
         bottomSheetState = bottomSheetState,
@@ -69,8 +73,16 @@ fun BusStopArrivalItems(
                             BusStopArrivalItem(
                                 modifier = Modifier.clickable {
                                     coroutineScope.launch {
+                                        // see: https://wajahatkarim.com/2021/03/pass-parcelable-compose-navigation/
+                                        navController.currentBackStackEntry?.arguments?.putParcelable(
+                                            "busStop",
+                                            item.busStop
+                                        )
                                         bottomSheetState.collapse()
-                                        vm.onBusServiceClicked(item.busServiceNumber)
+                                        navController.navigate(
+                                            "busRoute/${item.busServiceNumber}"
+                                        )
+                                        //vm.onBusServiceClicked(item.busServiceNumber)
                                         lazyListState.scrollToItem(0)
                                     }
                                 },

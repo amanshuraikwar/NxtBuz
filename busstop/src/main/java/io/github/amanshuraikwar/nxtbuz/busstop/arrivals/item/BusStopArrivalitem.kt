@@ -107,9 +107,9 @@ fun BusStopArrivalItem(
 @Composable
 fun BusStopArrivalItemPreview() {
     PreviewSurface {
-        BusStopArrivalItem(
-            data = BusStopArrivalListItemData.BusStopArrival()
-        )
+//        BusStopArrivalItem(
+//            data = BusStopArrivalListItemData.BusStopArrival()
+//        )
     }
 }
 
@@ -117,8 +117,8 @@ fun BusStopArrivalItemPreview() {
 @Composable
 fun BusStopArrivalItemPreviewDark() {
     PreviewSurface(darkTheme = true) {
-        BusStopArrivalItem(
-            data = BusStopArrivalListItemData.BusStopArrival()
-        )
+//        BusStopArrivalItem(
+//            data = BusStopArrivalListItemData.BusStopArrival()
+//        )
     }
 }
