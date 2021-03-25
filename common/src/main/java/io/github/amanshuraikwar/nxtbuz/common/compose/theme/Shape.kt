@@ -17,10 +17,16 @@ package io.github.amanshuraikwar.nxtbuz.common.compose.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+
+private const val LargeShapeSizeDp = 24
 
 val NxtBuzThemeShapes = Shapes(
     small = RoundedCornerShape(16.dp),
     medium = RoundedCornerShape(20.dp),
-    large = RoundedCornerShape(24.dp)
+    large = RoundedCornerShape(LargeShapeSizeDp.dp)
 )
+
+val Shapes.largeShapeSizeDp: Dp
+    get() = LargeShapeSizeDp.dp

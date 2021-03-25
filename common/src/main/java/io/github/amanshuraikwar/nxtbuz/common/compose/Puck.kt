@@ -13,11 +13,13 @@ import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.outline
 
 @Composable
-fun Puck() {
+fun Puck(
+    modifier: Modifier = Modifier,
+) {
     val puckColor = MaterialTheme.colors.outline
 
     Canvas(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(12.dp),
     ) {

@@ -73,4 +73,6 @@ dependencies {
     for (dependency in Libs.AndroidX.Compose.all) {
         implementation dependency
     }
+
+    implementation Libs.Accompanist.insets
 }
