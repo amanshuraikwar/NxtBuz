@@ -5,23 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import dagger.android.support.DaggerFragment
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
-import io.github.amanshuraikwar.nxtbuz.busstop.R
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreenState.*
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItems
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
-import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
-import kotlinx.android.synthetic.main.fragment_bus_stop_arrivals.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.busroute.model.BusRouteListItemData
+import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
 import java.util.*

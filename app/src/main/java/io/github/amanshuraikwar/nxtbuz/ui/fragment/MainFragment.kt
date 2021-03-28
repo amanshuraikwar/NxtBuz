@@ -17,15 +17,13 @@ import androidx.lifecycle.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteScreen
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItems
-import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsFragmentDirections
-import io.github.amanshuraikwar.nxtbuz.busstop.ui.items.BusStopsScreen
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
+import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsScreen
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
@@ -95,7 +93,7 @@ class MainFragment : DaggerFragment() {
                                             )
 
                                     if (busStop != null) {
-                                        BusStopArrivalItems(
+                                        BusStopArrivalsScreen(
                                             navController = navController,
                                             vm = viewModelProvider(viewModelFactory),
                                             busStop = busStop,

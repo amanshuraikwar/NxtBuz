@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busroute.model
+package io.github.amanshuraikwar.nxtbuz.busroute.ui.model
 
 import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 

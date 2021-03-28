@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.busroute.loop.ArrivalsLoop
-import io.github.amanshuraikwar.nxtbuz.busroute.model.BusRouteListItemData
+import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
@@ -25,8 +25,6 @@ private const val TAG = "BusRouteViewModel"
 class BusRouteViewModel @Inject constructor(
     private val getBusRouteUseCase: GetBusRouteUseCase,
     private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
-    @Named("bottomSheetSlideOffset")
-    private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 

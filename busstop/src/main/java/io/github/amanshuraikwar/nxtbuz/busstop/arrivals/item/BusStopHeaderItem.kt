@@ -11,7 +11,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Directions
-import androidx.compose.material.icons.rounded.StarBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,12 +20,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
-import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
-import java.util.*
 
 @Composable
 fun BusStopHeaderItem(

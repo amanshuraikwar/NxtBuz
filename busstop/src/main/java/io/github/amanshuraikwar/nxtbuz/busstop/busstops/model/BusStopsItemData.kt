@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.ui
+package io.github.amanshuraikwar.nxtbuz.busstop.busstops.model
 
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop as BusStopData
 

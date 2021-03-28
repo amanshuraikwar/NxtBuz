@@ -3,7 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
 import androidx.compose.animation.Crossfade
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import io.github.amanshuraikwar.nxtbuz.busroute.model.BusRouteListItemData
+import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 
 @Composable

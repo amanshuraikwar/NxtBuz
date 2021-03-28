@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.ui.items
+package io.github.amanshuraikwar.nxtbuz.busstop.busstops.items
 
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
-import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsItemData
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
 
 @Composable

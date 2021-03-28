@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
+package io.github.amanshuraikwar.nxtbuz.busstop.arrivals
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.items
@@ -6,19 +6,23 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
-import io.github.amanshuraikwar.nxtbuz.common.compose.*
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItem
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopHeaderItem
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
+import io.github.amanshuraikwar.nxtbuz.common.compose.Header
+import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun BusStopArrivalItems(
+fun BusStopArrivalsScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     vm: BusStopArrivalsViewModel,
