@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
+package io.github.amanshuraikwar.nxtbuz.busroute.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.items
@@ -8,17 +8,16 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import io.github.amanshuraikwar.nxtbuz.busroute.model.BusRouteListItemData
-import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteViewModel
+import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.*
 import io.github.amanshuraikwar.nxtbuz.common.compose.Header
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 
 @ExperimentalMaterialApi
 @Composable
-fun BusRouteItems(
+fun BusRouteScreen(
     modifier: Modifier = Modifier,
     busServiceNumber: String,
     busStop: BusStop?,
@@ -30,7 +29,6 @@ fun BusRouteItems(
 
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
     val lazyListState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
 
     NxtBuzBottomSheet(
         modifier = modifier,
