@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.ui.items
+package io.github.amanshuraikwar.nxtbuz.busstop.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.items
@@ -12,8 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
-import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsItemData
-import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsViewModel
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsViewModel
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.items.BusStopItem
 import io.github.amanshuraikwar.nxtbuz.common.compose.Header
 import kotlinx.coroutines.launch
 

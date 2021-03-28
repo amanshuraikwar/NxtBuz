@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.busroute.model.BusRouteListItemData
+import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 
 @Composable
 fun CircleAvatarItem(

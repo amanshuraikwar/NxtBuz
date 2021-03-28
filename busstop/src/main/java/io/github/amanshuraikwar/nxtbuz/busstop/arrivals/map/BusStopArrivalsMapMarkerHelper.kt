@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.arrivals
+package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.map
 
 import android.util.Log
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
@@ -6,7 +6,6 @@ import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.ArrivingBus
 import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.map.ArrivingBusMapMarker
-import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapUpdate
 //import io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate

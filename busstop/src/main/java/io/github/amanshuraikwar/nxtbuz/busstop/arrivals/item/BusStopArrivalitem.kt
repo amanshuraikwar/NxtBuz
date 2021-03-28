@@ -1,6 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -17,7 +16,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
 

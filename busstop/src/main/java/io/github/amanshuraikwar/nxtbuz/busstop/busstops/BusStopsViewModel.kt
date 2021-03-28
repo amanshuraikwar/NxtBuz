@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.ui
+package io.github.amanshuraikwar.nxtbuz.busstop.busstops
 
 import android.util.Log
 import androidx.annotation.WorkerThread
@@ -9,7 +9,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.busstop.R
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalListItemData
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
@@ -46,9 +46,6 @@ class BusStopsViewModel @Inject constructor(
     dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    private val _busStopScreenState = MutableSharedFlow<BusStopsScreenState>(replay = 1)
-    val busStopScreenState: SharedFlow<BusStopsScreenState> = _busStopScreenState
-
     private val onBusStopClicked: (BusStop) -> Unit = {
         viewModelScope.launch(coroutineContext) {
             navigateToBusStopArrivals.emit(it)
@@ -75,13 +72,8 @@ class BusStopsViewModel @Inject constructor(
         //collectMarkerClicks()
     }
 
-    fun fetchBusStops() {
+    private fun fetchBusStops() {
         viewModelScope.launch(coroutineContext) {
-
-//            _busStopScreenState.emit(
-//                BusStopsScreenState.Loading(R.string.bus_stop_message_loading_nearby)
-//            )
-
             getLocationUpdatesUseCase().collect { location ->
 
                 val busStopList = getBusStopsUseCase(
@@ -155,7 +147,6 @@ class BusStopsViewModel @Inject constructor(
 
     private fun failed(error: Error) {
         viewModelScope.launch {
-            _busStopScreenState.emit(BusStopsScreenState.Failed(error))
         }
     }
 
