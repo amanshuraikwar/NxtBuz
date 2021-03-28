@@ -52,9 +52,7 @@ fun BusStopsScreen(
                                     "busStop",
                                     item.busStop
                                 )
-                                bottomSheetState.collapse()
                                 navController.navigate("busStopArrival")
-                                lazyListState.scrollToItem(0)
                             }
                         },
                         data = item

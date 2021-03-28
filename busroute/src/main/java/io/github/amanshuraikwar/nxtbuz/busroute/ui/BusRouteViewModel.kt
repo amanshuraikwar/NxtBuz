@@ -42,7 +42,7 @@ class BusRouteViewModel @Inject constructor(
 
     private val coroutineContext = errorHandler + dispatcherProvider.computation
 
-    val listItems = SnapshotStateList<BusRouteListItemData>()
+    internal var listItems = SnapshotStateList<BusRouteListItemData>()
 
     lateinit var currentBusStop: BusStop
     lateinit var busRoute: BusRoute
@@ -55,10 +55,6 @@ class BusRouteViewModel @Inject constructor(
     fun init(busServiceNumber: String, busStop: BusStop?) {
         viewModelScope.launch(coroutineContext) {
             listItemsLock.withLock {
-                if (listItems.isNotEmpty()) {
-                    return@launch
-                }
-
                 this@BusRouteViewModel.busServiceNumber = busServiceNumber
                 this@BusRouteViewModel.currentBusStop = busStop ?: return@launch
 
@@ -75,6 +71,8 @@ class BusRouteViewModel @Inject constructor(
     }
 
     private fun pushInitListItems() {
+        listItems = SnapshotStateList()
+
         val currentBusRouteNodeIndex = busRoute.busRouteNodeList.indexOfFirst {
             it.busStopCode == currentBusStop.code
         }

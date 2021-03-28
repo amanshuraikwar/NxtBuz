@@ -6,9 +6,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
@@ -26,16 +24,17 @@ fun BusStopArrivalItems(
     vm: BusStopArrivalsViewModel,
     busStop: BusStop,
 ) {
+    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
+    val coroutineScope = rememberCoroutineScope()
+    val lazyListState = rememberLazyListState()
+
     LaunchedEffect(key1 = busStop.code) {
         vm.init(busStop)
     }
 
-    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
-    val lazyListState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
-
     NxtBuzBottomSheet(
         modifier = modifier,
+        key = busStop.code,
         bottomSheetState = bottomSheetState,
         lazyListState = lazyListState,
     ) {
@@ -59,11 +58,9 @@ fun BusStopArrivalItems(
                                     "busStop",
                                     item.busStop
                                 )
-                                bottomSheetState.collapse()
                                 navController.navigate(
                                     "busRoute/${item.busServiceNumber}"
                                 )
-                                lazyListState.scrollToItem(0)
                             }
                         },
                         data = item

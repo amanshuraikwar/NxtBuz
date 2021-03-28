@@ -21,8 +21,6 @@ import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Named
 
-private const val TAG = "BusStopArrivalsVM"
-
 class BusStopArrivalsViewModel @Inject constructor(
     private val getBusArrivalFlowUseCase: GetBusArrivalFlowUseCase,
     @Named("bottomSheetSlideOffset")
@@ -48,9 +46,9 @@ class BusStopArrivalsViewModel @Inject constructor(
         }
     }
 
-    private lateinit var busStop: BusStop
+    private var busStop: BusStop? = null
 
-    internal val listItems = SnapshotStateList<BusStopArrivalListItemData>()
+    internal var listItems = SnapshotStateList<BusStopArrivalListItemData>()
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
@@ -63,12 +61,12 @@ class BusStopArrivalsViewModel @Inject constructor(
     private val busArrivalListLock = Mutex()
 
     fun init(busStop: BusStop) {
-        this.busStop = busStop
         viewModelScope.launch(coroutineContext) {
             busArrivalListLock.withLock {
-                if (listItems.isNotEmpty()) {
+                if (this@BusStopArrivalsViewModel.busStop == busStop) {
                     return@launch
                 }
+                this@BusStopArrivalsViewModel.busStop = busStop
                 pushInitListItems(busStop)
             }
             getBusArrivalFlowUseCase(busStop.code)
@@ -82,7 +80,9 @@ class BusStopArrivalsViewModel @Inject constructor(
 
     @WorkerThread
     private fun pushInitListItems(busStop: BusStop) {
-//        listItems.add(BusStopArrivalListItemData.Header("Bus Stop"))
+        stopBusArrivalFlowUseCase()
+
+        listItems = SnapshotStateList()
 
         listItems.add(
             BusStopArrivalListItemData.BusStopHeader(
@@ -127,7 +127,7 @@ class BusStopArrivalsViewModel @Inject constructor(
     private suspend fun handleBusArrivalList(busArrivals: List<BusArrival>) {
         withContext(dispatcherProvider.computation) {
             if (!busArrivalListLock.tryLock()) return@withContext
-
+            val busStop = this@BusStopArrivalsViewModel.busStop ?: return@withContext
             busArrivals.forEach { busArrival ->
                 val arrivals = busArrival.arrivals
 
