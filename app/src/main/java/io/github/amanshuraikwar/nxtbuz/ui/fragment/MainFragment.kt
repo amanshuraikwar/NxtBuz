@@ -7,19 +7,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
@@ -30,6 +33,8 @@ import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.listitem.*
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionDialog
+import io.github.amanshuraikwar.nxtbuz.search.ui.SearchBar
+import io.github.amanshuraikwar.nxtbuz.search.ui.SearchScreen
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
 import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsDialogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -58,6 +63,7 @@ class MainFragment : DaggerFragment() {
     private var adapter: MultiItemAdapter<RecyclerViewTypeFactoryGenerated>? = null
     private lateinit var screenStateFragment: FragmentContainerView
 
+    @ExperimentalComposeUiApi
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -119,6 +125,21 @@ class MainFragment : DaggerFragment() {
                                     )
                                 }
                             }
+
+                            SearchScreen(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(),
+                                vm = viewModelProvider(viewModelFactory),
+                                onBusStopSelected = { busStop ->
+                                    // see: https://wajahatkarim.com/2021/03/pass-parcelable-compose-navigation/
+                                    navController.currentBackStackEntry?.arguments?.putParcelable(
+                                        "busStop",
+                                        busStop
+                                    )
+                                    navController.navigate("busStopArrival")
+                                }
+                            )
                         }
                     }
                 }
