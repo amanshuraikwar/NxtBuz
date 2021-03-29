@@ -14,7 +14,7 @@ import io.github.amanshuraikwar.nxtbuz.map.di.MapModule
 import io.github.amanshuraikwar.nxtbuz.map.di.MapProvides
 import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity
 import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingModule
-import io.github.amanshuraikwar.nxtbuz.search.SearchActivity
+//import io.github.amanshuraikwar.nxtbuz.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.ui.di.MainLiveDataProvides
 import io.github.amanshuraikwar.nxtbuz.ui.MainActivity
@@ -68,12 +68,13 @@ abstract class ActivityBindingModule {
         MapModule::class,
         BusStopsModule::class,
         BusRouteModule::class,
+        SearchModule::class,
     ])
     internal abstract fun c(): MainActivity
 
-    @ActivityScoped
-    @ContributesAndroidInjector(modules = [SearchModule::class])
-    internal abstract fun d(): SearchActivity
+//    @ActivityScoped
+//    @ContributesAndroidInjector(modules = [SearchModule::class])
+//    internal abstract fun d(): SearchActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = [SettingsModule::class])
