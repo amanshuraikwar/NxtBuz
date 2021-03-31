@@ -3,10 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.search.ui
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -54,55 +51,47 @@ fun SearchBar(
             mutableStateOf("")
         }
 
+        val keyboardController = LocalSoftwareKeyboardController.current
+
         LaunchedEffect(key1 = screenState) {
             if (screenState is SearchScreenState.Nothing) {
                 searchString = ""
+                keyboardController?.hideSoftwareKeyboard()
             }
         }
 
-        val keyboardController = LocalSoftwareKeyboardController.current
-
         Box {
-            Crossfade(
-                modifier = Modifier.align(Alignment.CenterStart),
-                targetState = screenState
-            ) { screenState ->
-                when (screenState) {
-                    is SearchScreenState.Failed,
-                    is SearchScreenState.Success -> {
-                        Icon(
-                            imageVector = Icons.Rounded.ArrowBack,
-                            contentDescription = "Settings",
-                            tint = MaterialTheme.colors.onSurface,
-                            modifier = Modifier
-                                .clip(shape = MaterialTheme.shapes.small)
-                                .clickable {
-                                    onBackClicked()
-                                }
-                                .padding(16.dp)
-                                .size(24.dp)
-                        )
-                    }
-                    is SearchScreenState.Nothing -> {
-                        Icon(
-                            painter = painterResource(
-                                R.drawable.ic_bus_24
-                            ),
-                            modifier = Modifier
-                                .padding(vertical = 12.dp, horizontal = 16.dp)
-                                .size(24.dp),
-                            contentDescription = "Bus",
-                            tint = MaterialTheme.colors.primary
-                        )
-                    }
-                }
+            if (screenState == SearchScreenState.Nothing) {
+                Icon(
+                    painter = painterResource(
+                        R.drawable.ic_bus_24
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(vertical = 12.dp, horizontal = 16.dp)
+                        .size(24.dp),
+                    contentDescription = "Bus",
+                    tint = MaterialTheme.colors.primary
+                )
+            }
+            
+            if (searchString.isEmpty()) {
+                Text(
+                    text = "Search for Bus Stops...",
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .fillMaxWidth()
+                        .padding(horizontal = 56.dp, vertical = 12.dp),
+                    color = MaterialTheme.colors.onSurface.medium,
+                    style = MaterialTheme.typography.subtitle1,
+
+                    )
             }
 
             BasicTextField(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
-                    .fillMaxWidth()
-                    .padding(horizontal = 56.dp, vertical = 12.dp),
+                    .fillMaxWidth(),
                 value = searchString,
                 onValueChange = { newValue ->
                     searchString = newValue
@@ -125,19 +114,30 @@ fun SearchBar(
                         keyboardController?.hideSoftwareKeyboard()
                     }
                 )
-            )
+            ) { innerTextField ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 56.dp, vertical = 12.dp)
+                ) {
+                    innerTextField()
+                }
+            }
 
-            if (searchString.isEmpty()) {
-                Text(
-                    text = "Search for Bus Stops...",
+            if (screenState != SearchScreenState.Nothing) {
+                Icon(
+                    imageVector = Icons.Rounded.ArrowBack,
+                    contentDescription = "Settings",
+                    tint = MaterialTheme.colors.onSurface,
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .fillMaxWidth()
-                        .padding(horizontal = 56.dp, vertical = 12.dp),
-                    color = MaterialTheme.colors.onSurface.medium,
-                    style = MaterialTheme.typography.subtitle1,
-
-                    )
+                        .clip(shape = MaterialTheme.shapes.small)
+                        .clickable {
+                            onBackClicked()
+                        }
+                        .padding(16.dp)
+                        .size(24.dp)
+                )
             }
 
             Crossfade(
