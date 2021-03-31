@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -37,7 +38,7 @@ fun BusService(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .background(
-                    shape = MaterialTheme.shapes.small,
+                    shape = RoundedCornerShape(50),
                     color = MaterialTheme.colors.primary
                 )
                 .padding(vertical = 4.dp, horizontal = 8.dp)

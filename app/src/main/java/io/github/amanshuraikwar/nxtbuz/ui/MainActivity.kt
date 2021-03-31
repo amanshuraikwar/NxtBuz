@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -75,6 +76,15 @@ class MainActivity : DaggerAppCompatActivity() {
                         navController.enableOnBackPressed(!backHandlerEnabled)
                     }
 
+                    if (searchState.searchBarPadding != 0.dp) {
+                        StarredBusArrivals(
+                            modifier = Modifier
+                                .padding(
+                                    top = searchState.searchBarPadding
+                                )
+                        )
+                    }
+
                     SearchScreen(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -88,10 +98,6 @@ class MainActivity : DaggerAppCompatActivity() {
                             )
                             navController.navigate("busStopArrival")
                         },
-                    )
-
-                    StarredBusArrivals(
-                        modifier = Modifier.statusBarsPadding()
                     )
 
                     val offsetY = if (searchState.screenState is SearchScreenState.Nothing) {
