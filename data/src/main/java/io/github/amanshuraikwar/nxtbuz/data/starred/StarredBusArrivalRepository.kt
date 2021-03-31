@@ -135,13 +135,7 @@ class StarredBusArrivalRepository @Inject constructor(
 
     private suspend fun getArrivalsAndEmit() {
 
-        val starredBusStops = //starredBusStopsDao.findAll()
-            listOf(
-                StarredBusStopEntity(busStopCode = "42169", busServiceNumber = "970"),
-                StarredBusStopEntity(busStopCode = "42169", busServiceNumber = "985"),
-                StarredBusStopEntity(busStopCode = "42169", busServiceNumber = "61"),
-                StarredBusStopEntity(busStopCode = "42169", busServiceNumber = "174e")
-            )
+        val starredBusStops = starredBusStopsDao.findAll()
 
         val starredBusArrivalList = starredBusStops
             .map { (busStopCode, busServiceNumber) ->

@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,7 +29,8 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusType
 fun BusArrivalItem(
     busStopDescription: String,
     busServiceNumber: String,
-    arrivals: Arrivals
+    arrivals: Arrivals,
+    onClick: () -> Unit = {}
 ) {
     val busType = when (arrivals) {
         is Arrivals.Arriving -> {
@@ -50,7 +50,7 @@ fun BusArrivalItem(
         LastWrapColumn(
             modifier = Modifier
                 .clickable {
-
+                    onClick()
                 }
                 .animateContentSize()
                 .padding(8.dp)

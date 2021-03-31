@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -21,7 +20,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import dagger.android.support.DaggerAppCompatActivity
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsScreen
@@ -83,6 +81,9 @@ class MainActivity : DaggerAppCompatActivity() {
                                     top = searchState.searchBarPadding
                                 ),
                             vm = viewModelProvider(viewModelFactory),
+                            onItemClicked = { busStopCode, busServiceNumber ->
+                                navController.navigate("busRoute/$busServiceNumber/$busStopCode")
+                            }
                         )
                     }
 
@@ -149,21 +150,22 @@ class MainActivity : DaggerAppCompatActivity() {
             }
 
             composable(
-                "busRoute/{busServiceNumber}"
+                "busRoute/{busServiceNumber}/{busStopCode}"
             ) { backStackEntry ->
-                BusRouteScreen(
-                    busServiceNumber = backStackEntry
-                        .arguments
-                        ?.getString("busServiceNumber")
-                        ?: return@composable,
-                    busStop = navController
-                        .previousBackStackEntry
-                        ?.arguments
-                        ?.getParcelable(
-                            "busStop"
-                        ),
-                    vm = viewModelProvider(viewModelFactory),
-                )
+                val busStopCode = backStackEntry
+                    .arguments
+                    ?.getString("busStopCode")
+
+                if (busStopCode != null) {
+                    BusRouteScreen(
+                        busServiceNumber = backStackEntry
+                            .arguments
+                            ?.getString("busServiceNumber")
+                            ?: return@composable,
+                        busStopCode = busStopCode,
+                        vm = viewModelProvider(viewModelFactory),
+                    )
+                }
             }
         }
     }
