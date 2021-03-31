@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph_main"
-    app:startDestination="@id/overview">
+    android:id="@+id/nav_graph_main">
 
-    <fragment
-        android:id="@+id/overview"
-        android:name="io.github.amanshuraikwar.nxtbuz.ui.fragment.MainFragment"
-        android:label="OverviewFragment"/>
+<!--    <fragment-->
+<!--        android:id="@+id/overview"-->
+<!--        android:name="io.github.amanshuraikwar.nxtbuz.ui.fragment.MainFragment"-->
+<!--        android:label="OverviewFragment"/>-->
 </navigation>
