@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import dagger.android.support.DaggerAppCompatActivity
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsScreen
@@ -32,6 +33,7 @@ import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchScreen
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchScreenState
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.rememberSearchState
+import io.github.amanshuraikwar.nxtbuz.starred.StarredBusArrivals
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -86,6 +88,10 @@ class MainActivity : DaggerAppCompatActivity() {
                             )
                             navController.navigate("busStopArrival")
                         },
+                    )
+
+                    StarredBusArrivals(
+                        modifier = Modifier.statusBarsPadding()
                     )
 
                     val offsetY = if (searchState.screenState is SearchScreenState.Nothing) {
