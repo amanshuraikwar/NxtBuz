@@ -7,20 +7,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 
 @Composable
 fun StarredBusArrivals(
     modifier: Modifier = Modifier,
+    vm: StarredViewModel
 ) {
-//    val listItems = listOf(
-//
-//    )
+
+    LaunchedEffect(key1 = true) {
+        vm.start()
+    }
 
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
@@ -49,34 +51,22 @@ fun StarredBusArrivals(
             .alpha(alpha),
         contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp)
     ) {
-        item {
+        itemsIndexed(
+            items = vm.listItems,
+            key = { _, item ->
+                item.busStopCode + item.busServiceNumber
+            }
+
+        ) { index, item ->
+            if (index != 0) {
+                Spacer(modifier = Modifier.size(16.dp))
+            }
+
             BusArrivalItem(
-                "Opp Blk 19",
-                "961M",
-                Arrivals.NotOperating,
+                item.busStopDescription,
+                item.busServiceNumber,
+                item.arrivals,
             )
-
-            Spacer(Modifier.size(16.dp))
-        }
-
-        item {
-            BusArrivalItem(
-                "Opp Blk 19",
-                "961M",
-                Arrivals.DataNotAvailable,
-            )
-
-            Spacer(Modifier.size(16.dp))
-        }
-
-        item {
-            BusArrivalItem(
-                "Opp Blk 19",
-                "961M",
-                Arrivals.NotOperating,
-            )
-
-            Spacer(Modifier.size(16.dp))
         }
     }
 }
