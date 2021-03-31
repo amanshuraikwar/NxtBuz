@@ -21,6 +21,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.di.MainModule
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsModule
+import io.github.amanshuraikwar.nxtbuz.starred.StarredModule
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsModule
 import io.github.amanshuraikwar.nxtbuz.starred.ui.di.StarredBusArrivalsProvides
@@ -69,6 +70,7 @@ abstract class ActivityBindingModule {
         BusStopsModule::class,
         BusRouteModule::class,
         SearchModule::class,
+        StarredModule::class,
     ])
     internal abstract fun c(): MainActivity
 

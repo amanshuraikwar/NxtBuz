@@ -81,7 +81,8 @@ class MainActivity : DaggerAppCompatActivity() {
                             modifier = Modifier
                                 .padding(
                                     top = searchState.searchBarPadding
-                                )
+                                ),
+                            vm = viewModelProvider(viewModelFactory),
                         )
                     }
 

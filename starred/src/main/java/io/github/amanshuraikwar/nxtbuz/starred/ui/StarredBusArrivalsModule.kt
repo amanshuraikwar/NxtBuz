@@ -27,4 +27,9 @@ abstract class StarredBusArrivalsModule {
     @ContributesAndroidInjector
     internal abstract fun c(): StarredBusArrivalOptionsDialogFragment
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(io.github.amanshuraikwar.nxtbuz.starred.StarredViewModel::class)
+    internal abstract fun d(a: io.github.amanshuraikwar.nxtbuz.starred.StarredViewModel): ViewModel
+
 }
