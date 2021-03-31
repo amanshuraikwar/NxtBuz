@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
 
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -8,7 +9,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.StarBorder
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,17 +58,20 @@ fun BusRouteHeaderItem(
                 )
             }
         }
+        CompositionLocalProvider(
+            LocalIndication provides rememberRipple(color = MaterialTheme.colors.star)
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.StarBorder,
+                contentDescription = "Star",
+                tint = MaterialTheme.colors.star,
+                modifier = Modifier
+                    .clip(shape = CircleShape)
+                    .clickable {
 
-        Icon(
-            imageVector = Icons.Rounded.StarBorder,
-            contentDescription = "Star",
-            tint = MaterialTheme.colors.star,
-            modifier = Modifier
-                .clip(shape = CircleShape)
-                .clickable {
-
-                }
-                .padding(16.dp)
-        )
+                    }
+                    .padding(16.dp)
+            )
+        }
     }
 }

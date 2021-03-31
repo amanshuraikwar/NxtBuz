@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.search.ui
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -144,7 +146,8 @@ fun SearchBar(
             ) { screenState ->
                 when (screenState) {
                     is SearchScreenState.Failed,
-                    is SearchScreenState.Success -> { }
+                    is SearchScreenState.Success -> {
+                    }
                     is SearchScreenState.Nothing -> {
                         Icon(
                             imageVector = Icons.Rounded.Settings,

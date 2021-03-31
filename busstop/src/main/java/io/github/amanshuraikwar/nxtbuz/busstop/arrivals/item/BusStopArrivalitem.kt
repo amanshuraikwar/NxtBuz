@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -9,6 +10,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.StarBorder
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -88,17 +90,21 @@ fun BusStopArrivalItem(
             }
         }
 
-        Icon(
-            imageVector = Icons.Rounded.StarBorder,
-            contentDescription = "Star",
-            tint = MaterialTheme.colors.star,
-            modifier = Modifier
-                .clip(shape = CircleShape)
-                .clickable {
+        CompositionLocalProvider(
+            LocalIndication provides rememberRipple(color = MaterialTheme.colors.star)
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.StarBorder,
+                contentDescription = "Star",
+                tint = MaterialTheme.colors.star,
+                modifier = Modifier
+                    .clip(shape = CircleShape)
+                    .clickable {
 
-                }
-                .padding(16.dp)
-        )
+                    }
+                    .padding(16.dp)
+            )
+        }
     }
 }
 
