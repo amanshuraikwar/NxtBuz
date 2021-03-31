@@ -92,7 +92,7 @@ fun BusStopHeaderItem(
             contentDescription = "Directions",
             tint = MaterialTheme.colors.onSurface,
             modifier = Modifier
-                .clip(shape = CircleShape)
+                .clip(shape = MaterialTheme.shapes.small)
                 .clickable {
 
                 }

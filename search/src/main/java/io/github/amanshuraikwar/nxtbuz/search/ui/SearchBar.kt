@@ -74,7 +74,7 @@ fun SearchBar(
                     tint = MaterialTheme.colors.primary
                 )
             }
-            
+
             if (searchString.isEmpty()) {
                 Text(
                     text = "Search for Bus Stops...",
