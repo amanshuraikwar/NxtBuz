@@ -28,17 +28,33 @@ fun BusStopArrivalsScreen(
     vm: BusStopArrivalsViewModel,
     busStop: BusStop,
 ) {
+    BusStopArrivalsScreen(
+        modifier,
+        navController,
+        vm,
+        busStop.code
+    )
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun BusStopArrivalsScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    vm: BusStopArrivalsViewModel,
+    busStopCode: String,
+) {
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
 
-    LaunchedEffect(key1 = busStop.code) {
-        vm.init(busStop)
+    LaunchedEffect(key1 = busStopCode) {
+        vm.init(busStopCode)
     }
 
     NxtBuzBottomSheet(
         modifier = modifier,
-        key = busStop.code,
+        key = busStopCode,
         bottomSheetState = bottomSheetState,
         lazyListState = lazyListState,
     ) {
@@ -57,13 +73,8 @@ fun BusStopArrivalsScreen(
                     BusStopArrivalItem(
                         modifier = Modifier.clickable {
                             coroutineScope.launch {
-                                // see: https://wajahatkarim.com/2021/03/pass-parcelable-compose-navigation/
-                                navController.currentBackStackEntry?.arguments?.putParcelable(
-                                    "busStop",
-                                    item.busStop
-                                )
                                 navController.navigate(
-                                    "busRoute/${item.busServiceNumber}"
+                                    "busRoute/${item.busServiceNumber}/${item.busStop.code}"
                                 )
                             }
                         },

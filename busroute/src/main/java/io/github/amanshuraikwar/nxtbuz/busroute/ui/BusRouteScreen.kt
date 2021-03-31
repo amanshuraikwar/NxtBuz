@@ -9,22 +9,21 @@ import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.*
+import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.common.compose.Header
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 
 @ExperimentalMaterialApi
 @Composable
 fun BusRouteScreen(
     modifier: Modifier = Modifier,
     busServiceNumber: String,
-    busStop: BusStop?,
+    busStopCode: String,
     vm: BusRouteViewModel
 ) {
-    LaunchedEffect(key1 = busServiceNumber, key2 = busStop?.code) {
-        vm.init(busServiceNumber, busStop)
+    LaunchedEffect(key1 = busServiceNumber, key2 = busStopCode) {
+        vm.init(busServiceNumber, busStopCode)
     }
 
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)

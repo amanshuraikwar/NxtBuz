@@ -13,6 +13,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNavigationParams
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +25,7 @@ import javax.inject.Named
 
 class BusStopArrivalsViewModel @Inject constructor(
     private val getBusArrivalFlowUseCase: GetBusArrivalFlowUseCase,
+    private val getBusStopUseCase: GetBusStopUseCase,
     @Named("bottomSheetSlideOffset")
     private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
     private val stopBusArrivalFlowUseCase: StopBusArrivalFlowUseCase,
@@ -61,8 +63,10 @@ class BusStopArrivalsViewModel @Inject constructor(
 
     private val busArrivalListLock = Mutex()
 
-    fun init(busStop: BusStop) {
+    fun init(busStopCode: String) {
         viewModelScope.launch(coroutineContext) {
+            val busStop = getBusStopUseCase(busStopCode)
+
             busArrivalListLock.withLock {
                 if (this@BusStopArrivalsViewModel.busStop == busStop) {
                     return@launch
@@ -70,6 +74,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                 this@BusStopArrivalsViewModel.busStop = busStop
                 pushInitListItems(busStop)
             }
+
             getBusArrivalFlowUseCase(busStop.code)
                 .collect { busArrivalList ->
                     handleBusArrivalList(

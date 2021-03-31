@@ -76,7 +76,7 @@ class BusStopArrivalsFragment : DaggerFragment() {
 //                delay(300)
 //            }
         }
-        viewModel.init(getBusStop() ?: return)
+        //viewModel.init(getBusStop() ?: return)
     }
 
 

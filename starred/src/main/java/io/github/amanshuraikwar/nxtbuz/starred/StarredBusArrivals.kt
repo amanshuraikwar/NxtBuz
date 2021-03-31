@@ -17,7 +17,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun StarredBusArrivals(
     modifier: Modifier = Modifier,
-    vm: StarredViewModel
+    vm: StarredViewModel,
+    onItemClicked: (busStopCode: String, busServiceNumber: String) -> Unit = { _, _ -> }
 ) {
 
     LaunchedEffect(key1 = true) {
@@ -65,8 +66,13 @@ fun StarredBusArrivals(
             BusArrivalItem(
                 item.busStopDescription,
                 item.busServiceNumber,
-                item.arrivals,
-            )
+                item.arrivals
+            ) {
+                onItemClicked(
+                    item.busStopCode,
+                    item.busServiceNumber
+                )
+            }
         }
     }
 }

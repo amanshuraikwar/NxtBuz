@@ -166,23 +166,23 @@ class MainFragment : DaggerFragment() {
                 }
             }
 
-            composable(
-                "busRoute/{busServiceNumber}"
-            ) { backStackEntry ->
-                BusRouteScreen(
-                    busServiceNumber = backStackEntry
-                        .arguments
-                        ?.getString("busServiceNumber")
-                        ?: return@composable,
-                    busStop = navController
-                        .previousBackStackEntry
-                        ?.arguments
-                        ?.getParcelable(
-                            "busStop"
-                        ),
-                    vm = viewModelProvider(viewModelFactory),
-                )
-            }
+//            composable(
+//                "busRoute/{busServiceNumber}"
+//            ) { backStackEntry ->
+//                BusRouteScreen(
+//                    busServiceNumber = backStackEntry
+//                        .arguments
+//                        ?.getString("busServiceNumber")
+//                        ?: return@composable,
+//                    busStop = navController
+//                        .previousBackStackEntry
+//                        ?.arguments
+//                        ?.getParcelable(
+//                            "busStop"
+//                        ),
+//                    vm = viewModelProvider(viewModelFactory),
+//                )
+//            }
         }
     }
 

@@ -13,6 +13,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
@@ -24,6 +25,7 @@ private const val TAG = "BusRouteViewModel"
 
 class BusRouteViewModel @Inject constructor(
     private val getBusRouteUseCase: GetBusRouteUseCase,
+    private val getBusStopUseCase: GetBusStopUseCase,
     private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
@@ -50,11 +52,12 @@ class BusRouteViewModel @Inject constructor(
     private var secondaryArrivalsLoop: ArrivalsLoop? = null
     private val listItemsLock = Mutex()
 
-    fun init(busServiceNumber: String, busStop: BusStop?) {
+    fun init(busServiceNumber: String, busStopCode: String) {
         viewModelScope.launch(coroutineContext) {
+            val busStop = getBusStopUseCase(busStopCode)
             listItemsLock.withLock {
                 this@BusRouteViewModel.busServiceNumber = busServiceNumber
-                this@BusRouteViewModel.currentBusStop = busStop ?: return@launch
+                this@BusRouteViewModel.currentBusStop = busStop
 
                 busRoute = getBusRouteUseCase(
                     busServiceNumber = this@BusRouteViewModel.busServiceNumber,
