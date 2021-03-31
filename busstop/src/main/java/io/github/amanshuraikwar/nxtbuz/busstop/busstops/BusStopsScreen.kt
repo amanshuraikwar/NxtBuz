@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.ui
+package io.github.amanshuraikwar.nxtbuz.busstop.busstops
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.items

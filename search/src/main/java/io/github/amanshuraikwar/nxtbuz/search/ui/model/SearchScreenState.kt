@@ -8,4 +8,6 @@ sealed class SearchScreenState {
     data class Failed(
         val errorMessage: String
     ) : SearchScreenState()
+
+    object Nothing : SearchScreenState()
 }
