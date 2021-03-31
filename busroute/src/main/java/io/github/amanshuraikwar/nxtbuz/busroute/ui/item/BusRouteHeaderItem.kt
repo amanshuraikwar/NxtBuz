@@ -66,7 +66,7 @@ fun BusRouteHeaderItem(
                 contentDescription = "Star",
                 tint = MaterialTheme.colors.star,
                 modifier = Modifier
-                    .clip(shape = CircleShape)
+                    .clip(shape = MaterialTheme.shapes.small)
                     .clickable {
 
                     }
