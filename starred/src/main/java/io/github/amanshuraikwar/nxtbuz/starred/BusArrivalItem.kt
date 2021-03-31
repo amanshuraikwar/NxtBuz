@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.starred
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -47,6 +49,9 @@ fun BusArrivalItem(
     ) {
         LastWrapColumn(
             modifier = Modifier
+                .clickable {
+
+                }
                 .animateContentSize()
                 .padding(8.dp)
         ) {
@@ -107,7 +112,7 @@ fun BusArrivalItem(
                 )
 
                 Text(
-                    text = when(arrivals) {
+                    text = when (arrivals) {
                         is Arrivals.Arriving -> arrivals.nextArrivingBus.arrival
                         Arrivals.DataNotAvailable -> "N/A"
                         Arrivals.NotOperating -> "N/A"

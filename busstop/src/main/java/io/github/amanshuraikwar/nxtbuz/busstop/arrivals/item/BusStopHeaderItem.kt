@@ -69,7 +69,6 @@ fun BusStopHeaderItem(
                 )
             }
 
-
             Column(
                 Modifier.padding(start = 16.dp)
             ) {

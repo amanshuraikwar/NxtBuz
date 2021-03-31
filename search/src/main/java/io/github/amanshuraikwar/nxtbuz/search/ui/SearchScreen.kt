@@ -25,9 +25,6 @@ fun SearchScreen(
     searchState: SearchState,
     onBusStopSelected: (BusStop) -> Unit = {},
 ) {
-    var padding by remember {
-        mutableStateOf(0.dp)
-    }
     val density = LocalDensity.current
     val insets = LocalWindowInsets.current
 
@@ -41,7 +38,7 @@ fun SearchScreen(
                         .fillMaxHeight()
                         .fillMaxWidth(),
                     screenState = searchState.screenState,
-                    contentPadding = padding,
+                    contentPadding = searchState.searchBarPadding,
                     onBusStopSelected = {
                         searchState.clear()
                         onBusStopSelected(it)
@@ -56,8 +53,11 @@ fun SearchScreen(
                 .statusBarsPadding()
                 .padding(16.dp)
                 .onSizeChanged {
-                    padding =
-                        with(density) { it.height.toDp() + insets.statusBars.top.toDp() + 32.dp }
+                    searchState.updateSearchBarPadding(
+                        with(density) {
+                            it.height.toDp() + insets.statusBars.top.toDp() + 32.dp
+                        }
+                    )
                 },
             screenState = searchState.screenState,
             onSearch = { query ->
