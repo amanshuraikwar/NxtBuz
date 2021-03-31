@@ -1,7 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.search.ui
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -12,16 +14,17 @@ import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchScreenState
+import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchState
 
-@OptIn(ExperimentalAnimationApi::class)
+
 @ExperimentalComposeUiApi
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    vm: SearchViewModel,
-    onBusStopSelected: (BusStop) -> Unit = {}
+    searchState: SearchState,
+    onBusStopSelected: (BusStop) -> Unit = {},
 ) {
-    val screenState by vm.screenState.collectAsState(initial = null)
     var padding by remember {
         mutableStateOf(0.dp)
     }
@@ -31,16 +34,16 @@ fun SearchScreen(
     Box(
         modifier
     ) {
-        if (screenState != null) {
+        if (searchState.screenState != SearchScreenState.Nothing) {
             Surface {
                 SearchResults(
                     modifier = Modifier
                         .fillMaxHeight()
                         .fillMaxWidth(),
-                    screenState = screenState,
+                    screenState = searchState.screenState,
                     contentPadding = padding,
                     onBusStopSelected = {
-                        vm.clear()
+                        searchState.clear()
                         onBusStopSelected(it)
                     }
                 )
@@ -56,12 +59,12 @@ fun SearchScreen(
                     padding =
                         with(density) { it.height.toDp() + insets.statusBars.top.toDp() + 32.dp }
                 },
-            screenState = screenState,
+            screenState = searchState.screenState,
             onSearch = { query ->
-                vm.searchBusStops(query)
+                searchState.search(query)
             },
-            onBack = {
-                vm.clear()
+            onBackClicked = {
+                searchState.clear()
             }
         )
     }

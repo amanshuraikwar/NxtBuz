@@ -21,7 +21,7 @@ import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchScreenState
 fun SearchResults(
     modifier: Modifier = Modifier,
     contentPadding: Dp = 0.dp,
-    screenState: SearchScreenState?,
+    screenState: SearchScreenState,
     onBusStopSelected: (BusStop) -> Unit = {}
 ) {
     Crossfade(
@@ -66,7 +66,7 @@ fun SearchResults(
                     }
                 }
             }
-            null -> {
+            is SearchScreenState.Nothing -> {
             }
         }
     }

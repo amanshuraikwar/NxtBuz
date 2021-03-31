@@ -38,7 +38,7 @@ class SearchViewModel @Inject constructor(
 //    private val _loading = MutableLiveData<Boolean>()
 //    val loading = _loading.asEvent()
 
-    internal val screenState = MutableSharedFlow<SearchScreenState?>()
+    internal val screenState = MutableSharedFlow<SearchScreenState>()
 
     init {
         FirebaseCrashlytics.getInstance().setCustomKey(
@@ -79,7 +79,7 @@ class SearchViewModel @Inject constructor(
 
     fun clear() {
         viewModelScope.launch {
-            screenState.emit(null)
+            screenState.emit(SearchScreenState.Nothing)
         }
     }
 }

@@ -4,17 +4,23 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.*
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
@@ -22,27 +28,30 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
-import io.github.amanshuraikwar.nxtbuz.busstop.ui.BusStopsScreen
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsScreen
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.listitem.*
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionDialog
-import io.github.amanshuraikwar.nxtbuz.search.ui.SearchBar
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchScreen
+import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchScreenState
+import io.github.amanshuraikwar.nxtbuz.search.ui.model.rememberSearchState
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
 import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsDialogFragment
+import io.github.amanshuraikwar.nxtbuz.ui.NxtBuzApp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val TAG = "MainFragment"
 
 @ExperimentalCoroutinesApi
 @FlowPreview
@@ -72,77 +81,111 @@ class MainFragment : DaggerFragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                NxtBuzTheme {
-                    ProvideWindowInsets {
-                        Box {
-                            NxtBuzMap(Modifier.fillMaxSize(), viewModelProvider(viewModelFactory))
+                NxtBuzApp {
 
-                            val navController = rememberNavController()
+                    Box {
+                        NxtBuzMap(Modifier.fillMaxSize(), viewModelProvider(viewModelFactory))
 
-                            NavHost(navController, startDestination = "busStops") {
-                                composable("busStops") {
-                                    BusStopsScreen(
-                                        vm = viewModelProvider(viewModelFactory),
-                                        navController = navController
-                                    )
-                                }
+                        val searchState = rememberSearchState(
+                            vm = viewModelProvider(viewModelFactory)
+                        )
 
-                                composable(
-                                    "busStopArrival",
-                                ) {
-                                    val busStop =
-                                        navController
-                                            .previousBackStackEntry
-                                            ?.arguments
-                                            ?.getParcelable<BusStop>(
-                                                "busStop"
-                                            )
+                        val backHandlerEnabled =
+                            searchState.screenState != SearchScreenState.Nothing
 
-                                    if (busStop != null) {
-                                        BusStopArrivalsScreen(
-                                            navController = navController,
-                                            vm = viewModelProvider(viewModelFactory),
-                                            busStop = busStop,
-                                        )
-                                    }
-                                }
+                        BackHandler(backHandlerEnabled) {
+                            Log.d(TAG, "onCreateView: BackHandler called")
+                            searchState.clear()
+                        }
 
-                                composable(
-                                    "busRoute/{busServiceNumber}"
-                                ) { backStackEntry ->
-                                    BusRouteScreen(
-                                        busServiceNumber = backStackEntry
-                                            .arguments
-                                            ?.getString("busServiceNumber")
-                                            ?: return@composable,
-                                        busStop = navController
-                                            .previousBackStackEntry
-                                            ?.arguments
-                                            ?.getParcelable(
-                                                "busStop"
-                                            ),
-                                        vm = viewModelProvider(viewModelFactory),
-                                    )
-                                }
-                            }
-
-                            SearchScreen(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .fillMaxHeight(),
-                                vm = viewModelProvider(viewModelFactory),
-                                onBusStopSelected = { busStop ->
-                                    // see: https://wajahatkarim.com/2021/03/pass-parcelable-compose-navigation/
-                                    navController.currentBackStackEntry?.arguments?.putParcelable(
-                                        "busStop",
-                                        busStop
-                                    )
-                                    navController.navigate("busStopArrival")
-                                }
+                        val navController = rememberNavController()
+                        LaunchedEffect(key1 = backHandlerEnabled) {
+                            Log.d(
+                                TAG,
+                                "onCreateView: LaunchedEffect backHandlerEnabled = $backHandlerEnabled"
                             )
+                            navController.enableOnBackPressed(!backHandlerEnabled)
+                        }
+
+                        SearchScreen(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(),
+                            searchState = searchState,
+                            onBusStopSelected = { busStop ->
+                                // see: https://wajahatkarim.com/2021/03/pass-parcelable-compose-navigation/
+                                navController.currentBackStackEntry?.arguments?.putParcelable(
+                                    "busStop",
+                                    busStop
+                                )
+                                navController.navigate("busStopArrival")
+                            },
+                        )
+
+                        val offsetY = if (searchState.screenState is SearchScreenState.Nothing) {
+                            0.dp
+                        } else {
+                            LocalConfiguration.current.screenHeightDp.dp
+                        }
+
+                        Box(
+                            Modifier.offset(y = offsetY)
+                        ) {
+                            ContentNavGraph(navController = navController)
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @ExperimentalMaterialApi
+    @Composable
+    fun ContentNavGraph(navController: NavHostController) {
+        NavHost(navController, startDestination = "busStops") {
+            composable("busStops") {
+                BusStopsScreen(
+                    vm = viewModelProvider(viewModelFactory),
+                    navController = navController
+                )
+            }
+
+            composable(
+                "busStopArrival",
+            ) {
+                val busStop =
+                    navController
+                        .previousBackStackEntry
+                        ?.arguments
+                        ?.getParcelable<BusStop>(
+                            "busStop"
+                        )
+
+                if (busStop != null) {
+                    BusStopArrivalsScreen(
+                        navController = navController,
+                        vm = viewModelProvider(viewModelFactory),
+                        busStop = busStop,
+                    )
+                }
+            }
+
+            composable(
+                "busRoute/{busServiceNumber}"
+            ) { backStackEntry ->
+                BusRouteScreen(
+                    busServiceNumber = backStackEntry
+                        .arguments
+                        ?.getString("busServiceNumber")
+                        ?: return@composable,
+                    busStop = navController
+                        .previousBackStackEntry
+                        ?.arguments
+                        ?.getParcelable(
+                            "busStop"
+                        ),
+                    vm = viewModelProvider(viewModelFactory),
+                )
             }
         }
     }

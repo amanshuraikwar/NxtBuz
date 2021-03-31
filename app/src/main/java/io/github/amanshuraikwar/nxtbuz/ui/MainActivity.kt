@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
@@ -31,10 +32,7 @@ class MainActivity : DaggerAppCompatActivity() {
         viewModel = viewModelProvider(viewModelFactory)
     }
 
-//    override fun onBackPressed() {
-//        viewModel.onBackPressed()
-//    }
-
+    @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

@@ -1,13 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.search.ui
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,11 +16,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -42,9 +37,10 @@ import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchScreenState
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
-    screenState: SearchScreenState?,
+    screenState: SearchScreenState,
     onSearch: (query: String) -> Unit = {},
-    onBack: () -> Unit = {}
+    onBackClicked: () -> Unit = {},
+    onSettingClicked: () -> Unit = {}
 ) {
     Surface(
         modifier,
@@ -54,6 +50,12 @@ fun SearchBar(
     ) {
         var searchString by rememberSaveable {
             mutableStateOf("")
+        }
+
+        LaunchedEffect(key1 = screenState) {
+            if (screenState is SearchScreenState.Nothing) {
+                searchString = ""
+            }
         }
 
         val keyboardController = LocalSoftwareKeyboardController.current
@@ -71,16 +73,15 @@ fun SearchBar(
                             contentDescription = "Settings",
                             tint = MaterialTheme.colors.onSurface,
                             modifier = Modifier
-                                .clip(shape = CircleShape)
+                                .clip(shape = MaterialTheme.shapes.small)
                                 .clickable {
-                                    searchString = ""
-                                    onBack()
+                                    onBackClicked()
                                 }
                                 .padding(16.dp)
                                 .size(24.dp)
                         )
                     }
-                    null -> {
+                    is SearchScreenState.Nothing -> {
                         Icon(
                             painter = painterResource(
                                 R.drawable.ic_bus_24
@@ -144,16 +145,16 @@ fun SearchBar(
                 when (screenState) {
                     is SearchScreenState.Failed,
                     is SearchScreenState.Success -> { }
-                    null -> {
+                    is SearchScreenState.Nothing -> {
                         Icon(
                             imageVector = Icons.Rounded.Settings,
                             contentDescription = "Settings",
                             tint = MaterialTheme.colors.onSurface,
                             modifier = Modifier
                                 .align(Alignment.CenterEnd)
-                                .clip(shape = CircleShape)
+                                .clip(shape = MaterialTheme.shapes.small)
                                 .clickable {
-
+                                    onSettingClicked()
                                 }
                                 .padding(16.dp)
                                 .size(24.dp)
