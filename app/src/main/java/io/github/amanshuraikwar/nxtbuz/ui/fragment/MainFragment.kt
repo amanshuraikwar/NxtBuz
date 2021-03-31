@@ -90,20 +90,16 @@ class MainFragment : DaggerFragment() {
                             vm = viewModelProvider(viewModelFactory)
                         )
 
+                        val navController = rememberNavController()
+
                         val backHandlerEnabled =
                             searchState.screenState != SearchScreenState.Nothing
 
                         BackHandler(backHandlerEnabled) {
-                            Log.d(TAG, "onCreateView: BackHandler called")
                             searchState.clear()
                         }
 
-                        val navController = rememberNavController()
                         LaunchedEffect(key1 = backHandlerEnabled) {
-                            Log.d(
-                                TAG,
-                                "onCreateView: LaunchedEffect backHandlerEnabled = $backHandlerEnabled"
-                            )
                             navController.enableOnBackPressed(!backHandlerEnabled)
                         }
 
