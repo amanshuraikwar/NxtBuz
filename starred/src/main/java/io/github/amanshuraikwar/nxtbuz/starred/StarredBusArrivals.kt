@@ -6,13 +6,34 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+
+inline fun <T, K : Any> LazyListScope.itemsIndexed(
+    items: List<T>,
+    noinline key: ((index: Int, item: T) -> K),
+    errorKey: K,
+    crossinline itemContent: @Composable LazyItemScope.(index: Int, item: T) -> Unit
+) = items(
+    items.size,
+    { index: Int ->
+        if (index < items.size) {
+            key(index, items[index])
+        } else {
+            errorKey
+        }
+    }
+) {
+    if (it < items.size) {
+        itemContent(it, items[it])
+    }
+}
 
 @Composable
 fun StarredBusArrivals(
@@ -56,8 +77,8 @@ fun StarredBusArrivals(
             items = vm.listItems,
             key = { _, item ->
                 item.busStopCode + item.busServiceNumber
-            }
-
+            },
+            errorKey = ""
         ) { index, item ->
             if (index != 0) {
                 Spacer(modifier = Modifier.size(16.dp))
