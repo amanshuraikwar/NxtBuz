@@ -1,7 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.search.ui
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
@@ -14,7 +13,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -39,7 +37,7 @@ fun SearchBar(
     screenState: SearchScreenState,
     onSearch: (query: String) -> Unit = {},
     onBackClicked: () -> Unit = {},
-    onSettingClicked: () -> Unit = {}
+    onSettingsClicked: () -> Unit = {}
 ) {
     Surface(
         modifier,
@@ -157,7 +155,7 @@ fun SearchBar(
                                 .align(Alignment.CenterEnd)
                                 .clip(shape = MaterialTheme.shapes.small)
                                 .clickable {
-                                    onSettingClicked()
+                                    onSettingsClicked()
                                 }
                                 .padding(16.dp)
                                 .size(24.dp)
