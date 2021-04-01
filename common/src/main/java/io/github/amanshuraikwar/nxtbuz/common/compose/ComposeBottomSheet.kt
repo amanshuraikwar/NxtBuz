@@ -24,21 +24,27 @@ import kotlin.math.roundToInt
 
 @ExperimentalMaterialApi
 val BottomSheetState.expandProgressFraction: Float
-    get() = when (progress.to) {
-        progress.from -> {
-            if (progress.from == BottomSheetValue.Collapsed) {
-                0f
-            } else {
-                1f
+    get() {
+        return try {
+            when (progress.to) {
+                progress.from -> {
+                    if (progress.from == BottomSheetValue.Collapsed) {
+                        0f
+                    } else {
+                        1f
+                    }
+                }
+                BottomSheetValue.Collapsed -> {
+                    1f - progress.fraction
+                }
+                BottomSheetValue.Expanded -> {
+                    progress.fraction
+                }
+                else -> 0f
             }
+        } catch (e: Exception) {
+            1f
         }
-        BottomSheetValue.Collapsed -> {
-            1f - progress.fraction
-        }
-        BottomSheetValue.Expanded -> {
-            progress.fraction
-        }
-        else -> 0f
     }
 
 @ExperimentalMaterialApi

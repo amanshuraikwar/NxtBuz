@@ -73,6 +73,7 @@ class StarredViewModel @Inject constructor(
                 )
                 val listItemIndex = listItems.indexOfFirst {
                     it.busServiceNumber == starredBusArrival.busServiceNumber
+                            && it.busStopCode == starredBusArrival.busStopCode
                 }
 
                 if (listItemIndex == -1) {
