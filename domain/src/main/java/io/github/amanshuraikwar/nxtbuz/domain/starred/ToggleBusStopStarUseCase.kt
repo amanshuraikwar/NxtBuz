@@ -4,7 +4,6 @@ import io.github.amanshuraikwar.nxtbuz.data.starred.StarredBusArrivalRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
 class ToggleBusStopStarUseCase @Inject constructor(
     private val repo: StarredBusArrivalRepository
 ) {

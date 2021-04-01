@@ -78,7 +78,13 @@ fun BusStopArrivalsScreen(
                                 )
                             }
                         },
-                        data = item
+                        data = item,
+                        onStarToggle = { newToggleState ->
+                            vm.onStarToggle(
+                                newToggleState,
+                                item.busServiceNumber
+                            )
+                        }
                     )
                 }
                 is BusStopArrivalListItemData.Header -> {

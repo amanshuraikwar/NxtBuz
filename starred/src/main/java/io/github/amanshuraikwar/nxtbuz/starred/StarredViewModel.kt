@@ -57,10 +57,18 @@ class StarredViewModel @Inject constructor(
     private suspend fun handleStarredBusArrivalList(starredBusArrivalList: List<StarredBusArrival>) {
         withContext(dispatcherProvider.computation) {
             if (!busArrivalListLock.tryLock()) return@withContext
+
+            val starredHit = mutableSetOf<String>()
+
             starredBusArrivalList.forEach { starredBusArrival ->
+                starredHit.add(
+                    "${starredBusArrival.busServiceNumber}-${starredBusArrival.busStopCode}"
+
+                )
                 val listItemIndex = listItems.indexOfFirst {
                     it.busServiceNumber == starredBusArrival.busServiceNumber
                 }
+
                 if (listItemIndex == -1) {
                     listItems.add(
                         StarredBusArrivalData(
@@ -76,7 +84,18 @@ class StarredViewModel @Inject constructor(
                     )
                 }
             }
+
+            listItems.removeAll { data ->
+                    !starredHit.contains("${data.busServiceNumber}-${data.busStopCode}")
+            }
+
+            if (listItems.isEmpty()) {
+                listItems = SnapshotStateList()
+            }
+
             busArrivalListLock.unlock()
         }
     }
+
+    var markForCleanup = false
 }

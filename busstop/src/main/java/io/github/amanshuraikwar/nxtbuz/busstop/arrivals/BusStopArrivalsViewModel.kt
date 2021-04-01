@@ -14,6 +14,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNavigationP
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,14 +30,11 @@ class BusStopArrivalsViewModel @Inject constructor(
     @Named("bottomSheetSlideOffset")
     private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
     private val stopBusArrivalFlowUseCase: StopBusArrivalFlowUseCase,
+    private val toggleStar: ToggleBusStopStarUseCase,
     @Named("navigateToBusRoute")
     private val navigateToBusRoute: MutableSharedFlow<BusRouteNavigationParams>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
-
-    private val onStarToggle: (busStopCode: String, busServiceNumber: String) -> Unit = { _, _ ->
-
-    }
 
     val onBusServiceClicked: (busServiceNumber: String) -> Unit = {
         viewModelScope.launch(coroutineContext) {
@@ -110,6 +108,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                     busType = BusType.SD,
                     arrival = "Fetching...",
                     busStop = busStop,
+                    starred = false,
                 )
             }
         )
@@ -133,7 +132,9 @@ class BusStopArrivalsViewModel @Inject constructor(
     private suspend fun handleBusArrivalList(busArrivals: List<BusArrival>) {
         withContext(dispatcherProvider.computation) {
             if (!busArrivalListLock.tryLock()) return@withContext
+
             val busStop = this@BusStopArrivalsViewModel.busStop ?: return@withContext
+
             busArrivals.forEach { busArrival ->
                 val arrivals = busArrival.arrivals
 
@@ -156,6 +157,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                                     wheelchairAccess = arrivals.nextArrivingBus.feature == "WAB",
                                     busLoad = arrivals.nextArrivingBus.load,
                                     busStop = busStop,
+                                    starred = busArrival.starred,
                                 )
                             }
                             else -> {
@@ -169,6 +171,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                                             "No Data"
                                         },
                                         busStop = busStop,
+                                        starred = busArrival.starred
                                     )
                                 )
                             }
@@ -195,6 +198,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                                         wheelchairAccess = arrivals.nextArrivingBus.feature == "WAB",
                                         busLoad = arrivals.nextArrivingBus.load,
                                         busStop = busStop,
+                                        starred = busArrival.starred
                                     )
                                 )
                             }
@@ -204,7 +208,8 @@ class BusStopArrivalsViewModel @Inject constructor(
                                         "Not Operating"
                                     } else {
                                         "No Data"
-                                    }
+                                    },
+                                    starred = busArrival.starred,
                                 )
                             }
                         }
@@ -219,6 +224,38 @@ class BusStopArrivalsViewModel @Inject constructor(
     private fun onMapMarkerClicked(markerId: String) {
         viewModelScope.launch(errorHandler) {
             onBusServiceClicked(markerId)
+        }
+    }
+
+    fun onStarToggle(newToggleState: Boolean, busServiceNumber: String) {
+        viewModelScope.launch(coroutineContext) {
+            if (!busArrivalListLock.tryLock()) return@launch
+
+            val listItemIndex =
+                listItems.indexOfFirst {
+                    it is BusStopArrivalListItemData.BusStopArrival
+                            && it.busServiceNumber == busServiceNumber
+                }
+
+            if (listItemIndex == -1) return@launch
+
+            when (val listItem = listItems[listItemIndex]) {
+                is BusStopArrivalListItemData.BusStopArrival.Arriving -> {
+                    listItems[listItemIndex] = listItem.copy(starred = newToggleState)
+
+                }
+                is BusStopArrivalListItemData.BusStopArrival.NotArriving -> {
+                    listItems[listItemIndex] = listItem.copy(starred = newToggleState)
+                }
+            }
+
+            toggleStar(
+                busStopCode = busStop?.code ?: return@launch,
+                busServiceNumber = busServiceNumber,
+                toggleTo = newToggleState
+            )
+
+            busArrivalListLock.unlock()
         }
     }
 
