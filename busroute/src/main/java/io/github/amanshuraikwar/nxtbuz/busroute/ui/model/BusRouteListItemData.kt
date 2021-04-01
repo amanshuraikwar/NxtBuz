@@ -9,12 +9,16 @@ sealed class BusRouteListItemData {
         val busServiceNumber: String,
         val destinationBusStopDescription: String,
         val originBusStopDescription: String,
+        val busStopCode: String,
+        val starred: Boolean,
     ) : BusRouteListItemData() {
         companion object {
             operator fun invoke() = BusRouteHeader(
                 busServiceNumber = "961M",
                 destinationBusStopDescription = "Bedok Int",
                 originBusStopDescription = "From Juron East Int",
+                busStopCode = "123456",
+                starred = true,
             )
         }
     }

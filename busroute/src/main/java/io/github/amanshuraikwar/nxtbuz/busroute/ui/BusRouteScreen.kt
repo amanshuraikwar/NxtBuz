@@ -53,7 +53,14 @@ fun BusRouteScreen(
                 }
                 is BusRouteListItemData.BusRouteHeader -> {
                     BusRouteHeaderItem(
-                        data = item
+                        data = item,
+                        onStarToggle = { newValue ->
+                            vm.onStarToggle(
+                                busServiceNumber = item.busServiceNumber,
+                                busStopCode = item.busStopCode,
+                                newValue = newValue,
+                            )
+                        }
                     )
                 }
                 is BusRouteListItemData.BusRoutePreviousAll -> {

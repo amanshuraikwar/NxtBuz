@@ -46,7 +46,7 @@ val NxtBuzTypography = Typography(
         letterSpacing = 0.15.sp
     ),
     button = TextStyle(
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         letterSpacing = 1.25.sp,
         fontFamily = CabinFontFamily

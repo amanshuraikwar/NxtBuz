@@ -14,12 +14,14 @@ import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.IsStarredUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
-import javax.inject.Named
 
 private const val TAG = "BusRouteViewModel"
 
@@ -27,12 +29,11 @@ class BusRouteViewModel @Inject constructor(
     private val getBusRouteUseCase: GetBusRouteUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
     private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
+    private val isStarredUseCase: IsStarredUseCase,
+    private val toggleStar: ToggleBusStopStarUseCase,
+    private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
-
-    private val onStarToggle: (busStopCode: String, busServiceNumber: String) -> Unit = { _, _ ->
-
-    }
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
@@ -67,11 +68,42 @@ class BusRouteViewModel @Inject constructor(
                 pushInitListItems()
 
                 startPrimaryBusArrivalsLoop()
+
+                listenToggleStarUpdate()
             }
         }
     }
 
-    private fun pushInitListItems() {
+    private fun listenToggleStarUpdate() {
+        viewModelScope.launch(coroutineContext) {
+            toggleStarUpdateUseCase()
+                .collect { toggleStarUpdate ->
+                    if (busServiceNumber == toggleStarUpdate.busServiceNumber
+                        && currentBusStop.code == toggleStarUpdate.busStopCode
+                    ) {
+                        listItemsLock.withLock {
+                            val listItemIndex =
+                                listItems.indexOfFirst {
+                                    it is BusRouteListItemData.BusRouteHeader
+                                            && it.busServiceNumber ==
+                                            toggleStarUpdate.busServiceNumber
+                                            && it.busStopCode == toggleStarUpdate.busStopCode
+                                }
+
+                            if (listItemIndex != -1) {
+                                (listItems[listItemIndex] as? BusRouteListItemData.BusRouteHeader)
+                                    ?.let { listItem ->
+                                        listItems[listItemIndex] =
+                                            listItem.copy(starred = toggleStarUpdate.newStarState)
+                                    }
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+    private suspend fun pushInitListItems() {
         listItems = SnapshotStateList()
 
         val currentBusRouteNodeIndex = busRoute.busRouteNodeList.indexOfFirst {
@@ -96,6 +128,11 @@ class BusRouteViewModel @Inject constructor(
                 busServiceNumber = busServiceNumber,
                 destinationBusStopDescription = busRoute.destinationBusStopDescription,
                 originBusStopDescription = busRoute.originBusStopDescription,
+                busStopCode = currentBusStop.code,
+                starred = isStarredUseCase(
+                    busStopCode = currentBusStop.code,
+                    busServiceNumber = busServiceNumber
+                )
             )
         )
 
@@ -361,9 +398,11 @@ class BusRouteViewModel @Inject constructor(
     fun onExpand(expandingBusStopCode: String) {
         viewModelScope.launch(coroutineContext) {
             if (!(updateToFetching<BusRouteListItemData.BusRouteNode.Next>(
-                    expandingBusStopCode)
+                    expandingBusStopCode
+                )
                         || updateToFetching<BusRouteListItemData.BusRouteNode.Previous>(
-                    expandingBusStopCode))
+                    expandingBusStopCode
+                ))
             ) {
                 return@launch
             }
@@ -373,9 +412,11 @@ class BusRouteViewModel @Inject constructor(
 
                 secondaryArrivalsLoop?.busStopCode?.let { currentSecondaryBusStopCode ->
                     updateToInactive<BusRouteListItemData.BusRouteNode.Next>(
-                        currentSecondaryBusStopCode)
-                        || updateToInactive<BusRouteListItemData.BusRouteNode.Previous>(
-                        currentSecondaryBusStopCode)
+                        currentSecondaryBusStopCode
+                    )
+                            || updateToInactive<BusRouteListItemData.BusRouteNode.Previous>(
+                        currentSecondaryBusStopCode
+                    )
                 }
 
                 startSecondaryArrivals(expandingBusStopCode)
@@ -441,5 +482,32 @@ class BusRouteViewModel @Inject constructor(
                 }
             }
             .launchIn(viewModelScope + coroutineContext)
+    }
+
+    fun onStarToggle(busServiceNumber: String, busStopCode: String, newValue: Boolean) {
+        viewModelScope.launch(coroutineContext) {
+            if (!listItemsLock.tryLock()) return@launch
+
+            val listItemIndex =
+                listItems.indexOfFirst {
+                    it is BusRouteListItemData.BusRouteHeader
+                            && it.busServiceNumber == busServiceNumber
+                            && it.busStopCode == busStopCode
+                }
+
+            if (listItemIndex != -1) {
+                (listItems[listItemIndex] as? BusRouteListItemData.BusRouteHeader)?.let { listItem ->
+                    listItems[listItemIndex] = listItem.copy(starred = newValue)
+                }
+
+                toggleStar(
+                    busStopCode = busStopCode,
+                    busServiceNumber = busServiceNumber,
+                    toggleTo = newValue
+                )
+            }
+
+            listItemsLock.unlock()
+        }
     }
 }

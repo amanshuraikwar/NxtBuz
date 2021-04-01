@@ -15,7 +15,6 @@ fun LastWrapColumn(
         content = content
     ) { measurables, constraints ->
         val lastPlaceable = measurables.last().measure(constraints.copy())
-
         var height = lastPlaceable.height
 
         val placeables = measurables.dropLast(1).map { measurable ->
@@ -44,6 +43,46 @@ fun LastWrapColumn(
 
             lastPlaceable.place(
                 IntOffset(0, offsetY)
+            )
+        }
+    }
+}
+
+@Composable
+fun LastWrapBox(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Layout(
+        modifier = modifier,
+        content = content
+    ) { measurables, constraints ->
+        val lastPlaceable = measurables.last().measure(constraints.copy())
+        var height = lastPlaceable.height
+
+        val placeables = measurables.dropLast(1).map { measurable ->
+            measurable.measure(
+                constraints.copy(
+                    minWidth = lastPlaceable.width,
+                    maxWidth = lastPlaceable.width,
+                )
+            ).also { placeable ->
+                height = height.coerceAtLeast(placeable.height)
+            }
+        }
+
+        layout(
+            width = lastPlaceable.width,
+            height = height,
+        ) {
+            placeables.forEach { placeable ->
+                placeable.place(
+                    IntOffset(0, 0)
+                )
+            }
+
+            lastPlaceable.place(
+                IntOffset(0, 0)
             )
         }
     }

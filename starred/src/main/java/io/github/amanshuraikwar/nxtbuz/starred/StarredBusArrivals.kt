@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -35,6 +36,7 @@ inline fun <T, K : Any> LazyListScope.itemsIndexed(
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun StarredBusArrivals(
     modifier: Modifier = Modifier,
@@ -56,6 +58,8 @@ fun StarredBusArrivals(
         mutableStateOf(0f)
     }
 
+    val listItems by vm.listItemsFlow.collectAsState()
+
     LaunchedEffect(key1 = "") {
         animate(
             0f,
@@ -74,7 +78,7 @@ fun StarredBusArrivals(
         contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp)
     ) {
         itemsIndexed(
-            items = vm.listItems,
+            items = listItems,
             key = { _, item ->
                 item.busStopCode + item.busServiceNumber
             },
@@ -87,13 +91,20 @@ fun StarredBusArrivals(
             BusArrivalItem(
                 item.busStopDescription,
                 item.busServiceNumber,
-                item.arrivals
-            ) {
-                onItemClicked(
-                    item.busStopCode,
-                    item.busServiceNumber
-                )
-            }
+                item.arrivals,
+                onClick = {
+                    onItemClicked(
+                        item.busStopCode,
+                        item.busServiceNumber
+                    )
+                },
+                onUnStarClicked = {
+                    vm.onUnStarClicked(
+                        busServiceNumber = item.busServiceNumber,
+                        busStopCode = item.busStopCode,
+                    )
+                }
+            )
         }
     }
 }

@@ -7,14 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
-import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNavigationParams
+import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +32,7 @@ class BusStopArrivalsViewModel @Inject constructor(
     private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
     private val stopBusArrivalFlowUseCase: StopBusArrivalFlowUseCase,
     private val toggleStar: ToggleBusStopStarUseCase,
+    private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
     @Named("navigateToBusRoute")
     private val navigateToBusRoute: MutableSharedFlow<BusRouteNavigationParams>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
@@ -73,11 +75,45 @@ class BusStopArrivalsViewModel @Inject constructor(
                 pushInitListItems(busStop)
             }
 
+            listenToggleStarUpdate()
+
             getBusArrivalFlowUseCase(busStop.code)
                 .collect { busArrivalList ->
                     handleBusArrivalList(
                         busArrivalList
                     )
+                }
+        }
+    }
+
+    private fun listenToggleStarUpdate() {
+        viewModelScope.launch(coroutineContext) {
+            toggleStarUpdateUseCase()
+                .collect { toggleStarUpdate ->
+                    if (toggleStarUpdate.busStopCode == busStop?.code) {
+                        busArrivalListLock.withLock {
+                            val listItemIndex =
+                                listItems.indexOfFirst {
+                                    it is BusStopArrivalListItemData.BusStopArrival
+                                            && it.busServiceNumber ==
+                                            toggleStarUpdate.busServiceNumber
+                                }
+
+                            if (listItemIndex != -1) {
+                                when (val listItem = listItems[listItemIndex]) {
+                                    is BusStopArrivalListItemData.BusStopArrival.Arriving -> {
+                                        listItems[listItemIndex] =
+                                            listItem.copy(starred = toggleStarUpdate.newStarState)
+
+                                    }
+                                    is BusStopArrivalListItemData.BusStopArrival.NotArriving -> {
+                                        listItems[listItemIndex] =
+                                            listItem.copy(starred = toggleStarUpdate.newStarState)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
         }
     }
@@ -237,23 +273,27 @@ class BusStopArrivalsViewModel @Inject constructor(
                             && it.busServiceNumber == busServiceNumber
                 }
 
-            if (listItemIndex == -1) return@launch
+            if (listItemIndex != -1) {
+                when (val listItem = listItems[listItemIndex]) {
+                    is BusStopArrivalListItemData.BusStopArrival.Arriving -> {
+                        listItems[listItemIndex] = listItem.copy(starred = newToggleState)
 
-            when (val listItem = listItems[listItemIndex]) {
-                is BusStopArrivalListItemData.BusStopArrival.Arriving -> {
-                    listItems[listItemIndex] = listItem.copy(starred = newToggleState)
-
+                    }
+                    is BusStopArrivalListItemData.BusStopArrival.NotArriving -> {
+                        listItems[listItemIndex] = listItem.copy(starred = newToggleState)
+                    }
                 }
-                is BusStopArrivalListItemData.BusStopArrival.NotArriving -> {
-                    listItems[listItemIndex] = listItem.copy(starred = newToggleState)
+
+                val busStopCode = busStop?.code
+
+                if (busStopCode != null) {
+                    toggleStar(
+                        busStopCode = busStopCode,
+                        busServiceNumber = busServiceNumber,
+                        toggleTo = newToggleState
+                    )
                 }
             }
-
-            toggleStar(
-                busStopCode = busStop?.code ?: return@launch,
-                busServiceNumber = busServiceNumber,
-                toggleTo = newToggleState
-            )
 
             busArrivalListLock.unlock()
         }

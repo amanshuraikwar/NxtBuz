@@ -8,6 +8,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.StarBorder
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import java.util.*
 fun BusRouteHeaderItem(
     modifier: Modifier = Modifier,
     data: BusRouteListItemData.BusRouteHeader,
+    onStarToggle: (newToggleState: Boolean) -> Unit = {}
 ) {
     Box(
         modifier = modifier,
@@ -62,13 +64,17 @@ fun BusRouteHeaderItem(
             LocalIndication provides rememberRipple(color = MaterialTheme.colors.star)
         ) {
             Icon(
-                imageVector = Icons.Rounded.StarBorder,
+                imageVector = if (data.starred) {
+                    Icons.Rounded.Star
+                } else {
+                    Icons.Rounded.StarBorder
+                },
                 contentDescription = "Star",
                 tint = MaterialTheme.colors.star,
                 modifier = Modifier
                     .clip(shape = MaterialTheme.shapes.small)
                     .clickable {
-
+                        onStarToggle(!data.starred)
                     }
                     .padding(16.dp)
             )
