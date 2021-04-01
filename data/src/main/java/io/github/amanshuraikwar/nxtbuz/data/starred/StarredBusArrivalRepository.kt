@@ -10,6 +10,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.room.StarredBusStopEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
 import io.github.amanshuraikwar.nxtbuz.data.starred.delegate.BusArrivalsDelegate
 import io.github.amanshuraikwar.nxtbuz.common.model.StarToggleState
+import io.github.amanshuraikwar.nxtbuz.common.model.starred.ToggleStarUpdate
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
@@ -44,6 +45,9 @@ class StarredBusArrivalRepository @Inject constructor(
     private val starredBusArrivalStateFlow = MutableStateFlow<List<StarredBusArrival>>(emptyList())
     private var attachedComponentSet = mutableSetOf<String>()
     private val mutex = Mutex()
+
+    private val _toggleStarUpdate = MutableSharedFlow<ToggleStarUpdate>()
+    val toggleStarUpdate: SharedFlow<ToggleStarUpdate> = _toggleStarUpdate
 
     suspend fun shouldShowErrorStarredBusArrivals(): Boolean = withContext(dispatcherProvider.io) {
         preferenceStorage.showErrorStarredBusArrivals
@@ -140,30 +144,30 @@ class StarredBusArrivalRepository @Inject constructor(
         val starredBusArrivalList = starredBusStops
             .map { (busStopCode, busServiceNumber) ->
                 //async(dispatcherProvider.pool8) {
-                    busArrivalsDelegate
-                        .getBusArrivals(busStopCode)
-                        .find { it.serviceNumber == busServiceNumber }
-                        ?.let { busArrival ->
-                            StarredBusArrival(
-                                busStopCode,
-                                busServiceNumber,
-                                busStopDao
-                                    .findByCode(busStopCode)
-                                    .takeIf { it.isNotEmpty() }
-                                    ?.get(0)
-                                    ?.description
-                                    ?: throw Exception(
-                                        "No bus stop row found for stop code " +
-                                                "$busStopCode in local DB."
-                                    ),
-                                busArrival.arrivals
-                            )
-                        }
-                        ?: throw Exception(
-                            "Bus arrival for bus stop " +
-                                    "$busStopCode and service number " +
-                                    "$busServiceNumber not fetched."
+                busArrivalsDelegate
+                    .getBusArrivals(busStopCode)
+                    .find { it.serviceNumber == busServiceNumber }
+                    ?.let { busArrival ->
+                        StarredBusArrival(
+                            busStopCode,
+                            busServiceNumber,
+                            busStopDao
+                                .findByCode(busStopCode)
+                                .takeIf { it.isNotEmpty() }
+                                ?.get(0)
+                                ?.description
+                                ?: throw Exception(
+                                    "No bus stop row found for stop code " +
+                                            "$busStopCode in local DB."
+                                ),
+                            busArrival.arrivals
                         )
+                    }
+                    ?: throw Exception(
+                        "Bus arrival for bus stop " +
+                                "$busStopCode and service number " +
+                                "$busServiceNumber not fetched."
+                    )
                 //}
             }/*.awaitAll()*/
 
@@ -196,10 +200,15 @@ class StarredBusArrivalRepository @Inject constructor(
                 )
             }
 
-            starToggleState.value =
-                StarToggleState(
-                    busStopCode, busServiceNumber, !isAlreadyStarred
+            coroutineScope.launch {
+                _toggleStarUpdate.emit(
+                    ToggleStarUpdate(
+                        busStopCode,
+                        busServiceNumber,
+                        !isAlreadyStarred
+                    )
                 )
+            }
 
             coroutineScope.launch { getArrivalsAndEmit() }
         }
@@ -235,15 +244,32 @@ class StarredBusArrivalRepository @Inject constructor(
                 )
             }
 
-            starToggleState.value =
-                StarToggleState(
-                    busStopCode,
-                    busServiceNumber,
-                    toggleTo
+            coroutineScope.launch {
+                _toggleStarUpdate.emit(
+                    ToggleStarUpdate(
+                        busStopCode,
+                        busServiceNumber,
+                        toggleTo
+                    )
                 )
+            }
         }
 
-        coroutineScope.launch { getArrivalsAndEmit() }
+        coroutineScope.launch {
+            getArrivalsAndEmit()
+        }
+    }
+
+    suspend fun isStarred(
+        busStopCode: String,
+        busServiceNumber: String,
+    ): Boolean = withContext(dispatcherProvider.io) {
+        return@withContext starredBusStopsDao
+            .findByBusStopCodeAndBusServiceNumber(
+                busStopCode,
+                busServiceNumber
+            )
+            .isNotEmpty()
     }
 
     companion object {

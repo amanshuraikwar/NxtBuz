@@ -54,6 +54,9 @@ private val LightColorPalette = lightColors(
 val Colors.star: Color
     get() = if (isLight) yellow else yellowLighter
 
+val Colors.onStar: Color
+    get() = if (isLight) this.onSurface else this.onPrimary
+
 val Color.medium: Color
     get() = this.copy(alpha = 0.74f)
 
