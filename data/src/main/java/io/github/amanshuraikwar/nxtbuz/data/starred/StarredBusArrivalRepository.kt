@@ -94,9 +94,9 @@ class StarredBusArrivalRepository @Inject constructor(
                         arrivalList
                     }
                 }
-                .onCompletion {
-                    detach(id)
-                }
+//                .onCompletion {
+//                    detach(id)
+//                }
         }
     }
 
