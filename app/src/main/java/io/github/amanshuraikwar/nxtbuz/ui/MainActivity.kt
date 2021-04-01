@@ -27,6 +27,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.makeStatusBarTransparent
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
+import io.github.amanshuraikwar.nxtbuz.common.util.startSettingsActivity
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchScreen
@@ -100,6 +101,9 @@ class MainActivity : DaggerAppCompatActivity() {
                             )
                             navController.navigate("busStopArrival")
                         },
+                        onSettingsClicked = {
+                            startSettingsActivity()
+                        }
                     )
 
                     val offsetY = if (searchState.screenState is SearchScreenState.Nothing) {
