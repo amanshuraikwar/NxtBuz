@@ -94,6 +94,11 @@ class NxtBuzMapViewModel @Inject constructor(
                         onMarkerClicked(it)
                         true
                     }
+                    if (circleEvent != null) {
+                        viewModelScope.launch {
+                            addMarkers(map ?: return@launch, circleEvent ?: return@launch)
+                        }
+                    }
                 }
             )
 
@@ -113,6 +118,8 @@ class NxtBuzMapViewModel @Inject constructor(
         }
     }
 
+    private var circleEvent: MapEvent.AddMapMarkers? = null
+
     private fun startCollectingEvents(coroutineScope: CoroutineScope) {
         coroutineScope.launch(dispatcherProvider.computation) {
             mapEventFlow
@@ -123,6 +130,7 @@ class NxtBuzMapViewModel @Inject constructor(
                             MapResult.EmptyResult
                         }
                         is MapEvent.AddMapMarkers -> {
+                            circleEvent = mapEvent
                             map?.let { addMarkers(it, mapEvent) }
                                 ?: MapResult.ErrorResult("Google map is null.")
                         }
