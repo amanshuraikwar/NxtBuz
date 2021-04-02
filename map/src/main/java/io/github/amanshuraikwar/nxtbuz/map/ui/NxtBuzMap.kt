@@ -6,13 +6,16 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import io.github.amanshuraikwar.nxtbuz.common.R
 import io.github.amanshuraikwar.nxtbuz.map.view.ComposeMapView
+import io.github.amanshuraikwar.nxtbuz.map.view.rememberMapState
 
 @Composable
 fun NxtBuzMap(
@@ -22,20 +25,32 @@ fun NxtBuzMap(
     val mapInitData by viewModel.initMapFlow.collectAsState(null)
     val isLight = MaterialTheme.colors.isLight
     val context = LocalContext.current
+    val mapState = rememberMapState(initCenter = LatLng(0.0, 0.0), initZoom = 0f)
+    val coroutineScope = rememberCoroutineScope()
 
     Surface(modifier) {
         mapInitData?.let {
+            // do not update map state again if it has already moved/set
+            if (mapState.center == LatLng(0.0, 0.0)) {
+                mapState.updateCenter(it.latLng)
+            }
+            if (mapState.zoom == 0f) {
+                mapState.updateZoom(it.zoom)
+            }
+
             ComposeMapView(
                 Modifier.fillMaxSize(),
+                mapState,
                 GoogleMapOptions()
                     .camera(
-                        CameraPosition.Builder().target(it.latLng)
-                            .zoom(it.zoom)
+                        CameraPosition.Builder()
+                            .target(mapState.center)
+                            .zoom(mapState.zoom)
                             .build()
                     )
                     .compassEnabled(false)
                     .mapToolbarEnabled(false)
-                    .minZoomPreference(it.zoom)
+                    .minZoomPreference(it.zoom),
             ) { googleMap ->
                 googleMap.setMapStyle(
                     if (isLight) {
@@ -44,6 +59,10 @@ fun NxtBuzMap(
                         MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style_dark)
                     }
                 )
+
+                googleMap.setOnCameraIdleListener {
+                    mapState updateWith googleMap
+                }
 
                 it.onMapReady(googleMap)
             }

@@ -12,9 +12,6 @@ import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMapViewModel
 @Module
 abstract class MapModule {
 
-    @ContributesAndroidInjector
-    abstract fun nxtBuzMapFragment(): NxtBuzMapFragment
-
     @Binds
     @IntoMap
     @ViewModelKey(NxtBuzMapViewModel::class)
