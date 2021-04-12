@@ -37,7 +37,7 @@ class BusStopsViewModel @Inject constructor(
     }
     private val coroutineContext = errorHandler + dispatcherProvider.computation
 
-    internal val listItems = SnapshotStateList<BusStopsItemData>()
+    private val listItems = SnapshotStateList<BusStopsItemData>()
     private val listItemsLock = Mutex()
 
     private val _screenState = MutableSharedFlow<BusStopsScreenState>(replay = 1)

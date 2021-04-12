@@ -29,22 +29,22 @@ fun BusStopArrivalItem(
     data: BusStopArrivalListItemData.BusStopArrival,
     onStarToggle: (newToggleState: Boolean) -> Unit = {}
 ) {
-    var alpha by remember {
-        mutableStateOf(0f)
-    }
-
-    LaunchedEffect(data.busServiceNumber) {
-        animate(
-            initialValue = 0f,
-            targetValue = 1f,
-            animationSpec = tween(300, delayMillis = 300)
-        ) { animatedValue, _ ->
-            alpha = animatedValue
-        }
-    }
+//    var alpha by remember {
+//        mutableStateOf(0f)
+//    }
+//
+//    LaunchedEffect(data.busServiceNumber) {
+//        animate(
+//            initialValue = 0f,
+//            targetValue = 1f,
+//            animationSpec = tween(300, delayMillis = 300)
+//        ) { animatedValue, _ ->
+//            alpha = animatedValue
+//        }
+//    }
 
     Box(
-        modifier = modifier.alpha(alpha),
+        modifier = modifier/*.alpha(alpha)*/,
         contentAlignment = Alignment.CenterEnd
     ) {
         Row(
