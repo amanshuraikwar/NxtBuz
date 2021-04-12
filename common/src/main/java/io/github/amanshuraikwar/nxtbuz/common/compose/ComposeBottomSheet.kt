@@ -1,6 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.common.compose
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
@@ -62,10 +61,11 @@ fun ComposeBottomSheet(
     val surfaceColor = MaterialTheme.colors.surface
     val cornerRadius = MaterialTheme.shapes.largeShapeSizeDp
 
-    Log.d(
-        "yoyo",
-        "ComposeBottomSheet: ${bottomSheetState.expandProgressFraction} $bgOffset ${bottomSheetState.progress}"
-    )
+    val yOffset = if (bottomSheetState.expandProgressFraction < 0.8) {
+        bgOffset
+    } else {
+        (bgOffset * (1 - bottomSheetState.expandProgressFraction)) * 5
+    }
 
     BoxWithConstraints(modifier) {
         val fullHeight = constraints.maxHeight.toFloat()
@@ -105,13 +105,11 @@ fun ComposeBottomSheet(
                                 color = surfaceColor,
                                 topLeft = Offset(
                                     0f,
-                                    bgOffset.toPx() * (1 - bottomSheetState.expandProgressFraction)
+                                    yOffset.toPx()
                                 ),
                                 size = Size(
                                     size.width,
-                                    size.height
-                                            - bgOffset.toPx()
-                                            * (1 - bottomSheetState.expandProgressFraction)
+                                    size.height - yOffset.toPx()
                                 ),
                                 cornerRadius = CornerRadius(
                                     cornerRadius.toPx()
