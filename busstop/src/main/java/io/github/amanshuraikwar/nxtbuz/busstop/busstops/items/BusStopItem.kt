@@ -1,15 +1,12 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.busstops.items
 
-import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,22 +19,8 @@ fun BusStopItem(
     modifier: Modifier = Modifier,
     data: BusStopsItemData.BusStop,
 ) {
-    var alpha by remember {
-        mutableStateOf(0f)
-    }
-
-    LaunchedEffect(data.busStopInfo) {
-        animate(
-            initialValue = 0f,
-            targetValue = 1f,
-            animationSpec = tween(300, delayMillis = 300)
-        ) { animatedValue, _ ->
-            alpha = animatedValue
-        }
-    }
-
     Box(
-        modifier = modifier.alpha(alpha),
+        modifier = modifier,
     ) {
         Surface(
             modifier = Modifier

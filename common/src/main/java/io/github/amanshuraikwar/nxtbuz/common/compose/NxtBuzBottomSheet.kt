@@ -32,6 +32,66 @@ fun NxtBuzBottomSheet(
     bottomSheetState: BottomSheetState = rememberBottomSheetState(
         BottomSheetValue.Collapsed
     ),
+    onInit: () -> Unit = {},
+    bottomSheetContent: @Composable (PaddingValues) -> Unit,
+) {
+    val insets = LocalWindowInsets.current
+    val bottomSheetBgOffset = with(LocalDensity.current) { insets.statusBars.top.toDp() }
+
+    var alpha by remember(key) {
+        mutableStateOf(0f)
+    }
+    var offsetY by remember(key) {
+        mutableStateOf(128.dp)
+    }
+
+    LaunchedEffect(key) {
+        bottomSheetState.collapse()
+        animate(
+            initialValue = 0f,
+            targetValue = 1f,
+            animationSpec = tween(300)
+        ) { animatedValue, _ ->
+            alpha = animatedValue
+            offsetY = ((1 - animatedValue) * 128).dp
+        }
+        onInit()
+    }
+
+    ComposeBottomSheet(
+        modifier = modifier
+            .alpha(alpha = alpha)
+            .offset(y = offsetY),
+        bottomSheetState = bottomSheetState,
+        backgroundColor = Color.Transparent,
+        bgOffset = bottomSheetBgOffset,
+        sheetContent = {
+            Box {
+                Puck(
+                    Modifier
+                        .padding(top = bottomSheetBgOffset)
+                        .alpha(
+                            1 - bottomSheetState.expandProgressFraction
+                        )
+                )
+
+                bottomSheetContent(
+                    PaddingValues(top = bottomSheetBgOffset + 12.dp)
+                )
+            }
+        },
+        sheetPeekHeight = (LocalConfiguration.current.screenHeightDp / 3).dp + bottomSheetBgOffset
+    ) { }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun NxtBuzBottomSheet(
+    modifier: Modifier = Modifier,
+    key: String? = null,
+    bottomSheetState: BottomSheetState = rememberBottomSheetState(
+        BottomSheetValue.Collapsed
+    ),
     lazyListState: LazyListState = rememberLazyListState(),
     bottomSheetContent: LazyListScope.() -> Unit,
 ) {

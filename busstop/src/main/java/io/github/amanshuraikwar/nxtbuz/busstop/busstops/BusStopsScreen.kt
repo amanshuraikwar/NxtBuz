@@ -1,21 +1,26 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.busstops
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
-import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
-import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
-import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsViewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.items.BusStopItem
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsScreenState
 import io.github.amanshuraikwar.nxtbuz.common.compose.Header
+import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -26,16 +31,62 @@ fun BusStopsScreen(
     vm: BusStopsViewModel
 ) {
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
-    val lazyListState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
+
+    val screenState by vm.screenState.collectAsState(initial = BusStopsScreenState.Fetching)
 
     NxtBuzBottomSheet(
         modifier = modifier,
         bottomSheetState = bottomSheetState,
-        lazyListState = lazyListState,
+        onInit = {
+            vm.fetchBusStops()
+        }
+    ) { padding ->
+
+        Crossfade(targetState = screenState) { screenState ->
+            when (screenState) {
+                BusStopsScreenState.Failed -> TODO()
+                BusStopsScreenState.Fetching -> {
+                    FetchingView(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(paddingValues = padding)
+                    )
+                }
+                is BusStopsScreenState.Success -> {
+                    BusStopsView(
+                        screenState.listItems,
+                        padding,
+                        navController
+                    )
+                }
+            }
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun BusStopsView(
+    listItems: List<BusStopsItemData>,
+    padding: PaddingValues,
+    navController: NavController,
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val lazyListState = rememberLazyListState()
+
+    LaunchedEffect(null) {
+        lazyListState.scrollToItem(0)
+    }
+
+    LazyColumn(
+        contentPadding = PaddingValues(
+            bottom = 128.dp,
+            top = padding.calculateTopPadding()
+        ),
+        state = lazyListState,
     ) {
         items(
-            items = vm.listItems,
+            items = listItems,
             key = { item ->
                 when (item) {
                     is BusStopsItemData.BusStop -> item.busStopInfo
