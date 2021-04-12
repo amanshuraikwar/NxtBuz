@@ -7,6 +7,7 @@ import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.*
@@ -22,8 +23,11 @@ fun BusRouteScreen(
     busStopCode: String,
     vm: BusRouteViewModel
 ) {
-    LaunchedEffect(key1 = busServiceNumber, key2 = busStopCode) {
+    DisposableEffect(key1 = busServiceNumber, key2 = busStopCode) {
         vm.init(busServiceNumber, busStopCode)
+        onDispose {
+            vm.onDispose()
+        }
     }
 
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)

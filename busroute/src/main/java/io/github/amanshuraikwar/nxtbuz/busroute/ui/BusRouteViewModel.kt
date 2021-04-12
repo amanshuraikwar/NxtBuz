@@ -5,15 +5,20 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import io.github.amanshuraikwar.nxtbuz.busroute.R
 import io.github.amanshuraikwar.nxtbuz.busroute.loop.ArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
+import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.IsStarredUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
@@ -32,6 +37,8 @@ class BusRouteViewModel @Inject constructor(
     private val isStarredUseCase: IsStarredUseCase,
     private val toggleStar: ToggleBusStopStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
+    private val pushMapEventUseCase: PushMapEventUseCase,
+    private val mapUtil: MapUtil,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -57,11 +64,18 @@ class BusRouteViewModel @Inject constructor(
         viewModelScope.launch(coroutineContext) {
             val busStop = getBusStopUseCase(busStopCode)
             listItemsLock.withLock {
+                addBusStopMapMarker(busStop = busStop)
+
                 this@BusRouteViewModel.busServiceNumber = busServiceNumber
                 this@BusRouteViewModel.currentBusStop = busStop
 
                 busRoute = getBusRouteUseCase(
                     busServiceNumber = this@BusRouteViewModel.busServiceNumber,
+                    busStopCode = this@BusRouteViewModel.currentBusStop.code
+                )
+
+                addBusRouteToMap(
+                    busRoute,
                     busStopCode = this@BusRouteViewModel.currentBusStop.code
                 )
 
@@ -72,6 +86,36 @@ class BusRouteViewModel @Inject constructor(
                 listenToggleStarUpdate()
             }
         }
+    }
+
+    private suspend fun addBusRouteToMap(busRoute: BusRoute, busStopCode: String) {
+        withContext(dispatcherProvider.computation) {
+            pushMapEventUseCase(
+                MapEvent.AddRoute(
+                    "${busRoute.busServiceNumber}_at_$busStopCode",
+                    mapUtil.getRouteLineColor(),
+                    mapUtil.getRouteLineWidth(),
+                    busRoute.busRouteNodeList
+                        .map { busRouteNode ->
+                            busRouteNode.busStopLat to busRouteNode.busStopLng
+                        }
+                )
+            )
+        }
+    }
+
+    private fun addBusStopMapMarker(busStop: BusStop) {
+        pushMapEventUseCase(
+            MapEvent.AddMarker(
+                MapMarker(
+                    busStop.code,
+                    busStop.latitude,
+                    busStop.longitude,
+                    R.drawable.ic_marker_bus_stop_48,
+                    busStop.description
+                )
+            )
+        )
     }
 
     private fun listenToggleStarUpdate() {
@@ -104,7 +148,9 @@ class BusRouteViewModel @Inject constructor(
     }
 
     private suspend fun pushInitListItems() {
-        listItems = SnapshotStateList()
+        withContext(dispatcherProvider.main) {
+            listItems = SnapshotStateList()
+        }
 
         val currentBusRouteNodeIndex = busRoute.busRouteNodeList.indexOfFirst {
             it.busStopCode == currentBusStop.code
@@ -123,20 +169,22 @@ class BusRouteViewModel @Inject constructor(
             ?.stopSequence
             ?: throw Exception("Could not find max bus stop sequence for route $busRoute.")
 
-        listItems.add(
-            BusRouteListItemData.BusRouteHeader(
-                busServiceNumber = busServiceNumber,
-                destinationBusStopDescription = busRoute.destinationBusStopDescription,
-                originBusStopDescription = busRoute.originBusStopDescription,
-                busStopCode = currentBusStop.code,
-                starred = isStarredUseCase(
+        withContext(dispatcherProvider.main) {
+            listItems.add(
+                BusRouteListItemData.BusRouteHeader(
+                    busServiceNumber = busServiceNumber,
+                    destinationBusStopDescription = busRoute.destinationBusStopDescription,
+                    originBusStopDescription = busRoute.originBusStopDescription,
                     busStopCode = currentBusStop.code,
-                    busServiceNumber = busServiceNumber
+                    starred = isStarredUseCase(
+                        busStopCode = currentBusStop.code,
+                        busServiceNumber = busServiceNumber
+                    )
                 )
             )
-        )
 
-        listItems.add(BusRouteListItemData.Header("Stops"))
+            listItems.add(BusRouteListItemData.Header("Stops"))
+        }
 
         val currentSequenceNumber: Int = busRoute.busRouteNodeList
             .findLast {
@@ -148,33 +196,37 @@ class BusRouteViewModel @Inject constructor(
             )
 
         if (currentSequenceNumber > 1) {
-            listItems.add(
-                BusRouteListItemData.BusRoutePreviousAll(
-                    title = "See previous ${currentSequenceNumber - 1} bus stops"
+            withContext(dispatcherProvider.main) {
+                listItems.add(
+                    BusRouteListItemData.BusRoutePreviousAll(
+                        title = "See previous ${currentSequenceNumber - 1} bus stops"
+                    )
                 )
-            )
+            }
         }
 
-        busRoute.busRouteNodeList.forEachIndexed { _, busRouteNode: BusRouteNode ->
-            listItems.add(
-                when {
-                    busRouteNode.stopSequence == currentSequenceNumber -> {
-                        BusRouteListItemData.BusRouteNode.Current(
-                            busRouteNode.busStopCode,
-                            busRouteNode.busStopDescription,
-                            busRouteNode.stopSequence.toPosition(lastBusStopSequence),
-                        )
+        withContext(dispatcherProvider.main) {
+            busRoute.busRouteNodeList.forEachIndexed { _, busRouteNode: BusRouteNode ->
+                listItems.add(
+                    when {
+                        busRouteNode.stopSequence == currentSequenceNumber -> {
+                            BusRouteListItemData.BusRouteNode.Current(
+                                busRouteNode.busStopCode,
+                                busRouteNode.busStopDescription,
+                                busRouteNode.stopSequence.toPosition(lastBusStopSequence),
+                            )
+                        }
+                        busRouteNode.stopSequence > currentSequenceNumber -> {
+                            BusRouteListItemData.BusRouteNode.Next(
+                                busRouteNode.busStopCode,
+                                busRouteNode.busStopDescription,
+                                busRouteNode.stopSequence.toPosition(lastBusStopSequence)
+                            )
+                        }
+                        else -> return@forEachIndexed
                     }
-                    busRouteNode.stopSequence > currentSequenceNumber -> {
-                        BusRouteListItemData.BusRouteNode.Next(
-                            busRouteNode.busStopCode,
-                            busRouteNode.busStopDescription,
-                            busRouteNode.stopSequence.toPosition(lastBusStopSequence)
-                        )
-                    }
-                    else -> return@forEachIndexed
-                }
-            )
+                )
+            }
         }
     }
 
@@ -509,5 +561,19 @@ class BusRouteViewModel @Inject constructor(
 
             listItemsLock.unlock()
         }
+    }
+
+    fun onDispose() {
+        pushMapEventUseCase(
+            MapEvent.DeleteMarker(
+                markerId = currentBusStop.code,
+            )
+        )
+
+        pushMapEventUseCase(
+            MapEvent.DeleteRoute(
+                "${busRoute.busServiceNumber}_at_${currentBusStop.code}",
+            )
+        )
     }
 }

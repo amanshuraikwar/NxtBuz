@@ -7,6 +7,7 @@ import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -48,8 +49,12 @@ fun BusStopArrivalsScreen(
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
 
-    LaunchedEffect(key1 = busStopCode) {
+    DisposableEffect(key1 = busStopCode) {
         vm.init(busStopCode)
+
+        onDispose {
+            vm.onDispose()
+        }
     }
 
     NxtBuzBottomSheet(

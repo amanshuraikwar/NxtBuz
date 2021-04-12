@@ -54,17 +54,14 @@ fun rememberMapState(
 @Composable
 fun ComposeMapView(
     modifier: Modifier = Modifier,
-    state: ComposeMapState,
     googleMapOptions: GoogleMapOptions = GoogleMapOptions(),
-    mapView: MapView = rememberMapViewWithLifecycle(googleMapOptions),
-    onMapInit: (GoogleMap) -> Unit = {}
+    onMapInit: (GoogleMap) -> Unit = {},
+    mapView: MapView = rememberMapViewWithLifecycle(googleMapOptions, onMapInit),
 ) {
     AndroidView(
         {
             mapView
         },
         modifier
-    ) { view ->
-        view.getMapAsync(onMapInit)
-    }
+    )
 }

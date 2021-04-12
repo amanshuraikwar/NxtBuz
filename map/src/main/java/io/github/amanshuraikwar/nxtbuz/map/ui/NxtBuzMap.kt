@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -26,7 +27,6 @@ fun NxtBuzMap(
     val isLight = MaterialTheme.colors.isLight
     val context = LocalContext.current
     val mapState = rememberMapState(initCenter = LatLng(0.0, 0.0), initZoom = 0f)
-    val coroutineScope = rememberCoroutineScope()
 
     Surface(modifier) {
         mapInitData?.let {
@@ -39,9 +39,8 @@ fun NxtBuzMap(
             }
 
             ComposeMapView(
-                Modifier.fillMaxSize(),
-                mapState,
-                GoogleMapOptions()
+                modifier = Modifier.fillMaxSize(),
+                googleMapOptions = GoogleMapOptions()
                     .camera(
                         CameraPosition.Builder()
                             .target(mapState.center)
@@ -51,21 +50,23 @@ fun NxtBuzMap(
                     .compassEnabled(false)
                     .mapToolbarEnabled(false)
                     .minZoomPreference(it.zoom),
-            ) { googleMap ->
-                googleMap.setMapStyle(
-                    if (isLight) {
-                        MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style_light)
-                    } else {
-                        MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style_dark)
+                onMapInit = { googleMap ->
+                    googleMap.setMapStyle(
+                        if (isLight) {
+                            MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style_light)
+                        } else {
+                            MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style_dark)
+                        }
+                    )
+
+                    googleMap.setOnCameraIdleListener {
+                        mapState updateWith googleMap
+                        //onIdle(googleMap)
                     }
-                )
 
-                googleMap.setOnCameraIdleListener {
-                    mapState updateWith googleMap
-                }
-
-                it.onMapReady(googleMap)
-            }
+                    it.onMapReady(googleMap)
+                },
+            )
         }
     }
 }
