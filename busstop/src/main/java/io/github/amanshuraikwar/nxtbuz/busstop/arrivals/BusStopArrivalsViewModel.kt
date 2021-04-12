@@ -6,14 +6,18 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNavigationParams
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
+import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import kotlinx.coroutines.*
@@ -33,6 +37,7 @@ class BusStopArrivalsViewModel @Inject constructor(
     private val stopBusArrivalFlowUseCase: StopBusArrivalFlowUseCase,
     private val toggleStar: ToggleBusStopStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
+    private val pushMapEventUseCase: PushMapEventUseCase,
     @Named("navigateToBusRoute")
     private val navigateToBusRoute: MutableSharedFlow<BusRouteNavigationParams>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
@@ -68,6 +73,7 @@ class BusStopArrivalsViewModel @Inject constructor(
             val busStop = getBusStopUseCase(busStopCode)
 
             busArrivalListLock.withLock {
+                addBusStopMapMarker(busStop = busStop)
                 if (this@BusStopArrivalsViewModel.busStop == busStop) {
                     return@launch
                 }
@@ -84,6 +90,20 @@ class BusStopArrivalsViewModel @Inject constructor(
                     )
                 }
         }
+    }
+
+    private fun addBusStopMapMarker(busStop: BusStop) {
+        pushMapEventUseCase(
+            MapEvent.AddMarker(
+                MapMarker(
+                    busStop.code,
+                    busStop.latitude,
+                    busStop.longitude,
+                    R.drawable.ic_marker_bus_stop_48,
+                    busStop.description
+                )
+            )
+        )
     }
 
     private fun listenToggleStarUpdate() {
@@ -297,6 +317,14 @@ class BusStopArrivalsViewModel @Inject constructor(
 
             busArrivalListLock.unlock()
         }
+    }
+
+    fun onDispose() {
+        pushMapEventUseCase(
+            MapEvent.DeleteMarker(
+                markerId = busStop?.code ?: return,
+            )
+        )
     }
 
     companion object {

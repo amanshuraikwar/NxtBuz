@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.map.di
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import dagger.Module
 import dagger.Provides
@@ -26,6 +27,13 @@ class MapProvides {
     @Singleton
     @Named("markerClicked")
     fun provideMarkerClickedFlow(): MutableStateFlow<Marker?> {
+        return MutableStateFlow(null)
+    }
+
+    @Provides
+    @Singleton
+    @Named("mapCenter")
+    fun provideMapCenterFlow(): MutableStateFlow<LatLng?> {
         return MutableStateFlow(null)
     }
 }

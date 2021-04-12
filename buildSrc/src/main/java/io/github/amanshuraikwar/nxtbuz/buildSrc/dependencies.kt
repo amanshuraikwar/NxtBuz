@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.buildSrc
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha12"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha14"
 
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 
@@ -12,7 +12,7 @@ object Libs {
 
         const val analytics = "com.google.firebase:firebase-analytics:17.4.0"
         const val crashlytics = "com.google.firebase:firebase-crashlytics:17.1.1"
-        const val crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.1.1"
+        const val crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.5.2"
 
         const val gmsGoogleServices = "com.google.gms:google-services:4.3.3"
 

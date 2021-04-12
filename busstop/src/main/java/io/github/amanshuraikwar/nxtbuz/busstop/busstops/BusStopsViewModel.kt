@@ -89,7 +89,7 @@ class BusStopsViewModel @Inject constructor(
                     updateListItems(busStopList)
                 }
 
-                addBusStopMarkers(busStopList)
+                //addBusStopMarkers(busStopList)
             }
         }
     }
@@ -116,10 +116,10 @@ class BusStopsViewModel @Inject constructor(
         )
     }
 
-    private suspend fun addBusStopMarkers(busStopList: List<BusStop>) {
-        val mapResult = pushMapEventUseCase(
-            MapEvent.AddMapMarkers(
-                busStopList.map { busStop ->
+    private fun addBusStopMarkers(busStopList: List<BusStop>) {
+        busStopList.forEach { busStop ->
+            pushMapEventUseCase(
+                MapEvent.AddMarker(
                     MapMarker(
                         busStop.code,
                         busStop.latitude,
@@ -127,14 +127,27 @@ class BusStopsViewModel @Inject constructor(
                         R.drawable.ic_marker_bus_stop_48,
                         busStop.description
                     )
-                }
+                )
             )
-        )
-
-        (mapResult as? MapResult.AddMapMarkersResult)?.markerList?.forEachIndexed { index, marker ->
-            markerIdMap[marker.id] = marker
-            markerIdBusStopCodeMap[marker.id] = busStopList[index].code
         }
+//        val mapResult = pushMapEventUseCase(
+//            MapEvent.AddMapMarkers(
+//                busStopList.map { busStop ->
+//                    MapMarker(
+//                        busStop.code,
+//                        busStop.latitude,
+//                        busStop.longitude,
+//                        R.drawable.ic_marker_bus_stop_48,
+//                        busStop.description
+//                    )
+//                }
+//            )
+//        )
+//
+//        (mapResult as? MapResult.AddMapMarkersResult)?.markerList?.forEachIndexed { index, marker ->
+//            markerIdMap[marker.id] = marker
+//            markerIdBusStopCodeMap[marker.id] = busStopList[index].code
+//        }
     }
 
     private fun collectMarkerClicks() {

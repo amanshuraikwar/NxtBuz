@@ -1,24 +1,19 @@
 package io.github.amanshuraikwar.nxtbuz.di
 
+//import io.github.amanshuraikwar.nxtbuz.search.SearchActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import io.github.amanshuraikwar.nxtbuz.busroute.di.BusRouteModule
 import io.github.amanshuraikwar.nxtbuz.busstop.di.BusStopsModule
-import io.github.amanshuraikwar.nxtbuz.busstop.di.BusStopsProvides
 import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtilProvides
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtilProvides
 import io.github.amanshuraikwar.nxtbuz.launcher.LauncherActivity
 import io.github.amanshuraikwar.nxtbuz.launcher.LauncherModule
 import io.github.amanshuraikwar.nxtbuz.map.di.MapModule
-import io.github.amanshuraikwar.nxtbuz.map.di.MapProvides
 import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity
 import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingModule
-//import io.github.amanshuraikwar.nxtbuz.search.SearchActivity
 import io.github.amanshuraikwar.nxtbuz.search.SearchModule
-import io.github.amanshuraikwar.nxtbuz.ui.di.MainLiveDataProvides
-import io.github.amanshuraikwar.nxtbuz.ui.MainActivity
-import io.github.amanshuraikwar.nxtbuz.ui.di.MainModule
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsModule
 import io.github.amanshuraikwar.nxtbuz.starred.StarredModule
@@ -26,6 +21,9 @@ import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
 import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsModule
 import io.github.amanshuraikwar.nxtbuz.starred.ui.di.StarredBusArrivalsProvides
 import io.github.amanshuraikwar.nxtbuz.starred.ui.options.di.StarredBusArrivalOptionsModule
+import io.github.amanshuraikwar.nxtbuz.ui.MainActivity
+import io.github.amanshuraikwar.nxtbuz.ui.di.MainLiveDataProvides
+import io.github.amanshuraikwar.nxtbuz.ui.di.MainModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -71,12 +69,9 @@ abstract class ActivityBindingModule {
         BusRouteModule::class,
         SearchModule::class,
         StarredModule::class,
+        CoroutineModule::class,
     ])
     internal abstract fun c(): MainActivity
-
-//    @ActivityScoped
-//    @ContributesAndroidInjector(modules = [SearchModule::class])
-//    internal abstract fun d(): SearchActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = [SettingsModule::class])

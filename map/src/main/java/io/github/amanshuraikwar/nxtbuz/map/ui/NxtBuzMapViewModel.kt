@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
@@ -23,6 +24,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Named
 import kotlin.coroutines.suspendCoroutine
@@ -39,6 +42,7 @@ class NxtBuzMapViewModel @Inject constructor(
     private val defaultMapZoomUseCase: DefaultMapZoomUseCase,
     @Named("mapEventFlow") private val mapEventFlow: ReturnableFlow<MapEvent, MapResult>,
     @Named("markerClicked") private val markerClickedFlow: MutableStateFlow<Marker?>,
+    @Named("mapCenter") private val mapCenter: MutableStateFlow<LatLng?>,
     private val mapViewModelDelegate: LocationViewModelDelegate,
     private val mapUtil: MapUtil,
     private val markerUtil: MarkerUtil,
@@ -73,6 +77,8 @@ class NxtBuzMapViewModel @Inject constructor(
         mapViewModelDelegate.init(viewModelScope)
     }
 
+    private val recreateLock = Mutex()
+
     /**
      * Initialise map at given latitude and longitude.
      */
@@ -89,14 +95,36 @@ class NxtBuzMapViewModel @Inject constructor(
                     LatLng(lat, lng),
                     mapZoom,
                 ) { googleMap: GoogleMap? ->
+
+                    if (map == googleMap) return@MapInitData
+
                     map = googleMap
                     map?.setOnMarkerClickListener {
                         onMarkerClicked(it)
                         true
                     }
-                    if (circleEvent != null) {
+                    map?.setOnCameraIdleListener {
                         viewModelScope.launch {
-                            addMarkers(map ?: return@launch, circleEvent ?: return@launch)
+                            mapCenter.value = map?.cameraPosition?.target ?: return@launch
+                        }
+                    }
+                    Log.i(TAG, "initMapCallback: called $googleMap")
+                    if (markerSet.isNotEmpty()) {
+                        viewModelScope.launch {
+                            recreateLock.withLock {
+                                for (marker in markerSet) {
+                                    map?.addMarker(marker)
+                                }
+                            }
+                        }
+                    }
+                    if (routeSet.isNotEmpty()) {
+                        viewModelScope.launch {
+                            recreateLock.withLock {
+                                for (route in routeSet) {
+                                    map?.addRoute(route)
+                                }
+                            }
                         }
                     }
                 }
@@ -118,21 +146,14 @@ class NxtBuzMapViewModel @Inject constructor(
         }
     }
 
-    private var circleEvent: MapEvent.AddMapMarkers? = null
-
     private fun startCollectingEvents(coroutineScope: CoroutineScope) {
         coroutineScope.launch(dispatcherProvider.computation) {
             mapEventFlow
                 .collect { mapEvent ->
-                    return@collect when (mapEvent) {
+                    when (mapEvent) {
                         is MapEvent.ClearMap -> {
                             clearMap()
                             MapResult.EmptyResult
-                        }
-                        is MapEvent.AddMapMarkers -> {
-                            circleEvent = mapEvent
-                            map?.let { addMarkers(it, mapEvent) }
-                                ?: MapResult.ErrorResult("Google map is null.")
                         }
                         is MapEvent.MoveCenter -> {
                             moveCenter(mapEvent)
@@ -147,13 +168,31 @@ class NxtBuzMapViewModel @Inject constructor(
                                 ?: MapResult.ErrorResult("Google map is null.")
                         }
                         is MapEvent.AddRoute -> {
-                            map?.let { addRoute(it, mapEvent) }
-                                ?: MapResult.ErrorResult("Google map is null.")
+                            map?.addRoute(mapEvent)
+                            MapResult.EmptyResult
+                        }
+                        is MapEvent.DeleteRoute -> {
+                            deleteRoute(mapEvent)
+                        }
+                        is MapEvent.AddMarker -> {
+                            map?.addMarker(mapEvent.marker)
+                        }
+                        is MapEvent.DeleteMarker -> {
+                            deleteMarker(mapEvent.markerId)
+                        }
+                        is MapEvent.AddMarkers -> {
+                            map?.addMarkers(mapEvent.markerList)
+                        }
+                        is MapEvent.MoveMarker -> {
+                            moveMarker(mapEvent.markerId, mapEvent.newPosition)
+                            MapResult.EmptyResult
                         }
                         else -> {
                             MapResult.ErrorResult("Unsupported map event.")
                         }
                     }
+
+                    MapResult.EmptyResult
                 }
         }
     }
@@ -170,12 +209,14 @@ class NxtBuzMapViewModel @Inject constructor(
         }
     }
 
-    private suspend fun addMarkers(
-        map: GoogleMap,
-        addMapEvent: MapEvent.AddMapMarkers
-    ): MapResult.AddMapMarkersResult {
+    val markerSet = mutableSetOf<MapMarker>()
+    val markerMap = mutableMapOf<String, Marker>()
+
+    private suspend fun GoogleMap.addMarkers(
+        mapMarkerList: List<MapMarker>
+    ) {
         val markerOptionsList = withContext(dispatcherProvider.io) {
-            addMapEvent.markerList.map { mapMarker ->
+            mapMarkerList.map { mapMarker ->
                 MarkerOptions()
                     .position(
                         LatLng(
@@ -196,13 +237,75 @@ class NxtBuzMapViewModel @Inject constructor(
             }
         }
 
-        val markerList = withContext(dispatcherProvider.main) {
-            markerOptionsList.map { markerOptions ->
-                map.addMarker(markerOptions)
+        withContext(dispatcherProvider.main) {
+            markerOptionsList.mapIndexed { index, markerOptions ->
+                val marker = addMarker(markerOptions)
+                markerMap[mapMarkerList[index].id] = marker
             }
         }
 
-        return MapResult.AddMapMarkersResult(markerList)
+        mapMarkerList.forEach { mapMarker ->
+            markerSet.add(mapMarker)
+        }
+    }
+
+    private suspend fun deleteMarker(
+        markerId: String,
+    ) {
+        withContext(dispatcherProvider.map) {
+            val marker = markerMap[markerId]
+            if (marker != null) {
+                withContext(dispatcherProvider.main) {
+                    marker.remove()
+                }
+                markerMap.remove(markerId)
+                markerSet.removeAll { mapMarker ->
+                    mapMarker.id == markerId
+                }
+            }
+        }
+    }
+
+    private suspend fun GoogleMap.addMarker(
+        mapMarker: MapMarker,
+    ) {
+        withContext(dispatcherProvider.map) {
+            val markerOption =
+                MarkerOptions()
+                    .position(
+                        LatLng(
+                            mapMarker.lat,
+                            mapMarker.lng
+                        )
+                    )
+                    .icon(
+                        if (mapMarker is ArrivingBusMapMarker) {
+                            markerUtil.arrivingBusBitmapDescriptor(mapMarker.busServiceNumber)
+                        } else {
+                            mapUtil.bitmapDescriptorFromVector(mapMarker.iconDrawableRes)
+                        }
+                    )
+                    .title(mapMarker.description)
+                    .flat(mapMarker.isFlat)
+
+            val marker = withContext(dispatcherProvider.main) {
+                addMarker(markerOption)
+            }
+
+            markerMap[mapMarker.id] = marker
+            markerSet.add(mapMarker)
+        }
+    }
+
+    private suspend fun moveMarker(
+        markerId: String,
+        newPosition: LatLng,
+    ) {
+        withContext(dispatcherProvider.map) {
+            withContext(dispatcherProvider.main) {
+                markerMap.get(markerId)?.position = newPosition
+            }
+        }
     }
 
     private suspend fun moveCenter(mapEvent: MapEvent.MoveCenter) {
@@ -254,11 +357,12 @@ class NxtBuzMapViewModel @Inject constructor(
         }
     }
 
-    private suspend fun addRoute(
-        map: GoogleMap,
-        mapEvent: MapEvent.AddRoute
-    ): MapResult.AddRouteResult {
+    private val routeSet = mutableSetOf<MapEvent.AddRoute>()
+    private val routeMap = mutableMapOf<String, Polyline>()
 
+    private suspend fun GoogleMap.addRoute(
+        mapEvent: MapEvent.AddRoute
+    ) {
         val opts: PolylineOptions
         withContext(dispatcherProvider.computation) {
             opts = PolylineOptions()
@@ -278,10 +382,10 @@ class NxtBuzMapViewModel @Inject constructor(
         val polyline: Polyline
         val markerList = mutableListOf<Marker>()
         withContext(dispatcherProvider.main) {
-            polyline = map.addPolyline(opts)
+            polyline = addPolyline(opts)
             mapEvent.latLngList.forEach { (lat, lng) ->
                 markerList.add(
-                    map.addMarker(
+                    addMarker(
                         MarkerOptions().icon(bitmapDescriptor).position(LatLng(lat, lng)).flat(true)
                             .anchor(0.5f, 0.5f)
                     )
@@ -289,9 +393,32 @@ class NxtBuzMapViewModel @Inject constructor(
             }
         }
 
-        return MapResult.AddRouteResult(
-            polyline = polyline,
-            markerList = markerList,
-        )
+        routeSet.add(mapEvent)
+
+        routeMap[mapEvent.routeId] = polyline
+
+        markerList.forEach { marker ->
+            markerMap["${mapEvent.routeId}-${marker.id}"] = marker
+        }
+    }
+
+    private suspend fun deleteRoute(mapEvent: MapEvent.DeleteRoute) {
+        val polyline = routeMap[mapEvent.routeId]
+        if (polyline != null) {
+            withContext(dispatcherProvider.main) {
+                polyline.remove()
+            }
+            routeMap.remove(mapEvent.routeId)
+            routeSet.removeAll { addRoute ->
+                addRoute.routeId == mapEvent.routeId
+            }
+            withContext(dispatcherProvider.main) {
+                markerMap.keys
+                    .filter { it.startsWith(mapEvent.routeId) }
+                    .forEach {
+                        markerMap.remove(it)?.remove()
+                    }
+            }
+        }
     }
 }
