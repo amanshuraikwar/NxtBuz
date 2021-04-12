@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
+import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalsScreenState
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNavigationParams
@@ -23,6 +24,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -38,25 +40,15 @@ class BusStopArrivalsViewModel @Inject constructor(
     private val toggleStar: ToggleBusStopStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
-    @Named("navigateToBusRoute")
-    private val navigateToBusRoute: MutableSharedFlow<BusRouteNavigationParams>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-    val onBusServiceClicked: (busServiceNumber: String) -> Unit = {
-        viewModelScope.launch(coroutineContext) {
-            navigateToBusRoute.emit(
-                BusRouteNavigationParams(
-                    busServiceNumber = it,
-                    busStop = busStop
-                )
-            )
-        }
-    }
-
     private var busStop: BusStop? = null
 
-    internal var listItems = SnapshotStateList<BusStopArrivalListItemData>()
+    private var listItems = SnapshotStateList<BusStopArrivalListItemData>()
+
+    private val _screenState = MutableSharedFlow<BusStopArrivalsScreenState>(replay = 1)
+    val screenState: SharedFlow<BusStopArrivalsScreenState> = _screenState
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
@@ -70,25 +62,45 @@ class BusStopArrivalsViewModel @Inject constructor(
 
     fun init(busStopCode: String) {
         viewModelScope.launch(coroutineContext) {
+            _screenState.emit(BusStopArrivalsScreenState.Fetching)
+
             val busStop = getBusStopUseCase(busStopCode)
+
+            _screenState.emit(
+                BusStopArrivalsScreenState.Success(
+                    BusStopArrivalListItemData.BusStopHeader(
+                        busStopCode = busStop.code,
+                        busStopDescription = busStop.description,
+                        busStopRoadName = busStop.roadName,
+                    ),
+                    listItems
+                )
+            )
 
             busArrivalListLock.withLock {
                 addBusStopMapMarker(busStop = busStop)
-                if (this@BusStopArrivalsViewModel.busStop == busStop) {
-                    return@launch
-                }
                 this@BusStopArrivalsViewModel.busStop = busStop
-                pushInitListItems(busStop)
             }
 
             listenToggleStarUpdate()
 
-            getBusArrivalFlowUseCase(busStop.code)
-                .collect { busArrivalList ->
-                    handleBusArrivalList(
-                        busArrivalList
-                    )
-                }
+//            busArrivalListLock.withLock {
+//                addBusStopMapMarker(busStop = busStop)
+//                if (this@BusStopArrivalsViewModel.busStop == busStop) {
+//                    return@launch
+//                }
+//                this@BusStopArrivalsViewModel.busStop = busStop
+//                pushInitListItems(busStop)
+//            }
+//
+//            listenToggleStarUpdate()
+//
+//            getBusArrivalFlowUseCase(busStop.code)
+//                .collect { busArrivalList ->
+//                    handleBusArrivalList(
+//                        busArrivalList
+//                    )
+//                }
         }
     }
 
@@ -142,15 +154,15 @@ class BusStopArrivalsViewModel @Inject constructor(
     private fun pushInitListItems(busStop: BusStop) {
         stopBusArrivalFlowUseCase()
 
-        listItems = SnapshotStateList()
+        //listItems = SnapshotStateList()
 
-        listItems.add(
-            BusStopArrivalListItemData.BusStopHeader(
-                busStopCode = busStop.code,
-                busStopDescription = busStop.description,
-                busStopRoadName = busStop.roadName,
-            )
-        )
+//        listItems.add(
+//            BusStopArrivalListItemData.BusStopHeader(
+//                busStopCode = busStop.code,
+//                busStopDescription = busStop.description,
+//                busStopRoadName = busStop.roadName,
+//            )
+//        )
 
         listItems.add(BusStopArrivalListItemData.Header("Departures"))
 
@@ -277,12 +289,6 @@ class BusStopArrivalsViewModel @Inject constructor(
         }
     }
 
-    private fun onMapMarkerClicked(markerId: String) {
-        viewModelScope.launch(errorHandler) {
-            onBusServiceClicked(markerId)
-        }
-    }
-
     fun onStarToggle(newToggleState: Boolean, busServiceNumber: String) {
         viewModelScope.launch(coroutineContext) {
             if (!busArrivalListLock.tryLock()) return@launch
@@ -325,6 +331,34 @@ class BusStopArrivalsViewModel @Inject constructor(
                 markerId = busStop?.code ?: return,
             )
         )
+        job?.cancel()
+        job = null
+        viewModelScope.launch(coroutineContext) {
+            busArrivalListLock.withLock {
+                listItems = SnapshotStateList()
+            }
+        }
+    }
+
+    private var job: Job? = null
+
+    fun startListeningArrivals() {
+        viewModelScope.launch(coroutineContext) {
+            val busStop = this@BusStopArrivalsViewModel.busStop ?: return@launch
+
+            busArrivalListLock.withLock {
+                pushInitListItems(busStop)
+            }
+
+            job = viewModelScope.launch(coroutineContext) {
+                getBusArrivalFlowUseCase(busStop.code)
+                    .collect { busArrivalList ->
+                        handleBusArrivalList(
+                            busArrivalList
+                        )
+                    }
+            }
+        }
     }
 
     companion object {

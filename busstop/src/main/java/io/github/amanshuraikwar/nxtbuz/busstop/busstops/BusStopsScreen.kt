@@ -31,7 +31,6 @@ fun BusStopsScreen(
     vm: BusStopsViewModel
 ) {
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
-
     val screenState by vm.screenState.collectAsState(initial = BusStopsScreenState.Fetching)
 
     NxtBuzBottomSheet(
