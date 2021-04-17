@@ -18,23 +18,23 @@ fun BusRouteCurrentItem(
         BusRouteListItemData.BusRouteNode.Position.MIDDLE,
     arrivalState: BusRouteListItemData.ArrivalState,
 ) {
-    var alpha by remember {
-        mutableStateOf(0f)
-    }
-
-    LaunchedEffect(busStopDescription) {
-        animate(
-            initialValue = 0f,
-            targetValue = 1f,
-            animationSpec = tween(300, delayMillis = 300)
-        ) { animatedValue, _ ->
-            alpha = animatedValue
-        }
-    }
+//    var alpha by remember {
+//        mutableStateOf(0f)
+//    }
+//
+//    LaunchedEffect(busStopDescription) {
+//        animate(
+//            initialValue = 0f,
+//            targetValue = 1f,
+//            animationSpec = tween(300, delayMillis = 300)
+//        ) { animatedValue, _ ->
+//            alpha = animatedValue
+//        }
+//    }
 
     Column(
         Modifier
-            .alpha(alpha)
+//            .alpha(alpha)
             .fillMaxWidth()
             .animateContentSize(),
     ) {

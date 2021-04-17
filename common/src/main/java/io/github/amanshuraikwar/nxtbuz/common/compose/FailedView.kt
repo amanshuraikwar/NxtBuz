@@ -1,9 +1,8 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.arrivals
+package io.github.amanshuraikwar.nxtbuz.common.compose
 
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.ButtonDefaults.outlinedButtonColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material.ripple.rememberRipple
@@ -13,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
 
 @Composable
 fun FailedView(
