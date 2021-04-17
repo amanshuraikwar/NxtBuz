@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
+import kotlinx.coroutines.delay
 
 @ExperimentalMaterialApi
 @Composable
