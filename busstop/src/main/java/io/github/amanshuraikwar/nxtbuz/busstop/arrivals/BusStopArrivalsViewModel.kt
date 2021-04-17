@@ -22,9 +22,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -44,11 +42,11 @@ class BusStopArrivalsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var busStop: BusStop? = null
-
     private var listItems = SnapshotStateList<BusStopArrivalListItemData>()
 
-    private val _screenState = MutableSharedFlow<BusStopArrivalsScreenState>(replay = 1)
-    val screenState: SharedFlow<BusStopArrivalsScreenState> = _screenState
+    private val _screenState =
+        MutableStateFlow<BusStopArrivalsScreenState>(BusStopArrivalsScreenState.Fetching)
+    val screenState: StateFlow<BusStopArrivalsScreenState> = _screenState
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
@@ -57,50 +55,64 @@ class BusStopArrivalsViewModel @Inject constructor(
     }
 
     private val coroutineContext = errorHandler + dispatcherProvider.computation
-
     private val busArrivalListLock = Mutex()
+    internal var bottomSheetInit = false
 
     fun init(busStopCode: String) {
         viewModelScope.launch(coroutineContext) {
-            _screenState.emit(BusStopArrivalsScreenState.Fetching)
+            var busStop = this@BusStopArrivalsViewModel.busStop
 
-            val busStop = getBusStopUseCase(busStopCode)
+            if (busStopCode == busStop?.code) {
+                busArrivalListLock.withLock {
+                    listItems = SnapshotStateList()
+                }
 
-            _screenState.emit(
-                BusStopArrivalsScreenState.Success(
-                    BusStopArrivalListItemData.BusStopHeader(
-                        busStopCode = busStop.code,
-                        busStopDescription = busStop.description,
-                        busStopRoadName = busStop.roadName,
-                    ),
-                    listItems
+                _screenState.emit(
+                        BusStopArrivalsScreenState.Success(
+                                BusStopArrivalListItemData.BusStopHeader(
+                                        busStopCode = busStop.code,
+                                        busStopDescription = busStop.description,
+                                        busStopRoadName = busStop.roadName,
+                                ),
+                                listItems
+                        )
                 )
-            )
+            } else {
+                _screenState.emit(BusStopArrivalsScreenState.Fetching)
+
+                busStop = getBusStopUseCase(busStopCode)
+
+                busArrivalListLock.withLock {
+                    listItems = SnapshotStateList()
+                }
+
+                _screenState.emit(
+                        BusStopArrivalsScreenState.Success(
+                                BusStopArrivalListItemData.BusStopHeader(
+                                        busStopCode = busStop.code,
+                                        busStopDescription = busStop.description,
+                                        busStopRoadName = busStop.roadName,
+                                ),
+                                listItems
+                        )
+                )
+            }
 
             busArrivalListLock.withLock {
                 addBusStopMapMarker(busStop = busStop)
                 this@BusStopArrivalsViewModel.busStop = busStop
             }
-
+            
             listenToggleStarUpdate()
+            waitForBottomSheetInit()
+            startListeningArrivals()
+        }
+    }
 
-//            busArrivalListLock.withLock {
-//                addBusStopMapMarker(busStop = busStop)
-//                if (this@BusStopArrivalsViewModel.busStop == busStop) {
-//                    return@launch
-//                }
-//                this@BusStopArrivalsViewModel.busStop = busStop
-//                pushInitListItems(busStop)
-//            }
-//
-//            listenToggleStarUpdate()
-//
-//            getBusArrivalFlowUseCase(busStop.code)
-//                .collect { busArrivalList ->
-//                    handleBusArrivalList(
-//                        busArrivalList
-//                    )
-//                }
+    private suspend fun waitForBottomSheetInit() {
+        while (true) {
+            delay(300)
+            if (bottomSheetInit) break
         }
     }
 
@@ -150,46 +162,19 @@ class BusStopArrivalsViewModel @Inject constructor(
         }
     }
 
-    @WorkerThread
-    private fun pushInitListItems(busStop: BusStop) {
-        stopBusArrivalFlowUseCase()
-
-        //listItems = SnapshotStateList()
-
-//        listItems.add(
-//            BusStopArrivalListItemData.BusStopHeader(
-//                busStopCode = busStop.code,
-//                busStopDescription = busStop.description,
-//                busStopRoadName = busStop.roadName,
-//            )
-//        )
-
-        listItems.add(BusStopArrivalListItemData.Header("Departures"))
-
-        listItems.addAll(
-            busStop.operatingBusList.map { bus ->
-                BusStopArrivalListItemData.BusStopArrival.Arriving(
-                    busServiceNumber = bus.serviceNumber,
-                    destinationBusStopDescription = "Fetching...",
-                    busLoad = BusLoad.SEA,
-                    wheelchairAccess = false,
-                    busType = BusType.SD,
-                    arrival = "Fetching...",
-                    busStop = busStop,
-                    starred = false,
-                )
-            }
-        )
-    }
-
     private fun failed(error: Error) {
         viewModelScope.launch(coroutineContext) {
-        }
-    }
-
-    fun updateBottomSheetSlideOffset(slideOffset: Float) {
-        viewModelScope.launch(coroutineContext) {
-            bottomSheetSlideOffsetFlow.value = slideOffset
+            _screenState.emit(
+                BusStopArrivalsScreenState.Failed(
+                    busStop?.run {
+                        BusStopArrivalListItemData.BusStopHeader(
+                                busStopCode = code,
+                                busStopDescription = description,
+                                busStopRoadName = roadName,
+                        )
+                    }
+                )
+            )
         }
     }
 
@@ -211,7 +196,41 @@ class BusStopArrivalsViewModel @Inject constructor(
                         it is BusStopArrivalListItemData.BusStopArrival
                                 && it.busServiceNumber == busArrival.serviceNumber
                     }
-                if (listItemIndex == -1) return@forEach
+
+                if (listItemIndex == -1) {
+                    when (arrivals) {
+                        is Arrivals.Arriving -> {
+                            listItems.add(
+                                BusStopArrivalListItemData.BusStopArrival.Arriving(
+                                    busServiceNumber = busArrival.serviceNumber,
+                                    destinationBusStopDescription =
+                                    arrivals.nextArrivingBus.destination.busStopDescription,
+                                    arrival = arrivals.nextArrivingBus.arrival,
+                                    busType = arrivals.nextArrivingBus.type,
+                                    wheelchairAccess = arrivals.nextArrivingBus.feature == "WAB",
+                                    busLoad = arrivals.nextArrivingBus.load,
+                                    busStop = busStop,
+                                    starred = busArrival.starred
+                                )
+                            )
+                        }
+                        else -> {
+                            listItems.add(
+                                BusStopArrivalListItemData.BusStopArrival.NotArriving(
+                                    busServiceNumber = busArrival.serviceNumber,
+                                    reason = if (arrivals is Arrivals.NotOperating) {
+                                        "Not Operating"
+                                    } else {
+                                        "No Data"
+                                    },
+                                    busStop = busStop,
+                                    starred = busArrival.starred
+                                )
+                            )
+                        }
+                    }
+                    return@forEach
+                }
 
                 when (val listItem = listItems[listItemIndex]) {
                     is BusStopArrivalListItemData.BusStopArrival.Arriving -> {
@@ -263,7 +282,8 @@ class BusStopArrivalsViewModel @Inject constructor(
                                         arrivals.nextArrivingBus.destination.busStopDescription,
                                         arrival = arrivals.nextArrivingBus.arrival,
                                         busType = arrivals.nextArrivingBus.type,
-                                        wheelchairAccess = arrivals.nextArrivingBus.feature == "WAB",
+                                        wheelchairAccess =
+                                        arrivals.nextArrivingBus.feature == "WAB",
                                         busLoad = arrivals.nextArrivingBus.load,
                                         busStop = busStop,
                                         starred = busArrival.starred
@@ -333,22 +353,14 @@ class BusStopArrivalsViewModel @Inject constructor(
         )
         job?.cancel()
         job = null
-        viewModelScope.launch(coroutineContext) {
-            busArrivalListLock.withLock {
-                listItems = SnapshotStateList()
-            }
-        }
+        bottomSheetInit = false
     }
 
     private var job: Job? = null
 
-    fun startListeningArrivals() {
+    private fun startListeningArrivals() {
         viewModelScope.launch(coroutineContext) {
             val busStop = this@BusStopArrivalsViewModel.busStop ?: return@launch
-
-            busArrivalListLock.withLock {
-                pushInitListItems(busStop)
-            }
 
             job = viewModelScope.launch(coroutineContext) {
                 getBusArrivalFlowUseCase(busStop.code)

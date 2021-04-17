@@ -111,11 +111,11 @@ fun BusStopHeaderItem(
         modifier = modifier,
         contentAlignment = Alignment.CenterEnd
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp, start = 16.dp, bottom = 16.dp),
-            verticalAlignment = Alignment.Top
+            contentAlignment = Alignment.TopStart
         ) {
             Surface(
                 color = MaterialTheme.colors.primary,
@@ -134,13 +134,16 @@ fun BusStopHeaderItem(
             }
 
             Column(
-                Modifier.padding(start = 16.dp)
+                Modifier
+                    .padding(start = 64.dp, end = 16.dp)
             ) {
                 Text(
-                    text = "                                     ",
+                    text = "",
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.h6Bold,
-                    modifier = Modifier.background(MaterialTheme.colors.onSurface.disabled)
+                    modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colors.onSurface.disabled)
                 )
 
                 Text(
@@ -148,7 +151,7 @@ fun BusStopHeaderItem(
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.body2,
                     modifier = Modifier
-                        .padding(top = 2.dp)
+                        .padding(top = 4.dp)
                         .background(MaterialTheme.colors.onSurface.disabled),
                 )
             }

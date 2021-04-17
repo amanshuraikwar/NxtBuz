@@ -23,7 +23,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.4.0-rc"
+        private const val version = "1.4.32"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -83,7 +83,7 @@ object Libs {
         }
 
         object Compose {
-            private const val version = "1.0.0-beta02"
+            private const val version = "1.0.0-beta04"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -114,7 +114,7 @@ object Libs {
     }
 
     object Dagger {
-        private const val version = "2.28.3"
+        private const val version = "2.34.1"
         const val library = "com.google.dagger:dagger:$version"
         const val androidSupport = "com.google.dagger:dagger-android-support:$version"
         const val compiler = "com.google.dagger:dagger-compiler:$version"
