@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.arrivals
+package io.github.amanshuraikwar.nxtbuz.common.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

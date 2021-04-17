@@ -5,24 +5,6 @@ import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
 sealed class BusRouteListItemData {
     data class Header(val title: String) : BusRouteListItemData()
 
-    data class BusRouteHeader(
-        val busServiceNumber: String,
-        val destinationBusStopDescription: String,
-        val originBusStopDescription: String,
-        val busStopCode: String,
-        val starred: Boolean,
-    ) : BusRouteListItemData() {
-        companion object {
-            operator fun invoke() = BusRouteHeader(
-                busServiceNumber = "961M",
-                destinationBusStopDescription = "Bedok Int",
-                originBusStopDescription = "From Juron East Int",
-                busStopCode = "123456",
-                starred = true,
-            )
-        }
-    }
-
     data class BusRoutePreviousAll(val title: String) : BusRouteListItemData()
 
     sealed class BusRouteNode(

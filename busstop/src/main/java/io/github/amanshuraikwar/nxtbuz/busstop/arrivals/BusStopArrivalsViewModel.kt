@@ -102,7 +102,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                 addBusStopMapMarker(busStop = busStop)
                 this@BusStopArrivalsViewModel.busStop = busStop
             }
-            
+
             listenToggleStarUpdate()
             waitForBottomSheetInit()
             startListeningArrivals()

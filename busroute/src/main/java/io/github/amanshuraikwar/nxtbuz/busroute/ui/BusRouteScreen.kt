@@ -1,19 +1,21 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.BottomSheetValue
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.*
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
-import io.github.amanshuraikwar.nxtbuz.common.compose.Header
-import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
+import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteScreenState
+import io.github.amanshuraikwar.nxtbuz.common.compose.*
 
 @ExperimentalMaterialApi
 @Composable
@@ -23,6 +25,15 @@ fun BusRouteScreen(
     busStopCode: String,
     vm: BusRouteViewModel
 ) {
+    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
+    val screenState by vm.screenState.collectAsState(initial = BusRouteScreenState.Fetching)
+
+    val backgroundColor = if (bottomSheetState.expandProgressFraction == 1f) {
+        MaterialTheme.colors.surface
+    } else {
+        Color.Transparent
+    }
+
     DisposableEffect(key1 = busServiceNumber, key2 = busStopCode) {
         vm.init(busServiceNumber, busStopCode)
         onDispose {
@@ -30,47 +41,164 @@ fun BusRouteScreen(
         }
     }
 
-    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
-    val lazyListState = rememberLazyListState()
-
     NxtBuzBottomSheet(
         modifier = modifier,
         bottomSheetState = bottomSheetState,
-        lazyListState = lazyListState,
+        onInit = {
+            vm.bottomSheetInit = true
+        }
+    ) { padding ->
+        Crossfade(targetState = screenState) { screenState ->
+            when (screenState) {
+                is BusRouteScreenState.Failed -> {
+                    Column(
+                        modifier = Modifier.padding(top = padding.calculateTopPadding())
+                    ) {
+                        val header = screenState.header
+                        if (header != null) {
+                            BusRouteHeader(
+                                modifier = Modifier
+                                    .background(color = backgroundColor),
+                                data = header,
+                                onStarToggle = { newValue ->
+                                    vm.onStarToggle(
+                                        busServiceNumber = header.busServiceNumber,
+                                        busStopCode = header.busStopCode,
+                                        newValue = newValue,
+                                    )
+                                }
+                            )
+                        }
+
+                        Divider()
+
+                        FailedView(
+                            onRetryClicked = {
+                                vm.init(busServiceNumber, busStopCode)
+                            }
+                        )
+                    }
+                }
+                BusRouteScreenState.Fetching -> {
+                    Column {
+                        BusRouteHeader(
+                            modifier = Modifier.padding(top = padding.calculateTopPadding()),
+                            busServiceNumber = busServiceNumber
+                        )
+
+                        Divider()
+
+                        FetchingView()
+                    }
+                }
+                is BusRouteScreenState.Success -> {
+                    Column {
+                        BusRouteHeader(
+                            modifier = Modifier
+                                .background(color = backgroundColor)
+                                .padding(top = padding.calculateTopPadding()),
+                            data = screenState.header,
+                            onStarToggle = { newValue ->
+                                vm.onStarToggle(
+                                    busServiceNumber = screenState.header.busServiceNumber,
+                                    busStopCode = screenState.header.busStopCode,
+                                    newValue = newValue,
+                                )
+                            }
+                        )
+
+                        Divider()
+
+                        if (screenState.listItems.isEmpty()) {
+                            FetchingView()
+                        } else {
+                            BusRouteViewArrivalsView(
+                                listItems = screenState.listItems,
+                                onPreviousAllClicked = {
+                                    vm.previousAllClicked()
+                                },
+                                onExpand = {
+                                    vm.onExpand(it)
+                                },
+                                onCollapse = {
+                                    vm.onCollapse(it)
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+inline fun <T, K : Any> LazyListScope.itemsIndexed(
+    items: List<T>,
+    noinline key: ((index: Int, item: T) -> K),
+    errorKey: K,
+    crossinline itemContent: @Composable LazyItemScope.(index: Int, item: T) -> Unit
+) = items(
+    items.size,
+    { index: Int ->
+        if (index < items.size) {
+            key(index, items[index])
+        } else {
+            errorKey
+        }
+    }
+) {
+    if (it < items.size) {
+        itemContent(it, items[it])
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun BusRouteViewArrivalsView(
+    listItems: List<BusRouteListItemData>,
+    onPreviousAllClicked: () -> Unit,
+    onExpand: (busStopCode: String) -> Unit,
+    onCollapse: (busStopCode: String) -> Unit,
+) {
+    val lazyListState = remember {
+        LazyListState(
+            0,
+            0
+        )
+    }
+
+    LaunchedEffect(null) {
+        lazyListState.scrollToItem(0)
+    }
+
+    LazyColumn(
+        contentPadding = PaddingValues(
+            bottom = 256.dp,
+        ),
+        state = lazyListState,
     ) {
-        items(
-            items = vm.listItems,
-            key = { item ->
+        itemsIndexed(
+            items = listItems,
+            key = { _, item ->
                 when (item) {
-                    is BusRouteListItemData.BusRouteHeader -> item.busServiceNumber
                     is BusRouteListItemData.Header -> item.title
                     is BusRouteListItemData.BusRoutePreviousAll -> item.title
                     is BusRouteListItemData.BusRouteNode -> item.busStopDescription
                 }
-            }
-        ) { item ->
+            },
+            errorKey = "bus-route-arrivals-error-key"
+        ) { _, item ->
+
             when (item) {
                 is BusRouteListItemData.Header -> {
                     Header(
                         title = item.title
                     )
                 }
-                is BusRouteListItemData.BusRouteHeader -> {
-                    BusRouteHeaderItem(
-                        data = item,
-                        onStarToggle = { newValue ->
-                            vm.onStarToggle(
-                                busServiceNumber = item.busServiceNumber,
-                                busStopCode = item.busStopCode,
-                                newValue = newValue,
-                            )
-                        }
-                    )
-                }
                 is BusRouteListItemData.BusRoutePreviousAll -> {
                     BusRoutePreviousAllItem(
                         Modifier.clickable {
-                            vm.previousAllClicked()
+                            onPreviousAllClicked()
                         },
                         title = item.title
                     )
@@ -88,10 +216,10 @@ fun BusRouteScreen(
                         position = item.position,
                         arrivalState = item.arrivalState,
                         onExpand = {
-                            vm.onExpand(item.busStopCode)
+                            onExpand(item.busStopCode)
                         },
                         onCollapse = {
-                            vm.onCollapse(item.busStopCode)
+                            onCollapse(item.busStopCode)
                         }
                     )
                 }
@@ -101,10 +229,10 @@ fun BusRouteScreen(
                         position = item.position,
                         arrivalState = item.arrivalState,
                         onExpand = {
-                            vm.onExpand(item.busStopCode)
+                            onExpand(item.busStopCode)
                         },
                         onCollapse = {
-                            vm.onCollapse(item.busStopCode)
+                            onCollapse(item.busStopCode)
                         }
                     )
                 }

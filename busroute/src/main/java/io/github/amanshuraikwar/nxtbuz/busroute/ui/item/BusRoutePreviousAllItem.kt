@@ -22,23 +22,23 @@ fun BusRoutePreviousAllItem(
     modifier: Modifier = Modifier,
     title: String
 ) {
-    var alpha by remember {
-        mutableStateOf(0f)
-    }
-
-    LaunchedEffect(title) {
-        animate(
-            initialValue = 0f,
-            targetValue = 1f,
-            animationSpec = tween(300, delayMillis = 300)
-        ) { animatedValue, _ ->
-            alpha = animatedValue
-        }
-    }
+//    var alpha by remember {
+//        mutableStateOf(0f)
+//    }
+//
+//    LaunchedEffect(title) {
+//        animate(
+//            initialValue = 0f,
+//            targetValue = 1f,
+//            animationSpec = tween(300, delayMillis = 300)
+//        ) { animatedValue, _ ->
+//            alpha = animatedValue
+//        }
+//    }
 
     Box(
         modifier
-            .alpha(alpha = alpha)
+//            .alpha(alpha = alpha)
             .fillMaxWidth(),
         contentAlignment = Alignment.BottomStart
     ) {

@@ -156,18 +156,6 @@ fun BusStopHeaderItem(
                 )
             }
         }
-
-//        Icon(
-//            imageVector = Icons.Rounded.Directions,
-//            contentDescription = "Directions",
-//            tint = MaterialTheme.colors.onSurface,
-//            modifier = Modifier
-//                .clip(shape = MaterialTheme.shapes.small)
-//                .clickable {
-//
-//                }
-//                .padding(16.dp)
-//        )
     }
 }
 
