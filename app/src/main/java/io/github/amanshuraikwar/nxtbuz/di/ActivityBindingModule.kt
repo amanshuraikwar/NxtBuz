@@ -1,6 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.di
 
-//import io.github.amanshuraikwar.nxtbuz.search.SearchActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import io.github.amanshuraikwar.nxtbuz.busroute.di.BusRouteModule
@@ -24,8 +23,6 @@ import io.github.amanshuraikwar.nxtbuz.starred.ui.options.di.StarredBusArrivalOp
 import io.github.amanshuraikwar.nxtbuz.ui.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.di.MainLiveDataProvides
 import io.github.amanshuraikwar.nxtbuz.ui.di.MainModule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 
 /**
  * We want Dagger.Android to create a Subcomponent which has a parent Component of whichever module
@@ -44,42 +41,46 @@ abstract class ActivityBindingModule {
     @ContributesAndroidInjector(modules = [LauncherModule::class])
     internal abstract fun a(): LauncherActivity
 
-    @ExperimentalCoroutinesApi
-    @InternalCoroutinesApi
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [
-        OnboardingModule::class,
-        PermissionUtilProvides::class,
-        LocationUtilProvides::class
-    ])
+    @ContributesAndroidInjector(
+        modules = [
+            OnboardingModule::class,
+            PermissionUtilProvides::class,
+            LocationUtilProvides::class
+        ]
+    )
     internal abstract fun b(): OnboardingActivity
 
-    @ExperimentalCoroutinesApi
-    @InternalCoroutinesApi
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [
-        MainModule::class,
-        MainLiveDataProvides::class,
-        PermissionUtilProvides::class,
-        LocationUtilProvides::class,
-        StarredBusArrivalsProvides::class,
-        StarredBusArrivalOptionsModule::class,
-        MapModule::class,
-        BusStopsModule::class,
-        BusRouteModule::class,
-        SearchModule::class,
-        StarredModule::class,
-        CoroutineModule::class,
-    ])
+    @ContributesAndroidInjector(
+        modules = [
+            MainModule::class,
+            MainLiveDataProvides::class,
+            PermissionUtilProvides::class,
+            LocationUtilProvides::class,
+            StarredBusArrivalsProvides::class,
+            StarredBusArrivalOptionsModule::class,
+            MapModule::class,
+            BusStopsModule::class,
+            BusRouteModule::class,
+            SearchModule::class,
+            StarredModule::class,
+            CoroutineModule::class,
+        ]
+    )
     internal abstract fun c(): MainActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = [SettingsModule::class])
     internal abstract fun e(): SettingsActivity
 
-    @ExperimentalCoroutinesApi
-    @InternalCoroutinesApi
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [StarredBusArrivalsModule::class, StarredBusArrivalOptionsModule::class, StarredBusArrivalsProvides::class])
+    @ContributesAndroidInjector(
+        modules = [
+            StarredBusArrivalsModule::class,
+            StarredBusArrivalOptionsModule::class,
+            StarredBusArrivalsProvides::class
+        ]
+    )
     internal abstract fun f(): StarredBusArrivalsActivity
 }

@@ -6,13 +6,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.github.amanshuraikwar.nxtbuz.di.DaggerAppComponent
-import io.github.amanshuraikwar.nxtbuz.util.flipper.FlipperHelper
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 
-/**
- * Initialization of libraries.
- */
 class MainApplication : DaggerApplication() {
 
     override fun onCreate() {
@@ -24,19 +18,10 @@ class MainApplication : DaggerApplication() {
         enableStrictMode()
 
         super.onCreate()
-
-        // init flipper after Dagger creates graph
-        initFlipper()
     }
 
-    @ExperimentalCoroutinesApi
-    @FlowPreview
     override fun applicationInjector(): AndroidInjector<out MainApplication> {
         return DaggerAppComponent.factory().create(this)
-    }
-
-    private fun initFlipper() {
-        FlipperHelper.init(this)
     }
 
     private fun enableStrictMode() {

@@ -7,7 +7,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 apply from: "$project.rootDir/git_version.gradle"
-//apply from: '../shared_dependencies.gradle'
 
 def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("local.properties")))
@@ -92,7 +91,13 @@ android {
     // apk file name
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            outputFileName = new File("NxtBuz-" + variant.versionName + "-(" + variant.versionCode + ")-" + variant.buildType.name + ".apk")
+            outputFileName = new File(
+                    "NxtBuz-"
+                            + variant.versionName
+                            + "-(" + variant.versionCode + ")-"
+                            + variant.buildType.name
+                            + ".apk"
+            )
         }
     }
 
@@ -119,7 +124,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.0.0-beta04'
+        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
     }
 }
 
@@ -199,16 +204,6 @@ dependencies {
     testImplementation Libs.junit
     androidTestImplementation Libs.AndroidX.Test.Ext.junit
     androidTestImplementation Libs.AndroidX.Test.espressoCore
-
-    // flipper
-    debugImplementation Libs.Flipper.library
-    debugImplementation Libs.Flipper.soloader
-    debugImplementation Libs.Flipper.networkPlugin
-
-    // flipper
-    internalImplementation Libs.Flipper.library
-    internalImplementation Libs.Flipper.soloader
-    internalImplementation Libs.Flipper.networkPlugin
 }
 
 apply plugin: 'com.google.gms.google-services'

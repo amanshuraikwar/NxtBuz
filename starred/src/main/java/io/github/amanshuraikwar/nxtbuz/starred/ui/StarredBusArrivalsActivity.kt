@@ -3,7 +3,6 @@ package io.github.amanshuraikwar.nxtbuz.starred.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.support.DaggerAppCompatActivity
@@ -17,12 +16,8 @@ import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallIte
 import io.github.amanshuraikwar.nxtbuz.starred.R
 import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsDialogFragment
 import kotlinx.android.synthetic.main.activity_starred_bus_arrivals.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
-@InternalCoroutinesApi
-@ExperimentalCoroutinesApi
 class StarredBusArrivalsActivity : DaggerAppCompatActivity() {
 
     @Inject
@@ -45,7 +40,7 @@ class StarredBusArrivalsActivity : DaggerAppCompatActivity() {
 
         viewModel.listItems.observe(
             this,
-            Observer { listItems ->
+            { listItems ->
                 val layoutState = itemsRv.layoutManager?.onSaveInstanceState()
                 adapter =
                     MultiItemAdapter(this, RecyclerViewTypeFactoryGenerated(), listItems)

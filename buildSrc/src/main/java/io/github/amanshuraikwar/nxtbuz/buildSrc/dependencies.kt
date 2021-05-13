@@ -83,7 +83,7 @@ object Libs {
         }
 
         object Compose {
-            private const val version = "1.0.0-beta04"
+            const val version = "1.0.0-beta04"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -135,12 +135,6 @@ object Libs {
     object KotlinPoet {
         private const val version = "1.1.0"
         const val library = "com.squareup:kotlinpoet:$version"
-    }
-
-    object Flipper {
-        const val library = "com.facebook.flipper:flipper:0.35.0"
-        const val soloader = "com.facebook.soloader:soloader:0.9.0"
-        const val networkPlugin = "com.facebook.flipper:flipper-network-plugin:0.35.0"
     }
 
     object Accompanist {

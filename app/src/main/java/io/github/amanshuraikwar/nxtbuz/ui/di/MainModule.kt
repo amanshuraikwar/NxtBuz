@@ -36,25 +36,6 @@ internal abstract class MainModule {
     @ViewModelKey(PermissionViewModel::class)
     internal abstract fun e(a: PermissionViewModel): ViewModel
 
-//    @ExperimentalCoroutinesApi
-//    @FlowPreview
-//    @InternalCoroutinesApi
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(MainFragmentViewModel::class)
-//    internal abstract fun f(a: MainFragmentViewModel): ViewModel
-
-//    @FlowPreview
-//    @ExperimentalCoroutinesApi
-//    @InternalCoroutinesApi
-//    @ContributesAndroidInjector
-//    internal abstract fun g(): MainFragment
-
-//    @Binds
-//    @ActivityScoped
-//    internal abstract fun h(a: io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegateImpl): io.github.amanshuraikwar.nxtbuz.map.MapViewModelDelegate
-
-    @ExperimentalCoroutinesApi
     @Binds
     @ActivityScoped
     internal abstract fun i(a: StarredArrivalsViewModelDelegateImpl): StarredArrivalsViewModelDelegate

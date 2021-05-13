@@ -6,21 +6,16 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.common.model.Event
-import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
+import io.github.amanshuraikwar.nxtbuz.common.model.*
+import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
+import io.github.amanshuraikwar.nxtbuz.common.util.post
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalBtnItem
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalErrorItem
 import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalItem
-import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalClicked
-import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
-import io.github.amanshuraikwar.nxtbuz.common.util.post
-import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.catch
@@ -29,7 +24,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
-@ExperimentalCoroutinesApi
 class StarredArrivalsViewModelDelegateImpl @Inject constructor(
     private val attachStarredBusArrivalsUseCase: AttachStarredBusArrivalsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
