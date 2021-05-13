@@ -7,7 +7,6 @@ import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusOperatorDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Named
 
-@ExperimentalCoroutinesApi
 class BusArrivalStateFlowDelegateImpl @Inject constructor(
     private val starredBusStopsDao: StarredBusStopsDao,
     private val busOperatorDao: BusOperatorDao,

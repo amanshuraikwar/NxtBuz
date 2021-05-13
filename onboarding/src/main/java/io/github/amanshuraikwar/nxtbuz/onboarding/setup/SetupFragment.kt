@@ -19,19 +19,13 @@ import io.github.amanshuraikwar.nxtbuz.common.util.startMainActivity
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.onboarding.R
 import kotlinx.android.synthetic.main.fragment_setup.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
-@InternalCoroutinesApi
 class SetupFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    @ExperimentalCoroutinesApi
-    @InternalCoroutinesApi
     private lateinit var viewModel: SetupViewModel
 
     override fun onCreateView(

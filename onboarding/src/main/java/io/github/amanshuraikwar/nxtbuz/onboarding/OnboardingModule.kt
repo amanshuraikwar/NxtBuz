@@ -16,8 +16,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @Suppress("unused")
-@ExperimentalCoroutinesApi
-@InternalCoroutinesApi
 @Module
 abstract class OnboardingModule {
 

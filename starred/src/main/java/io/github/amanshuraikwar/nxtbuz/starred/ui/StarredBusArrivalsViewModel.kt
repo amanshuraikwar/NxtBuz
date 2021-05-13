@@ -5,29 +5,21 @@ import androidx.lifecycle.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.common.model.Event
-import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
-import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
-import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallErrorItem
-import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallItem
-import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrivalClicked
+import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.listitem.HeaderItem
+import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallErrorItem
+import io.github.amanshuraikwar.nxtbuz.listitem.StarredBusArrivalCompactSmallItem
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
-@ExperimentalCoroutinesApi
-@InternalCoroutinesApi
 class StarredBusArrivalsViewModel @Inject constructor(
     private val attachStarredBusArrivalsUseCase: AttachStarredBusArrivalsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
@@ -50,7 +42,8 @@ class StarredBusArrivalsViewModel @Inject constructor(
     }
 
     init {
-        FirebaseCrashlytics.getInstance().setCustomKey("viewModel",
+        FirebaseCrashlytics.getInstance().setCustomKey(
+            "viewModel",
             TAG
         )
         start()
@@ -65,14 +58,10 @@ class StarredBusArrivalsViewModel @Inject constructor(
                 .onCompletion {
                     Log.i(TAG, "start: onCompletion")
                 }
-                .collect(
-                    object : FlowCollector<List<StarredBusArrival>> {
-                        override suspend fun emit(value: List<StarredBusArrival>) {
-                            Log.d(TAG, "emit: ")
-                            handleStarredBusArrivalList(value)
-                        }
-                    }
-                )
+                .collect { value ->
+                    Log.d(TAG, "emit: ")
+                    handleStarredBusArrivalList(value)
+                }
         }
 
     private fun handleStarredBusArrivalList(starredBusArrivalList: List<StarredBusArrival>) {

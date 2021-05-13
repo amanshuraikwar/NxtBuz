@@ -52,6 +52,9 @@
         <entry key="../../../../layout/compose-model-1618241032379.xml" value="2.0" />
         <entry key="../../../../layout/compose-model-1618631054646.xml" value="0.1" />
         <entry key="../../../../layout/custom_preview.xml" value="0.3861111111111111" />
+        <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.3359375" />
+        <entry key="app/src/main/res/drawable/ic_round_arrow_back_24.xml" value="0.3359375" />
+        <entry key="app/src/main/res/drawable/ic_round_bar_chart_24.xml" value="0.3359375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1984375" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.14719202898550723" />
         <entry key="app/src/main/res/layout/fragment_nxt_buz_map.xml" value="0.3500905797101449" />
@@ -68,6 +71,7 @@
         <entry key="listitem/src/main/res/layout/item_bus_stop.xml" value="0.3522012578616352" />
         <entry key="listitem/src/main/res/layout/item_bus_stop_header.xml" value="0.22476142641888497" />
         <entry key="listitem/src/main/res/layout/item_list_header.xml" value="0.22476142641888497" />
+        <entry key="search/src/main/res/layout/activity_search.xml" value="0.26979166666666665" />
         <entry key="search/src/main/res/layout/fragment_search_bar.xml" value="0.42617753623188404" />
       </map>
     </option>
