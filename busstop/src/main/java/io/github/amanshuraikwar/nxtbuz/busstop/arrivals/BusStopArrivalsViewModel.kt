@@ -11,7 +11,6 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalList
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalsScreenState
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
-import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNavigationParams
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.view.Error

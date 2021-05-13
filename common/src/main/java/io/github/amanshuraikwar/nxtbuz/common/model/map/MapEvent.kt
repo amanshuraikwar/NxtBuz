@@ -6,7 +6,9 @@ import com.google.android.gms.maps.model.Marker
 
 sealed class MapEvent {
     object ClearMap : MapEvent()
-    data class AddMarker(val marker: MapMarker) : MapEvent()
+    data class AddMarker(
+        val marker: MapMarker
+    ) : MapEvent()
     data class DeleteMarker(val markerId: String) : MapEvent()
     data class MoveMarker(val markerId: String, val newPosition: LatLng) : MapEvent()
     data class AddMarkers(val markerList: List<MapMarker>) : MapEvent()

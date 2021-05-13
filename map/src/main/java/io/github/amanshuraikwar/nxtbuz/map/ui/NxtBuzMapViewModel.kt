@@ -24,6 +24,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
@@ -40,7 +41,7 @@ private const val TAG = "NxtBuzMapViewModel"
 class NxtBuzMapViewModel @Inject constructor(
     private val defaultLocationUseCase: DefaultLocationUseCase,
     private val defaultMapZoomUseCase: DefaultMapZoomUseCase,
-    @Named("mapEventFlow") private val mapEventFlow: ReturnableFlow<MapEvent, MapResult>,
+    @Named("mapEventFlow") private val mapEventFlow: MutableSharedFlow<MapEvent>,
     @Named("markerClicked") private val markerClickedFlow: MutableStateFlow<Marker?>,
     @Named("mapCenter") private val mapCenter: MutableStateFlow<LatLng?>,
     private val mapViewModelDelegate: LocationViewModelDelegate,
@@ -74,7 +75,6 @@ class NxtBuzMapViewModel @Inject constructor(
             initMap(defaultLat, defaultLng, defaultMapZoom)
             Log.d(TAG, "init: initMap() complete")
         }
-        mapViewModelDelegate.init(viewModelScope)
     }
 
     private val recreateLock = Mutex()
@@ -113,6 +113,7 @@ class NxtBuzMapViewModel @Inject constructor(
                         viewModelScope.launch {
                             recreateLock.withLock {
                                 for (marker in markerSet) {
+                                    Log.d(TAG, "initMap: ")
                                     map?.addMarker(marker)
                                 }
                             }
@@ -138,6 +139,8 @@ class NxtBuzMapViewModel @Inject constructor(
         }
 
         startCollectingEvents(viewModelScope)
+
+        mapViewModelDelegate.init(viewModelScope)
     }
 
     private fun onMarkerClicked(marker: Marker) {
@@ -148,52 +151,51 @@ class NxtBuzMapViewModel @Inject constructor(
 
     private fun startCollectingEvents(coroutineScope: CoroutineScope) {
         coroutineScope.launch(dispatcherProvider.computation) {
-            mapEventFlow
-                .collect { mapEvent ->
-                    when (mapEvent) {
-                        is MapEvent.ClearMap -> {
-                            clearMap()
-                            MapResult.EmptyResult
-                        }
-                        is MapEvent.MoveCenter -> {
-                            moveCenter(mapEvent)
-                            MapResult.EmptyResult
-                        }
-                        is MapEvent.DeleteMarkers -> {
-                            deleteMarkers(mapEvent)
-                            MapResult.EmptyResult
-                        }
-                        is MapEvent.AddCircle -> {
-                            map?.let { addCircle(it, mapEvent) }
-                                ?: MapResult.ErrorResult("Google map is null.")
-                        }
-                        is MapEvent.AddRoute -> {
-                            map?.addRoute(mapEvent)
-                            MapResult.EmptyResult
-                        }
-                        is MapEvent.DeleteRoute -> {
-                            deleteRoute(mapEvent)
-                        }
-                        is MapEvent.AddMarker -> {
-                            map?.addMarker(mapEvent.marker)
-                        }
-                        is MapEvent.DeleteMarker -> {
-                            deleteMarker(mapEvent.markerId)
-                        }
-                        is MapEvent.AddMarkers -> {
-                            map?.addMarkers(mapEvent.markerList)
-                        }
-                        is MapEvent.MoveMarker -> {
-                            moveMarker(mapEvent.markerId, mapEvent.newPosition)
-                            MapResult.EmptyResult
-                        }
-                        else -> {
-                            MapResult.ErrorResult("Unsupported map event.")
-                        }
+            mapEventFlow.collect { mapEvent ->
+                when (mapEvent) {
+                    is MapEvent.ClearMap -> {
+                        clearMap()
+                        MapResult.EmptyResult
                     }
-
-                    MapResult.EmptyResult
+                    is MapEvent.MoveCenter -> {
+                        moveCenter(mapEvent)
+                        MapResult.EmptyResult
+                    }
+                    is MapEvent.DeleteMarkers -> {
+                        deleteMarkers(mapEvent)
+                        MapResult.EmptyResult
+                    }
+                    is MapEvent.AddCircle -> {
+                        map?.let { addCircle(it, mapEvent) }
+                            ?: MapResult.ErrorResult("Google map is null.")
+                    }
+                    is MapEvent.AddRoute -> {
+                        map?.addRoute(mapEvent)
+                        MapResult.EmptyResult
+                    }
+                    is MapEvent.DeleteRoute -> {
+                        deleteRoute(mapEvent)
+                    }
+                    is MapEvent.AddMarker -> {
+                        map?.addMarker(mapEvent.marker)
+                    }
+                    is MapEvent.DeleteMarker -> {
+                        deleteMarker(mapEvent.markerId)
+                    }
+                    is MapEvent.AddMarkers -> {
+                        map?.addMarkers(mapEvent.markerList)
+                    }
+                    is MapEvent.MoveMarker -> {
+                        moveMarker(mapEvent.markerId, mapEvent.newPosition)
+                        MapResult.EmptyResult
+                    }
+                    else -> {
+                        MapResult.ErrorResult("Unsupported map event.")
+                    }
                 }
+
+                MapResult.EmptyResult
+            }
         }
     }
 
@@ -420,5 +422,10 @@ class NxtBuzMapViewModel @Inject constructor(
                     }
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        map = null
     }
 }

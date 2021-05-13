@@ -109,10 +109,10 @@ android {
     buildFeatures {
         compose true
         buildConfig true
-        viewBinding true
         resValues true
 
         // Disable unused AGP features
+        viewBinding false
         aidl false
         renderScript false
         shaders false
