@@ -11,8 +11,8 @@ import io.github.amanshuraikwar.nxtbuz.common.di.ViewModelKey
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.MainViewModel
-import io.github.amanshuraikwar.nxtbuz.ui.fragment.MainFragment
-import io.github.amanshuraikwar.nxtbuz.ui.fragment.MainFragmentViewModel
+//import io.github.amanshuraikwar.nxtbuz.ui.fragment.MainFragment
+//import io.github.amanshuraikwar.nxtbuz.ui.fragment.MainFragmentViewModel
 import io.github.amanshuraikwar.nxtbuz.starred.ui.delegate.StarredArrivalsViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.starred.ui.delegate.StarredArrivalsViewModelDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.starred.ui.options.StarredBusArrivalOptionsDialogFragment
@@ -36,19 +36,19 @@ internal abstract class MainModule {
     @ViewModelKey(PermissionViewModel::class)
     internal abstract fun e(a: PermissionViewModel): ViewModel
 
-    @ExperimentalCoroutinesApi
-    @FlowPreview
-    @InternalCoroutinesApi
-    @Binds
-    @IntoMap
-    @ViewModelKey(MainFragmentViewModel::class)
-    internal abstract fun f(a: MainFragmentViewModel): ViewModel
+//    @ExperimentalCoroutinesApi
+//    @FlowPreview
+//    @InternalCoroutinesApi
+//    @Binds
+//    @IntoMap
+//    @ViewModelKey(MainFragmentViewModel::class)
+//    internal abstract fun f(a: MainFragmentViewModel): ViewModel
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
-    @InternalCoroutinesApi
-    @ContributesAndroidInjector
-    internal abstract fun g(): MainFragment
+//    @FlowPreview
+//    @ExperimentalCoroutinesApi
+//    @InternalCoroutinesApi
+//    @ContributesAndroidInjector
+//    internal abstract fun g(): MainFragment
 
 //    @Binds
 //    @ActivityScoped
