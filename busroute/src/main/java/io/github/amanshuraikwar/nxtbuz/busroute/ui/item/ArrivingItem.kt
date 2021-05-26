@@ -13,13 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import java.util.*
 
 @Composable
 fun ArrivingItem(
     modifier: Modifier = Modifier,
-    arrivals: Arrivals.Arriving,
+    busArrivals: BusArrivals.Arriving,
     lastUpdatedOn: String,
 ) {
     Column(
@@ -29,10 +29,10 @@ fun ArrivingItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             ArrivingBusItem(
-                arrivals.nextArrivingBus
+                busArrivals.nextArrivingBus
             )
 
-            arrivals.followingArrivingBusList.forEach { arrivingBus ->
+            busArrivals.followingArrivingBusList.forEach { arrivingBus ->
                 Icon(
                     imageVector = Icons.Rounded.ArrowRight,
                     contentDescription = "Arrow",

@@ -2,9 +2,9 @@ package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.map
 
 import android.util.Log
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.common.model.ArrivingBus
-import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.ArrivingBus
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusStopArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.map.ArrivingBusMapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapUpdate
@@ -20,7 +20,7 @@ class BusStopArrivalsMapMarkerHelper @Inject constructor(
     private val serviceNumberMapMarkerMap = mutableMapOf<String, ArrivingBusMapMarker>()
     internal var mapStateId: Int = 0
 
-    suspend fun showMapMarkers(busArrivals: List<BusArrival>): Unit =
+    suspend fun showMapMarkers(busStopArrivals: List<BusStopArrival>): Unit =
         withContext(dispatcherProvider.computation) {
 
             // we collect the map marker changes
@@ -29,19 +29,19 @@ class BusStopArrivalsMapMarkerHelper @Inject constructor(
             val busDeleteList = mutableListOf<String>()
             val busUpdateList = mutableListOf<MapUpdate>()
 
-            busArrivals.forEach { busArrival ->
+            busStopArrivals.forEach { busArrival ->
 
-                when (busArrival.arrivals) {
+                when (busArrival.busArrivals) {
 
-                    is Arrivals.Arriving -> {
+                    is BusArrivals.Arriving -> {
 
-                        val nextArrivingBus = (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus
+                        val nextArrivingBus = (busArrival.busArrivals as BusArrivals.Arriving).nextArrivingBus
 
-                        serviceNumberMapMarkerMap[busArrival.serviceNumber]?.let { mapMarker ->
+                        serviceNumberMapMarkerMap[busArrival.busServiceNumber]?.let { mapMarker ->
 
                             if (mapMarker shouldUpdateFor nextArrivingBus) {
 
-                                serviceNumberMapMarkerMap[busArrival.serviceNumber] =
+                                serviceNumberMapMarkerMap[busArrival.busServiceNumber] =
                                     mapMarker.copy(
                                         newLat = nextArrivingBus.latitude,
                                         newLng = nextArrivingBus.longitude,
@@ -62,21 +62,21 @@ class BusStopArrivalsMapMarkerHelper @Inject constructor(
 
                             val mapMarker =
                                 ArrivingBusMapMarker(
-                                    busArrival.serviceNumber,
+                                    busArrival.busServiceNumber,
                                     nextArrivingBus.latitude,
                                     nextArrivingBus.longitude,
                                     nextArrivingBus.getMarkerDescription(),
-                                    busServiceNumber = busArrival.serviceNumber,
+                                    busServiceNumber = busArrival.busServiceNumber,
                                 )
 
-                            serviceNumberMapMarkerMap[busArrival.serviceNumber] = mapMarker
+                            serviceNumberMapMarkerMap[busArrival.busServiceNumber] = mapMarker
                             busAddList.add(mapMarker)
                         }
                     }
-                    is Arrivals.DataNotAvailable,
-                    is Arrivals.NotOperating,
+                    is BusArrivals.DataNotAvailable,
+                    is BusArrivals.NotOperating,
                     -> {
-                        serviceNumberMapMarkerMap[busArrival.serviceNumber]?.let { mapMarker ->
+                        serviceNumberMapMarkerMap[busArrival.busServiceNumber]?.let { mapMarker ->
                             serviceNumberMapMarkerMap.remove(mapMarker.id)
                             busDeleteList.add(mapMarker.id)
                         }
@@ -121,7 +121,7 @@ class BusStopArrivalsMapMarkerHelper @Inject constructor(
     }
 
     private fun ArrivingBus.getMarkerDescription(): String {
-        return if (arrival == "Arr") {
+        return if (arrival == 0) {
             "ARRIVING NOW"
         } else {
             "$arrival MINS"

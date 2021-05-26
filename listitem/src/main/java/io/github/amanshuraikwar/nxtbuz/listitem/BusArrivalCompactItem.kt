@@ -1,13 +1,12 @@
 package io.github.amanshuraikwar.nxtbuz.listitem
 
 import android.annotation.SuppressLint
-import android.view.MotionEvent.ACTION_DOWN
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentActivity
 import io.github.amanshuraikwar.annotations.ListItem
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
-import io.github.amanshuraikwar.nxtbuz.common.model.ArrivingBus
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.ArrivingBus
 import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
 import io.github.amanshuraikwar.nxtbuz.common.model.BusType
 import kotlinx.android.synthetic.main.item_bus_arrival_compact.view.*
@@ -47,7 +46,7 @@ class BusArrivalCompactItem(
         arrivingBus == null -> {
             0
         }
-        arrivingBus.feature == "WAB" -> {
+        arrivingBus.wheelchairAccess -> {
             R.drawable.ic_accessible_16
         }
         else -> {
@@ -65,7 +64,7 @@ class BusArrivalCompactItem(
         arrivingBus == null -> {
             "Fetching arrivals..."
         }
-        arrivingBus.arrival == "Arr" -> {
+        arrivingBus.arrival == 0 -> {
             "Arriving Now"
         }
         else -> {

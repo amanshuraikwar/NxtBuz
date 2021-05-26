@@ -8,8 +8,8 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import io.github.amanshuraikwar.nxtbuz.common.R
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
-import io.github.amanshuraikwar.nxtbuz.common.model.BusArrival
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusStopArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.util.isDarkTheme
 import javax.inject.Inject
@@ -57,27 +57,27 @@ class MapUtil @Inject constructor(
         }
     }
 
-    fun busArrivalsToMarkers(busArrivals: List<BusArrival>): List<MarkerOptions> {
-        return busArrivals
-            .filter { it.arrivals is Arrivals.Arriving }
+    fun busArrivalsToMarkers(busStopArrivals: List<BusStopArrival>): List<MarkerOptions> {
+        return busStopArrivals
+            .filter { it.busArrivals is BusArrivals.Arriving }
             .map { busArrival ->
                 MarkerOptions()
                     .position(
                         LatLng(
                             // TODO: 6/4/20 Make more safe
-                            (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.latitude,
-                            (busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.longitude
+                            (busArrival.busArrivals as BusArrivals.Arriving).nextArrivingBus.latitude,
+                            (busArrival.busArrivals as BusArrivals.Arriving).nextArrivingBus.longitude
                         )
                     )
                     .icon(
                         bitmapDescriptorFromVector(R.drawable.ic_marker_arriving_bus_48)
                     )
-                    .title(busArrival.serviceNumber)
+                    .title(busArrival.busServiceNumber)
                     .snippet(
-                        if ((busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival == "Arr") {
+                        if ((busArrival.busArrivals).nextArrivingBus.arrival == 0) {
                             "ARRIVING"
                         } else {
-                            "${(busArrival.arrivals as Arrivals.Arriving).nextArrivingBus.arrival} MINS"
+                            "${(busArrival.busArrivals).nextArrivingBus.arrival} MINS"
                         }
                     )
             }

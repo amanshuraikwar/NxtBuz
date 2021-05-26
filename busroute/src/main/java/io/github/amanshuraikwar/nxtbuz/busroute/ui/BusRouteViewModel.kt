@@ -12,6 +12,7 @@ import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteScreenState
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusStopArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
@@ -317,7 +318,7 @@ class BusRouteViewModel @Inject constructor(
                     ) {
                         if (!listItemsLock.tryLock()) return@collect
                         updateToActive<BusRouteListItemData.BusRouteNode.Current>(
-                            arrivalsLoopData.busArrival,
+                            arrivalsLoopData.busStopArrival,
                             currentBusStop.code
                         )
                         listItemsLock.unlock()
@@ -340,7 +341,7 @@ class BusRouteViewModel @Inject constructor(
     }
 
     private inline fun <reified T : BusRouteListItemData.BusRouteNode> updateToActive(
-        busArrival: BusArrival,
+        busStopArrival: BusStopArrival,
         busStopCode: String,
     ): Boolean {
         val temp: Pair<Int, T> =
@@ -351,7 +352,7 @@ class BusRouteViewModel @Inject constructor(
         if (currentListItemData is BusRouteListItemData.BusRouteNode.Current) {
             listItems[listItemIndex] = currentListItemData.copy(
                 arrivalState = BusRouteListItemData.ArrivalState.Active(
-                    arrivals = busArrival.arrivals,
+                    busArrivals = busStopArrival.busArrivals,
                     lastUpdatedOn = "Last updated on ${TimeUtil.currentTimeStr()}"
                 )
             )
@@ -361,7 +362,7 @@ class BusRouteViewModel @Inject constructor(
         if (currentListItemData is BusRouteListItemData.BusRouteNode.Next) {
             listItems[listItemIndex] = currentListItemData.copy(
                 arrivalState = BusRouteListItemData.ArrivalState.Active(
-                    arrivals = busArrival.arrivals,
+                    busArrivals = busStopArrival.busArrivals,
                     lastUpdatedOn = "Last updated on ${TimeUtil.currentTimeStr()}"
                 )
             )
@@ -371,7 +372,7 @@ class BusRouteViewModel @Inject constructor(
         if (currentListItemData is BusRouteListItemData.BusRouteNode.Previous) {
             listItems[listItemIndex] = currentListItemData.copy(
                 arrivalState = BusRouteListItemData.ArrivalState.Active(
-                    arrivals = busArrival.arrivals,
+                    busArrivals = busStopArrival.busArrivals,
                     lastUpdatedOn = "Last updated on ${TimeUtil.currentTimeStr()}"
                 )
             )
@@ -527,11 +528,11 @@ class BusRouteViewModel @Inject constructor(
                 ) {
                     if (!listItemsLock.tryLock()) return@onEach
                     updateToActive<BusRouteListItemData.BusRouteNode.Next>(
-                        arrivalsLoopData.busArrival,
+                        arrivalsLoopData.busStopArrival,
                         secondaryBusStopCode
                     )
                     updateToActive<BusRouteListItemData.BusRouteNode.Previous>(
-                        arrivalsLoopData.busArrival,
+                        arrivalsLoopData.busStopArrival,
                         secondaryBusStopCode
                     )
                     listItemsLock.unlock()

@@ -6,6 +6,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
@@ -79,7 +80,7 @@ class StarredBusArrivalsViewModel @Inject constructor(
 
                 starredBusArrivalList.forEach {
                     listItems.add(
-                        if (it.arrivals is Arrivals.Arriving)
+                        if (it.busArrivals is BusArrivals.Arriving)
                             StarredBusArrivalCompactSmallItem(
                                 it, ::onStarredItemClicked, ::onLongClick
                             )

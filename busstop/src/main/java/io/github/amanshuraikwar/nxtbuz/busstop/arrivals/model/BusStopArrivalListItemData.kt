@@ -21,10 +21,10 @@ sealed class BusStopArrivalListItemData {
             val busLoad: BusLoad,
             val wheelchairAccess: Boolean,
             val busType: BusType,
-            val arrival: String,
+            val arrival: Int,
         ) : BusStopArrival(busServiceNumber, busStop, starred) {
             fun copy(
-                arrival: String,
+                arrival: Int,
                 busStop: BusStop,
                 destinationBusStopDescription: String,
                 busType: BusType,

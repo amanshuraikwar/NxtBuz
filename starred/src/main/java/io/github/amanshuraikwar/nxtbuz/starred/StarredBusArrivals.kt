@@ -91,7 +91,7 @@ fun StarredBusArrivals(
             BusArrivalItem(
                 item.busStopDescription,
                 item.busServiceNumber,
-                item.arrivals,
+                item.busArrivals,
                 onClick = {
                     onItemClicked(
                         item.busStopCode,

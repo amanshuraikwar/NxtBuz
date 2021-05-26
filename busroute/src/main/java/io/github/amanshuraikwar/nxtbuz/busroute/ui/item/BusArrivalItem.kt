@@ -4,7 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 
 @Composable
 fun BusArrivalItem(
@@ -21,20 +21,20 @@ fun BusArrivalItem(
                     barColor = contentColor,
                 ) {
                     if (state is BusRouteListItemData.ArrivalState.Active) {
-                        when (val arrivals = state.arrivals) {
-                            is Arrivals.Arriving -> {
+                        when (val arrivals = state.busArrivals) {
+                            is BusArrivals.Arriving -> {
                                 ArrivingItem(
-                                    arrivals = arrivals,
+                                    busArrivals = arrivals,
                                     lastUpdatedOn = state.lastUpdatedOn
                                 )
                             }
-                            Arrivals.DataNotAvailable -> {
+                            BusArrivals.DataNotAvailable -> {
                                 NotArrivingItem(
                                     message = "Data not Available",
                                     lastUpdatedOn = state.lastUpdatedOn
                                 )
                             }
-                            Arrivals.NotOperating -> {
+                            BusArrivals.NotOperating -> {
                                 NotArrivingItem(
                                     message = "Not Operating",
                                     lastUpdatedOn = state.lastUpdatedOn

@@ -2,13 +2,13 @@ package io.github.amanshuraikwar.nxtbuz.data.starred
 
 import android.util.Log
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.common.model.room.StarredBusStopEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
-import io.github.amanshuraikwar.nxtbuz.data.starred.delegate.BusArrivalsDelegate
+//import io.github.amanshuraikwar.nxtbuz.data.starred.delegate.BusArrivalsDelegate
 import io.github.amanshuraikwar.nxtbuz.common.model.StarToggleState
 import io.github.amanshuraikwar.nxtbuz.common.model.starred.ToggleStarUpdate
 import kotlinx.coroutines.*
@@ -24,7 +24,7 @@ class StarredBusArrivalRepository @Inject constructor(
     private val starredBusStopsDao: StarredBusStopsDao,
     private val busStopDao: BusStopDao,
     private val preferenceStorage: PreferenceStorage,
-    private val busArrivalsDelegate: BusArrivalsDelegate,
+//    private val busArrivalsDelegate: BusArrivalsDelegate,
     @Named("starToggleState") private val starToggleState: MutableStateFlow<StarToggleState>,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -89,7 +89,7 @@ class StarredBusArrivalRepository @Inject constructor(
                     // then
                     // filter items for which arrivals is Arrivals.Arriving
                     if (considerFilteringError && !shouldShowErrorStarredBusArrivals()) {
-                        arrivalList.filter { it.arrivals is Arrivals.Arriving }
+                        arrivalList.filter { it.busArrivals is BusArrivals.Arriving }
                     } else {
                         arrivalList
                     }
@@ -141,37 +141,37 @@ class StarredBusArrivalRepository @Inject constructor(
 
         val starredBusStops = starredBusStopsDao.findAll()
 
-        val starredBusArrivalList = starredBusStops
-            .map { (busStopCode, busServiceNumber) ->
-                //async(dispatcherProvider.pool8) {
-                busArrivalsDelegate
-                    .getBusArrivals(busStopCode)
-                    .find { it.serviceNumber == busServiceNumber }
-                    ?.let { busArrival ->
-                        StarredBusArrival(
-                            busStopCode,
-                            busServiceNumber,
-                            busStopDao
-                                .findByCode(busStopCode)
-                                .takeIf { it.isNotEmpty() }
-                                ?.get(0)
-                                ?.description
-                                ?: throw Exception(
-                                    "No bus stop row found for stop code " +
-                                            "$busStopCode in local DB."
-                                ),
-                            busArrival.arrivals
-                        )
-                    }
-                    ?: throw Exception(
-                        "Bus arrival for bus stop " +
-                                "$busStopCode and service number " +
-                                "$busServiceNumber not fetched."
-                    )
-                //}
-            }/*.awaitAll()*/
+//        val starredBusArrivalList = starredBusStops
+//            .map { (busStopCode, busServiceNumber) ->
+//                //async(dispatcherProvider.pool8) {
+//                busArrivalsDelegate
+//                    .getBusArrivals(busStopCode)
+//                    .find { it.busServiceNumber == busServiceNumber }
+//                    ?.let { busArrival ->
+//                        StarredBusArrival(
+//                            busStopCode,
+//                            busServiceNumber,
+//                            busStopDao
+//                                .findByCode(busStopCode)
+//                                .takeIf { it.isNotEmpty() }
+//                                ?.get(0)
+//                                ?.description
+//                                ?: throw Exception(
+//                                    "No bus stop row found for stop code " +
+//                                            "$busStopCode in local DB."
+//                                ),
+//                            busArrival.busArrivals
+//                        )
+//                    }
+//                    ?: throw Exception(
+//                        "Bus arrival for bus stop " +
+//                                "$busStopCode and service number " +
+//                                "$busServiceNumber not fetched."
+//                    )
+//                //}
+//            }/*.awaitAll()*/
 
-        starredBusArrivalStateFlow.value = starredBusArrivalList
+//        starredBusArrivalStateFlow.value = starredBusArrivalList
     }
 
     suspend fun toggleBusStopStar(busStopCode: String, busServiceNumber: String): Unit =

@@ -7,6 +7,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.common.util.post
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
@@ -71,7 +72,7 @@ class StarredArrivalsViewModelDelegateImpl @Inject constructor(
         _starredListItems.postValue(
             starredBusArrivalList
                 .map {
-                    if (it.arrivals is Arrivals.Arriving)
+                    if (it.busArrivals is BusArrivals.Arriving)
                         StarredBusArrivalItem(
                             it,
                             ::onStarredItemClicked,

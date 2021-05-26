@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
+import io.github.amanshuraikwar.nxtbuz.common.util.toArrivalString
 
 @Composable
 fun BusStopArrivalItem(
@@ -63,7 +64,7 @@ fun BusStopArrivalItem(
                         modifier = Modifier.padding(top = 4.dp, start = 16.dp)
                     ) {
                         BusArrival(
-                            arrival = data.arrival,
+                            arrival = data.arrival.toArrivalString(),
                             busLoad = data.busLoad,
                             wheelchairAccess = data.wheelchairAccess
                         )
