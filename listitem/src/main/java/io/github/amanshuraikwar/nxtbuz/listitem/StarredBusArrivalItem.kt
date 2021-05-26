@@ -4,7 +4,7 @@ import android.view.View
 import androidx.fragment.app.FragmentActivity
 import io.github.amanshuraikwar.annotations.ListItem
 import io.github.amanshuraikwar.multiitemadapter.RecyclerViewListItem
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
 import kotlinx.android.synthetic.main.item_starred_bus_arrival.view.*
 import kotlinx.android.synthetic.main.item_starred_bus_arrival.view.nextDeparture1Tv
@@ -28,16 +28,17 @@ class StarredBusArrivalItem(
         }
         view.busStopDescriptionTv.text = starredBusArrival.busStopDescription
         view.serviceNumberTv.text = starredBusArrival.busServiceNumber
-        view.nextDeparture1Tv.text = when(val arrivals = starredBusArrival.arrivals) {
-            is Arrivals.Arriving -> {
-                arrivals.nextArrivingBus.arrival
+        view.nextDeparture1Tv.text = when(val arrivals = starredBusArrival.busArrivals) {
+            is BusArrivals.Arriving -> {
+                "${arrivals.nextArrivingBus.arrival}"
             }
-            is Arrivals.DataNotAvailable -> {
+            is BusArrivals.DataNotAvailable -> {
                 "N/A"
             }
-            is Arrivals.NotOperating -> {
+            is BusArrivals.NotOperating -> {
                 "N/O"
             }
+            is BusArrivals.Error -> TODO()
         }
     }
 }

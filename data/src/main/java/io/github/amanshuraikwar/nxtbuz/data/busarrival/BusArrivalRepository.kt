@@ -5,16 +5,17 @@ import io.github.amanshuraikwar.ltaapi.model.ArrivingBusItemDto
 import io.github.amanshuraikwar.ltaapi.model.BusArrivalItemDto
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.delegates.BusArrivalStateFlowDelegate
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.ArrivingBus
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusStopArrival
+//import io.github.amanshuraikwar.nxtbuz.data.busarrival.delegates.BusArrivalStateFlowDelegate
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.common.model.room.OperatingBusEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import io.github.amanshuraikwar.nxtbuz.data.IllegalDbStateException
 import kotlinx.coroutines.withContext
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetTime
@@ -22,32 +23,34 @@ import org.threeten.bp.temporal.ChronoUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@ExperimentalCoroutinesApi
 @Singleton
 class BusArrivalRepository @Inject constructor(
-    private val starredBusStopsDao: StarredBusStopsDao,
+//    private val starredBusStopsDao: StarredBusStopsDao,
     private val busRouteDao: BusRouteDao,
     private val operatingBusDao: OperatingBusDao,
     private val busStopDao: BusStopDao,
-    private val busArrivalStateFlowDelegate: BusArrivalStateFlowDelegate,
+//    private val busArrivalStateFlowDelegate: BusArrivalStateFlowDelegate,
     private val busApi: LtaApi,
     private val dispatcherProvider: CoroutinesDispatcherProvider
-) : BusArrivalStateFlowDelegate by busArrivalStateFlowDelegate {
+)/* : BusArrivalStateFlowDelegate by busArrivalStateFlowDelegate*/ {
 
-    suspend fun getBusArrivals(busStopCode: String): List<BusArrival> =
+    suspend fun getBusArrivals(busStopCode: String): List<BusStopArrival> =
         withContext(dispatcherProvider.io) {
 
-            val starredBusServiceNumberSet =
-                starredBusStopsDao
-                    .findByBusStopCode(busStopCode)
-                    .map { it.busServiceNumber }
-                    .toSet()
+//            val starredBusServiceNumberSet =
+//                starredBusStopsDao
+//                    .findByBusStopCode(busStopCode)
+//                    .map { it.busServiceNumber }
+//                    .toSet()
+//
+//            fun BusArrivalItemDto.isStarred() =
+//                starredBusServiceNumberSet.contains(this.serviceNumber)
+//
+//            fun OperatingBusEntity.isStarred() =
+//                starredBusServiceNumberSet.contains(this.busServiceNumber)
 
-            fun BusArrivalItemDto.isStarred() =
-                starredBusServiceNumberSet.contains(this.serviceNumber)
-
-            fun OperatingBusEntity.isStarred() =
-                starredBusServiceNumberSet.contains(this.busServiceNumber)
+//            fun OperatingBusEntity.isStarred() =
+//                starredBusServiceNumberSet.contains(this.busServiceNumber)
 
             val operatingBusServiceNumberMap =
                 operatingBusDao
@@ -56,68 +59,97 @@ class BusArrivalRepository @Inject constructor(
                     .mapValues { (_, v) -> v[0] }
                     .toMutableMap()
 
-            val busArrivalItemList = busApi.getBusArrivals(busStopCode).busArrivals
+//            val busArrivalItemList = busApi.getBusArrivals(busStopCode).busArrivals
 
-            val busArrivalList = busArrivalItemList
-                .map { busArrivalItem ->
+            val busStopArrivalList = mutableListOf<BusStopArrival>()
 
-                    if (!operatingBusServiceNumberMap.containsKey(busArrivalItem.serviceNumber)) {
-                        throw Exception(
-                            "No operating bus row found for service number " +
-                                    "${busArrivalItem.serviceNumber} and stop code " +
-                                    "$busStopCode in local DB."
+            //val busArrivalList =
+            busApi.getBusArrivals(busStopCode)
+                .busArrivals
+                .forEach { busArrivalItemDto ->
+
+                    if (
+                        operatingBusServiceNumberMap.containsKey(busArrivalItemDto.serviceNumber)
+                    ) {
+                        operatingBusServiceNumberMap.remove(busArrivalItemDto.serviceNumber)
+                        busStopArrivalList.add(
+                            busArrivalItemDto.toBusArrival(
+                                busStopCode = busStopCode
+                            )
                         )
+                    } else {
+                        // bus service number returned from remote api is not in local db
+                        // schedule DB update
+                        // TODO-amanshuraikwar (26 May 2021 11:58:35 AM):
                     }
 
-                    operatingBusServiceNumberMap.remove(busArrivalItem.serviceNumber)
+//                    if (!operatingBusServiceNumberMap.containsKey(busArrivalItemDto.serviceNumber)) {
+//                        throw IllegalDbStateException(
+//                            "No operating bus row found for service number " +
+//                                    "${busArrivalItemDto.serviceNumber} and stop code " +
+//                                    "$busStopCode in local DB."
+//                        )
+//                    }
 
-                    busArrivalItem.toBusArrival(
-                        busStopCode,
-                        busArrivalItem.isStarred()
-                    )
+//                    operatingBusServiceNumberMap.remove(busArrivalItem.serviceNumber)
+//
+//                    busArrivalItem.toBusArrival(
+//                        busStopCode,
+//                        busArrivalItem.isStarred()
+//                    )
                 }
-                .toMutableList()
+            //.toMutableList()
 
             // add remaining buses as Arrivals.DataNotAvailable or Arrivals.NotOperating
             operatingBusServiceNumberMap.forEach { (_, operatingBusEntity) ->
-                busArrivalList.add(
+                busStopArrivalList.add(
                     operatingBusEntity.toBusArrivalError(
-                        operatingBusEntity.isStarred()
+                        //operatingBusEntity.isStarred()
                     )
                 )
             }
 
-            busArrivalList
+            busStopArrivalList
         }
 
-    suspend fun getBusArrivals(busStopCode: String, busServiceNumber: String): BusArrival =
+    suspend fun getBusArrivals(busStopCode: String, busServiceNumber: String): BusStopArrival =
         withContext(dispatcherProvider.io) {
 
-            val starredBusServiceNumberSet =
-                starredBusStopsDao
-                    .findByBusStopCode(busStopCode)
-                    .map { it.busServiceNumber }
-                    .toSet()
-
-            fun BusArrivalItemDto.isStarred() =
-                starredBusServiceNumberSet.contains(this.serviceNumber)
-
-            fun OperatingBusEntity.isStarred() =
-                starredBusServiceNumberSet.contains(this.busServiceNumber)
-
-            val operatingBusServiceNumberMap =
-                operatingBusDao
-                    .findByBusStopCode(busStopCode)
-                    .groupBy { it.busServiceNumber }
-                    .mapValues { (_, v) -> v[0] }
-                    .toMutableMap()
+//            val starredBusServiceNumberSet =
+//                starredBusStopsDao
+//                    .findByBusStopCode(busStopCode)
+//                    .map { it.busServiceNumber }
+//                    .toSet()
+//
+//            fun BusArrivalItemDto.isStarred() =
+//                starredBusServiceNumberSet.contains(this.serviceNumber)
+//
+//            fun OperatingBusEntity.isStarred() =
+//                starredBusServiceNumberSet.contains(this.busServiceNumber)
 
             val operatingBusEntity =
-                operatingBusServiceNumberMap[busServiceNumber] ?: throw Exception(
-                    "No operating bus row found for service number " +
-                            "$busServiceNumber and stop code " +
-                            "$busStopCode in local DB."
-                )
+                operatingBusDao
+                    .getOperatingBus(
+                        busStopCode = busStopCode,
+                        busServiceNumber = busServiceNumber
+                    )
+                    ?: run {
+                        // bus service number returned from remote api is not in local db
+                        // schedule DB update
+                        // TODO-amanshuraikwar (26 May 2021 11:58:35 AM):
+                        throw IllegalDbStateException(
+                            "No operating bus row found for service number " +
+                                    "$busServiceNumber and stop code " +
+                                    "$busStopCode in local DB."
+                        )
+                    }
+
+//            val operatingBusEntity =
+//                operatingBusServiceNumberMap[busServiceNumber] ?: throw Exception(
+//                    "No operating bus row found for service number " +
+//                            "$busServiceNumber and stop code " +
+//                            "$busStopCode in local DB."
+//                )
 
             val busArrivalItemList =
                 busApi.getBusArrivals(busStopCode, busServiceNumber).busArrivals
@@ -127,31 +159,30 @@ class BusArrivalRepository @Inject constructor(
                 val busArrivalItem = busArrivalItemList[0]
                 return@withContext busArrivalItem.toBusArrival(
                     busStopCode,
-                    busArrivalItem.isStarred()
+                    //busArrivalItem.isStarred()
                 )
 
             } else {
 
                 return@withContext operatingBusEntity.toBusArrivalError(
-                    operatingBusEntity.isStarred()
+                    //operatingBusEntity.isStarred()
                 )
             }
         }
 
     private suspend inline fun BusArrivalItemDto.toBusArrival(
         busStopCode: String,
-        isStarred: Boolean
-    ): BusArrival {
+    ): BusStopArrival {
 
         val (_, _, direction, stopSequence, distance) =
-            busRouteDao
-                .findByBusServiceNumberAndBusStopCode(
-                    serviceNumber,
-                    busStopCode
-                )
-                .takeIf { it.isNotEmpty() }
-                ?.get(0)
-                ?: throw Exception(
+            busRouteDao.getBusRoute(busStopCode = busStopCode, busServiceNumber = serviceNumber)
+//                .findByBusServiceNumberAndBusStopCode(
+//                    serviceNumber,
+//                    busStopCode
+//                )
+//                .takeIf { it.isNotEmpty() }
+//                ?.get(0)
+                ?: throw IllegalDbStateException(
                     "No bus route row found for service number " +
                             "$serviceNumber and stop code " +
                             "$busStopCode in local DB."
@@ -159,52 +190,59 @@ class BusArrivalRepository @Inject constructor(
 
         val arrivals = toArrivals(busStopCode)
 
-        val destinationStopDescription = arrivals.nextArrivingBus.destination.busStopDescription
-        val originStopDescription = arrivals.nextArrivingBus.destination.busStopDescription
+//        val destinationStopDescription = arrivals.nextArrivingBus.destination.busStopDescription
+//        val originStopDescription = arrivals.nextArrivingBus.destination.busStopDescription
 
-        return BusArrival(
-            serviceNumber,
-            operator,
-            originStopDescription,
-            destinationStopDescription,
-            direction,
-            stopSequence,
-            distance,
-            isStarred,
-            arrivals
+        return BusStopArrival(
+            busStopCode = busStopCode,
+            busServiceNumber = serviceNumber,
+            operator = operator,
+//            originBusStopDescription = originStopDescription,
+//            destinationBusStopDescription = destinationStopDescription,
+            direction = direction,
+            stopSequence = stopSequence,
+            distance = distance,
+            //isStarred,
+            busArrivals = arrivals
         )
     }
 
-    private suspend inline fun BusArrivalItemDto.toArrivals(busStopCode: String): Arrivals.Arriving {
+    private suspend inline fun BusArrivalItemDto.toArrivals(
+        busStopCode: String
+    ): BusArrivals {
+        val arrivingBusDto = arrivingBus
 
-        if (arrivingBus == null || arrivingBus!!.estimatedArrival == "") {
-            throw Exception(
-                "First arriving bus is null for bus stop $busStopCode and service $serviceNumber"
+        if (arrivingBusDto == null || arrivingBusDto.estimatedArrival == "") {
+            return BusArrivals.Error(
+                message = "First arriving bus is null for bus stop $busStopCode " +
+                        "and service $serviceNumber"
             )
         }
 
-        val nextArrivingBus = arrivingBus!!.asArrivingBus()
+        val nextArrivingBus = arrivingBusDto.toArrivingBus()
 
         val followingArrivingBusList = mutableListOf<ArrivingBus>()
 
-        if (arrivingBus1 != null) {
-            if (arrivingBus1!!.estimatedArrival != "") {
-                followingArrivingBusList.add(arrivingBus1!!.asArrivingBus())
+        var followArrivingBusDto = arrivingBus1
+
+        if (followArrivingBusDto != null) {
+            if (followArrivingBusDto.estimatedArrival != "") {
+                followingArrivingBusList.add(followArrivingBusDto.toArrivingBus())
             }
         }
 
+        followArrivingBusDto = arrivingBus2
 
-        if (arrivingBus2 != null) {
-            if (arrivingBus2!!.estimatedArrival != "") {
-                followingArrivingBusList.add(arrivingBus2!!.asArrivingBus())
+        if (followArrivingBusDto != null) {
+            if (followArrivingBusDto.estimatedArrival != "") {
+                followingArrivingBusList.add(followArrivingBusDto.toArrivingBus())
             }
         }
 
-        return Arrivals.Arriving(nextArrivingBus, followingArrivingBusList)
-
+        return BusArrivals.Arriving(nextArrivingBus, followingArrivingBusList)
     }
 
-    private suspend inline fun ArrivingBusItemDto.asArrivingBus(): ArrivingBus {
+    private suspend inline fun ArrivingBusItemDto.toArrivingBus(): ArrivingBus {
 
         val time =
             ChronoUnit.MINUTES.between(
@@ -213,9 +251,7 @@ class BusArrivalRepository @Inject constructor(
 
         val origin: ArrivingBusStop =
             busStopDao
-                .findByCode(originCode)
-                .takeIf { it.isNotEmpty() }
-                ?.get(0)
+                .getBusStop(originCode)
                 ?.let { busStopEntity ->
                     ArrivingBusStop(
                         busStopCode = busStopEntity.code,
@@ -223,15 +259,13 @@ class BusArrivalRepository @Inject constructor(
                         busStopDescription = busStopEntity.description
                     )
                 }
-                ?: throw Exception(
+                ?: throw IllegalDbStateException(
                     "No bus stop row found for stop code $originCode (origin) in local DB."
                 )
 
         val destination: ArrivingBusStop =
             busStopDao
-                .findByCode(destinationCode)
-                .takeIf { it.isNotEmpty() }
-                ?.get(0)
+                .getBusStop(destinationCode)
                 ?.let { busStopEntity ->
                     ArrivingBusStop(
                         busStopCode = busStopEntity.code,
@@ -239,7 +273,7 @@ class BusArrivalRepository @Inject constructor(
                         busStopDescription = busStopEntity.description
                     )
                 }
-                ?: throw Exception(
+                ?: throw IllegalDbStateException(
                     "No bus stop row found for stop code " +
                             "$destinationCode (destination) in local DB."
                 )
@@ -247,29 +281,28 @@ class BusArrivalRepository @Inject constructor(
         return ArrivingBus(
             origin,
             destination,
-            if (time >= 60) "60+" else if (time > 0) String.format("%02d", time) else "Arr",
+            time.toInt().coerceAtLeast(0),
+            //if (time >= 60) "60+" else if (time > 0) String.format("%02d", time) else "Arr",
             latitude.toDouble(),
             longitude.toDouble(),
             visitNumber.toInt(),
             BusLoad.valueOf(load),
-            feature,
+            feature == "WAB",
             BusType.valueOf(type)
         )
     }
 
     private suspend inline fun OperatingBusEntity.toBusArrivalError(
-        isStarred: Boolean
-    ): BusArrival {
+        //isStarred: Boolean
+    ): BusStopArrival {
 
         val (_, _, direction, stopSequence, distance) =
             busRouteDao
-                .findByBusServiceNumberAndBusStopCode(
-                    busServiceNumber,
-                    busStopCode
+                .getBusRoute(
+                    busServiceNumber = busServiceNumber,
+                    busStopCode = busStopCode
                 )
-                .takeIf { it.isNotEmpty() }
-                ?.get(0)
-                ?: throw Exception(
+                ?: throw IllegalDbStateException(
                     "No bus route row found for service number " +
                             "$busServiceNumber and stop code " +
                             "$busStopCode in local DB."
@@ -286,80 +319,81 @@ class BusArrivalRepository @Inject constructor(
             sunLastBus: OffsetTime?
         ) = this
 
-        val arrivals: Arrivals = when {
+        val busArrivals: BusArrivals = when {
             TimeUtil.isWeekday() -> {
-                getArrivalsError(wdFirstBus, wdLastBus)
+                getBusArrivalsError(wdFirstBus, wdLastBus)
             }
             TimeUtil.isSaturday() -> {
-                getArrivalsError(satFirstBus, satLastBus)
+                getBusArrivalsError(satFirstBus, satLastBus)
             }
             TimeUtil.isSunday() -> {
-                getArrivalsError(sunFirstBus, sunLastBus)
+                getBusArrivalsError(sunFirstBus, sunLastBus)
             }
             else -> {
-                throw Exception("This day is neither a weekday nor a saturday or sunday.")
+                throw IllegalDbStateException(
+                    "This day is neither a weekday nor a saturday or sunday."
+                )
             }
         }
 
-        return BusArrival(
-            busServiceNumber,
-            "N/A",
-            "N/A",
-            "N/A",
-            direction,
-            stopSequence,
-            distance,
-            isStarred,
-            arrivals
+        return BusStopArrival(
+            busStopCode = busStopCode,
+            busServiceNumber = busServiceNumber,
+            operator = "N/A",
+            direction = direction,
+            stopSequence = stopSequence,
+            distance = distance,
+            //isStarred,
+            busArrivals = busArrivals
         )
     }
 
-    private fun getArrivalsError(
+    private fun getBusArrivalsError(
         firstBus: OffsetTime?,
         lastBus: OffsetTime?
-    ): Arrivals {
+    ): BusArrivals {
         if (firstBus != null) {
             if (OffsetTime.now().isBefore(firstBus)) {
-                return Arrivals.NotOperating
+                return BusArrivals.NotOperating
             }
         }
         if (lastBus != null) {
             if (OffsetTime.now().isAfter(lastBus)) {
-                return Arrivals.NotOperating
+                return BusArrivals.NotOperating
             }
         }
-        return Arrivals.DataNotAvailable
+        return BusArrivals.DataNotAvailable
     }
 
-    suspend fun getStarredBusStopsArrivals(): List<StarredBusArrival> =
-        withContext(dispatcherProvider.io) {
-            val starredBusStops = starredBusStopsDao.findAll()
-            starredBusStops.map { (busStopCode, busServiceNumber) ->
-                async(dispatcherProvider.pool8) {
-                    getBusArrivals(busStopCode)
-                        .find { it.serviceNumber == busServiceNumber }
-                        ?.let { busArrival ->
-                            StarredBusArrival(
-                                busStopCode,
-                                busServiceNumber,
-                                busStopDao
-                                    .findByCode(busStopCode)
-                                    .takeIf { it.isNotEmpty() }
-                                    ?.get(0)
-                                    ?.description
-                                    ?: throw Exception(
-                                        "No bus stop row found for stop code " +
-                                                "$busStopCode in local DB."
-                                    ),
-                                busArrival.arrivals
-                            )
-                        }
-                        ?: throw Exception(
-                            "Bus arrival for bus stop " +
-                                    "$busStopCode and service number " +
-                                    "$busServiceNumber not fetched."
-                        )
-                }
-            }.awaitAll()
-        }
+//    suspend fun getStarredBusStopsArrivals(): List<StarredBusArrival> =
+//        withContext(dispatcherProvider.io) {
+//            val starredBusStops = starredBusStopsDao.findAll()
+//            starredBusStops.map { (busStopCode, busServiceNumber) ->
+//                async(dispatcherProvider.pool8) {
+//                    getBusArrivals(busStopCode)
+//                        .find { it.busServiceNumber == busServiceNumber }
+//                        ?.let { busArrival ->
+//                            StarredBusArrival(
+//                                busStopCode,
+//                                busServiceNumber,
+//                                busStopDao
+//                                    .findByCode(busStopCode)
+//                                    .takeIf { it.isNotEmpty() }
+//                                    ?.get(0)
+//                                    ?.description
+//                                    ?: throw Exception(
+//                                        "No bus stop row found for stop code " +
+//                                                "$busStopCode in local DB."
+//                                    ),
+//                                busArrival.busArrivals
+//                            )
+//                        }
+//                        ?: throw Exception(
+//                            "Bus arrival for bus stop " +
+//                                    "$busStopCode and service number " +
+//                                    "$busServiceNumber not fetched."
+//                        )
+//                }
+//            }.awaitAll()
+//        }
 }

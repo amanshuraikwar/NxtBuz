@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui.model
 
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 
 sealed class BusRouteListItemData {
     data class Header(val title: String) : BusRouteListItemData()
@@ -71,7 +71,7 @@ sealed class BusRouteListItemData {
         object Inactive : ArrivalState()
         object Fetching : ArrivalState()
         data class Active(
-            val arrivals: Arrivals,
+            val busArrivals: BusArrivals,
             val lastUpdatedOn: String,
         ) : ArrivalState()
     }

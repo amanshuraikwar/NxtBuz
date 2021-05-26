@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busroute.R
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
-import io.github.amanshuraikwar.nxtbuz.common.model.ArrivingBus
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.ArrivingBus
 import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
 import io.github.amanshuraikwar.nxtbuz.common.model.BusType
 
@@ -43,7 +43,7 @@ fun ArrivingBusItem(
         Spacer(modifier = Modifier.size(8.dp))
 
         Text(
-            text = arrivingBus.arrival,
+            text = arrivingBus.arrival.toArrivalString(),
             style = MaterialTheme.typography.h6Bold,
             color = contentColor,
             modifier = Modifier.animateContentSize()
@@ -63,5 +63,12 @@ fun ArrivingBusItem(
             contentDescription = "Bus Load",
             tint = contentColor
         )
+    }
+}
+
+fun Int.toArrivalString(): String {
+    return when {
+        this > 0 -> String.format("%02d", this)
+        else -> "Arr"
     }
 }

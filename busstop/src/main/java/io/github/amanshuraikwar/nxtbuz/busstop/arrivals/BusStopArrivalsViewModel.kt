@@ -1,7 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals
 
 import android.util.Log
-import androidx.annotation.WorkerThread
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,13 +10,18 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalList
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalsScreenState
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusStopArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
+import io.github.amanshuraikwar.nxtbuz.domain.busarrival.BusStopArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.IsStarredUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import kotlinx.coroutines.*
@@ -29,11 +33,10 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class BusStopArrivalsViewModel @Inject constructor(
-    private val getBusArrivalFlowUseCase: GetBusArrivalFlowUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
-    @Named("bottomSheetSlideOffset")
-    private val bottomSheetSlideOffsetFlow: MutableStateFlow<Float>,
+    private val isStarredUseCase: IsStarredUseCase,
     private val stopBusArrivalFlowUseCase: StopBusArrivalFlowUseCase,
+    private val getBusArrivalsUseCase: GetBusArrivalsUseCase,
     private val toggleStar: ToggleBusStopStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
@@ -181,49 +184,55 @@ class BusStopArrivalsViewModel @Inject constructor(
         stopBusArrivalFlowUseCase()
     }
 
-    private suspend fun handleBusArrivalList(busArrivals: List<BusArrival>) {
+    private suspend fun handleBusArrivalList(busStopArrivals: List<BusStopArrival>) {
         withContext(dispatcherProvider.computation) {
             if (!busArrivalListLock.tryLock()) return@withContext
 
             val busStop = this@BusStopArrivalsViewModel.busStop ?: return@withContext
 
-            busArrivals.forEach { busArrival ->
-                val arrivals = busArrival.arrivals
+            busStopArrivals.forEach { busArrival ->
+                val arrivals = busArrival.busArrivals
 
                 val listItemIndex =
                     listItems.indexOfFirst {
                         it is BusStopArrivalListItemData.BusStopArrival
-                                && it.busServiceNumber == busArrival.serviceNumber
+                                && it.busServiceNumber == busArrival.busServiceNumber
                     }
 
                 if (listItemIndex == -1) {
                     when (arrivals) {
-                        is Arrivals.Arriving -> {
+                        is BusArrivals.Arriving -> {
                             listItems.add(
                                 BusStopArrivalListItemData.BusStopArrival.Arriving(
-                                    busServiceNumber = busArrival.serviceNumber,
+                                    busServiceNumber = busArrival.busServiceNumber,
                                     destinationBusStopDescription =
                                     arrivals.nextArrivingBus.destination.busStopDescription,
                                     arrival = arrivals.nextArrivingBus.arrival,
                                     busType = arrivals.nextArrivingBus.type,
-                                    wheelchairAccess = arrivals.nextArrivingBus.feature == "WAB",
+                                    wheelchairAccess = arrivals.nextArrivingBus.wheelchairAccess,
                                     busLoad = arrivals.nextArrivingBus.load,
                                     busStop = busStop,
-                                    starred = busArrival.starred
+                                    starred = isStarredUseCase(
+                                        busServiceNumber = busArrival.busServiceNumber,
+                                        busStopCode = busArrival.busStopCode,
+                                    )
                                 )
                             )
                         }
                         else -> {
                             listItems.add(
                                 BusStopArrivalListItemData.BusStopArrival.NotArriving(
-                                    busServiceNumber = busArrival.serviceNumber,
-                                    reason = if (arrivals is Arrivals.NotOperating) {
+                                    busServiceNumber = busArrival.busServiceNumber,
+                                    reason = if (arrivals is BusArrivals.NotOperating) {
                                         "Not Operating"
                                     } else {
                                         "No Data"
                                     },
                                     busStop = busStop,
-                                    starred = busArrival.starred
+                                    starred = isStarredUseCase(
+                                        busServiceNumber = busArrival.busServiceNumber,
+                                        busStopCode = busArrival.busStopCode,
+                                    )
                                 )
                             )
                         }
@@ -234,16 +243,19 @@ class BusStopArrivalsViewModel @Inject constructor(
                 when (val listItem = listItems[listItemIndex]) {
                     is BusStopArrivalListItemData.BusStopArrival.Arriving -> {
                         when (arrivals) {
-                            is Arrivals.Arriving -> {
+                            is BusArrivals.Arriving -> {
                                 listItems[listItemIndex] = listItem.copy(
                                     arrival = arrivals.nextArrivingBus.arrival,
                                     destinationBusStopDescription =
                                     arrivals.nextArrivingBus.destination.busStopDescription,
                                     busType = arrivals.nextArrivingBus.type,
-                                    wheelchairAccess = arrivals.nextArrivingBus.feature == "WAB",
+                                    wheelchairAccess = arrivals.nextArrivingBus.wheelchairAccess,
                                     busLoad = arrivals.nextArrivingBus.load,
                                     busStop = busStop,
-                                    starred = busArrival.starred,
+                                    starred = isStarredUseCase(
+                                        busServiceNumber = busArrival.busServiceNumber,
+                                        busStopCode = busArrival.busStopCode,
+                                    )
                                 )
                             }
                             else -> {
@@ -251,13 +263,16 @@ class BusStopArrivalsViewModel @Inject constructor(
                                 listItems.add(
                                     BusStopArrivalListItemData.BusStopArrival.NotArriving(
                                         busServiceNumber = listItem.busServiceNumber,
-                                        reason = if (arrivals is Arrivals.NotOperating) {
+                                        reason = if (arrivals is BusArrivals.NotOperating) {
                                             "Not Operating"
                                         } else {
                                             "No Data"
                                         },
                                         busStop = busStop,
-                                        starred = busArrival.starred
+                                        starred = isStarredUseCase(
+                                            busServiceNumber = busArrival.busServiceNumber,
+                                            busStopCode = busArrival.busStopCode,
+                                        )
                                     )
                                 )
                             }
@@ -265,7 +280,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                     }
                     is BusStopArrivalListItemData.BusStopArrival.NotArriving -> {
                         when (arrivals) {
-                            is Arrivals.Arriving -> {
+                            is BusArrivals.Arriving -> {
                                 listItems.removeAt(listItemIndex)
                                 var lastArrivingItemIndex = listItems.indexOfLast {
                                     it is BusStopArrivalListItemData.BusStopArrival.Arriving
@@ -282,21 +297,27 @@ class BusStopArrivalsViewModel @Inject constructor(
                                         arrival = arrivals.nextArrivingBus.arrival,
                                         busType = arrivals.nextArrivingBus.type,
                                         wheelchairAccess =
-                                        arrivals.nextArrivingBus.feature == "WAB",
+                                        arrivals.nextArrivingBus.wheelchairAccess,
                                         busLoad = arrivals.nextArrivingBus.load,
                                         busStop = busStop,
-                                        starred = busArrival.starred
+                                        starred = isStarredUseCase(
+                                            busServiceNumber = busArrival.busServiceNumber,
+                                            busStopCode = busArrival.busStopCode,
+                                        )
                                     )
                                 )
                             }
                             else -> {
                                 listItems[listItemIndex] = listItem.copy(
-                                    reason = if (arrivals is Arrivals.NotOperating) {
+                                    reason = if (arrivals is BusArrivals.NotOperating) {
                                         "Not Operating"
                                     } else {
                                         "No Data"
                                     },
-                                    starred = busArrival.starred,
+                                    starred = isStarredUseCase(
+                                        busServiceNumber = busArrival.busServiceNumber,
+                                        busStopCode = busArrival.busStopCode,
+                                    )
                                 )
                             }
                         }
@@ -350,25 +371,38 @@ class BusStopArrivalsViewModel @Inject constructor(
                 markerId = busStop?.code ?: return,
             )
         )
-        job?.cancel()
-        job = null
+        loop?.stop()
+        loop = null
+//        job?.cancel()
+//        job = null
         bottomSheetInit = false
     }
 
-    private var job: Job? = null
+    //private var job: Job? = null
+    private var loop: BusStopArrivalsLoop? = null
 
     private fun startListeningArrivals() {
+        loop = BusStopArrivalsLoop(
+            busStopCode = busStop?.code ?: return,
+            getBusArrivalsUseCase = getBusArrivalsUseCase,
+            dispatcher = dispatcherProvider.arrivalService,
+            coroutineScope = viewModelScope
+        )
         viewModelScope.launch(coroutineContext) {
-            val busStop = this@BusStopArrivalsViewModel.busStop ?: return@launch
-
-            job = viewModelScope.launch(coroutineContext) {
-                getBusArrivalFlowUseCase(busStop.code)
-                    .collect { busArrivalList ->
-                        handleBusArrivalList(
-                            busArrivalList
-                        )
-                    }
-            }
+            loop?.start()
+                ?.collect { busArrivalList ->
+                    handleBusArrivalList(
+                        busArrivalList
+                    )
+                }
+//            job = viewModelScope.launch(coroutineContext) {
+//                getBusArrivalFlowUseCase(busStop.code)
+//                    .collect { busArrivalList ->
+//                        handleBusArrivalList(
+//                            busArrivalList
+//                        )
+//                    }
+//            }
         }
     }
 

@@ -81,13 +81,13 @@ class StarredViewModel @Inject constructor(
                         StarredBusArrivalData(
                             busServiceNumber = starredBusArrival.busServiceNumber,
                             busStopDescription = starredBusArrival.busStopDescription,
-                            arrivals = starredBusArrival.arrivals,
+                            busArrivals = starredBusArrival.busArrivals,
                             busStopCode = starredBusArrival.busStopCode,
                         )
                     )
                 } else {
                     listItems[listItemIndex] = listItems[listItemIndex].copy(
-                        arrivals = starredBusArrival.arrivals
+                        busArrivals = starredBusArrival.busArrivals
                     )
                 }
             }

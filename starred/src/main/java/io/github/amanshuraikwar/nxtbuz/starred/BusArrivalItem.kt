@@ -15,7 +15,6 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -29,8 +28,9 @@ import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.onStar
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
-import io.github.amanshuraikwar.nxtbuz.common.model.Arrivals
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.BusType
+import io.github.amanshuraikwar.nxtbuz.common.util.toArrivalString
 import kotlin.math.roundToInt
 
 @Composable
@@ -54,16 +54,15 @@ fun <T : Any> rememberSwipeableState(
 fun BusArrivalItem(
     busStopDescription: String,
     busServiceNumber: String,
-    arrivals: Arrivals,
+    busArrivals: BusArrivals,
     onClick: () -> Unit = {},
     onUnStarClicked: () -> Unit = {},
 ) {
-    val busType = when (arrivals) {
-        is Arrivals.Arriving -> {
-            arrivals.nextArrivingBus.type
+    val busType = when (busArrivals) {
+        is BusArrivals.Arriving -> {
+            busArrivals.nextArrivingBus.type
         }
-        Arrivals.DataNotAvailable,
-        Arrivals.NotOperating -> {
+        else -> {
             BusType.SD
         }
     }
@@ -175,10 +174,10 @@ fun BusArrivalItem(
                     )
 
                     Text(
-                        text = when (arrivals) {
-                            is Arrivals.Arriving -> arrivals.nextArrivingBus.arrival
-                            Arrivals.DataNotAvailable -> "N/A"
-                            Arrivals.NotOperating -> "N/A"
+                        text = when (busArrivals) {
+                            is BusArrivals.Arriving ->
+                                busArrivals.nextArrivingBus.arrival.toArrivalString()
+                            else -> "N/A"
                         },
                         style = MaterialTheme.typography.body1Bold,
                         color = MaterialTheme.colors.onSurface,
