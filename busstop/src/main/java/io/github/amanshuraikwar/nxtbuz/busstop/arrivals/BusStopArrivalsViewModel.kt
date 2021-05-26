@@ -16,7 +16,6 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.BusStopArrivalsLoop
-import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
@@ -30,7 +29,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
-import javax.inject.Named
 
 class BusStopArrivalsViewModel @Inject constructor(
     private val getBusStopUseCase: GetBusStopUseCase,
@@ -59,6 +57,7 @@ class BusStopArrivalsViewModel @Inject constructor(
     private val coroutineContext = errorHandler + dispatcherProvider.computation
     private val busArrivalListLock = Mutex()
     internal var bottomSheetInit = false
+    private var loop: BusStopArrivalsLoop? = null
 
     fun init(busStopCode: String) {
         viewModelScope.launch(coroutineContext) {
@@ -373,13 +372,8 @@ class BusStopArrivalsViewModel @Inject constructor(
         )
         loop?.stop()
         loop = null
-//        job?.cancel()
-//        job = null
         bottomSheetInit = false
     }
-
-    //private var job: Job? = null
-    private var loop: BusStopArrivalsLoop? = null
 
     private fun startListeningArrivals() {
         loop = BusStopArrivalsLoop(
@@ -395,14 +389,6 @@ class BusStopArrivalsViewModel @Inject constructor(
                         busArrivalList
                     )
                 }
-//            job = viewModelScope.launch(coroutineContext) {
-//                getBusArrivalFlowUseCase(busStop.code)
-//                    .collect { busArrivalList ->
-//                        handleBusArrivalList(
-//                            busArrivalList
-//                        )
-//                    }
-//            }
         }
     }
 

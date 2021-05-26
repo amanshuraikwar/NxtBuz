@@ -1,8 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.busarrival
 
 import io.github.amanshuraikwar.nxtbuz.data.busarrival.service.BusArrivalService
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
 class StopBusArrivalFlowUseCase @Inject constructor(

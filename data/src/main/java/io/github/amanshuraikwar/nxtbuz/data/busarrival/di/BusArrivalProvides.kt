@@ -27,6 +27,4 @@ class BusArrivalProvides {
     ): StateFlow<BusArrivalsState> {
         return a
     }
-
-
 }
