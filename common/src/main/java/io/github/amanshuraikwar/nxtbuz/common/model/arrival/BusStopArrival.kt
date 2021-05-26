@@ -9,4 +9,3 @@ data class BusStopArrival(
     val distance: Double,
     val busArrivals: BusArrivals
 )
-

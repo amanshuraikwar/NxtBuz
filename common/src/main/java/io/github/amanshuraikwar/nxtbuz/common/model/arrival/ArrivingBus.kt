@@ -20,8 +20,3 @@ data class ArrivingBus(
     val wheelchairAccess: Boolean,
     val type: BusType
 )
-
-
-
-
-
