@@ -10,6 +10,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.room.StarredBusStopEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
 //import io.github.amanshuraikwar.nxtbuz.data.starred.delegate.BusArrivalsDelegate
 import io.github.amanshuraikwar.nxtbuz.common.model.StarToggleState
+import io.github.amanshuraikwar.nxtbuz.common.model.starred.StarredBusService
 import io.github.amanshuraikwar.nxtbuz.common.model.starred.ToggleStarUpdate
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -134,6 +135,19 @@ class StarredBusArrivalRepository @Inject constructor(
         while (isActive) {
             getArrivalsAndEmit()
             delay(DELAY_TIME_MILLIS)
+        }
+    }
+
+    suspend fun getStarredBusServices(): List<StarredBusService> {
+        return withContext(dispatcherProvider.computation) {
+            starredBusStopsDao
+                .findAll()
+                .map { starredBusStopEntity ->
+                    StarredBusService(
+                        busStopCode = starredBusStopEntity.busStopCode,
+                        busServiceNumber = starredBusStopEntity.busServiceNumber
+                    )
+                }
         }
     }
 

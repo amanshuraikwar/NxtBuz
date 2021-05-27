@@ -7,12 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
+import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.AttachStarredBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.GetStarredBusServicesUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.StarredBusArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -21,9 +23,11 @@ import javax.inject.Inject
 private const val TAG = "StarredBusArrivalsVM"
 
 class StarredViewModel @Inject constructor(
-    private val attachStarredBusArrivalsUseCase: AttachStarredBusArrivalsUseCase,
+    private val getStarredBusServicesUseCase: GetStarredBusServicesUseCase,
+    private val getBusArrivalsUseCase: GetBusArrivalsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
     private val toggleStar: ToggleBusStopStarUseCase,
+    private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -38,23 +42,41 @@ class StarredViewModel @Inject constructor(
 
     var listItemsFlow = MutableStateFlow(SnapshotStateList<StarredBusArrivalData>())
 
+    private var loop: StarredBusArrivalsLoop? = null
+
     fun start() {
         viewModelScope.launch(coroutineContext) {
             busArrivalListLock.withLock {
                 listItemsFlow.value = SnapshotStateList()
             }
+            startListeningArrivals()
+            listenToggleStarUpdate()
+        }
+    }
 
-            attachStarredBusArrivalsUseCase(
-                "main-fragment-view-model",
-                considerFilteringError = false
-            )
-                .catch { throwable ->
-                    FirebaseCrashlytics.getInstance().recordException(throwable)
-                }.collect {
-                    Log.d(TAG, "collect: lock = ${busArrivalListLock.isLocked} data = $it")
-                    handleStarredBusArrivalList(it)
+    private fun listenToggleStarUpdate() {
+        viewModelScope.launch(coroutineContext) {
+            toggleStarUpdateUseCase()
+                .collect {
+                    loop?.emitNow()
                 }
+        }
+    }
 
+    private fun startListeningArrivals() {
+        loop?.stop()
+        loop = StarredBusArrivalsLoop(
+            getStarredBusServicesUseCase = getStarredBusServicesUseCase,
+            getBusArrivalsUseCase = getBusArrivalsUseCase,
+            getBusStopUseCase = getBusStopUseCase,
+            coroutineScope = viewModelScope,
+            dispatcher = dispatcherProvider.pool8,
+        )
+        viewModelScope.launch(coroutineContext) {
+            loop?.start()
+                ?.collect { starredBusArrivalList ->
+                    handleStarredBusArrivalList(starredBusArrivalList)
+                }
         }
     }
 
@@ -126,5 +148,10 @@ class StarredViewModel @Inject constructor(
 
             busArrivalListLock.unlock()
         }
+    }
+
+    fun onDispose() {
+        loop?.stop()
+        loop = null
     }
 }

@@ -30,7 +30,6 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.theme.onStar
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.BusType
-import io.github.amanshuraikwar.nxtbuz.common.util.toArrivalString
 import kotlin.math.roundToInt
 
 @Composable
@@ -185,6 +184,14 @@ fun BusArrivalItem(
                 }
             }
         }
+    }
+}
+
+fun Int.toArrivalString(): String {
+    return when {
+        this >= 60 -> "60+"
+        this > 0 -> String.format("%02d", this)
+        else -> "Arr"
     }
 }
 

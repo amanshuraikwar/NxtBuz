@@ -43,9 +43,11 @@ fun StarredBusArrivals(
     vm: StarredViewModel,
     onItemClicked: (busStopCode: String, busServiceNumber: String) -> Unit = { _, _ -> }
 ) {
-
-    LaunchedEffect(key1 = true) {
+    DisposableEffect(key1 = true) {
         vm.start()
+        onDispose {
+            vm.onDispose()
+        }
     }
 
     val screenWidth = LocalConfiguration.current.screenWidthDp
