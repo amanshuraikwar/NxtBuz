@@ -1,6 +1,5 @@
-package io.github.amanshuraikwar.nxtbuz.busroute.loop
+package io.github.amanshuraikwar.nxtbuz.domain.busarrival
 
-import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.loop.Loop
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -11,12 +10,12 @@ class BusServiceArrivalsLoop(
     private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
     coroutineScope: CoroutineScope,
     dispatcher: CoroutineDispatcher,
-) : Loop<ArrivalsLoopData>(
+) : Loop<BusServiceArrivalsLoopData>(
     coroutineScope = coroutineScope,
     dispatcher = dispatcher
 ) {
-    override suspend fun getData(): ArrivalsLoopData {
-        return ArrivalsLoopData(
+    override suspend fun getData(): BusServiceArrivalsLoopData {
+        return BusServiceArrivalsLoopData(
             busStopCode = busStopCode,
             busServiceNumber = busServiceNumber,
             getBusBusArrivalsUseCase(busStopCode, busServiceNumber)
