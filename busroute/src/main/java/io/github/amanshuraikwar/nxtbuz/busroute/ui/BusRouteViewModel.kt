@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.busroute.R
-import io.github.amanshuraikwar.nxtbuz.busroute.loop.BusServiceArrivalsLoop
+import io.github.amanshuraikwar.nxtbuz.domain.busarrival.BusServiceArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteHeaderData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteScreenState
