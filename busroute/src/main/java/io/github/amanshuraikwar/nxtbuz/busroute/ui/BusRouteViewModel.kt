@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.busroute.R
-import io.github.amanshuraikwar.nxtbuz.busroute.loop.ArrivalsLoop
+import io.github.amanshuraikwar.nxtbuz.busroute.loop.BusServiceArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteHeaderData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteScreenState
@@ -58,8 +58,8 @@ class BusRouteViewModel @Inject constructor(
     lateinit var busRoute: BusRoute
     lateinit var busServiceNumber: String
 
-    private var primaryArrivalsLoop: ArrivalsLoop? = null
-    private var secondaryArrivalsLoop: ArrivalsLoop? = null
+    private var primaryBusServiceArrivalsLoop: BusServiceArrivalsLoop? = null
+    private var secondaryBusServiceArrivalsLoop: BusServiceArrivalsLoop? = null
     private val listItemsLock = Mutex()
     internal var bottomSheetInit = false
 
@@ -256,7 +256,7 @@ class BusRouteViewModel @Inject constructor(
             if (previousBusRouteNodeList.isEmpty()) return@launch
 
             val lastBusStopSequence = busRoute.busRouteNodeList
-                .maxBy { it.stopSequence }
+                .maxByOrNull { it.stopSequence }
                 ?.stopSequence
                 ?: throw Exception(
                     "Could not find max bus stop sequence for route $busRoute."
@@ -292,24 +292,21 @@ class BusRouteViewModel @Inject constructor(
 
     private suspend fun startPrimaryBusArrivalsLoop() {
         viewModelScope.launch(coroutineContext) {
-            primaryArrivalsLoop?.stop()
+            primaryBusServiceArrivalsLoop?.stop()
 
             val arrivalsLoop =
-                ArrivalsLoop(
+                BusServiceArrivalsLoop(
                     busServiceNumber = busServiceNumber,
                     busStopCode = currentBusStop.code,
                     getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
-                    dispatcher = dispatcherProvider.pool8
+                    dispatcher = dispatcherProvider.arrivalService,
+                    coroutineScope = viewModelScope
                 )
 
-            primaryArrivalsLoop = arrivalsLoop
+            primaryBusServiceArrivalsLoop = arrivalsLoop
 
             arrivalsLoop
-                .start(viewModelScope)
-                .catch { throwable ->
-                    FirebaseCrashlytics.getInstance().recordException(throwable)
-                }
-                .filterNotNull()
+                .start()
                 .collect { arrivalsLoopData ->
                     // check for busStopCode & busServiceNumber
                     // to prevent pushing any dangling loop output to UI
@@ -467,9 +464,9 @@ class BusRouteViewModel @Inject constructor(
             }
 
             listItemsLock.withLock {
-                secondaryArrivalsLoop?.stop()
+                secondaryBusServiceArrivalsLoop?.stop()
 
-                secondaryArrivalsLoop?.busStopCode?.let { currentSecondaryBusStopCode ->
+                secondaryBusServiceArrivalsLoop?.busStopCode?.let { currentSecondaryBusStopCode ->
                     updateToInactive<BusRouteListItemData.BusRouteNode.Next>(
                         currentSecondaryBusStopCode
                     )
@@ -485,10 +482,10 @@ class BusRouteViewModel @Inject constructor(
 
     fun onCollapse(collapsingBusStopCode: String) {
         viewModelScope.launch(coroutineContext) {
-            if (collapsingBusStopCode == secondaryArrivalsLoop?.busStopCode) {
+            if (collapsingBusStopCode == secondaryBusServiceArrivalsLoop?.busStopCode) {
                 if (!listItemsLock.tryLock()) return@launch
 
-                secondaryArrivalsLoop?.stop()
+                secondaryBusServiceArrivalsLoop?.stop()
 
                 updateToInactive<BusRouteListItemData.BusRouteNode.Next>(
                     collapsingBusStopCode
@@ -497,7 +494,7 @@ class BusRouteViewModel @Inject constructor(
                     collapsingBusStopCode
                 )
 
-                secondaryArrivalsLoop = null
+                secondaryBusServiceArrivalsLoop = null
 
                 listItemsLock.unlock()
             }
@@ -506,20 +503,18 @@ class BusRouteViewModel @Inject constructor(
 
     private fun startSecondaryArrivals(secondaryBusStopCode: String) {
         val arrivalsLoop =
-            ArrivalsLoop(
+            BusServiceArrivalsLoop(
                 busServiceNumber = busServiceNumber,
                 busStopCode = secondaryBusStopCode,
                 getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
-                dispatcher = dispatcherProvider.pool8
+                dispatcher = dispatcherProvider.arrivalService,
+                coroutineScope = viewModelScope
             )
 
-        secondaryArrivalsLoop = arrivalsLoop
+        secondaryBusServiceArrivalsLoop?.stop()
+        secondaryBusServiceArrivalsLoop = arrivalsLoop
 
-        arrivalsLoop.start(viewModelScope)
-            .catch { throwable ->
-                FirebaseCrashlytics.getInstance().recordException(throwable)
-            }
-            .filterNotNull()
+        arrivalsLoop.start()
             .onEach { arrivalsLoopData ->
                 // check for busStopCode & busServiceNumber
                 // to prevent pushing any dangling loop output to UI
@@ -571,10 +566,10 @@ class BusRouteViewModel @Inject constructor(
             )
         )
 
-        primaryArrivalsLoop?.stop()
-        secondaryArrivalsLoop?.stop()
-        primaryArrivalsLoop = null
-        secondaryArrivalsLoop = null
+        primaryBusServiceArrivalsLoop?.stop()
+        secondaryBusServiceArrivalsLoop?.stop()
+        primaryBusServiceArrivalsLoop = null
+        secondaryBusServiceArrivalsLoop = null
         bottomSheetInit = false
     }
 }
