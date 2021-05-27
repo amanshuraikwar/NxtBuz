@@ -45,9 +45,15 @@ abstract class Loop<T>(
         return coroutineScope.launch(dispatcher + loopErrorHandler) {
             delay(initialDelay)
             while (isActive) {
-                sharedFlow.emit(getData())
+                sharedFlow.tryEmit(getData())
                 delay(REFRESH_DELAY)
             }
+        }
+    }
+
+    fun emitNow() {
+        coroutineScope.launch(dispatcher + loopErrorHandler) {
+            sharedFlow.emit(getData())
         }
     }
 

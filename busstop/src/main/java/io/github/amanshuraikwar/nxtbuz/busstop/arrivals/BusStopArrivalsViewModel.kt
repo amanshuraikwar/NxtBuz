@@ -17,7 +17,6 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.model.view.Error
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.BusStopArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.busarrival.StopBusArrivalFlowUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.IsStarredUseCase
@@ -25,7 +24,6 @@ import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
@@ -33,7 +31,6 @@ import javax.inject.Inject
 class BusStopArrivalsViewModel @Inject constructor(
     private val getBusStopUseCase: GetBusStopUseCase,
     private val isStarredUseCase: IsStarredUseCase,
-    private val stopBusArrivalFlowUseCase: StopBusArrivalFlowUseCase,
     private val getBusArrivalsUseCase: GetBusArrivalsUseCase,
     private val toggleStar: ToggleBusStopStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
@@ -177,10 +174,6 @@ class BusStopArrivalsViewModel @Inject constructor(
                 )
             )
         }
-    }
-
-    override fun onCleared() {
-        stopBusArrivalFlowUseCase()
     }
 
     private suspend fun handleBusArrivalList(busStopArrivals: List<BusStopArrival>) {
@@ -376,6 +369,7 @@ class BusStopArrivalsViewModel @Inject constructor(
     }
 
     private fun startListeningArrivals() {
+        loop?.stop()
         loop = BusStopArrivalsLoop(
             busStopCode = busStop?.code ?: return,
             getBusArrivalsUseCase = getBusArrivalsUseCase,

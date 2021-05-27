@@ -16,7 +16,7 @@ interface StarredBusStopsDao {
     fun deleteAll()
 
     @Query("SELECT * FROM StarredBusStopEntity")
-    fun findAll(): List<StarredBusStopEntity>
+    suspend fun findAll(): List<StarredBusStopEntity>
 
     @Query("SELECT * FROM StarredBusStopEntity WHERE busStopCode = :busStopCode")
     suspend fun findByBusStopCode(busStopCode: String): List<StarredBusStopEntity>
