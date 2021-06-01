@@ -36,6 +36,8 @@
         android:id="@+id/iconIv"
         android:layout_width="128dp"
         android:layout_height="128dp"
+        android:tint="@color/icon_tint"
+        app:tint="@color/icon_tint"
         android:src="@drawable/avd_location_permission_72"
         app:layout_constraintBottom_toTopOf="@id/actionBtn"
         app:layout_constraintEnd_toEndOf="parent"
