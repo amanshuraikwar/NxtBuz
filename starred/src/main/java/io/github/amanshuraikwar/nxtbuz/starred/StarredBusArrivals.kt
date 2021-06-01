@@ -15,26 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-
-inline fun <T, K : Any> LazyListScope.itemsIndexed(
-    items: List<T>,
-    noinline key: ((index: Int, item: T) -> K),
-    errorKey: K,
-    crossinline itemContent: @Composable LazyItemScope.(index: Int, item: T) -> Unit
-) = items(
-    items.size,
-    { index: Int ->
-        if (index < items.size) {
-            key(index, items[index])
-        } else {
-            errorKey
-        }
-    }
-) {
-    if (it < items.size) {
-        itemContent(it, items[it])
-    }
-}
+import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
 
 @ExperimentalMaterialApi
 @Composable
@@ -79,7 +60,7 @@ fun StarredBusArrivals(
             .alpha(alpha),
         contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp)
     ) {
-        itemsIndexed(
+        itemsIndexedSafe(
             items = listItems,
             key = { _, item ->
                 item.busStopCode + item.busServiceNumber
