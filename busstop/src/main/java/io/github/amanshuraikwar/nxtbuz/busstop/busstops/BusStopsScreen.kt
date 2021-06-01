@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
@@ -21,6 +20,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsScreenState
 import io.github.amanshuraikwar.nxtbuz.common.compose.Header
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
+import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -84,15 +84,16 @@ fun BusStopsView(
         ),
         state = lazyListState,
     ) {
-        items(
+        itemsIndexedSafe(
             items = listItems,
-            key = { item ->
+            key = { _, item ->
                 when (item) {
                     is BusStopsItemData.BusStop -> item.busStopInfo
                     is BusStopsItemData.Header -> item.title
                 }
-            }
-        ) { item ->
+            },
+            errorKey = "bus-route-arrivals-error-key",
+        ) { _, item ->
             when (item) {
                 is BusStopsItemData.BusStop -> {
                     BusStopItem(

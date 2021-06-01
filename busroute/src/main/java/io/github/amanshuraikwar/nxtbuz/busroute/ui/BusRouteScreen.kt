@@ -16,6 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.*
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteScreenState
 import io.github.amanshuraikwar.nxtbuz.common.compose.*
+import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
 
 @ExperimentalMaterialApi
 @Composable
@@ -132,26 +133,6 @@ fun BusRouteScreen(
     }
 }
 
-inline fun <T, K : Any> LazyListScope.itemsIndexed(
-    items: List<T>,
-    noinline key: ((index: Int, item: T) -> K),
-    errorKey: K,
-    crossinline itemContent: @Composable LazyItemScope.(index: Int, item: T) -> Unit
-) = items(
-    items.size,
-    { index: Int ->
-        if (index < items.size) {
-            key(index, items[index])
-        } else {
-            errorKey
-        }
-    }
-) {
-    if (it < items.size) {
-        itemContent(it, items[it])
-    }
-}
-
 @ExperimentalMaterialApi
 @Composable
 fun BusRouteViewArrivalsView(
@@ -177,7 +158,7 @@ fun BusRouteViewArrivalsView(
         ),
         state = lazyListState,
     ) {
-        itemsIndexed(
+        itemsIndexedSafe(
             items = listItems,
             key = { _, item ->
                 when (item) {
