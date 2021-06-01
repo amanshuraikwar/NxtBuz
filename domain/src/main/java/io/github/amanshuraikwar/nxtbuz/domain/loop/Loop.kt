@@ -4,6 +4,8 @@ import android.util.Log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlin.coroutines.CoroutineContext
 
 private const val TAG = "Loop"
 private const val REFRESH_DELAY = 10000L
@@ -13,7 +15,8 @@ abstract class Loop<T>(
     private val dispatcher: CoroutineDispatcher,
 ) {
     private val sharedFlow = MutableSharedFlow<T>(replay = 1)
-    private var coroutineJob: Job? = null
+    private var producerCoroutineJob: Job? = null
+    private var collectorCoroutineJob: Job? = null
 
     private val loopErrorHandler = CoroutineExceptionHandler { _, throwable ->
         Log.e(TAG, "loopErrorHandler: ${throwable.message}", throwable)
@@ -27,16 +30,30 @@ abstract class Loop<T>(
         return sharedFlow
     }
 
-    private fun startLoopDelayed() {
-        coroutineJob?.cancel()
-        coroutineJob = null
-        coroutineJob = launchCoroutine(REFRESH_DELAY)
+    @Synchronized
+    fun startAndCollect(coroutineContext: CoroutineContext, action: suspend (value: T) -> Unit) {
+        collectorCoroutineJob?.cancel()
+        collectorCoroutineJob = null
+        collectorCoroutineJob = coroutineScope.launch(coroutineContext) {
+            start()
+                .collect { value ->
+                    action(value)
+                }
+        }
     }
 
+    @Synchronized
+    private fun startLoopDelayed() {
+        producerCoroutineJob?.cancel()
+        producerCoroutineJob = null
+        producerCoroutineJob = launchCoroutine(REFRESH_DELAY)
+    }
+
+    @Synchronized
     private fun startLoop() {
-        coroutineJob?.cancel()
-        coroutineJob = null
-        coroutineJob = launchCoroutine()
+        producerCoroutineJob?.cancel()
+        producerCoroutineJob = null
+        producerCoroutineJob = launchCoroutine()
     }
 
     private fun launchCoroutine(
@@ -60,7 +77,9 @@ abstract class Loop<T>(
     protected abstract suspend fun getData(): T
 
     fun stop() {
-        coroutineJob?.cancel()
-        coroutineJob = null
+        producerCoroutineJob?.cancel()
+        producerCoroutineJob = null
+        collectorCoroutineJob?.cancel()
+        collectorCoroutineJob = null
     }
 }

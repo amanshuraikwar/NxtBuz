@@ -48,13 +48,14 @@ class BusStopArrivalsViewModel @Inject constructor(
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
-        failed(Error())
+        failed()
     }
 
     private val coroutineContext = errorHandler + dispatcherProvider.computation
     private val busArrivalListLock = Mutex()
     internal var bottomSheetInit = false
     private var loop: BusStopArrivalsLoop? = null
+    private var listenStarUpdatesJob: Job? = null
 
     fun init(busStopCode: String) {
         viewModelScope.launch(coroutineContext) {
@@ -66,14 +67,14 @@ class BusStopArrivalsViewModel @Inject constructor(
                 }
 
                 _screenState.emit(
-                        BusStopArrivalsScreenState.Success(
-                                BusStopArrivalListItemData.BusStopHeader(
-                                        busStopCode = busStop.code,
-                                        busStopDescription = busStop.description,
-                                        busStopRoadName = busStop.roadName,
-                                ),
-                                listItems
-                        )
+                    BusStopArrivalsScreenState.Success(
+                        BusStopArrivalListItemData.BusStopHeader(
+                            busStopCode = busStop.code,
+                            busStopDescription = busStop.description,
+                            busStopRoadName = busStop.roadName,
+                        ),
+                        listItems
+                    )
                 )
             } else {
                 _screenState.emit(BusStopArrivalsScreenState.Fetching)
@@ -85,14 +86,14 @@ class BusStopArrivalsViewModel @Inject constructor(
                 }
 
                 _screenState.emit(
-                        BusStopArrivalsScreenState.Success(
-                                BusStopArrivalListItemData.BusStopHeader(
-                                        busStopCode = busStop.code,
-                                        busStopDescription = busStop.description,
-                                        busStopRoadName = busStop.roadName,
-                                ),
-                                listItems
-                        )
+                    BusStopArrivalsScreenState.Success(
+                        BusStopArrivalListItemData.BusStopHeader(
+                            busStopCode = busStop.code,
+                            busStopDescription = busStop.description,
+                            busStopRoadName = busStop.roadName,
+                        ),
+                        listItems
+                    )
                 )
             }
 
@@ -129,7 +130,9 @@ class BusStopArrivalsViewModel @Inject constructor(
     }
 
     private fun listenToggleStarUpdate() {
-        viewModelScope.launch(coroutineContext) {
+        listenStarUpdatesJob?.cancel()
+        listenStarUpdatesJob = null
+        listenStarUpdatesJob = viewModelScope.launch(coroutineContext) {
             toggleStarUpdateUseCase()
                 .collect { toggleStarUpdate ->
                     if (toggleStarUpdate.busStopCode == busStop?.code) {
@@ -160,15 +163,15 @@ class BusStopArrivalsViewModel @Inject constructor(
         }
     }
 
-    private fun failed(error: Error) {
+    private fun failed() {
         viewModelScope.launch(coroutineContext) {
             _screenState.emit(
                 BusStopArrivalsScreenState.Failed(
                     busStop?.run {
                         BusStopArrivalListItemData.BusStopHeader(
-                                busStopCode = code,
-                                busStopDescription = description,
-                                busStopRoadName = roadName,
+                            busStopCode = code,
+                            busStopDescription = description,
+                            busStopRoadName = roadName,
                         )
                     }
                 )
@@ -366,23 +369,24 @@ class BusStopArrivalsViewModel @Inject constructor(
         loop?.stop()
         loop = null
         bottomSheetInit = false
+        listenStarUpdatesJob?.cancel()
+        listenStarUpdatesJob = null
     }
 
     private fun startListeningArrivals() {
         loop?.stop()
+        loop = null
         loop = BusStopArrivalsLoop(
             busStopCode = busStop?.code ?: return,
             getBusArrivalsUseCase = getBusArrivalsUseCase,
             dispatcher = dispatcherProvider.arrivalService,
             coroutineScope = viewModelScope
         )
-        viewModelScope.launch(coroutineContext) {
-            loop?.start()
-                ?.collect { busArrivalList ->
-                    handleBusArrivalList(
-                        busArrivalList
-                    )
-                }
+        loop?.startAndCollect(coroutineContext = coroutineContext) { busArrivalList ->
+            handleBusArrivalList(
+                busArrivalList
+            )
+
         }
     }
 
