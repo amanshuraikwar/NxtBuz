@@ -13,6 +13,6 @@ class AttachStarredBusArrivalsUseCase @Inject constructor(
         id: String,
         considerFilteringError: Boolean = false
     ): Flow<List<StarredBusArrival>> {
-        return starredBusArrivalRepository.attach(id, considerFilteringError)
+        TODO()
     }
 }
