@@ -37,12 +37,10 @@ class StarredViewModel @Inject constructor(
     }
 
     private val coroutineContext = errorHandler + dispatcherProvider.computation
-
     private val busArrivalListLock = Mutex()
-
     var listItemsFlow = MutableStateFlow(SnapshotStateList<StarredBusArrivalData>())
-
     private var loop: StarredBusArrivalsLoop? = null
+    private var listenStarUpdatesJob: Job? = null
 
     fun start() {
         viewModelScope.launch(coroutineContext) {
@@ -54,8 +52,11 @@ class StarredViewModel @Inject constructor(
         }
     }
 
+    @Synchronized
     private fun listenToggleStarUpdate() {
-        viewModelScope.launch(coroutineContext) {
+        listenStarUpdatesJob?.cancel()
+        listenStarUpdatesJob = null
+        listenStarUpdatesJob = viewModelScope.launch(coroutineContext) {
             toggleStarUpdateUseCase()
                 .collect {
                     loop?.emitNow()
@@ -63,8 +64,10 @@ class StarredViewModel @Inject constructor(
         }
     }
 
+    @Synchronized
     private fun startListeningArrivals() {
         loop?.stop()
+        loop = null
         loop = StarredBusArrivalsLoop(
             getStarredBusServicesUseCase = getStarredBusServicesUseCase,
             getBusArrivalsUseCase = getBusArrivalsUseCase,
@@ -72,15 +75,14 @@ class StarredViewModel @Inject constructor(
             coroutineScope = viewModelScope,
             dispatcher = dispatcherProvider.pool8,
         )
-        viewModelScope.launch(coroutineContext) {
-            loop?.start()
-                ?.collect { starredBusArrivalList ->
-                    handleStarredBusArrivalList(starredBusArrivalList)
-                }
+        loop?.startAndCollect(coroutineContext = coroutineContext) { starredBusArrivalList ->
+            handleStarredBusArrivalList(starredBusArrivalList)
         }
     }
 
-    private suspend fun handleStarredBusArrivalList(starredBusArrivalList: List<StarredBusArrival>) {
+    private suspend fun handleStarredBusArrivalList(
+        starredBusArrivalList: List<StarredBusArrival>
+    ) {
         withContext(coroutineContext) {
             if (!busArrivalListLock.tryLock()) return@withContext
 
@@ -153,5 +155,11 @@ class StarredViewModel @Inject constructor(
     fun onDispose() {
         loop?.stop()
         loop = null
+        listenStarUpdatesJob?.cancel()
+        listenStarUpdatesJob = null
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

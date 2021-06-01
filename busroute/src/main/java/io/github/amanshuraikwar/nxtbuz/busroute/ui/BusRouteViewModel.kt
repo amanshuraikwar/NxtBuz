@@ -68,6 +68,7 @@ class BusRouteViewModel @Inject constructor(
     val screenState: StateFlow<BusRouteScreenState> = _screenState
 
     private var starred = MutableStateFlow(false)
+    private var listenStarUpdatesJob: Job? = null
 
     fun init(busServiceNumber: String, busStopCode: String) {
         viewModelScope.launch(coroutineContext) {
@@ -159,7 +160,9 @@ class BusRouteViewModel @Inject constructor(
     }
 
     private fun listenToggleStarUpdate() {
-        viewModelScope.launch(coroutineContext) {
+        listenStarUpdatesJob?.cancel()
+        listenStarUpdatesJob = null
+        listenStarUpdatesJob = viewModelScope.launch(coroutineContext) {
             toggleStarUpdateUseCase()
                 .collect { toggleStarUpdate ->
                     if (busServiceNumber == toggleStarUpdate.busServiceNumber
@@ -290,39 +293,37 @@ class BusRouteViewModel @Inject constructor(
         }
     }
 
-    private suspend fun startPrimaryBusArrivalsLoop() {
-        viewModelScope.launch(coroutineContext) {
-            primaryBusServiceArrivalsLoop?.stop()
+    @Synchronized
+    private fun startPrimaryBusArrivalsLoop() {
+        primaryBusServiceArrivalsLoop?.stop()
+        primaryBusServiceArrivalsLoop = null
 
-            val arrivalsLoop =
-                BusServiceArrivalsLoop(
-                    busServiceNumber = busServiceNumber,
-                    busStopCode = currentBusStop.code,
-                    getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
-                    dispatcher = dispatcherProvider.arrivalService,
-                    coroutineScope = viewModelScope
+        primaryBusServiceArrivalsLoop =
+            BusServiceArrivalsLoop(
+                busServiceNumber = busServiceNumber,
+                busStopCode = currentBusStop.code,
+                getBusBusArrivalsUseCase = getBusBusArrivalsUseCase,
+                dispatcher = dispatcherProvider.arrivalService,
+                coroutineScope = viewModelScope
+            )
+
+        primaryBusServiceArrivalsLoop?.startAndCollect(
+            coroutineContext = coroutineContext
+        ) collect@{ arrivalsLoopData ->
+            // check for busStopCode & busServiceNumber
+            // to prevent pushing any dangling loop output to UI
+            if (arrivalsLoopData.busStopCode == currentBusStop.code
+                && arrivalsLoopData.busServiceNumber == busServiceNumber
+            ) {
+                if (!listItemsLock.tryLock()) return@collect
+                updateToActive<BusRouteListItemData.BusRouteNode.Current>(
+                    arrivalsLoopData.busStopArrival,
+                    currentBusStop.code
                 )
-
-            primaryBusServiceArrivalsLoop = arrivalsLoop
-
-            arrivalsLoop
-                .start()
-                .collect { arrivalsLoopData ->
-                    // check for busStopCode & busServiceNumber
-                    // to prevent pushing any dangling loop output to UI
-                    if (arrivalsLoopData.busStopCode == currentBusStop.code
-                        && arrivalsLoopData.busServiceNumber == busServiceNumber
-                    ) {
-                        if (!listItemsLock.tryLock()) return@collect
-                        updateToActive<BusRouteListItemData.BusRouteNode.Current>(
-                            arrivalsLoopData.busStopArrival,
-                            currentBusStop.code
-                        )
-                        listItemsLock.unlock()
-                    } else {
-                        arrivalsLoop.stop()
-                    }
-                }
+                listItemsLock.unlock()
+            } else {
+                primaryBusServiceArrivalsLoop?.stop()
+            }
         }
     }
 
@@ -464,8 +465,6 @@ class BusRouteViewModel @Inject constructor(
             }
 
             listItemsLock.withLock {
-                secondaryBusServiceArrivalsLoop?.stop()
-
                 secondaryBusServiceArrivalsLoop?.busStopCode?.let { currentSecondaryBusStopCode ->
                     updateToInactive<BusRouteListItemData.BusRouteNode.Next>(
                         currentSecondaryBusStopCode
@@ -502,7 +501,10 @@ class BusRouteViewModel @Inject constructor(
     }
 
     private fun startSecondaryArrivals(secondaryBusStopCode: String) {
-        val arrivalsLoop =
+        secondaryBusServiceArrivalsLoop?.stop()
+        secondaryBusServiceArrivalsLoop = null
+
+        secondaryBusServiceArrivalsLoop =
             BusServiceArrivalsLoop(
                 busServiceNumber = busServiceNumber,
                 busStopCode = secondaryBusStopCode,
@@ -511,31 +513,28 @@ class BusRouteViewModel @Inject constructor(
                 coroutineScope = viewModelScope
             )
 
-        secondaryBusServiceArrivalsLoop?.stop()
-        secondaryBusServiceArrivalsLoop = arrivalsLoop
-
-        arrivalsLoop.start()
-            .onEach { arrivalsLoopData ->
-                // check for busStopCode & busServiceNumber
-                // to prevent pushing any dangling loop output to UI
-                if (arrivalsLoopData.busStopCode == secondaryBusStopCode
-                    && arrivalsLoopData.busServiceNumber == busServiceNumber
-                ) {
-                    if (!listItemsLock.tryLock()) return@onEach
-                    updateToActive<BusRouteListItemData.BusRouteNode.Next>(
-                        arrivalsLoopData.busStopArrival,
-                        secondaryBusStopCode
-                    )
-                    updateToActive<BusRouteListItemData.BusRouteNode.Previous>(
-                        arrivalsLoopData.busStopArrival,
-                        secondaryBusStopCode
-                    )
-                    listItemsLock.unlock()
-                } else {
-                    arrivalsLoop.stop()
-                }
+        secondaryBusServiceArrivalsLoop?.startAndCollect(
+            coroutineContext = coroutineContext
+        ) collect@{ arrivalsLoopData ->
+            // check for busStopCode & busServiceNumber
+            // to prevent pushing any dangling loop output to UI
+            if (arrivalsLoopData.busStopCode == secondaryBusStopCode
+                && arrivalsLoopData.busServiceNumber == busServiceNumber
+            ) {
+                if (!listItemsLock.tryLock()) return@collect
+                updateToActive<BusRouteListItemData.BusRouteNode.Next>(
+                    arrivalsLoopData.busStopArrival,
+                    secondaryBusStopCode
+                )
+                updateToActive<BusRouteListItemData.BusRouteNode.Previous>(
+                    arrivalsLoopData.busStopArrival,
+                    secondaryBusStopCode
+                )
+                listItemsLock.unlock()
+            } else {
+                secondaryBusServiceArrivalsLoop?.stop()
             }
-            .launchIn(viewModelScope + coroutineContext)
+        }
     }
 
     fun onStarToggle(busServiceNumber: String, busStopCode: String, newValue: Boolean) {
@@ -567,9 +566,11 @@ class BusRouteViewModel @Inject constructor(
         )
 
         primaryBusServiceArrivalsLoop?.stop()
-        secondaryBusServiceArrivalsLoop?.stop()
         primaryBusServiceArrivalsLoop = null
+        secondaryBusServiceArrivalsLoop?.stop()
         secondaryBusServiceArrivalsLoop = null
+        listenStarUpdatesJob?.cancel()
+        listenStarUpdatesJob = null
         bottomSheetInit = false
     }
 }
