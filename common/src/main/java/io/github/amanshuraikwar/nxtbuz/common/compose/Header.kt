@@ -9,10 +9,19 @@ import androidx.compose.ui.unit.dp
 import java.util.*
 
 @Composable
-fun Header(title: String) {
+fun Header(
+    modifier: Modifier = Modifier,
+    title: String
+) {
     Text(
         text = title.toUpperCase(Locale.ROOT),
-        Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 8.dp),
+        modifier = modifier
+            .padding(
+                start = 16.dp,
+                top = 8.dp,
+                end = 16.dp,
+                bottom = 8.dp
+            ),
         color = MaterialTheme.colors.onSurface,
         style = MaterialTheme.typography.overline
     )

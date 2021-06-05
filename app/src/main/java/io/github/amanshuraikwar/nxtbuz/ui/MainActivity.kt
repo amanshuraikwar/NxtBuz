@@ -23,6 +23,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsScreen
+import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzApp
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.makeStatusBarTransparent
@@ -54,7 +55,6 @@ class MainActivity : DaggerAppCompatActivity() {
         makeStatusBarTransparent()
         setContent {
             NxtBuzApp {
-
                 Box {
                     NxtBuzMap(Modifier.fillMaxSize(), viewModelProvider(viewModelFactory))
 

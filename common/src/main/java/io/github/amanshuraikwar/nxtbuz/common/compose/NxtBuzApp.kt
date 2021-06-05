@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.ui
+package io.github.amanshuraikwar.nxtbuz.common.compose
 
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.material.MaterialTheme

@@ -1,17 +1,16 @@
 package io.github.amanshuraikwar.nxtbuz.settings.ui
 
 import android.os.Bundle
-import androidx.lifecycle.Observer
+import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.support.DaggerAppCompatActivity
-import io.github.amanshuraikwar.multiitemadapter.MultiItemAdapter
+import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzApp
+import io.github.amanshuraikwar.nxtbuz.common.util.makeStatusBarTransparent
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
-import io.github.amanshuraikwar.nxtbuz.listitem.RecyclerViewTypeFactoryGenerated
-import io.github.amanshuraikwar.nxtbuz.settings.R
-import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
 
+@ExperimentalAnimationApi
 class SettingsActivity : DaggerAppCompatActivity() {
 
     @Inject
@@ -19,23 +18,13 @@ class SettingsActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-        itemsRv.layoutManager = LinearLayoutManager(this)
-        toolbar.setNavigationOnClickListener {
-            finish()
-        }
-        setupViewModel()
-    }
-
-    private fun setupViewModel() {
-        val viewModel = viewModelProvider<SettingsViewModel>(viewModelFactory)
-        viewModel.listItems.observe(
-            this,
-            Observer { listItems ->
-                val adapter =
-                    MultiItemAdapter(this, RecyclerViewTypeFactoryGenerated(), listItems)
-                itemsRv.adapter = adapter
+        makeStatusBarTransparent()
+        setContent {
+            NxtBuzApp {
+                SettingsScreen(vm = viewModelProvider(viewModelFactory)) {
+                    finish()
+                }
             }
-        )
+        }
     }
 }

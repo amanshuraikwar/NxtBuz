@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.di
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import io.github.amanshuraikwar.nxtbuz.busroute.di.BusRouteModule
@@ -70,6 +71,7 @@ abstract class ActivityBindingModule {
     )
     internal abstract fun c(): MainActivity
 
+    @ExperimentalAnimationApi
     @ActivityScoped
     @ContributesAndroidInjector(modules = [SettingsModule::class])
     internal abstract fun e(): SettingsActivity
