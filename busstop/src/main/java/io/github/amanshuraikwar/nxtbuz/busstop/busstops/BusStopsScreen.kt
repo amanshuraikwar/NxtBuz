@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -32,13 +30,9 @@ fun BusStopsScreen(
     onBusStopClick: (busStop: BusStop) -> Unit = {},
 ) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
-//        key = "busStops",
         BottomSheetValue.Collapsed
     )
-//    val bottomSheetState = remember {
-//        //rememberBottomSheetState(BottomSheetValue.Collapsed)
-//        BottomSheetState(BottomSheetValue.Collapsed)
-//    }
+
     val screenState by vm.screenState.collectAsState()
 
     LaunchedEffect(key1 = bottomSheetState.isInitialised) {
@@ -50,9 +44,6 @@ fun BusStopsScreen(
     NxtBuzBottomSheet(
         modifier = modifier,
         state = bottomSheetState,
-//        onInit = {
-//            vm.fetchBusStops()
-//        }
     ) { padding ->
 
         Crossfade(targetState = screenState) { screenState ->
@@ -114,12 +105,6 @@ fun BusStopsView(
                         modifier = Modifier.clickable {
                             coroutineScope.launch {
                                 onBusStopClick(item.busStop)
-//                                // see: https://wajahatkarim.com/2021/03/pass-parcelable-compose-navigation/
-//                                navController.currentBackStackEntry?.arguments?.putParcelable(
-//                                    "busStop",
-//                                    item.busStop
-//                                )
-//                                navController.navigate("busStopArrival")
                             }
                         },
                         data = item

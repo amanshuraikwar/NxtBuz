@@ -6,8 +6,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.*
-import androidx.compose.material.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +29,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun BusStopArrivalsScreen(
     modifier: Modifier = Modifier,
-//    navController: NavController,
     vm: BusStopArrivalsViewModel,
     busStop: BusStop,
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit = { _, _ -> },
@@ -42,13 +45,11 @@ fun BusStopArrivalsScreen(
 @Composable
 fun BusStopArrivalsScreen(
     modifier: Modifier = Modifier,
-//    navController: NavController,
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
     vm: BusStopArrivalsViewModel,
     busStopCode: String,
 ) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
-//        key = busStopCode,
         initialValue = BottomSheetValue.Collapsed
     )
     val screenState by vm.screenState.collectAsState()
@@ -62,9 +63,6 @@ fun BusStopArrivalsScreen(
     DisposableEffect(key1 = busStopCode) {
         vm.bottomSheetInit = bottomSheetState.isInitialised
         vm.init(busStopCode)
-//        if (bottomSheetState.isCollapsed) {
-//            vm.bottomSheetInit = true
-//        }
         onDispose {
             vm.onDispose()
         }
@@ -75,12 +73,8 @@ fun BusStopArrivalsScreen(
     }
 
     NxtBuzBottomSheet(
-        //key = busStopCode,
         modifier = modifier,
         state = bottomSheetState,
-//        onInit = {
-//            vm.bottomSheetInit = true
-//        }
     ) { padding ->
         Crossfade(targetState = screenState) { screenState ->
             when (screenState) {
@@ -125,7 +119,6 @@ fun BusStopArrivalsScreen(
                             modifier = Modifier
                                 .background(color = backgroundColor)
                                 .padding(top = padding.calculateTopPadding()),
-                            //data = screenState.header
                             busStopDescription = screenState.header.busStopDescription,
                             busStopRoadName = screenState.header.busStopRoadName,
                             busStopCode = screenState.header.busStopCode,
@@ -158,7 +151,6 @@ fun BusStopArrivalsScreen(
 @Composable
 fun BusStopArrivalsView(
     listItems: List<BusStopArrivalListItemData>,
-//    navController: NavController,
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
     onStarToggle: (busServiceNumber: String, newToggleState: Boolean) -> Unit
 ) {
@@ -184,7 +176,8 @@ fun BusStopArrivalsView(
             items = listItems,
             key = { _, item ->
                 when (item) {
-                    is BusStopArrivalListItemData.BusStopArrival -> "${item.busServiceNumber}-arrival"
+                    is BusStopArrivalListItemData.BusStopArrival ->
+                        "${item.busServiceNumber}-arrival"
                     is BusStopArrivalListItemData.BusStopHeader -> item.busStopCode
                     is BusStopArrivalListItemData.Header -> item.title
                 }
@@ -200,9 +193,6 @@ fun BusStopArrivalsView(
                                     item.busStop.code,
                                     item.busServiceNumber
                                 )
-//                                navController.navigate(
-//                                    "busRoute/${item.busServiceNumber}/${item.busStop.code}"
-//                                )
                             }
                         },
                         data = item,
@@ -218,11 +208,13 @@ fun BusStopArrivalsView(
                         title = item.title
                     )
                 }
-//                is BusStopArrivalListItemData.BusStopHeader -> {
-//                    BusStopHeaderItem(
-//                        data = item
-//                    )
-//                }
+                is BusStopArrivalListItemData.BusStopHeader -> {
+                    BusStopHeaderItem(
+                        busStopDescription = item.busStopDescription,
+                        busStopRoadName = item.busStopRoadName,
+                        busStopCode = item.busStopCode,
+                    )
+                }
             }
         }
     }

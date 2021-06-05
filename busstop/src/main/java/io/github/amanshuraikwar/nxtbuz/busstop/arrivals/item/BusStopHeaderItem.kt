@@ -1,30 +1,23 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
-import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Directions
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
-import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
 
 @Composable
 fun BusStopHeaderItem(
@@ -33,22 +26,8 @@ fun BusStopHeaderItem(
     busStopRoadName: String,
     busStopCode: String,
 ) {
-//    var alpha by remember {
-//        mutableStateOf(0f)
-//    }
-//
-//    LaunchedEffect(data.busStopCode) {
-//        animate(
-//            initialValue = 0f,
-//            targetValue = 1f,
-//            animationSpec = tween(300, delayMillis = 300)
-//        ) { animatedValue, _ ->
-//            alpha = animatedValue
-//        }
-//    }
-
     Box(
-        modifier = modifier/*.alpha(alpha)*/,
+        modifier = modifier,
         contentAlignment = Alignment.CenterEnd
     ) {
         Row(
@@ -144,8 +123,8 @@ fun BusStopHeaderItem(
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.h6Bold,
                     modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colors.onSurface.disabled)
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.onSurface.disabled)
                 )
 
                 Text(
@@ -158,25 +137,5 @@ fun BusStopHeaderItem(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun BusStopHeaderItemPreview() {
-    PreviewSurface {
-//        BusStopHeaderItem(
-//            data = BusStopArrivalListItemData.BusStopHeader()
-//        )
-    }
-}
-
-@Preview
-@Composable
-fun BusStopHeaderItemPreviewDark() {
-    PreviewSurface(darkTheme = true) {
-//        BusStopHeaderItem(
-//            data = BusStopArrivalListItemData.BusStopHeader()
-//        )
     }
 }
