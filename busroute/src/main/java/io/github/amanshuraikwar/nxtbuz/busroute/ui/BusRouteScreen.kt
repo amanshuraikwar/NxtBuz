@@ -26,10 +26,13 @@ fun BusRouteScreen(
     busStopCode: String,
     vm: BusRouteViewModel
 ) {
-    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
+    val bottomSheetState = rememberNxtBuzBottomSheetState(
+//        key = "$busStopCode$busServiceNumber",
+        initialValue = BottomSheetValue.Collapsed
+    )
     val screenState by vm.screenState.collectAsState(initial = BusRouteScreenState.Fetching)
 
-    val backgroundColor = if (bottomSheetState.expandProgressFraction == 1f) {
+    val backgroundColor = if (bottomSheetState.bottomSheetState.expandProgressFraction == 1f) {
         MaterialTheme.colors.surface
     } else {
         Color.Transparent
@@ -37,17 +40,25 @@ fun BusRouteScreen(
 
     DisposableEffect(key1 = busServiceNumber, key2 = busStopCode) {
         vm.init(busServiceNumber, busStopCode)
+        vm.bottomSheetInit = bottomSheetState.isInitialised
+//        if (bottomSheetState.isCollapsed) {
+//            vm.bottomSheetInit = true
+//        }
         onDispose {
             vm.onDispose()
         }
     }
 
+    LaunchedEffect(key1 = bottomSheetState.isInitialised) {
+        vm.bottomSheetInit = bottomSheetState.isInitialised
+    }
+
     NxtBuzBottomSheet(
         modifier = modifier,
-        bottomSheetState = bottomSheetState,
-        onInit = {
-            vm.bottomSheetInit = true
-        }
+        state = bottomSheetState,
+//        onInit = {
+//            vm.bottomSheetInit = true
+//        }
     ) { padding ->
         Crossfade(targetState = screenState) { screenState ->
             when (screenState) {

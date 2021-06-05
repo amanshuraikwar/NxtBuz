@@ -29,7 +29,9 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
 @Composable
 fun BusStopHeaderItem(
     modifier: Modifier = Modifier,
-    data: BusStopArrivalListItemData.BusStopHeader,
+    busStopDescription: String,
+    busStopRoadName: String,
+    busStopCode: String,
 ) {
 //    var alpha by remember {
 //        mutableStateOf(0f)
@@ -75,13 +77,13 @@ fun BusStopHeaderItem(
                 Modifier.padding(start = 16.dp)
             ) {
                 Text(
-                    text = data.busStopDescription,
+                    text = busStopDescription,
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.h6Bold,
                 )
 
                 Text(
-                    text = "${data.busStopRoadName} • ${data.busStopCode}",
+                    text = "${busStopRoadName} • ${busStopCode}",
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.body2,
                     modifier = Modifier.padding(top = 2.dp)
@@ -163,9 +165,9 @@ fun BusStopHeaderItem(
 @Composable
 fun BusStopHeaderItemPreview() {
     PreviewSurface {
-        BusStopHeaderItem(
-            data = BusStopArrivalListItemData.BusStopHeader()
-        )
+//        BusStopHeaderItem(
+//            data = BusStopArrivalListItemData.BusStopHeader()
+//        )
     }
 }
 
@@ -173,8 +175,8 @@ fun BusStopHeaderItemPreview() {
 @Composable
 fun BusStopHeaderItemPreviewDark() {
     PreviewSurface(darkTheme = true) {
-        BusStopHeaderItem(
-            data = BusStopArrivalListItemData.BusStopHeader()
-        )
+//        BusStopHeaderItem(
+//            data = BusStopArrivalListItemData.BusStopHeader()
+//        )
     }
 }

@@ -124,8 +124,8 @@ class BusRouteViewModel @Inject constructor(
 
     private suspend fun waitForBottomSheetInit() {
         while (true) {
-            delay(300)
             if (bottomSheetInit) break
+            delay(300)
         }
     }
 
