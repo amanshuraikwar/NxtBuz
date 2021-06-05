@@ -98,20 +98,21 @@ class BusStopArrivalsViewModel @Inject constructor(
             }
 
             busArrivalListLock.withLock {
-                addBusStopMapMarker(busStop = busStop)
                 this@BusStopArrivalsViewModel.busStop = busStop
             }
 
             listenToggleStarUpdate()
             waitForBottomSheetInit()
             startListeningArrivals()
+
+            addBusStopMapMarker(busStop = busStop)
         }
     }
 
     private suspend fun waitForBottomSheetInit() {
         while (true) {
-            delay(300)
             if (bottomSheetInit) break
+            delay(300)
         }
     }
 
@@ -371,6 +372,7 @@ class BusStopArrivalsViewModel @Inject constructor(
         bottomSheetInit = false
         listenStarUpdatesJob?.cancel()
         listenStarUpdatesJob = null
+        _screenState.value = BusStopArrivalsScreenState.Fetching
     }
 
     private fun startListeningArrivals() {
@@ -386,7 +388,6 @@ class BusStopArrivalsViewModel @Inject constructor(
             handleBusArrivalList(
                 busArrivalList
             )
-
         }
     }
 

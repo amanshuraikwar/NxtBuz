@@ -6,14 +6,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.*
-import androidx.compose.material.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItem
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopHeaderItem
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
@@ -27,13 +29,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun BusStopArrivalsScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
     vm: BusStopArrivalsViewModel,
     busStop: BusStop,
+    onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit = { _, _ -> },
 ) {
     BusStopArrivalsScreen(
         modifier,
-        navController,
+        onBusServiceClick,
         vm,
         busStop.code
     )
@@ -43,32 +45,36 @@ fun BusStopArrivalsScreen(
 @Composable
 fun BusStopArrivalsScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
+    onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
     vm: BusStopArrivalsViewModel,
     busStopCode: String,
 ) {
-    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
-    val screenState by vm.screenState.collectAsState(initial = BusStopArrivalsScreenState.Fetching)
+    val bottomSheetState = rememberNxtBuzBottomSheetState(
+        initialValue = BottomSheetValue.Collapsed
+    )
+    val screenState by vm.screenState.collectAsState()
 
-    val backgroundColor = if (bottomSheetState.expandProgressFraction == 1f) {
+    val backgroundColor = if (bottomSheetState.bottomSheetState.expandProgressFraction == 1f) {
         MaterialTheme.colors.surface
     } else {
         Color.Transparent
     }
 
     DisposableEffect(key1 = busStopCode) {
+        vm.bottomSheetInit = bottomSheetState.isInitialised
         vm.init(busStopCode)
         onDispose {
             vm.onDispose()
         }
     }
 
+    LaunchedEffect(key1 = bottomSheetState.isInitialised) {
+        vm.bottomSheetInit = bottomSheetState.isInitialised
+    }
+
     NxtBuzBottomSheet(
         modifier = modifier,
-        bottomSheetState = bottomSheetState,
-        onInit = {
-            vm.bottomSheetInit = true
-        }
+        state = bottomSheetState,
     ) { padding ->
         Crossfade(targetState = screenState) { screenState ->
             when (screenState) {
@@ -81,7 +87,9 @@ fun BusStopArrivalsScreen(
                             BusStopHeaderItem(
                                 modifier = Modifier
                                     .background(color = backgroundColor),
-                                data = header
+                                busStopDescription = header.busStopDescription,
+                                busStopRoadName = header.busStopRoadName,
+                                busStopCode = header.busStopCode,
                             )
                         }
 
@@ -111,7 +119,9 @@ fun BusStopArrivalsScreen(
                             modifier = Modifier
                                 .background(color = backgroundColor)
                                 .padding(top = padding.calculateTopPadding()),
-                            data = screenState.header
+                            busStopDescription = screenState.header.busStopDescription,
+                            busStopRoadName = screenState.header.busStopRoadName,
+                            busStopCode = screenState.header.busStopCode,
                         )
 
                         Divider()
@@ -121,7 +131,7 @@ fun BusStopArrivalsScreen(
                         } else {
                             BusStopArrivalsView(
                                 listItems = screenState.listItems,
-                                navController = navController,
+                                onBusServiceClick = onBusServiceClick,
                                 onStarToggle = { busServiceNumber, newToggleState ->
                                     vm.onStarToggle(
                                         newToggleState,
@@ -141,7 +151,7 @@ fun BusStopArrivalsScreen(
 @Composable
 fun BusStopArrivalsView(
     listItems: List<BusStopArrivalListItemData>,
-    navController: NavController,
+    onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
     onStarToggle: (busServiceNumber: String, newToggleState: Boolean) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -166,7 +176,8 @@ fun BusStopArrivalsView(
             items = listItems,
             key = { _, item ->
                 when (item) {
-                    is BusStopArrivalListItemData.BusStopArrival -> "${item.busServiceNumber}-arrival"
+                    is BusStopArrivalListItemData.BusStopArrival ->
+                        "${item.busServiceNumber}-arrival"
                     is BusStopArrivalListItemData.BusStopHeader -> item.busStopCode
                     is BusStopArrivalListItemData.Header -> item.title
                 }
@@ -178,8 +189,9 @@ fun BusStopArrivalsView(
                     BusStopArrivalItem(
                         modifier = Modifier.clickable {
                             coroutineScope.launch {
-                                navController.navigate(
-                                    "busRoute/${item.busServiceNumber}/${item.busStop.code}"
+                                onBusServiceClick(
+                                    item.busStop.code,
+                                    item.busServiceNumber
                                 )
                             }
                         },
@@ -198,7 +210,9 @@ fun BusStopArrivalsView(
                 }
                 is BusStopArrivalListItemData.BusStopHeader -> {
                     BusStopHeaderItem(
-                        data = item
+                        busStopDescription = item.busStopDescription,
+                        busStopRoadName = item.busStopRoadName,
+                        busStopCode = item.busStopCode,
                     )
                 }
             }
