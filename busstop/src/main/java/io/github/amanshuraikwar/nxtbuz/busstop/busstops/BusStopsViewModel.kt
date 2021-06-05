@@ -14,9 +14,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUpdatesUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -40,8 +38,8 @@ class BusStopsViewModel @Inject constructor(
     private val listItems = SnapshotStateList<BusStopsItemData>()
     private val listItemsLock = Mutex()
 
-    private val _screenState = MutableSharedFlow<BusStopsScreenState>(replay = 1)
-    val screenState: SharedFlow<BusStopsScreenState> = _screenState
+    private val _screenState = MutableStateFlow<BusStopsScreenState>(BusStopsScreenState.Fetching)
+    val screenState: StateFlow<BusStopsScreenState> = _screenState
 
 //    init {
 //        fetchBusStops()

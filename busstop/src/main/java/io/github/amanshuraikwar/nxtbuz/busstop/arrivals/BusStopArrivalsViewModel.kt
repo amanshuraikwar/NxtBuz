@@ -62,9 +62,9 @@ class BusStopArrivalsViewModel @Inject constructor(
             var busStop = this@BusStopArrivalsViewModel.busStop
 
             if (busStopCode == busStop?.code) {
-//                busArrivalListLock.withLock {
-//                    listItems = SnapshotStateList()
-//                }
+                busArrivalListLock.withLock {
+                    listItems = SnapshotStateList()
+                }
 
                 _screenState.emit(
                     BusStopArrivalsScreenState.Success(
@@ -98,13 +98,14 @@ class BusStopArrivalsViewModel @Inject constructor(
             }
 
             busArrivalListLock.withLock {
-                addBusStopMapMarker(busStop = busStop)
                 this@BusStopArrivalsViewModel.busStop = busStop
             }
 
             listenToggleStarUpdate()
             waitForBottomSheetInit()
             startListeningArrivals()
+
+            addBusStopMapMarker(busStop = busStop)
         }
     }
 
@@ -366,12 +367,12 @@ class BusStopArrivalsViewModel @Inject constructor(
                 markerId = busStop?.code ?: return,
             )
         )
-        //busStop = null
         loop?.stop()
         loop = null
         bottomSheetInit = false
         listenStarUpdatesJob?.cancel()
         listenStarUpdatesJob = null
+        _screenState.value = BusStopArrivalsScreenState.Fetching
     }
 
     private fun startListeningArrivals() {
@@ -387,7 +388,6 @@ class BusStopArrivalsViewModel @Inject constructor(
             handleBusArrivalList(
                 busArrivalList
             )
-
         }
     }
 
