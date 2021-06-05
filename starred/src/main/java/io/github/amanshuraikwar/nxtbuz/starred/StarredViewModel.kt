@@ -9,10 +9,7 @@ import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.GetStarredBusServicesUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.StarredBusArrivalsLoop
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
@@ -28,6 +25,7 @@ class StarredViewModel @Inject constructor(
     private val getBusStopUseCase: GetBusStopUseCase,
     private val toggleStar: ToggleBusStopStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
+    private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -41,6 +39,7 @@ class StarredViewModel @Inject constructor(
     var listItemsFlow = MutableStateFlow(SnapshotStateList<StarredBusArrivalData>())
     private var loop: StarredBusArrivalsLoop? = null
     private var listenStarUpdatesJob: Job? = null
+    private var listenShowErrorStarredBusArrivalsUpdateJob: Job? = null
 
     fun start() {
         viewModelScope.launch(coroutineContext) {
@@ -49,6 +48,7 @@ class StarredViewModel @Inject constructor(
             }
             startListeningArrivals()
             listenToggleStarUpdate()
+            listenShowErrorStarredBusArrivalsUpdate()
         }
     }
 
@@ -65,6 +65,18 @@ class StarredViewModel @Inject constructor(
     }
 
     @Synchronized
+    private fun listenShowErrorStarredBusArrivalsUpdate() {
+        listenShowErrorStarredBusArrivalsUpdateJob?.cancel()
+        listenShowErrorStarredBusArrivalsUpdateJob = null
+        listenShowErrorStarredBusArrivalsUpdateJob = viewModelScope.launch(coroutineContext) {
+            showErrorStarredBusArrivalsUseCase.updates()
+                .collect {
+                    loop?.emitNow()
+                }
+        }
+    }
+
+    @Synchronized
     private fun startListeningArrivals() {
         loop?.stop()
         loop = null
@@ -72,6 +84,7 @@ class StarredViewModel @Inject constructor(
             getStarredBusServicesUseCase = getStarredBusServicesUseCase,
             getBusArrivalsUseCase = getBusArrivalsUseCase,
             getBusStopUseCase = getBusStopUseCase,
+            showErrorStarredBusArrivalsUseCase = showErrorStarredBusArrivalsUseCase,
             coroutineScope = viewModelScope,
             dispatcher = dispatcherProvider.pool8,
         )
@@ -157,9 +170,7 @@ class StarredViewModel @Inject constructor(
         loop = null
         listenStarUpdatesJob?.cancel()
         listenStarUpdatesJob = null
-    }
-
-    override fun onCleared() {
-        super.onCleared()
+        listenShowErrorStarredBusArrivalsUpdateJob?.cancel()
+        listenShowErrorStarredBusArrivalsUpdateJob = null
     }
 }
