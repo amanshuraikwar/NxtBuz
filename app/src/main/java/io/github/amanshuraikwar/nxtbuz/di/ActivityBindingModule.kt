@@ -17,10 +17,6 @@ import io.github.amanshuraikwar.nxtbuz.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsModule
 import io.github.amanshuraikwar.nxtbuz.starred.StarredModule
-import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsActivity
-import io.github.amanshuraikwar.nxtbuz.starred.ui.StarredBusArrivalsModule
-import io.github.amanshuraikwar.nxtbuz.starred.ui.di.StarredBusArrivalsProvides
-import io.github.amanshuraikwar.nxtbuz.starred.ui.options.di.StarredBusArrivalOptionsModule
 import io.github.amanshuraikwar.nxtbuz.ui.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.di.MainLiveDataProvides
 import io.github.amanshuraikwar.nxtbuz.ui.di.MainModule
@@ -59,8 +55,6 @@ abstract class ActivityBindingModule {
             MainLiveDataProvides::class,
             PermissionUtilProvides::class,
             LocationUtilProvides::class,
-            StarredBusArrivalsProvides::class,
-            StarredBusArrivalOptionsModule::class,
             MapModule::class,
             BusStopsModule::class,
             BusRouteModule::class,
@@ -75,14 +69,4 @@ abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = [SettingsModule::class])
     internal abstract fun e(): SettingsActivity
-
-    @ActivityScoped
-    @ContributesAndroidInjector(
-        modules = [
-            StarredBusArrivalsModule::class,
-            StarredBusArrivalOptionsModule::class,
-            StarredBusArrivalsProvides::class
-        ]
-    )
-    internal abstract fun f(): StarredBusArrivalsActivity
 }

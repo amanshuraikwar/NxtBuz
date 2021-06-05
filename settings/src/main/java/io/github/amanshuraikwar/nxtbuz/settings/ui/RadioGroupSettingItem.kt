@@ -40,7 +40,7 @@ fun RadioGroupSettingItem(
             }
             .fillMaxWidth(),
         color = MaterialTheme.colors.surface,
-        elevation = 4.dp
+        elevation = 2.dp
     ) {
         Column(
             Modifier

@@ -25,7 +25,7 @@ fun AboutItem(
         Spacer(modifier = Modifier.height(32.dp))
 
         Surface(
-            shape = MaterialTheme.shapes.large,
+            shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colors.primary,
             modifier = Modifier.align(Alignment.CenterHorizontally),
             elevation = 2.dp
@@ -36,16 +36,20 @@ fun AboutItem(
                 ),
                 contentDescription = "App Icon",
                 tint = MaterialTheme.colors.onPrimary,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(48.dp)
             )
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text(
             text = appName,
-            style = MaterialTheme.typography.h4,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
+            style = MaterialTheme.typography.h6Bold,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.onSurface
         )
@@ -54,8 +58,10 @@ fun AboutItem(
 
         Text(
             text = versionName,
-            style = MaterialTheme.typography.h6Bold,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
+            style = MaterialTheme.typography.subtitle2,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.onSurface
         )
