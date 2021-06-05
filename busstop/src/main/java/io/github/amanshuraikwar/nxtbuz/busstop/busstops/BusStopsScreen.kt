@@ -7,38 +7,52 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.items.BusStopItem
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsScreenState
 import io.github.amanshuraikwar.nxtbuz.common.compose.Header
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
+import io.github.amanshuraikwar.nxtbuz.common.compose.rememberNxtBuzBottomSheetState
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
+import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
 fun BusStopsScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
-    vm: BusStopsViewModel
+    vm: BusStopsViewModel,
+    onBusStopClick: (busStop: BusStop) -> Unit = {},
 ) {
-    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
+    val bottomSheetState = rememberNxtBuzBottomSheetState(
+//        key = "busStops",
+        BottomSheetValue.Collapsed
+    )
+//    val bottomSheetState = remember {
+//        //rememberBottomSheetState(BottomSheetValue.Collapsed)
+//        BottomSheetState(BottomSheetValue.Collapsed)
+//    }
     val screenState by vm.screenState.collectAsState(initial = BusStopsScreenState.Fetching)
+
+    LaunchedEffect(key1 = bottomSheetState.isInitialised) {
+        if (bottomSheetState.isInitialised) {
+            vm.fetchBusStops()
+        }
+    }
 
     NxtBuzBottomSheet(
         modifier = modifier,
-        bottomSheetState = bottomSheetState,
-        onInit = {
-            vm.fetchBusStops()
-        }
+        state = bottomSheetState,
+//        onInit = {
+//            vm.fetchBusStops()
+//        }
     ) { padding ->
 
         Crossfade(targetState = screenState) { screenState ->
@@ -55,7 +69,7 @@ fun BusStopsScreen(
                     BusStopsView(
                         screenState.listItems,
                         padding,
-                        navController
+                        onBusStopClick
                     )
                 }
             }
@@ -68,7 +82,7 @@ fun BusStopsScreen(
 fun BusStopsView(
     listItems: List<BusStopsItemData>,
     padding: PaddingValues,
-    navController: NavController,
+    onBusStopClick: (busStop: BusStop) -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
@@ -99,12 +113,13 @@ fun BusStopsView(
                     BusStopItem(
                         modifier = Modifier.clickable {
                             coroutineScope.launch {
-                                // see: https://wajahatkarim.com/2021/03/pass-parcelable-compose-navigation/
-                                navController.currentBackStackEntry?.arguments?.putParcelable(
-                                    "busStop",
-                                    item.busStop
-                                )
-                                navController.navigate("busStopArrival")
+                                onBusStopClick(item.busStop)
+//                                // see: https://wajahatkarim.com/2021/03/pass-parcelable-compose-navigation/
+//                                navController.currentBackStackEntry?.arguments?.putParcelable(
+//                                    "busStop",
+//                                    item.busStop
+//                                )
+//                                navController.navigate("busStopArrival")
                             }
                         },
                         data = item

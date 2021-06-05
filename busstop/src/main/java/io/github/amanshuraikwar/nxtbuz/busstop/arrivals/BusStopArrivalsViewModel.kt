@@ -62,9 +62,9 @@ class BusStopArrivalsViewModel @Inject constructor(
             var busStop = this@BusStopArrivalsViewModel.busStop
 
             if (busStopCode == busStop?.code) {
-                busArrivalListLock.withLock {
-                    listItems = SnapshotStateList()
-                }
+//                busArrivalListLock.withLock {
+//                    listItems = SnapshotStateList()
+//                }
 
                 _screenState.emit(
                     BusStopArrivalsScreenState.Success(
@@ -110,8 +110,8 @@ class BusStopArrivalsViewModel @Inject constructor(
 
     private suspend fun waitForBottomSheetInit() {
         while (true) {
-            delay(300)
             if (bottomSheetInit) break
+            delay(300)
         }
     }
 
@@ -366,6 +366,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                 markerId = busStop?.code ?: return,
             )
         )
+        //busStop = null
         loop?.stop()
         loop = null
         bottomSheetInit = false
