@@ -39,7 +39,7 @@ fun BusStopsScreen(
 //        //rememberBottomSheetState(BottomSheetValue.Collapsed)
 //        BottomSheetState(BottomSheetValue.Collapsed)
 //    }
-    val screenState by vm.screenState.collectAsState(initial = BusStopsScreenState.Fetching)
+    val screenState by vm.screenState.collectAsState()
 
     LaunchedEffect(key1 = bottomSheetState.isInitialised) {
         if (bottomSheetState.isInitialised) {

@@ -60,8 +60,8 @@ fun BusStopArrivalsScreen(
     }
 
     DisposableEffect(key1 = busStopCode) {
-        vm.init(busStopCode)
         vm.bottomSheetInit = bottomSheetState.isInitialised
+        vm.init(busStopCode)
 //        if (bottomSheetState.isCollapsed) {
 //            vm.bottomSheetInit = true
 //        }

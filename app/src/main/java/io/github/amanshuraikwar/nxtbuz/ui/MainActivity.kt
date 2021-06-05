@@ -65,13 +65,13 @@ class MainActivity : DaggerAppCompatActivity() {
                 Box {
                     val screenState by vm.screenState.collectAsState()
 
-//                    NxtBuzMap(Modifier.fillMaxSize(), viewModelProvider(viewModelFactory))
+                    NxtBuzMap(Modifier.fillMaxSize(), viewModelProvider(viewModelFactory))
 
                     val searchState = rememberSearchState(
                         vm = viewModelProvider(viewModelFactory)
                     )
 
-                    val navController = rememberNavController()
+                    //val navController = rememberNavController()
                     val backHandlerEnabled =
                         searchState.screenState != SearchScreenState.Nothing
 
@@ -80,7 +80,7 @@ class MainActivity : DaggerAppCompatActivity() {
                     }
 
                     LaunchedEffect(key1 = backHandlerEnabled) {
-                        navController.enableOnBackPressed(!backHandlerEnabled)
+                        //navController.enableOnBackPressed(!backHandlerEnabled)
                     }
 
                     if (searchState.searchBarPadding != 0.dp) {
