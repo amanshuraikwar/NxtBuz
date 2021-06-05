@@ -41,10 +41,6 @@ class BusStopsViewModel @Inject constructor(
     private val _screenState = MutableStateFlow<BusStopsScreenState>(BusStopsScreenState.Fetching)
     val screenState: StateFlow<BusStopsScreenState> = _screenState
 
-//    init {
-//        fetchBusStops()
-//    }
-
     fun fetchBusStops() {
         viewModelScope.launch(coroutineContext) {
             if (listItems.isNotEmpty()) return@launch

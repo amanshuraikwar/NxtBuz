@@ -26,11 +26,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    @Synchronized
     fun onBusStopClick(busStop: BusStop) {
         backStack.push(screenState.value)
         _screenState.value = MainScreenState.BusStopArrivals(busStop)
     }
 
+    @Synchronized
     fun onBusServiceClick(busStopCode: String, busServiceNumber: String) {
         backStack.push(screenState.value)
         _screenState.value = MainScreenState.BusRoute(
