@@ -27,6 +27,9 @@ class StarredBusArrivalRepository @Inject constructor(
     private val _toggleStarUpdate = MutableSharedFlow<ToggleStarUpdate>()
     val toggleStarUpdate: SharedFlow<ToggleStarUpdate> = _toggleStarUpdate
 
+    private val _toggleShouldShowErrorArrivals = MutableSharedFlow<Boolean>()
+    val toggleShouldShowErrorArrivals: SharedFlow<Boolean> = _toggleShouldShowErrorArrivals
+
     suspend fun shouldShowErrorStarredBusArrivals(): Boolean = withContext(dispatcherProvider.io) {
         preferenceStorage.showErrorStarredBusArrivals
     }
@@ -35,6 +38,9 @@ class StarredBusArrivalRepository @Inject constructor(
         withContext(dispatcherProvider.io) {
             if (shouldShow != preferenceStorage.showErrorStarredBusArrivals) {
                 preferenceStorage.showErrorStarredBusArrivals = shouldShow
+                coroutineScope.launch {
+                    _toggleShouldShowErrorArrivals.emit(shouldShow)
+                }
             }
         }
     }

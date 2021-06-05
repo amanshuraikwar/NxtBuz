@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.domain.starred
 
 import io.github.amanshuraikwar.nxtbuz.common.model.StarredBusArrival
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusStopArrival
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
@@ -11,6 +12,7 @@ class StarredBusArrivalsLoop(
     private val getStarredBusServicesUseCase: GetStarredBusServicesUseCase,
     private val getBusArrivalsUseCase: GetBusArrivalsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
+    private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
     coroutineScope: CoroutineScope,
     dispatcher: CoroutineDispatcher,
 ) : Loop<List<StarredBusArrival>>(
@@ -33,13 +35,21 @@ class StarredBusArrivalsLoop(
                             .filter {
                                 it.busServiceNumber in starredBusServiceSet
                             }
-                            .map {  busStopArrival ->
+                            .map { busStopArrival ->
                                 StarredBusArrival(
                                     busStopCode = busStopCode,
                                     busServiceNumber = busStopArrival.busServiceNumber,
                                     busStopDescription = busStopDescription,
                                     busArrivals = busStopArrival.busArrivals
                                 )
+                            }.let { starredBusArrivalList ->
+                                if (!showErrorStarredBusArrivalsUseCase()) {
+                                    starredBusArrivalList.filter { starredBusArrival ->
+                                        starredBusArrival.busArrivals is BusArrivals.Arriving
+                                    }
+                                } else {
+                                    starredBusArrivalList
+                                }
                             }
                     }
                 }
