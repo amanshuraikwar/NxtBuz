@@ -3,11 +3,11 @@ package io.github.amanshuraikwar.nxtbuz.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -67,11 +67,16 @@ class MainActivity : DaggerAppCompatActivity() {
                         vm = viewModelProvider(viewModelFactory)
                     )
 
-                    val backHandlerEnabled =
-                        searchState.screenState != SearchScreenState.Nothing
+                    LaunchedEffect(key1 = searchState.screenState) {
+                        if (searchState.screenState !is SearchScreenState.Nothing) {
+                            vm.onSearchScreenVisible()
+                        }
+                    }
 
-                    BackHandler(backHandlerEnabled) {
-                        searchState.clear()
+                    LaunchedEffect(key1 = screenState) {
+                        if (!screenState.searchVisible) {
+                            searchState.clear()
+                        }
                     }
 
                     if (searchState.searchBarPadding != 0.dp) {
@@ -100,6 +105,9 @@ class MainActivity : DaggerAppCompatActivity() {
                         },
                         onSettingsClicked = {
                             startSettingsActivity()
+                        },
+                        onBackPress = {
+                            vm.onBackPressed()
                         }
                     )
 
@@ -149,7 +157,7 @@ class MainActivity : DaggerAppCompatActivity() {
                     onBusServiceClick = onBusServiceClick
                 )
             }
-            MainScreenState.BusStops -> {
+            is MainScreenState.BusStops -> {
                 BusStopsScreen(
                     vm = viewModelProvider(viewModelFactory),
                     onBusStopClick = onBusStopClick,

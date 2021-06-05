@@ -25,6 +25,7 @@ fun SearchScreen(
     searchState: SearchState,
     onBusStopSelected: (BusStop) -> Unit = {},
     onSettingsClicked: () -> Unit = {},
+    onBackPress: () -> Unit = {},
 ) {
     val density = LocalDensity.current
     val insets = LocalWindowInsets.current
@@ -65,7 +66,7 @@ fun SearchScreen(
                 searchState.search(query)
             },
             onBackClicked = {
-                searchState.clear()
+                onBackPress()
             },
             onSettingsClicked = onSettingsClicked
         )
