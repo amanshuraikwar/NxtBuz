@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.settings.ui
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
@@ -15,6 +16,7 @@ abstract class SettingsModule {
     @ViewModelKey(SettingsViewModel::class)
     internal abstract fun a(a: SettingsViewModel): ViewModel
 
+    @ExperimentalAnimationApi
     @Binds
     internal abstract fun b(a: SettingsActivity): AppCompatActivity
 }

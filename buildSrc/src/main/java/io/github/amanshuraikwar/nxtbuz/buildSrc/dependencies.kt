@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.buildSrc
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha11"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta03"
 
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 

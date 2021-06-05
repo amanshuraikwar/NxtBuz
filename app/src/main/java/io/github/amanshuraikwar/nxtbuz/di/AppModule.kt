@@ -53,8 +53,8 @@ class AppModule {
     @Named("appVersionInfo")
     fun provideAppVersionInfo(): String {
         return if (BuildConfig.DEBUG) {
-            "V${BuildConfig.VERSION_NAME}" +
-                    " <<" +
+            "V${BuildConfig.VERSION_NAME}\n" +
+                    "<<" +
                     "${BuildConfig.VERSION_CODE}" +
                     " • " +
                     BuildConfig.BUILD_TYPE.toUpperCase(Locale.getDefault()) +

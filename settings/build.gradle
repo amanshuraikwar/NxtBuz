@@ -22,6 +22,22 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
     }
+
+    buildFeatures {
+        compose true
+        buildConfig true
+        resValues true
+
+        // Disable unused AGP features
+        viewBinding false
+        aidl false
+        renderScript false
+        shaders false
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
+    }
 }
 
 dependencies {
@@ -53,6 +69,12 @@ dependencies {
     implementation Libs.AndroidX.Navigation.fragment
 
     implementation Libs.Google.material
+
+    for (dependency in Libs.AndroidX.Compose.all) {
+        implementation dependency
+    }
+
+    implementation Libs.Accompanist.insets
 
     implementation Libs.Google.crashlytics
 }
