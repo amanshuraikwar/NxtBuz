@@ -3,22 +3,18 @@ package io.github.amanshuraikwar.nxtbuz.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigate
-import androidx.navigation.compose.rememberNavController
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
@@ -35,6 +31,7 @@ import io.github.amanshuraikwar.nxtbuz.search.ui.SearchScreen
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchScreenState
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.rememberSearchState
 import io.github.amanshuraikwar.nxtbuz.starred.StarredBusArrivals
+import io.github.amanshuraikwar.nxtbuz.ui.model.MainScreenState
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -48,31 +45,38 @@ class MainActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var locationUtil: LocationUtil
 
+    private lateinit var vm: MainViewModel
+
     @ExperimentalMaterialApi
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        vm = viewModelProvider(viewModelFactory)
         makeStatusBarTransparent()
         setContent {
             NxtBuzApp {
                 Box {
-                    NxtBuzMap(Modifier.fillMaxSize(), viewModelProvider(viewModelFactory))
+                    val screenState by vm.screenState.collectAsState()
+
+                    NxtBuzMap(
+                        Modifier.fillMaxSize(),
+                        viewModelProvider(viewModelFactory)
+                    )
 
                     val searchState = rememberSearchState(
                         vm = viewModelProvider(viewModelFactory)
                     )
 
-                    val navController = rememberNavController()
-
-                    val backHandlerEnabled =
-                        searchState.screenState != SearchScreenState.Nothing
-
-                    BackHandler(backHandlerEnabled) {
-                        searchState.clear()
+                    LaunchedEffect(key1 = searchState.screenState) {
+                        if (searchState.screenState !is SearchScreenState.Nothing) {
+                            vm.onSearchScreenVisible()
+                        }
                     }
 
-                    LaunchedEffect(key1 = backHandlerEnabled) {
-                        navController.enableOnBackPressed(!backHandlerEnabled)
+                    LaunchedEffect(key1 = screenState) {
+                        if (!screenState.searchVisible) {
+                            searchState.clear()
+                        }
                     }
 
                     if (searchState.searchBarPadding != 0.dp) {
@@ -83,7 +87,10 @@ class MainActivity : DaggerAppCompatActivity() {
                                 ),
                             vm = viewModelProvider(viewModelFactory),
                             onItemClicked = { busStopCode, busServiceNumber ->
-                                navController.navigate("busRoute/$busServiceNumber/$busStopCode")
+                                vm.onBusServiceClick(
+                                    busStopCode = busStopCode,
+                                    busServiceNumber = busServiceNumber
+                                )
                             }
                         )
                     }
@@ -94,15 +101,13 @@ class MainActivity : DaggerAppCompatActivity() {
                             .fillMaxHeight(),
                         searchState = searchState,
                         onBusStopSelected = { busStop ->
-                            // see: https://wajahatkarim.com/2021/03/pass-parcelable-compose-navigation/
-                            navController.currentBackStackEntry?.arguments?.putParcelable(
-                                "busStop",
-                                busStop
-                            )
-                            navController.navigate("busStopArrival")
+                            vm.onBusStopClick(busStop)
                         },
                         onSettingsClicked = {
                             startSettingsActivity()
+                        },
+                        onBackPress = {
+                            vm.onBackPressed()
                         }
                     )
 
@@ -115,7 +120,15 @@ class MainActivity : DaggerAppCompatActivity() {
                     Box(
                         Modifier.offset(y = offsetY)
                     ) {
-                        ContentNavGraph(navController = navController)
+                        ContentNavGraph(
+                            screenState = screenState,
+                            onBusStopClick = { busStop ->
+                                vm.onBusStopClick(busStop)
+                            },
+                            onBusServiceClick = { busStopCode, busServiceNumber ->
+                                vm.onBusServiceClick(busStopCode, busServiceNumber)
+                            }
+                        )
                     }
                 }
             }
@@ -124,52 +137,31 @@ class MainActivity : DaggerAppCompatActivity() {
 
     @ExperimentalMaterialApi
     @Composable
-    fun ContentNavGraph(navController: NavHostController) {
-        NavHost(navController, startDestination = "busStops") {
-            composable("busStops") {
-                BusStopsScreen(
+    fun ContentNavGraph(
+        screenState: MainScreenState,
+        onBusStopClick: (BusStop) -> Unit,
+        onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
+    ) {
+        when (screenState) {
+            is MainScreenState.BusRoute -> {
+                BusRouteScreen(
                     vm = viewModelProvider(viewModelFactory),
-                    navController = navController
+                    busStopCode = screenState.busStopCode,
+                    busServiceNumber = screenState.busServiceNumber
                 )
             }
-
-            composable(
-                "busStopArrival",
-            ) {
-                val busStop =
-                    navController
-                        .previousBackStackEntry
-                        ?.arguments
-                        ?.getParcelable<BusStop>(
-                            "busStop"
-                        )
-
-                if (busStop != null) {
-                    BusStopArrivalsScreen(
-                        navController = navController,
-                        vm = viewModelProvider(viewModelFactory),
-                        busStop = busStop,
-                    )
-                }
+            is MainScreenState.BusStopArrivals -> {
+                BusStopArrivalsScreen(
+                    vm = viewModelProvider(viewModelFactory),
+                    busStop = screenState.busStop,
+                    onBusServiceClick = onBusServiceClick
+                )
             }
-
-            composable(
-                "busRoute/{busServiceNumber}/{busStopCode}"
-            ) { backStackEntry ->
-                val busStopCode = backStackEntry
-                    .arguments
-                    ?.getString("busStopCode")
-
-                if (busStopCode != null) {
-                    BusRouteScreen(
-                        busServiceNumber = backStackEntry
-                            .arguments
-                            ?.getString("busServiceNumber")
-                            ?: return@composable,
-                        busStopCode = busStopCode,
-                        vm = viewModelProvider(viewModelFactory),
-                    )
-                }
+            is MainScreenState.BusStops -> {
+                BusStopsScreen(
+                    vm = viewModelProvider(viewModelFactory),
+                    onBusStopClick = onBusStopClick,
+                )
             }
         }
     }
@@ -184,9 +176,16 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode > LocationUtil.REQUEST_CHECK_SETTINGS) {
             locationUtil.onResult(requestCode, resultCode, data)
+        }
+    }
+
+    override fun onBackPressed() {
+        if (!vm.onBackPressed()) {
+            finish()
         }
     }
 }
