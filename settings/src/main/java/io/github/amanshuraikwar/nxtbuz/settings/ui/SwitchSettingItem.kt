@@ -25,16 +25,16 @@ fun SwitchSettingItem(
 ) {
     Surface(
         modifier = Modifier
-            .animateContentSize()
             .clickable {
                 data.onClick(!data.enabled)
             }
             .fillMaxWidth(),
         color = MaterialTheme.colors.surface,
-        elevation = 4.dp
+        elevation = 2.dp
     ) {
         FillFirstRow(
             Modifier
+                .animateContentSize()
                 .fillMaxWidth()
                 .padding(
                     top = 16.dp,
