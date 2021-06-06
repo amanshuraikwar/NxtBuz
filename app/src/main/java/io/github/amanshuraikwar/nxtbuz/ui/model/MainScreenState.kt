@@ -1,18 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.ui.model
 
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
-
 sealed class MainScreenState {
-    object BusStops : MainScreenState()
-
-    class BusStopArrivals(
-        val busStop: BusStop
+    object Fetching : MainScreenState()
+    data class Success(
+        val showMap: Boolean,
+        val navigationState: NavigationState,
     ) : MainScreenState()
-
-    class BusRoute(
-        val busStopCode: String,
-        val busServiceNumber: String,
-    ) : MainScreenState()
-
-    object Search : MainScreenState()
 }
+

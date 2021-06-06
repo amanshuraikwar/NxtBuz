@@ -58,7 +58,7 @@ fun StarredBusArrivals(
         modifier
             .offset(x = offsetX)
             .alpha(alpha),
-        contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp)
+        contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp)
     ) {
         itemsIndexedSafe(
             items = listItems,

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.map.ShouldShowMapUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.settings.ui.model.SettingsItemData
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -20,6 +21,7 @@ private const val TAG = "SettingsViewModel"
 class SettingsViewModel @Inject constructor(
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
     private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
+    private val shouldShowMapUseCase: ShouldShowMapUseCase,
     dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -109,6 +111,35 @@ class SettingsViewModel @Inject constructor(
                                 listItems[4] = it.copy(enabled = newValue)
                             }
                             showErrorStarredBusArrivalsUseCase(newValue)
+                        }
+                    }
+                )
+            )
+
+            listItems.add(
+                SettingsItemData.Header(
+                    "Map"
+                )
+            )
+
+            val shouldShowMap = shouldShowMapUseCase()
+
+            listItems.add(
+                SettingsItemData.Switch(
+                    title = "Show map for easy navigation",
+                    enabledDescription =
+                    "Map will be shown to help locate bus stops and routes, " +
+                            "might impact the app performance",
+                    disabledDescription =
+                    "I'm a SingaPro! " +
+                            "I want performance, not some silly lil map",
+                    enabled = shouldShowMap,
+                    onClick = { newValue ->
+                        viewModelScope.launch {
+                            (listItems[6] as? SettingsItemData.Switch)?.let {
+                                listItems[6] = it.copy(enabled = newValue)
+                            }
+                            shouldShowMapUseCase(newValue)
                         }
                     }
                 )

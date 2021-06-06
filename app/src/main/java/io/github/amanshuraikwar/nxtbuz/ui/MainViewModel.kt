@@ -7,7 +7,9 @@ import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.CleanupLocationUpdatesUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.map.ShouldShowMapUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.model.MainScreenState
+import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -17,16 +19,40 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val cleanupLocationUpdatesUseCase: CleanupLocationUpdatesUseCase,
     private val busStopUseCase: GetBusStopUseCase,
+    private val shouldShowMapUseCase: ShouldShowMapUseCase,
     dispatcherProvider: CoroutinesDispatcherProvider,
 ) : ViewModel() {
 
     private val coroutineContext = dispatcherProvider.computation
 
     private val _screenState =
-        MutableStateFlow<MainScreenState>(MainScreenState.BusStops)
+        MutableStateFlow<MainScreenState>(MainScreenState.Fetching)
     val screenState: StateFlow<MainScreenState> = _screenState
 
-    private val backStack = Stack<MainScreenState>()
+    private val backStack = Stack<NavigationState>()
+    private var showMap = false
+
+    internal fun onInit() {
+        viewModelScope.launch(coroutineContext) {
+            showMap = shouldShowMapUseCase()
+            when (val currentState = _screenState.value) {
+                MainScreenState.Fetching -> {
+                    _screenState.value = MainScreenState.Success(
+                        showMap = showMap,
+                        navigationState = NavigationState.BusStops
+                    )
+                }
+                is MainScreenState.Success -> {
+                    if (showMap != currentState.showMap) {
+                        _screenState.value = MainScreenState.Success(
+                            showMap = showMap,
+                            navigationState = currentState.navigationState
+                        )
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCleared() {
         viewModelScope.launch(coroutineContext) {
@@ -39,26 +65,38 @@ class MainViewModel @Inject constructor(
         if (pushBackStack) {
             pushBackStack()
         }
-        _screenState.value = MainScreenState.BusStopArrivals(busStop = busStop)
+        _screenState.value = MainScreenState.Success(
+            showMap = showMap,
+            navigationState = NavigationState.BusStopArrivals(busStop = busStop)
+        )
     }
 
     @Synchronized
     fun onBusServiceClick(busStopCode: String, busServiceNumber: String) {
         pushBackStack()
-        _screenState.value = MainScreenState.BusRoute(
-            busStopCode = busStopCode,
-            busServiceNumber = busServiceNumber
+        _screenState.value = MainScreenState.Success(
+            showMap = showMap,
+            navigationState = NavigationState.BusRoute(
+                busStopCode = busStopCode,
+                busServiceNumber = busServiceNumber
+            )
         )
     }
 
     private fun pushBackStack() {
-        backStack.push(screenState.value)
+        val currentState = screenState.value
+        if (currentState is MainScreenState.Success) {
+            backStack.push(currentState.navigationState)
+        }
     }
 
     @Synchronized
     fun onBackPressed(): Boolean {
         return if (backStack.isNotEmpty()) {
-            _screenState.value = backStack.pop()
+            _screenState.value = MainScreenState.Success(
+                showMap = showMap,
+                navigationState = backStack.pop()
+            )
             true
         } else {
             false
@@ -78,6 +116,9 @@ class MainViewModel @Inject constructor(
 
     fun onSearchClick() {
         pushBackStack()
-        _screenState.value = MainScreenState.Search
+        _screenState.value = MainScreenState.Success(
+            showMap = showMap,
+            navigationState = NavigationState.Search
+        )
     }
 }
