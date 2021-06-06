@@ -62,7 +62,7 @@ fun BusStopHeaderItem(
                 )
 
                 Text(
-                    text = "${busStopRoadName} • ${busStopCode}",
+                    text = "$busStopRoadName • $busStopCode",
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.body2,
                     modifier = Modifier.padding(top = 2.dp)
@@ -75,9 +75,10 @@ fun BusStopHeaderItem(
             contentDescription = "Directions",
             tint = MaterialTheme.colors.onSurface,
             modifier = Modifier
+                .padding(end = 16.dp)
                 .clip(shape = MaterialTheme.shapes.small)
                 .clickable {
-
+                    TODO()
                 }
                 .padding(16.dp)
         )

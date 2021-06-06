@@ -19,24 +19,10 @@ class SearchViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
-
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
     }
-
-//    private val _busStops = MutableLiveData<MutableList<RecyclerViewListItem>>()
-//    val busStops = _busStops.map { it }
-//
-//    private val _busStopClicked = MutableLiveData<BusStop>()
-//    val busStopClicked = _busStopClicked.asEvent()
-
-//    private val _busServiceClicked = MutableLiveData<BusService>()
-//    val busServiceClicked = _busServiceClicked.asEvent()
-
-
-//    private val _loading = MutableLiveData<Boolean>()
-//    val loading = _loading.asEvent()
 
     internal val screenState = MutableSharedFlow<SearchScreenState>()
 

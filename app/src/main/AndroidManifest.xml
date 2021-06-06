@@ -47,7 +47,7 @@
 
         <activity
             android:name="io.github.amanshuraikwar.nxtbuz.ui.MainActivity"
-            android:windowSoftInputMode="adjustNothing" />
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity
             android:name="io.github.amanshuraikwar.nxtbuz.search.SearchActivity"

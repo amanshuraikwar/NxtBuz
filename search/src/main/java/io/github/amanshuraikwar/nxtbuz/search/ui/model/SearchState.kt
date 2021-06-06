@@ -32,11 +32,11 @@ class SearchState internal constructor(
         onClear()
     }
 
-    internal fun search(query: String) {
+    fun search(query: String) {
         onSearch(query)
     }
 
-    internal fun updateSearchBarPadding(padding: Dp) {
+    fun updateSearchBarPadding(padding: Dp) {
         searchBarPaddingState.value = padding
     }
 }

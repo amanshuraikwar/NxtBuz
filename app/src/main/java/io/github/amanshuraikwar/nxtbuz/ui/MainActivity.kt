@@ -7,15 +7,18 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import dagger.android.support.DaggerAppCompatActivity
+import dev.chrisbanes.accompanist.insets.ExperimentalAnimatedInsets
+import dev.chrisbanes.accompanist.insets.LocalWindowInsets
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsScreen
@@ -27,8 +30,8 @@ import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.startSettingsActivity
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
+import io.github.amanshuraikwar.nxtbuz.search.ui.SearchBar
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchScreen
-import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchScreenState
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.rememberSearchState
 import io.github.amanshuraikwar.nxtbuz.starred.StarredBusArrivals
 import io.github.amanshuraikwar.nxtbuz.ui.model.MainScreenState
@@ -47,6 +50,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private lateinit var vm: MainViewModel
 
+    @ExperimentalAnimatedInsets
     @ExperimentalMaterialApi
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +61,8 @@ class MainActivity : DaggerAppCompatActivity() {
             NxtBuzApp {
                 Box {
                     val screenState by vm.screenState.collectAsState()
+                    val density = LocalDensity.current
+                    val insets = LocalWindowInsets.current
 
                     NxtBuzMap(
                         modifier = Modifier.fillMaxSize(),
@@ -66,28 +72,22 @@ class MainActivity : DaggerAppCompatActivity() {
                         }
                     )
 
-                    val searchState = rememberSearchState(
-                        vm = viewModelProvider(viewModelFactory)
-                    )
-
-                    LaunchedEffect(key1 = searchState.screenState) {
-                        if (searchState.screenState !is SearchScreenState.Nothing) {
-                            vm.onSearchScreenVisible()
-                        }
-                    }
-
-                    LaunchedEffect(key1 = screenState) {
-                        if (!screenState.searchVisible) {
-                            searchState.clear()
-                        }
-                    }
-
-                    if (searchState.searchBarPadding != 0.dp) {
-                        StarredBusArrivals(
+                    Column {
+                        SearchBar(
                             modifier = Modifier
-                                .padding(
-                                    top = searchState.searchBarPadding
-                                ),
+                                .fillMaxWidth()
+                                .statusBarsPadding()
+                                .padding(16.dp),
+                            onClick = {
+                                vm.onSearchClick()
+                            },
+                            onSettingsClicked = {
+                                startSettingsActivity()
+                            }
+                        )
+
+                        StarredBusArrivals(
+                            modifier = Modifier,
                             vm = viewModelProvider(viewModelFactory),
                             onItemClicked = { busStopCode, busServiceNumber ->
                                 vm.onBusServiceClick(
@@ -98,72 +98,67 @@ class MainActivity : DaggerAppCompatActivity() {
                         )
                     }
 
-                    SearchScreen(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(),
-                        searchState = searchState,
-                        onBusStopSelected = { busStop ->
+                    ContentNavGraph(
+                        screenState = screenState,
+                        onBusStopClick = { busStop ->
                             vm.onBusStopClick(busStop)
                         },
-                        onSettingsClicked = {
-                            startSettingsActivity()
+                        onBusServiceClick = { busStopCode, busServiceNumber ->
+                            vm.onBusServiceClick(busStopCode, busServiceNumber)
                         },
-                        onBackPress = {
-                            vm.onBackPressed()
-                        }
+                        bottomSheetBgOffset =
+                        with(density) { insets.statusBars.top.toDp() }
                     )
-
-                    val offsetY = if (searchState.screenState is SearchScreenState.Nothing) {
-                        0.dp
-                    } else {
-                        LocalConfiguration.current.screenHeightDp.dp
-                    }
-
-                    Box(
-                        Modifier.offset(y = offsetY)
-                    ) {
-                        ContentNavGraph(
-                            screenState = screenState,
-                            onBusStopClick = { busStop ->
-                                vm.onBusStopClick(busStop)
-                            },
-                            onBusServiceClick = { busStopCode, busServiceNumber ->
-                                vm.onBusServiceClick(busStopCode, busServiceNumber)
-                            }
-                        )
-                    }
                 }
             }
         }
     }
 
+    @ExperimentalAnimatedInsets
+    @ExperimentalComposeUiApi
     @ExperimentalMaterialApi
     @Composable
     fun ContentNavGraph(
         screenState: MainScreenState,
         onBusStopClick: (BusStop) -> Unit,
         onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
+        bottomSheetBgOffset: Dp,
     ) {
         when (screenState) {
             is MainScreenState.BusRoute -> {
                 BusRouteScreen(
                     vm = viewModelProvider(viewModelFactory),
                     busStopCode = screenState.busStopCode,
-                    busServiceNumber = screenState.busServiceNumber
+                    busServiceNumber = screenState.busServiceNumber,
+                    bottomSheetBgOffset = bottomSheetBgOffset,
                 )
             }
             is MainScreenState.BusStopArrivals -> {
                 BusStopArrivalsScreen(
                     vm = viewModelProvider(viewModelFactory),
                     busStop = screenState.busStop,
-                    onBusServiceClick = onBusServiceClick
+                    onBusServiceClick = onBusServiceClick,
+                    bottomSheetBgOffset = bottomSheetBgOffset,
                 )
             }
             is MainScreenState.BusStops -> {
                 BusStopsScreen(
                     vm = viewModelProvider(viewModelFactory),
                     onBusStopClick = onBusStopClick,
+                    bottomSheetBgOffset = bottomSheetBgOffset,
+                )
+            }
+            MainScreenState.Search -> {
+                SearchScreen(
+                    searchState = rememberSearchState(
+                        vm = viewModelProvider(viewModelFactory)
+                    ),
+                    onBackClick = {
+                        vm.onBackPressed()
+                    },
+                    onBusStopSelected = { busStop ->
+                        vm.onBusStopClick(busStop = busStop, pushBackStack = false)
+                    }
                 )
             }
         }

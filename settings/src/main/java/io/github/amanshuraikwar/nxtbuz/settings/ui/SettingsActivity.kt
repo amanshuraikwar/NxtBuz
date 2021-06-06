@@ -5,6 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.lifecycle.ViewModelProvider
 import dagger.android.support.DaggerAppCompatActivity
+import dev.chrisbanes.accompanist.insets.ExperimentalAnimatedInsets
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzApp
 import io.github.amanshuraikwar.nxtbuz.common.util.makeStatusBarTransparent
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
@@ -16,6 +17,7 @@ class SettingsActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    @ExperimentalAnimatedInsets
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         makeStatusBarTransparent()

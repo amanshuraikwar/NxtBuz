@@ -11,6 +11,7 @@ import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.items.BusStopItem
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 fun BusStopsScreen(
     modifier: Modifier = Modifier,
     vm: BusStopsViewModel,
+    bottomSheetBgOffset: Dp,
     onBusStopClick: (busStop: BusStop) -> Unit = {},
 ) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
@@ -44,8 +46,8 @@ fun BusStopsScreen(
     NxtBuzBottomSheet(
         modifier = modifier,
         state = bottomSheetState,
+        bottomSheetBgOffset = bottomSheetBgOffset
     ) { padding ->
-
         Crossfade(targetState = screenState) { screenState ->
             when (screenState) {
                 BusStopsScreenState.Failed -> TODO()
