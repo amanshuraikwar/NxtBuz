@@ -2,8 +2,6 @@ package io.github.amanshuraikwar.nxtbuz.domain.location
 
 import android.util.Log
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
-import io.github.amanshuraikwar.nxtbuz.common.model.map.MapResult
-import io.github.amanshuraikwar.nxtbuz.common.util.flow.ReturnableFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch

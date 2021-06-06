@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.map.ui
 
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.annotation.UiThread
 import androidx.lifecycle.MutableLiveData
@@ -8,13 +9,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.map.*
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
-import io.github.amanshuraikwar.nxtbuz.common.util.flow.ReturnableFlow
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MarkerUtil
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
@@ -30,9 +29,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.coroutines.suspendCoroutine
-import android.os.Looper
-import java.lang.Runnable
 
 
 private const val TAG = "NxtBuzMapViewModel"
@@ -46,7 +42,6 @@ class NxtBuzMapViewModel @Inject constructor(
     private val defaultLocationUseCase: DefaultLocationUseCase,
     private val defaultMapZoomUseCase: DefaultMapZoomUseCase,
     @Named("mapEventFlow") private val mapEventFlow: MutableSharedFlow<MapEvent>,
-    @Named("markerClicked") private val markerClickedFlow: MutableStateFlow<Marker?>,
     @Named("mapCenter") private val mapCenter: MutableStateFlow<LatLng?>,
     private val mapViewModelDelegate: LocationViewModelDelegate,
     private val mapUtil: MapUtil,
@@ -66,6 +61,11 @@ class NxtBuzMapViewModel @Inject constructor(
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
     }
+
+    private val markerSet = mutableSetOf<MapMarker>()
+    private val markerMap = mutableMapOf<String, Marker>()
+    private val routeSet = mutableSetOf<MapEvent.AddRoute>()
+    private val routeMap = mutableMapOf<String, Polyline>()
 
     init {
         init()
@@ -143,38 +143,24 @@ class NxtBuzMapViewModel @Inject constructor(
         mapViewModelDelegate.init(viewModelScope)
     }
 
-    private fun onMarkerClicked(marker: Marker) {
-        viewModelScope.launch(dispatcherProvider.computation) {
-            markerClickedFlow.value = marker
-        }
-    }
-
     private fun startCollectingEvents(coroutineScope: CoroutineScope) {
         coroutineScope.launch(dispatcherProvider.computation) {
             mapEventFlow.collect { mapEvent ->
                 when (mapEvent) {
                     is MapEvent.ClearMap -> {
-                        clearMap()
-                        MapResult.EmptyResult
+                        map?.clearMap()
                     }
                     is MapEvent.MoveCenter -> {
-                        moveCenter(mapEvent)
-                        MapResult.EmptyResult
+                        map?.moveCenter(mapEvent)
                     }
                     is MapEvent.DeleteMarkers -> {
                         deleteMarkers(mapEvent)
-                        MapResult.EmptyResult
                     }
                     is MapEvent.AddCircle -> {
-                        map?.let { addCircle(it, mapEvent) }
-                            ?: MapResult.ErrorResult("Google map is null.")
+                        map?.addCircle(mapEvent)
                     }
                     is MapEvent.AddRoute -> {
-
                         map?.addRoute(mapEvent)
-
-
-                        MapResult.EmptyResult
                     }
                     is MapEvent.DeleteRoute -> {
                         deleteRoute(mapEvent)
@@ -190,14 +176,8 @@ class NxtBuzMapViewModel @Inject constructor(
                     }
                     is MapEvent.MoveMarker -> {
                         moveMarker(mapEvent.markerId, mapEvent.newPosition)
-                        MapResult.EmptyResult
-                    }
-                    else -> {
-                        MapResult.ErrorResult("Unsupported map event.")
                     }
                 }
-
-                MapResult.EmptyResult
             }
         }
     }
@@ -208,14 +188,9 @@ class NxtBuzMapViewModel @Inject constructor(
         mapUtil.updateMapStyle(map ?: return)
     }
 
-    private suspend fun clearMap() {
-        withContext(dispatcherProvider.main) {
-            map?.clear()
-        }
+    private val mainHandler: Handler by lazy {
+        Handler(Looper.getMainLooper())
     }
-
-    val markerSet = mutableSetOf<MapMarker>()
-    val markerMap = mutableMapOf<String, Marker>()
 
     private suspend inline fun <T> runOnMainLooper(
         crossinline predicate: () -> T
@@ -227,6 +202,12 @@ class NxtBuzMapViewModel @Inject constructor(
                     cont.resumeWith(Result.success(result))
                 }
             }
+        }
+    }
+
+    private suspend fun GoogleMap.clearMap() {
+        runOnMainLooper {
+            clear()
         }
     }
 
@@ -243,7 +224,6 @@ class NxtBuzMapViewModel @Inject constructor(
                         )
                     )
                     .icon(
-                        // TODO: 19/1/21 refactor?
                         if (mapMarker is ArrivingBusMapMarker) {
                             markerUtil.arrivingBusBitmapDescriptor(mapMarker.busServiceNumber)
                         } else {
@@ -255,7 +235,7 @@ class NxtBuzMapViewModel @Inject constructor(
             }
         }
 
-        withContext(dispatcherProvider.main) {
+        runOnMainLooper {
             markerOptionsList.mapIndexed { index, markerOptions ->
                 val marker = addMarker(markerOptions)
                 markerMap[mapMarkerList[index].id] = marker
@@ -273,7 +253,7 @@ class NxtBuzMapViewModel @Inject constructor(
         withContext(dispatcherProvider.map) {
             val marker = markerMap[markerId]
             if (marker != null) {
-                runOnMainLooper {//withContext(dispatcherProvider.main) {
+                runOnMainLooper {
                     marker.remove()
                 }
                 markerMap.remove(markerId)
@@ -306,7 +286,7 @@ class NxtBuzMapViewModel @Inject constructor(
                     .title(mapMarker.description)
                     .flat(mapMarker.isFlat)
 
-            val marker = runOnMainLooper { //withContext(dispatcherProvider.main) {
+            val marker = runOnMainLooper {
                 addMarker(markerOption)
             }
 
@@ -319,70 +299,51 @@ class NxtBuzMapViewModel @Inject constructor(
         markerId: String,
         newPosition: LatLng,
     ) {
-        withContext(dispatcherProvider.map) {
-            withContext(dispatcherProvider.main) {
-                markerMap.get(markerId)?.position = newPosition
-            }
+        runOnMainLooper {
+            markerMap[markerId]?.position = newPosition
         }
     }
 
-    private suspend fun moveCenter(mapEvent: MapEvent.MoveCenter) {
-        //withContext(dispatcherProvider.main) {
-        map?.let { map ->
-            //suspendCoroutine<Unit> { cont ->
-            runOnMainLooper {
-                map.animateCamera(
-                    CameraUpdateFactory.newLatLng(
-                        LatLng(mapEvent.lat, mapEvent.lng)
-                    ),
-                    1000,
-                    object : GoogleMap.CancelableCallback {
-                        override fun onFinish() {
-                            //cont.resumeWith(Result.success(Unit))
-                        }
-
-                        override fun onCancel() {
-                            //cont.resumeWith(Result.success(Unit))
-                        }
+    private suspend fun GoogleMap.moveCenter(mapEvent: MapEvent.MoveCenter) {
+        runOnMainLooper {
+            animateCamera(
+                CameraUpdateFactory.newLatLng(
+                    LatLng(mapEvent.lat, mapEvent.lng)
+                ),
+                1000,
+                object : GoogleMap.CancelableCallback {
+                    override fun onFinish() {
                     }
-                )
-            }
+
+                    override fun onCancel() {
+                    }
+                }
+            )
         }
-        //}
     }
 
     private suspend fun deleteMarkers(mapEvent: MapEvent.DeleteMarkers) {
-        withContext(dispatcherProvider.main) {
+        runOnMainLooper {
             mapEvent.markerList.forEach { marker ->
                 marker.remove()
             }
         }
     }
 
-    private suspend fun addCircle(
-        map: GoogleMap,
+    private suspend fun GoogleMap.addCircle(
         addCircle: MapEvent.AddCircle
-    ): MapResult.AddCircleResult {
-        //return withContext(dispatcherProvider.main) {
+    ) {
         return runOnMainLooper {
-            MapResult.AddCircleResult(
-                map.addCircle(
-                    mapUtil.getLocationCircleOptions(
-                        addCircle.lat,
-                        addCircle.lng,
-                        addCircle.radius
-                    )
+            addCircle(
+                mapUtil.getLocationCircleOptions(
+                    addCircle.lat,
+                    addCircle.lng,
+                    addCircle.radius
                 )
             )
         }
     }
 
-    private val routeSet = mutableSetOf<MapEvent.AddRoute>()
-    private val routeMap = mutableMapOf<String, Polyline>()
-
-    private val mainHandler: Handler by lazy {
-        Handler(Looper.getMainLooper())
-    }
 
     private suspend fun GoogleMap.addRoute(
         mapEvent: MapEvent.AddRoute
@@ -433,16 +394,10 @@ class NxtBuzMapViewModel @Inject constructor(
             runOnMainLooper {
                 polyline.remove()
             }
-//            withContext(dispatcherProvider.main) {
-//                polyline.remove()
-//            }
             routeMap.remove(mapEvent.routeId)
             routeSet.removeAll { addRoute ->
                 addRoute.routeId == mapEvent.routeId
             }
-            //withContext(dispatcherProvider.main) {
-            //suspendCancellableCoroutine<Unit> { cont ->
-            //Handler(Looper.getMainLooper()).post {
             runOnMainLooper {
                 markerMap.keys
                     .filter { it.startsWith(mapEvent.routeId) }
@@ -450,10 +405,6 @@ class NxtBuzMapViewModel @Inject constructor(
                         markerMap.remove(it)?.remove()
                     }
             }
-            //cont.resumeWith(Result.success(Unit))
-            //}
-
-            //}
         }
     }
 
