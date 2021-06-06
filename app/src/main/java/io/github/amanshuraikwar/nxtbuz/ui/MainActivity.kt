@@ -35,6 +35,7 @@ import io.github.amanshuraikwar.nxtbuz.search.ui.SearchScreen
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.rememberSearchState
 import io.github.amanshuraikwar.nxtbuz.starred.StarredBusArrivals
 import io.github.amanshuraikwar.nxtbuz.ui.model.MainScreenState
+import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -59,18 +60,42 @@ class MainActivity : DaggerAppCompatActivity() {
         makeStatusBarTransparent()
         setContent {
             NxtBuzApp {
-                Box {
-                    val screenState by vm.screenState.collectAsState()
-                    val density = LocalDensity.current
-                    val insets = LocalWindowInsets.current
+                val screenState by vm.screenState.collectAsState()
+                MainScreen(screenState = screenState)
+            }
+        }
+    }
 
-                    NxtBuzMap(
-                        modifier = Modifier.fillMaxSize(),
-                        viewModel = viewModelProvider(viewModelFactory),
-                        onClick = { latLng ->
-                            vm.onMapClick(latLng)
-                        }
-                    )
+    override fun onStart() {
+        super.onStart()
+        vm.onInit()
+    }
+
+    @ExperimentalComposeUiApi
+    @ExperimentalAnimatedInsets
+    @ExperimentalMaterialApi
+    @Composable
+    fun MainScreen(
+        screenState: MainScreenState
+    ) {
+        val density = LocalDensity.current
+        val insets = LocalWindowInsets.current
+
+        when (screenState) {
+            MainScreenState.Fetching -> {
+
+            }
+            is MainScreenState.Success -> {
+                Box {
+                    if (screenState.showMap) {
+                        NxtBuzMap(
+                            modifier = Modifier.fillMaxSize(),
+                            viewModel = viewModelProvider(viewModelFactory),
+                            onClick = { latLng ->
+                                vm.onMapClick(latLng)
+                            }
+                        )
+                    }
 
                     Column {
                         SearchBar(
@@ -99,7 +124,7 @@ class MainActivity : DaggerAppCompatActivity() {
                     }
 
                     ContentNavGraph(
-                        screenState = screenState,
+                        navigationState = screenState.navigationState,
                         onBusStopClick = { busStop ->
                             vm.onBusStopClick(busStop)
                         },
@@ -119,36 +144,36 @@ class MainActivity : DaggerAppCompatActivity() {
     @ExperimentalMaterialApi
     @Composable
     fun ContentNavGraph(
-        screenState: MainScreenState,
+        navigationState: NavigationState,
         onBusStopClick: (BusStop) -> Unit,
         onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
         bottomSheetBgOffset: Dp,
     ) {
-        when (screenState) {
-            is MainScreenState.BusRoute -> {
+        when (navigationState) {
+            is NavigationState.BusRoute -> {
                 BusRouteScreen(
                     vm = viewModelProvider(viewModelFactory),
-                    busStopCode = screenState.busStopCode,
-                    busServiceNumber = screenState.busServiceNumber,
+                    busStopCode = navigationState.busStopCode,
+                    busServiceNumber = navigationState.busServiceNumber,
                     bottomSheetBgOffset = bottomSheetBgOffset,
                 )
             }
-            is MainScreenState.BusStopArrivals -> {
+            is NavigationState.BusStopArrivals -> {
                 BusStopArrivalsScreen(
                     vm = viewModelProvider(viewModelFactory),
-                    busStop = screenState.busStop,
+                    busStop = navigationState.busStop,
                     onBusServiceClick = onBusServiceClick,
                     bottomSheetBgOffset = bottomSheetBgOffset,
                 )
             }
-            is MainScreenState.BusStops -> {
+            is NavigationState.BusStops -> {
                 BusStopsScreen(
                     vm = viewModelProvider(viewModelFactory),
                     onBusStopClick = onBusStopClick,
                     bottomSheetBgOffset = bottomSheetBgOffset,
                 )
             }
-            MainScreenState.Search -> {
+            NavigationState.Search -> {
                 SearchScreen(
                     searchState = rememberSearchState(
                         vm = viewModelProvider(viewModelFactory)
