@@ -2,7 +2,10 @@ package io.github.amanshuraikwar.nxtbuz.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
+import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.CleanupLocationUpdatesUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.model.MainScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.model.copy
@@ -14,7 +17,11 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val cleanupLocationUpdatesUseCase: CleanupLocationUpdatesUseCase,
+    private val busStopUseCase: GetBusStopUseCase,
+    private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) : ViewModel() {
+
+    private val coroutineContext = dispatcherProvider.computation
 
     private val _screenState =
         MutableStateFlow<MainScreenState>(MainScreenState.BusStops(searchVisible = false))
@@ -23,32 +30,14 @@ class MainViewModel @Inject constructor(
     private val backStack = Stack<MainScreenState>()
 
     override fun onCleared() {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineContext) {
             cleanupLocationUpdatesUseCase()
         }
     }
 
     @Synchronized
     fun onBusStopClick(busStop: BusStop) {
-        backStack.push(
-            when (val currentState = _screenState.value) {
-                is MainScreenState.BusRoute -> {
-                    currentState.copy(
-                        searchVisible = false,
-                    )
-                }
-                is MainScreenState.BusStopArrivals -> {
-                    currentState.copy(
-                        searchVisible = false,
-                    )
-                }
-                is MainScreenState.BusStops -> {
-                    MainScreenState.BusStops(
-                        searchVisible = false,
-                    )
-                }
-            }
-        )
+        pushBackStack()
         _screenState.value = MainScreenState.BusStopArrivals(
             searchVisible = false,
             busStop = busStop
@@ -57,6 +46,15 @@ class MainViewModel @Inject constructor(
 
     @Synchronized
     fun onBusServiceClick(busStopCode: String, busServiceNumber: String) {
+        pushBackStack()
+        _screenState.value = MainScreenState.BusRoute(
+            searchVisible = false,
+            busStopCode = busStopCode,
+            busServiceNumber = busServiceNumber
+        )
+    }
+
+    private fun pushBackStack() {
         backStack.push(
             when (val currentState = _screenState.value) {
                 is MainScreenState.BusRoute -> {
@@ -75,11 +73,6 @@ class MainViewModel @Inject constructor(
                     )
                 }
             }
-        )
-        _screenState.value = MainScreenState.BusRoute(
-            searchVisible = false,
-            busStopCode = busStopCode,
-            busServiceNumber = busServiceNumber
         )
     }
 
@@ -132,6 +125,18 @@ class MainViewModel @Inject constructor(
                 _screenState.value = MainScreenState.BusStops(
                     searchVisible = true,
                 )
+            }
+        }
+    }
+
+
+    fun onMapClick(latLng: LatLng) {
+        viewModelScope.launch(coroutineContext) {
+            busStopUseCase(
+                lat = latLng.latitude,
+                lng = latLng.longitude
+            )?.let { busStop ->
+                onBusStopClick(busStop)
             }
         }
     }
