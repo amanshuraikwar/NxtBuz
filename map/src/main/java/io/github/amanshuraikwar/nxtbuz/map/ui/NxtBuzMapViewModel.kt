@@ -103,26 +103,22 @@ class NxtBuzMapViewModel @Inject constructor(
                     if (map == googleMap) return@MapInitData
 
                     map = googleMap
-                    map?.setOnMarkerClickListener {
-                        onMarkerClicked(it)
-                        true
-                    }
                     map?.setOnCameraIdleListener {
                         viewModelScope.launch {
                             mapCenter.value = map?.cameraPosition?.target ?: return@launch
                         }
                     }
-                    Log.i(TAG, "initMapCallback: called $googleMap")
+
                     if (markerSet.isNotEmpty()) {
                         viewModelScope.launch {
                             recreateLock.withLock {
                                 for (marker in markerSet) {
-                                    Log.d(TAG, "initMap: ")
                                     map?.addMarker(marker)
                                 }
                             }
                         }
                     }
+
                     if (routeSet.isNotEmpty()) {
                         viewModelScope.launch {
                             recreateLock.withLock {

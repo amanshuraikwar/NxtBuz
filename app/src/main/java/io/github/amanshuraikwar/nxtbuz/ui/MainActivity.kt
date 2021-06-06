@@ -59,8 +59,11 @@ class MainActivity : DaggerAppCompatActivity() {
                     val screenState by vm.screenState.collectAsState()
 
                     NxtBuzMap(
-                        Modifier.fillMaxSize(),
-                        viewModelProvider(viewModelFactory)
+                        modifier = Modifier.fillMaxSize(),
+                        viewModel = viewModelProvider(viewModelFactory),
+                        onClick = { latLng ->
+                            vm.onMapClick(latLng)
+                        }
                     )
 
                     val searchState = rememberSearchState(

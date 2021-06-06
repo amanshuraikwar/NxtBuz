@@ -9,8 +9,8 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.common.model.room.BusStopEntity
+import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
@@ -69,7 +69,7 @@ class BusStopRepository @Inject constructor(
     ): List<BusStop> = withContext(dispatcherProvider.io) {
 
         busStopDao
-            .findCloseLimit(latitude, longitude, limit)
+            .findClose(latitude, longitude, limit)
             .map { busStopEntity ->
                 async(dispatcherProvider.pool8) {
                     BusStop(
@@ -150,5 +150,44 @@ class BusStopRepository @Inject constructor(
                         .map { Bus(it.busServiceNumber) }
                 )
             }
+    }
+
+    suspend fun getCloseBusStops(
+        lat: Double,
+        lng: Double,
+        max: Int,
+        maxDistanceMetres: Int,
+    ): List<BusStop> = withContext(dispatcherProvider.io) {
+        busStopDao
+            .findClose(
+                latitude = lat,
+                longitude = lng,
+                limit = max,
+            )
+            .filter { busStopEntity ->
+                MapUtil.measureDistanceMetres(
+                    lat1 = lat,
+                    lng1 = lng,
+                    lat2 = busStopEntity.latitude,
+                    lng2 = busStopEntity.longitude
+                ) <= maxDistanceMetres
+            }
+            .map { busStopEntity ->
+                async(dispatcherProvider.pool8) {
+                    BusStop(
+                        busStopEntity.code,
+                        busStopEntity.roadName,
+                        busStopEntity.description,
+                        busStopEntity.latitude,
+                        busStopEntity.longitude,
+                        operatingBusDao
+                            .findByBusStopCode(busStopEntity.code)
+                            .map {
+                                Bus(it.busServiceNumber)
+                            }
+                    )
+                }
+            }
+            .awaitAll()
     }
 }

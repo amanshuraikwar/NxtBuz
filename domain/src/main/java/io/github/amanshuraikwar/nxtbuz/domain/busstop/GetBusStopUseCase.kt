@@ -10,4 +10,16 @@ class GetBusStopUseCase @Inject constructor(
     suspend operator fun invoke(busStopCode: String): BusStop {
         return busStopRepository.getBusStop(busStopCode)
     }
+
+    suspend operator fun invoke(lat: Double, lng: Double): BusStop? {
+        return busStopRepository
+            .getCloseBusStops(
+                lat = lat,
+                lng = lng,
+                max = 1,
+                maxDistanceMetres = 500
+            )
+            .takeIf { it.isNotEmpty() }
+            ?.get(0)
+    }
 }
