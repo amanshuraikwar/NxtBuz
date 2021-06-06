@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 
@@ -44,11 +45,9 @@ fun NxtBuzBottomSheet(
     state: NxtBuzBottomSheetState = remember {
         NxtBuzBottomSheetState(BottomSheetValue.Collapsed)
     },
+    bottomSheetBgOffset: Dp = 0.dp,
     bottomSheetContent: @Composable (PaddingValues) -> Unit,
 ) {
-    val insets = LocalWindowInsets.current
-    val bottomSheetBgOffset = with(LocalDensity.current) { insets.statusBars.top.toDp() }
-
     var alpha by remember(state) {
         mutableStateOf(0f)
     }

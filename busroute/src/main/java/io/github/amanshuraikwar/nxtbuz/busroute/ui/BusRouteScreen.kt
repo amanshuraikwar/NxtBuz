@@ -15,6 +15,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.BusRouteCurrentItem
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.BusRouteNextItem
@@ -31,6 +32,7 @@ fun BusRouteScreen(
     modifier: Modifier = Modifier,
     busServiceNumber: String,
     busStopCode: String,
+    bottomSheetBgOffset: Dp,
     vm: BusRouteViewModel
 ) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
@@ -59,6 +61,7 @@ fun BusRouteScreen(
     NxtBuzBottomSheet(
         modifier = modifier,
         state = bottomSheetState,
+        bottomSheetBgOffset = bottomSheetBgOffset
     ) { padding ->
         Crossfade(targetState = screenState) { screenState ->
             when (screenState) {

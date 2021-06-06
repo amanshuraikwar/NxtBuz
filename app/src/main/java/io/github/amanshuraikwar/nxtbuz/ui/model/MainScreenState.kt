@@ -2,41 +2,17 @@ package io.github.amanshuraikwar.nxtbuz.ui.model
 
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 
-sealed class MainScreenState(
-    val searchVisible: Boolean
-) {
-    class BusStops(
-        searchVisible: Boolean
-    ) : MainScreenState(searchVisible)
+sealed class MainScreenState {
+    object BusStops : MainScreenState()
 
     class BusStopArrivals(
-        searchVisible: Boolean,
         val busStop: BusStop
-    ) : MainScreenState(searchVisible)
+    ) : MainScreenState()
 
     class BusRoute(
-        searchVisible: Boolean,
         val busStopCode: String,
         val busServiceNumber: String,
-    ) : MainScreenState(searchVisible)
+    ) : MainScreenState()
 
-}
-
-fun MainScreenState.BusRoute.copy(
-    searchVisible: Boolean
-): MainScreenState.BusRoute {
-    return MainScreenState.BusRoute(
-        searchVisible = searchVisible,
-        busServiceNumber = busServiceNumber,
-        busStopCode = busStopCode
-    )
-}
-
-fun MainScreenState.BusStopArrivals.copy(
-    searchVisible: Boolean
-): MainScreenState.BusStopArrivals {
-    return MainScreenState.BusStopArrivals(
-        searchVisible = searchVisible,
-        busStop = busStop,
-    )
+    object Search : MainScreenState()
 }

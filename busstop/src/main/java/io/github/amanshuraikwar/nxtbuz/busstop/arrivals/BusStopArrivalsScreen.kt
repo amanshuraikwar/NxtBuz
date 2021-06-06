@@ -15,6 +15,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItem
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopHeaderItem
@@ -31,13 +32,15 @@ fun BusStopArrivalsScreen(
     modifier: Modifier = Modifier,
     vm: BusStopArrivalsViewModel,
     busStop: BusStop,
+    bottomSheetBgOffset: Dp,
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit = { _, _ -> },
 ) {
     BusStopArrivalsScreen(
         modifier,
         onBusServiceClick,
         vm,
-        busStop.code
+        busStop.code,
+        bottomSheetBgOffset
     )
 }
 
@@ -48,6 +51,7 @@ fun BusStopArrivalsScreen(
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
     vm: BusStopArrivalsViewModel,
     busStopCode: String,
+    bottomSheetBgOffset: Dp,
 ) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
@@ -75,6 +79,7 @@ fun BusStopArrivalsScreen(
     NxtBuzBottomSheet(
         modifier = modifier,
         state = bottomSheetState,
+        bottomSheetBgOffset = bottomSheetBgOffset
     ) { padding ->
         Crossfade(targetState = screenState) { screenState ->
             when (screenState) {
