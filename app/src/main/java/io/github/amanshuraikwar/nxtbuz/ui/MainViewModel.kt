@@ -62,18 +62,40 @@ class MainViewModel @Inject constructor(
 
     @Synchronized
     fun onBusStopClick(busStop: BusStop, pushBackStack: Boolean = true) {
-        if (pushBackStack) {
-            pushBackStack()
-        }
-        _screenState.value = MainScreenState.Success(
+        val newState = MainScreenState.Success(
             showMap = showMap,
             navigationState = NavigationState.BusStopArrivals(busStop = busStop)
         )
+
+        if (_screenState.value == newState) return
+
+        if (pushBackStack) {
+            pushBackStack()
+        }
+
+        _screenState.value = newState
     }
 
     @Synchronized
-    fun onBusServiceClick(busStopCode: String, busServiceNumber: String) {
-        pushBackStack()
+    fun onBusServiceClick(
+        busStopCode: String,
+        busServiceNumber: String,
+        pushBackStack: Boolean = true
+    ) {
+        val newState = MainScreenState.Success(
+            showMap = showMap,
+            navigationState = NavigationState.BusRoute(
+                busStopCode = busStopCode,
+                busServiceNumber = busServiceNumber
+            )
+        )
+
+        if (_screenState.value == newState) return
+
+        if (pushBackStack) {
+            pushBackStack()
+        }
+
         _screenState.value = MainScreenState.Success(
             showMap = showMap,
             navigationState = NavigationState.BusRoute(

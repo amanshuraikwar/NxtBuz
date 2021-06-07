@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.starred
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.onStar
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.outline
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.BusType
@@ -56,6 +58,7 @@ fun BusArrivalItem(
     busArrivals: BusArrivals,
     onClick: () -> Unit = {},
     onUnStarClicked: () -> Unit = {},
+    decorationType: DecorationType,
 ) {
     val busType = when (busArrivals) {
         is BusArrivals.Arriving -> {
@@ -79,7 +82,12 @@ fun BusArrivalItem(
         ),
         shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colors.star,
-        elevation = 8.dp,
+        elevation = if (decorationType == DecorationType.SHADOW) 4.dp else 0.dp,
+        border = if (decorationType == DecorationType.OUTLINE) {
+            BorderStroke(1.dp, MaterialTheme.colors.outline)
+        } else {
+            null
+        }
     ) {
         LastWrapBox {
             CompositionLocalProvider(

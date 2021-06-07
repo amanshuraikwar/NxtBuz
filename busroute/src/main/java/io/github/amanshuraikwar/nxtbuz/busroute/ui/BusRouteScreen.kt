@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material.BottomSheetValue
-import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +30,8 @@ fun BusRouteScreen(
     busServiceNumber: String,
     busStopCode: String,
     bottomSheetBgOffset: Dp,
-    vm: BusRouteViewModel
+    vm: BusRouteViewModel,
+    showBottomSheet: Boolean,
 ) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
@@ -58,88 +56,179 @@ fun BusRouteScreen(
         vm.bottomSheetInit = bottomSheetState.isInitialised
     }
 
-    NxtBuzBottomSheet(
-        modifier = modifier,
-        state = bottomSheetState,
-        bottomSheetBgOffset = bottomSheetBgOffset
-    ) { padding ->
-        Crossfade(targetState = screenState) { screenState ->
-            when (screenState) {
-                is BusRouteScreenState.Failed -> {
-                    Column(
-                        modifier = Modifier.padding(top = padding.calculateTopPadding())
-                    ) {
-                        val header = screenState.header
-                        if (header != null) {
-                            BusRouteHeader(
-                                modifier = Modifier
-                                    .background(color = backgroundColor),
-                                data = header,
-                                onStarToggle = { newValue ->
-                                    vm.onStarToggle(
-                                        busServiceNumber = header.busServiceNumber,
-                                        busStopCode = header.busStopCode,
-                                        newValue = newValue,
-                                    )
-                                }
-                            )
-                        }
+    LaunchedEffect(key1 = busServiceNumber, key2 = busStopCode) {
+        if (!showBottomSheet) {
+            vm.bottomSheetInit = true
+        }
+    }
 
-                        Divider()
-
-                        FailedView(
-                            onRetryClicked = {
-                                vm.init(busServiceNumber, busStopCode)
-                            }
-                        )
-                    }
+    if (showBottomSheet) {
+        NxtBuzBottomSheet(
+            modifier = modifier,
+            state = bottomSheetState,
+            bottomSheetBgOffset = bottomSheetBgOffset
+        ) { padding ->
+            BusRouteArrivalsScreenStateView(
+                busServiceNumber = busServiceNumber,
+                screenState = screenState,
+                padding = padding,
+                backgroundColor = backgroundColor,
+                onStarToggle = { newValue ->
+                    vm.onStarToggle(
+                        busStopCode = busStopCode,
+                        busServiceNumber = busServiceNumber,
+                        newValue = newValue
+                    )
+                },
+                onRetry = {
+                    vm.init(
+                        busServiceNumber = busServiceNumber,
+                        busStopCode = busStopCode
+                    )
+                },
+                onPreviousAllClicked = {
+                    vm.previousAllClicked()
+                },
+                onExpand = {
+                    vm.onExpand(expandingBusStopCode = it)
+                },
+                onCollapse = {
+                    vm.onCollapse(collapsingBusStopCode = it)
                 }
-                BusRouteScreenState.Fetching -> {
-                    Column {
-                        BusRouteHeader(
-                            modifier = Modifier.padding(top = padding.calculateTopPadding()),
-                            busServiceNumber = busServiceNumber
-                        )
-
-                        Divider()
-
-                        FetchingView()
-                    }
+            )
+        }
+    } else {
+        Surface(
+            modifier = modifier,
+            elevation = 0.dp
+        ) {
+            BusRouteArrivalsScreenStateView(
+                busServiceNumber = busServiceNumber,
+                screenState = screenState,
+                padding = PaddingValues(),
+                backgroundColor = backgroundColor,
+                onStarToggle = { newValue ->
+                    vm.onStarToggle(
+                        busStopCode = busStopCode,
+                        busServiceNumber = busServiceNumber,
+                        newValue = newValue
+                    )
+                },
+                onRetry = {
+                    vm.init(
+                        busServiceNumber = busServiceNumber,
+                        busStopCode = busStopCode
+                    )
+                },
+                onPreviousAllClicked = {
+                    vm.previousAllClicked()
+                },
+                onExpand = {
+                    vm.onExpand(expandingBusStopCode = it)
+                },
+                onCollapse = {
+                    vm.onCollapse(collapsingBusStopCode = it)
                 }
-                is BusRouteScreenState.Success -> {
-                    Column {
+            )
+        }
+    }
+
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun BusRouteArrivalsScreenStateView(
+    busServiceNumber: String,
+    screenState: BusRouteScreenState,
+    padding: PaddingValues,
+    backgroundColor: Color,
+    onStarToggle: (newValue: Boolean) -> Unit,
+    onRetry: () -> Unit,
+    onPreviousAllClicked: () -> Unit,
+    onExpand: (busStopCode: String) -> Unit,
+    onCollapse: (busStopCode: String) -> Unit,
+) {
+    Crossfade(targetState = screenState) { state ->
+        when (state) {
+            is BusRouteScreenState.Failed -> {
+                Column(
+                    modifier = Modifier.padding(top = padding.calculateTopPadding())
+                ) {
+                    val header = state.header
+                    if (header != null) {
                         BusRouteHeader(
                             modifier = Modifier
-                                .background(color = backgroundColor)
-                                .padding(top = padding.calculateTopPadding()),
-                            data = screenState.header,
-                            onStarToggle = { newValue ->
-                                vm.onStarToggle(
-                                    busServiceNumber = screenState.header.busServiceNumber,
-                                    busStopCode = screenState.header.busStopCode,
-                                    newValue = newValue,
-                                )
-                            }
+                                .background(color = backgroundColor),
+                            data = header,
+                            onStarToggle = onStarToggle
+//                                    onStarToggle { newValue ->
+//                                vm.onStarToggle(
+//                                    busServiceNumber = header.busServiceNumber,
+//                                    busStopCode = header.busStopCode,
+//                                    newValue = newValue,
+//                                )
+//                            }
                         )
+                    }
 
-                        Divider()
+                    Divider()
 
-                        if (screenState.listItems.isEmpty()) {
-                            FetchingView()
-                        } else {
-                            BusRouteViewArrivalsView(
-                                listItems = screenState.listItems,
-                                onPreviousAllClicked = {
-                                    vm.previousAllClicked()
-                                },
-                                onExpand = {
-                                    vm.onExpand(it)
-                                },
-                                onCollapse = {
-                                    vm.onCollapse(it)
-                                }
-                            )
-                        }
+                    FailedView(
+                        onRetryClicked = onRetry
+                        //vm.init(busServiceNumber, busStopCode)
+                        //}
+                    )
+                }
+            }
+            BusRouteScreenState.Fetching -> {
+                Column {
+                    BusRouteHeader(
+                        modifier = Modifier.padding(top = padding.calculateTopPadding()),
+                        busServiceNumber = busServiceNumber
+                    )
+
+                    Divider()
+
+                    FetchingView()
+                }
+            }
+            is BusRouteScreenState.Success -> {
+                Column {
+                    BusRouteHeader(
+                        modifier = Modifier
+                            .background(color = backgroundColor)
+                            .padding(top = padding.calculateTopPadding()),
+                        data = state.header,
+                        onStarToggle = onStarToggle
+//                        { newValue ->
+//                            vm.onStarToggle(
+//                                busServiceNumber = screenState.header.busServiceNumber,
+//                                busStopCode = screenState.header.busStopCode,
+//                                newValue = newValue,
+//                            )
+//                        }
+                    )
+
+                    Divider()
+
+                    if (state.listItems.isEmpty()) {
+                        FetchingView()
+                    } else {
+                        BusRouteArrivalsView(
+                            listItems = state.listItems,
+                            onPreviousAllClicked = onPreviousAllClicked,
+//                            {
+//                                vm.previousAllClicked()
+//                            }
+                            onExpand = onExpand,
+//                            {
+//                                vm.onExpand(it)
+//                            },
+                            onCollapse = onCollapse,
+//                            {
+//                                vm.onCollapse(it)
+//                            }
+                        )
                     }
                 }
             }
@@ -147,9 +236,10 @@ fun BusRouteScreen(
     }
 }
 
+
 @ExperimentalMaterialApi
 @Composable
-fun BusRouteViewArrivalsView(
+fun BusRouteArrivalsView(
     listItems: List<BusRouteListItemData>,
     onPreviousAllClicked: () -> Unit,
     onExpand: (busStopCode: String) -> Unit,

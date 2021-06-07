@@ -1,6 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.busstops
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
@@ -29,6 +29,7 @@ fun BusStopsScreen(
     modifier: Modifier = Modifier,
     vm: BusStopsViewModel,
     bottomSheetBgOffset: Dp,
+    showBottomSheet: Boolean,
     onBusStopClick: (busStop: BusStop) -> Unit = {},
 ) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
@@ -43,29 +44,34 @@ fun BusStopsScreen(
         }
     }
 
-    NxtBuzBottomSheet(
-        modifier = modifier,
-        state = bottomSheetState,
-        bottomSheetBgOffset = bottomSheetBgOffset
-    ) { padding ->
-        Crossfade(targetState = screenState) { screenState ->
-            when (screenState) {
-                BusStopsScreenState.Failed -> TODO()
-                BusStopsScreenState.Fetching -> {
-                    FetchingView(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(paddingValues = padding)
-                    )
-                }
-                is BusStopsScreenState.Success -> {
-                    BusStopsView(
-                        screenState.listItems,
-                        padding,
-                        onBusStopClick
-                    )
-                }
-            }
+    LaunchedEffect(key1 = showBottomSheet) {
+        if (!showBottomSheet) {
+            vm.fetchBusStops()
+        }
+    }
+
+    if (showBottomSheet) {
+        NxtBuzBottomSheet(
+            modifier = modifier,
+            state = bottomSheetState,
+            bottomSheetBgOffset = bottomSheetBgOffset
+        ) { padding ->
+            BusStopsView(
+                state = screenState,
+                padding = padding,
+                onBusStopClick = onBusStopClick
+            )
+        }
+    } else {
+        Surface(
+            modifier = modifier,
+            elevation = 0.dp
+        ) {
+            BusStopsView(
+                state = screenState,
+                padding = PaddingValues(),
+                onBusStopClick = onBusStopClick
+            )
         }
     }
 }
@@ -73,6 +79,32 @@ fun BusStopsScreen(
 @ExperimentalMaterialApi
 @Composable
 fun BusStopsView(
+    state: BusStopsScreenState,
+    padding: PaddingValues,
+    onBusStopClick: (busStop: BusStop) -> Unit = {}
+) {
+    when (state) {
+        BusStopsScreenState.Failed -> TODO()
+        BusStopsScreenState.Fetching -> {
+            FetchingView(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(paddingValues = padding)
+            )
+        }
+        is BusStopsScreenState.Success -> {
+            NearbyBusStops(
+                state.listItems,
+                padding,
+                onBusStopClick
+            )
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun NearbyBusStops(
     listItems: List<BusStopsItemData>,
     padding: PaddingValues,
     onBusStopClick: (busStop: BusStop) -> Unit = {},

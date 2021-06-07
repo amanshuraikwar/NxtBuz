@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.search.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +32,13 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.outline
 import io.github.amanshuraikwar.nxtbuz.search.R
+
+enum class SearchBarDecorationType {
+    OUTLINE,
+    SHADOW
+}
 
 @ExperimentalComposeUiApi
 @Composable
@@ -142,13 +149,19 @@ fun SearchBar(
 fun SearchBar(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    onSettingsClicked: () -> Unit = {}
+    onSettingsClicked: () -> Unit = {},
+    decorationType: SearchBarDecorationType = SearchBarDecorationType.SHADOW,
 ) {
     Surface(
         modifier,
         shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colors.surface,
-        elevation = 8.dp
+        elevation = if (decorationType == SearchBarDecorationType.SHADOW) 4.dp else 0.dp,
+        border = if (decorationType == SearchBarDecorationType.OUTLINE) {
+            BorderStroke(1.dp, MaterialTheme.colors.outline)
+        } else {
+            null
+        }
     ) {
         Box(
             Modifier.clickable {
