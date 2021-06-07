@@ -73,10 +73,16 @@
         <entry key="app/src/main/res/layout/fragment_screen_state_container.xml" value="0.12656956303365144" />
         <entry key="busstop/src/main/res/layout/fragment_bus_stop_arrivals.xml" value="0.22476142641888497" />
         <entry key="busstop/src/main/res/layout/fragment_bus_stops.xml" value="0.3500905797101449" />
+        <entry key="common/src/main/res/drawable/ic_bus_feeder_16.xml" value="0.1234375" />
+        <entry key="common/src/main/res/drawable/ic_not_accessible_16.xml" value="0.10260416666666666" />
         <entry key="common/src/main/res/drawable/ic_previous_bus_stops_4_25.xml" value="0.2875" />
         <entry key="common/src/main/res/layout/compose_nxt_buz_bottom_sheet.xml" value="0.26145833333333335" />
         <entry key="common/src/main/res/layout/layout_error_bottom_sheet.xml" value="0.24711200401808137" />
         <entry key="common/src/main/res/layout/nxt_buz_bottom_sheet.xml" value="0.4311594202898551" />
+        <entry key="listitem/src/main/res/drawable/ic_accessible_16.xml" value="0.10260416666666666" />
+        <entry key="listitem/src/main/res/drawable/ic_bus_dd_16.xml" value="0.1234375" />
+        <entry key="listitem/src/main/res/drawable/ic_bus_load_3_16.xml" value="0.1234375" />
+        <entry key="listitem/src/main/res/drawable/ic_bus_normal_16.xml" value="0.14427083333333332" />
         <entry key="listitem/src/main/res/layout/item_bus_arrival_compact.xml" value="0.14066586013905222" />
         <entry key="listitem/src/main/res/layout/item_bus_route_header.xml" value="0.12656956303365144" />
         <entry key="listitem/src/main/res/layout/item_bus_route_previous_all.xml" value="0.38663171690694625" />

@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.sp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
+import java.util.*
 
 @Composable
 fun BusStopItem(
@@ -61,7 +62,7 @@ fun BusStopItem(
             )
 
             Text(
-                text = data.busStopInfo.toUpperCase(),
+                text = data.busStopInfo.toUpperCase(Locale.ROOT),
                 style = MaterialTheme.typography.overline,
                 color = MaterialTheme.colors.onSurface,
                 modifier = Modifier.padding(top = 2.dp)
