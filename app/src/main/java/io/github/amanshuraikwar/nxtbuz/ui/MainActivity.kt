@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,8 +33,10 @@ import io.github.amanshuraikwar.nxtbuz.common.util.startSettingsActivity
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchBar
+import io.github.amanshuraikwar.nxtbuz.search.ui.SearchBarDecorationType
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchScreen
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.rememberSearchState
+import io.github.amanshuraikwar.nxtbuz.starred.DecorationType
 import io.github.amanshuraikwar.nxtbuz.starred.StarredBusArrivals
 import io.github.amanshuraikwar.nxtbuz.ui.model.MainScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
@@ -86,8 +90,8 @@ class MainActivity : DaggerAppCompatActivity() {
 
             }
             is MainScreenState.Success -> {
-                Box {
-                    if (screenState.showMap) {
+                if (screenState.showMap) {
+                    Box {
                         NxtBuzMap(
                             modifier = Modifier.fillMaxSize(),
                             viewModel = viewModelProvider(viewModelFactory),
@@ -95,45 +99,135 @@ class MainActivity : DaggerAppCompatActivity() {
                                 vm.onMapClick(latLng)
                             }
                         )
-                    }
 
-                    Column {
-                        SearchBar(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .statusBarsPadding()
-                                .padding(16.dp),
-                            onClick = {
-                                vm.onSearchClick()
+                        Column {
+                            SearchBar(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .statusBarsPadding()
+                                    .padding(
+                                        start = 16.dp,
+                                        end = 16.dp,
+                                        top = 16.dp,
+                                        bottom = 8.dp
+                                    ),
+                                onClick = {
+                                    vm.onSearchClick()
+                                },
+                                onSettingsClicked = {
+                                    startSettingsActivity()
+                                },
+                                decorationType = SearchBarDecorationType.SHADOW
+                            )
+
+                            StarredBusArrivals(
+                                modifier = Modifier.fillMaxWidth(),
+                                vm = viewModelProvider(viewModelFactory),
+                                onItemClicked = { busStopCode, busServiceNumber ->
+                                    vm.onBusServiceClick(
+                                        busStopCode = busStopCode,
+                                        busServiceNumber = busServiceNumber
+                                    )
+                                },
+                                decorationType = DecorationType.SHADOW
+                            )
+                        }
+
+                        ContentNavGraph(
+                            navigationState = screenState.navigationState,
+                            onBusStopClick = { busStop ->
+                                vm.onBusStopClick(busStop)
                             },
-                            onSettingsClicked = {
-                                startSettingsActivity()
-                            }
+                            showBottomSheet = true,
+                            onBusServiceClick = { busStopCode, busServiceNumber ->
+                                vm.onBusServiceClick(busStopCode, busServiceNumber)
+                            },
+                            bottomSheetBgOffset =
+                            with(density) { insets.statusBars.top.toDp() }
                         )
 
-                        StarredBusArrivals(
-                            modifier = Modifier,
-                            vm = viewModelProvider(viewModelFactory),
-                            onItemClicked = { busStopCode, busServiceNumber ->
-                                vm.onBusServiceClick(
-                                    busStopCode = busStopCode,
-                                    busServiceNumber = busServiceNumber
+                        if (screenState.navigationState is NavigationState.Search) {
+                            SearchScreen(
+                                searchState = rememberSearchState(
+                                    vm = viewModelProvider(viewModelFactory)
+                                ),
+                                onBackClick = {
+                                    vm.onBackPressed()
+                                },
+                                onBusStopSelected = { busStop ->
+                                    vm.onBusStopClick(busStop = busStop, pushBackStack = false)
+                                }
+                            )
+                        }
+                    }
+                } else {
+                    Surface {
+                        Box {
+                            Column {
+                                SearchBar(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .statusBarsPadding()
+                                        .padding(
+                                            start = 16.dp,
+                                            end = 16.dp,
+                                            top = 16.dp,
+                                            bottom = 8.dp
+                                        ),
+                                    onClick = {
+                                        vm.onSearchClick()
+                                    },
+                                    onSettingsClicked = {
+                                        startSettingsActivity()
+                                    },
+                                    decorationType = SearchBarDecorationType.OUTLINE
+                                )
+
+                                StarredBusArrivals(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    vm = viewModelProvider(viewModelFactory),
+                                    onItemClicked = { busStopCode, busServiceNumber ->
+                                        vm.onBusServiceClick(
+                                            busStopCode = busStopCode,
+                                            busServiceNumber = busServiceNumber
+                                        )
+                                    },
+                                    decorationType = DecorationType.OUTLINE
+                                )
+
+                                Spacer(Modifier.height(8.dp))
+
+                                Divider()
+
+                                ContentNavGraph(
+                                    navigationState = screenState.navigationState,
+                                    showBottomSheet = false,
+                                    onBusStopClick = { busStop ->
+                                        vm.onBusStopClick(busStop)
+                                    },
+                                    onBusServiceClick = { busStopCode, busServiceNumber ->
+                                        vm.onBusServiceClick(busStopCode, busServiceNumber)
+                                    },
+                                    bottomSheetBgOffset =
+                                    with(density) { insets.statusBars.top.toDp() }
                                 )
                             }
-                        )
-                    }
 
-                    ContentNavGraph(
-                        navigationState = screenState.navigationState,
-                        onBusStopClick = { busStop ->
-                            vm.onBusStopClick(busStop)
-                        },
-                        onBusServiceClick = { busStopCode, busServiceNumber ->
-                            vm.onBusServiceClick(busStopCode, busServiceNumber)
-                        },
-                        bottomSheetBgOffset =
-                        with(density) { insets.statusBars.top.toDp() }
-                    )
+                            if (screenState.navigationState is NavigationState.Search) {
+                                SearchScreen(
+                                    searchState = rememberSearchState(
+                                        vm = viewModelProvider(viewModelFactory)
+                                    ),
+                                    onBackClick = {
+                                        vm.onBackPressed()
+                                    },
+                                    onBusStopSelected = { busStop ->
+                                        vm.onBusStopClick(busStop = busStop, pushBackStack = false)
+                                    }
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -145,6 +239,7 @@ class MainActivity : DaggerAppCompatActivity() {
     @Composable
     fun ContentNavGraph(
         navigationState: NavigationState,
+        showBottomSheet: Boolean,
         onBusStopClick: (BusStop) -> Unit,
         onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
         bottomSheetBgOffset: Dp,
@@ -156,6 +251,8 @@ class MainActivity : DaggerAppCompatActivity() {
                     busStopCode = navigationState.busStopCode,
                     busServiceNumber = navigationState.busServiceNumber,
                     bottomSheetBgOffset = bottomSheetBgOffset,
+                    showBottomSheet = showBottomSheet,
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
             is NavigationState.BusStopArrivals -> {
@@ -164,6 +261,8 @@ class MainActivity : DaggerAppCompatActivity() {
                     busStop = navigationState.busStop,
                     onBusServiceClick = onBusServiceClick,
                     bottomSheetBgOffset = bottomSheetBgOffset,
+                    showBottomSheet = showBottomSheet,
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
             is NavigationState.BusStops -> {
@@ -171,20 +270,12 @@ class MainActivity : DaggerAppCompatActivity() {
                     vm = viewModelProvider(viewModelFactory),
                     onBusStopClick = onBusStopClick,
                     bottomSheetBgOffset = bottomSheetBgOffset,
+                    showBottomSheet = showBottomSheet,
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
             NavigationState.Search -> {
-                SearchScreen(
-                    searchState = rememberSearchState(
-                        vm = viewModelProvider(viewModelFactory)
-                    ),
-                    onBackClick = {
-                        vm.onBackPressed()
-                    },
-                    onBusStopSelected = { busStop ->
-                        vm.onBusStopClick(busStop = busStop, pushBackStack = false)
-                    }
-                )
+                // do nothing
             }
         }
     }
