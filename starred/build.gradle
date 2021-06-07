@@ -44,7 +44,6 @@ dependencies {
     implementation project(":common")
     implementation project(":domain")
     implementation project(":multiitemadapter")
-    implementation project(":listitem")
     implementation project(":ltaapi")
     implementation project(":data")
     debugImplementation project(':basetheme')

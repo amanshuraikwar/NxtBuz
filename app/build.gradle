@@ -139,7 +139,6 @@ dependencies {
     implementation project(':launcher')
     implementation project(':onboarding')
     implementation project(':ltaapi')
-    implementation project(':listitem')
     implementation project(':search')
     implementation project(':starred')
     implementation project(':settings')
@@ -188,9 +187,6 @@ dependencies {
 
     implementation Libs.Google.playServicesMap
     implementation Libs.Google.playServicesLocation
-
-    kapt project(':annotationProcessors')
-    compileOnly project(':annotations')
 
     for (dependency in Libs.AndroidX.Compose.all) {
         implementation dependency
