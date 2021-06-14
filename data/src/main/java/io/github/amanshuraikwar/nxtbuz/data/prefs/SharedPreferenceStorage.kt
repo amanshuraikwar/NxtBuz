@@ -61,6 +61,10 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         prefs, PREF_SHOW_MAP, true
     )
 
+    override var permissionDeniedPermanently by BooleanPreference(
+        prefs, PREF_PERMISSION_DENIED_PERMANENTLY, false
+    )
+
     companion object {
         const val PREFS_NAME = "io.github.amanshuraikwar.nxtbuz"
         const val PREF_ONBOARDING = "pref_onboarding"
@@ -72,5 +76,6 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         const val PREF_ALERT_STARRED_BUS_ARRIVALS_MINUTES = "alert_starred_bus_arrivals_minutes"
         const val PREF_ALERT_STARRED_BUS_ARRIVALS_FREQUENCY = "alert_starred_bus_arrivals_frequency"
         const val PREF_SHOW_MAP = "show_map"
+        const val PREF_PERMISSION_DENIED_PERMANENTLY = "permission_denied_permanently"
     }
 }

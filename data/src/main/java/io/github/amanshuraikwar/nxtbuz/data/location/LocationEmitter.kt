@@ -2,16 +2,11 @@ package io.github.amanshuraikwar.nxtbuz.data.location
 
 import android.annotation.SuppressLint
 import android.os.Looper
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.*
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.location.Location
-import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationOutput
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,49 +14,53 @@ import javax.inject.Singleton
 @Singleton
 class LocationEmitter @Inject constructor(
     private val fusedLocationProviderClient: FusedLocationProviderClient,
-    private val preferenceStorage: PreferenceStorage,
+    private val locationRepository: LocationRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) {
-
     // signifies if we have already attached our location callback
     private var started = false
-
-    private val locationStateFlow: MutableStateFlow<Location> by lazy {
-        val defaultLocation = preferenceStorage.defaultLocation
-        return@lazy MutableStateFlow(
-            Location(defaultLocation.first, defaultLocation.second)
-        )
-    }
+    private val locationUpdateFlow = MutableSharedFlow<LocationOutput>(replay = 1)
 
     private val locationCallback: LocationCallback by lazy {
         object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
-                val lastLocation = locationResult?.lastLocation ?: return
-                locationStateFlow.value = Location(
-                    lastLocation.latitude,
-                    lastLocation.longitude
-                )
+                locationResult?.lastLocation
+                    ?.let { location ->
+                        locationUpdateFlow.tryEmit(
+                            LocationOutput.Success(
+                                lat = location.latitude,
+                                lng = location.longitude
+                            )
+                        )
+                    }
+                // TODO-amanshuraikwar (09 Jun 2021 09:00:04 PM): handle error?
+            }
+
+            override fun onLocationAvailability(p0: LocationAvailability?) {
+                super.onLocationAvailability(p0)
             }
         }
     }
 
     @SuppressLint("MissingPermission")
-    suspend fun getLocation(): StateFlow<Location> = withContext(dispatcherProvider.location) {
-        // make thread safe to avoid attaching multiple location callbacks
-        synchronized(this@LocationEmitter) {
-            if (!started) {
-                fusedLocationProviderClient.requestLocationUpdates(
-                    LocationRequest.create(),
-                    locationCallback,
-                    Looper.getMainLooper()
-                )
-                started = true
+    suspend fun getLocation(): SharedFlow<LocationOutput> {
+        return withContext(dispatcherProvider.location) {
+            // make thread safe to avoid attaching multiple location callbacks
+            synchronized(this@LocationEmitter) {
+                if (!started) {
+                    fusedLocationProviderClient.requestLocationUpdates(
+                        locationRepository.getLocationRequest(),
+                        locationCallback,
+                        Looper.getMainLooper()
+                    )
+                    started = true
+                }
             }
-            return@withContext locationStateFlow.asStateFlow()
+            locationUpdateFlow
         }
     }
 
-    suspend fun cleanup(): Unit = withContext(dispatcherProvider.location) {
+    fun cleanup() {
         // make thread safe
         synchronized(this) {
             if (started) {

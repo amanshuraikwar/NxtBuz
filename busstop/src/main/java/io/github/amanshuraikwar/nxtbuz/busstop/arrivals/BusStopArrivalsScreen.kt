@@ -52,8 +52,7 @@ fun BusStopArrivalsScreen(
     bottomSheetBgOffset: Dp,
     showBottomSheet: Boolean,
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
-
-    ) {
+) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
     )
@@ -102,6 +101,9 @@ fun BusStopArrivalsScreen(
                         busServiceNumber = busServiceNumber,
                         newToggleState = newToggleState,
                     )
+                },
+                onGoToBusStopClicked = {
+                    vm.onGoToBusStopClicked()
                 }
             )
         }
@@ -123,6 +125,9 @@ fun BusStopArrivalsScreen(
                         busServiceNumber = busServiceNumber,
                         newToggleState = newToggleState,
                     )
+                },
+                onGoToBusStopClicked = {
+                    vm.onGoToBusStopClicked()
                 }
             )
         }
@@ -138,6 +143,7 @@ fun BusStopArrivalsScreenStateView(
     onRetryClick: () -> Unit,
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
     onStarToggle: (busServiceNumber: String, newToggleState: Boolean) -> Unit,
+    onGoToBusStopClicked: () -> Unit,
 ) {
     Crossfade(targetState = screenState) { state ->
         when (state) {
@@ -153,6 +159,7 @@ fun BusStopArrivalsScreenStateView(
                             busStopDescription = header.busStopDescription,
                             busStopRoadName = header.busStopRoadName,
                             busStopCode = header.busStopCode,
+                            onGoToBusStopClicked = onGoToBusStopClicked
                         )
                     }
 
@@ -185,6 +192,7 @@ fun BusStopArrivalsScreenStateView(
                         busStopDescription = state.header.busStopDescription,
                         busStopRoadName = state.header.busStopRoadName,
                         busStopCode = state.header.busStopCode,
+                        onGoToBusStopClicked = onGoToBusStopClicked
                     )
 
                     Divider()
@@ -196,7 +204,8 @@ fun BusStopArrivalsScreenStateView(
                             BusStopArrivalsView(
                                 listItems = listItems,
                                 onBusServiceClick = onBusServiceClick,
-                                onStarToggle = onStarToggle
+                                onStarToggle = onStarToggle,
+                                onGoToBusStopClicked = onGoToBusStopClicked
                             )
                         }
                     }
@@ -211,7 +220,8 @@ fun BusStopArrivalsScreenStateView(
 fun BusStopArrivalsView(
     listItems: List<BusStopArrivalListItemData>,
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
-    onStarToggle: (busServiceNumber: String, newToggleState: Boolean) -> Unit
+    onStarToggle: (busServiceNumber: String, newToggleState: Boolean) -> Unit,
+    onGoToBusStopClicked: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = remember {
@@ -272,6 +282,7 @@ fun BusStopArrivalsView(
                         busStopDescription = item.busStopDescription,
                         busStopRoadName = item.busStopRoadName,
                         busStopCode = item.busStopCode,
+                        onGoToBusStopClicked = onGoToBusStopClicked,
                     )
                 }
             }

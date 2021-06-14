@@ -26,6 +26,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsScreen
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzApp
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.makeStatusBarTransparent
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
@@ -52,6 +53,9 @@ class MainActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var locationUtil: LocationUtil
+
+    @Inject
+    lateinit var navigationUtil: NavigationUtil
 
     private lateinit var vm: MainViewModel
 
@@ -292,9 +296,8 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode > LocationUtil.REQUEST_CHECK_SETTINGS) {
-            locationUtil.onResult(requestCode, resultCode, data)
-        }
+        permissionUtil.onCheckSettingResult(requestCode, resultCode, data)
+        navigationUtil.onActivityResult(requestCode)
     }
 
     override fun onBackPressed() {

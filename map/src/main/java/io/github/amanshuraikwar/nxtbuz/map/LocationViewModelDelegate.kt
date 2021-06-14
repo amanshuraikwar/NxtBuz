@@ -3,8 +3,10 @@ package io.github.amanshuraikwar.nxtbuz.map
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
+import io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUpdatesUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -17,9 +19,9 @@ private const val TAG = "LocationVMDelegate"
 
 class LocationViewModelDelegate @Inject constructor(
     private val getLocationUpdatesUseCase: GetLocationUpdatesUseCase,
+    private val getLastKnownLocationUseCase: GetLastKnownLocationUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
 ) {
-
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
@@ -27,45 +29,37 @@ class LocationViewModelDelegate @Inject constructor(
 
     fun init(coroutineScope: CoroutineScope) {
         coroutineScope.launch(errorHandler) {
-            val flow = getLocationUpdatesUseCase()
+            val lastKnownLocation = getLastKnownLocationUseCase()
 
-            pushMapEventUseCase(
-                MapEvent.AddMarker(
-                    MapMarker(
-                        "center",
-                        flow.value.lat,
-                        flow.value.lng,
-                        R.drawable.ic_marker_location_20,
-                        "",
-                        isFlat = true
-                    )
-                )
-            )
+            Log.i(TAG, "init: last known location = $lastKnownLocation")
 
-            flow.collect { location ->
+            if (lastKnownLocation is LocationOutput.Success) {
                 pushMapEventUseCase(
-                    MapEvent.MoveMarker(
-                        "center",
-                        LatLng(location.lat, location.lng)
+                    MapEvent.AddMarker(
+                        MapMarker(
+                            "center",
+                            lastKnownLocation.lat,
+                            lastKnownLocation.lng,
+                            R.drawable.ic_marker_location_20,
+                            "",
+                            isFlat = true
+                        )
                     )
                 )
+
+                getLocationUpdatesUseCase().collect { location ->
+                    Log.i(TAG, "init: location update = $location")
+
+                    if (location is LocationOutput.Success) {
+                        pushMapEventUseCase(
+                            MapEvent.MoveMarker(
+                                "center",
+                                LatLng(location.lat, location.lng)
+                            )
+                        )
+                    }
+                }
             }
         }
-    }
-
-    private suspend fun start() {
-//        for (i in 0..100) {
-//            val location = location?.let {
-//                LatLng(it.latitude + 0.001, it.longitude + 0.001)
-//            } ?: continue
-//            pushMapEventUseCase.fireAndForget(
-//                MapEvent.MoveMarker(
-//                    "center",
-//                    location
-//                )
-//            )
-//            this.location = location
-//            delay(2000)
-//        }
     }
 }

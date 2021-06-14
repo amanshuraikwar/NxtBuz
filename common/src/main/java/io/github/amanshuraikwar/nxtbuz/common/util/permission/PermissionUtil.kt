@@ -1,18 +1,29 @@
 package io.github.amanshuraikwar.nxtbuz.common.util.permission
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.common.api.ResolvableApiException
 import io.github.amanshuraikwar.nxtbuz.common.model.PermissionStatus
+import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.suspendCoroutine
 
-class PermissionUtil(private val activity: AppCompatActivity) {
+class PermissionUtil(
+    private val activity: AppCompatActivity,
+) {
 
-    private val countContinuationMap: MutableMap<Int, Continuation<PermissionStatus>> =
+    private val countContinuationMap: MutableMap<Int, CancellableContinuation<PermissionStatus>> =
+        mutableMapOf()
+
+    private val checkSettingsContinuationMap: MutableMap<Int, CancellableContinuation<Boolean>> =
         mutableMapOf()
 
     private var count = 1
@@ -36,7 +47,7 @@ class PermissionUtil(private val activity: AppCompatActivity) {
         }
     }
 
-    suspend fun askPermission(): PermissionStatus = suspendCoroutine { cont ->
+    suspend fun askPermission(): PermissionStatus = suspendCancellableCoroutine { cont ->
 
         val id = generatePermissionRequestId()
 
@@ -60,6 +71,11 @@ class PermissionUtil(private val activity: AppCompatActivity) {
             return
 
         }
+
+        if (!cont.isActive) {
+            return
+        }
+
         if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
             cont.resumeWith(Result.success(PermissionStatus.GRANTED))
         } else {
@@ -77,8 +93,47 @@ class PermissionUtil(private val activity: AppCompatActivity) {
         }
     }
 
+    suspend fun askForSettingsChange(exception: ResolvableApiException): Boolean {
+        val id = generatePermissionRequestId()
+        return try {
+            exception.startResolutionForResult(activity, REQUEST_CHECK_SETTINGS + id)
+            suspendCancellableCoroutine { cont ->
+                checkSettingsContinuationMap[id] = cont
+            }
+        } catch (e: IntentSender.SendIntentException) {
+            return false
+        }
+    }
+
+    fun onCheckSettingResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ): Boolean {
+        if (requestCode > 2001) {
+            val id = requestCode - REQUEST_CHECK_SETTINGS
+            val cont = checkSettingsContinuationMap[id] ?: run {
+                Log.w(TAG, "onPermissionResult: No continuation found for $id")
+                return false
+            }
+
+            if (!cont.isActive) {
+                return false
+            }
+
+            Log.d(TAG, "onCheckSettingResult: $resultCode $data")
+
+            cont.resumeWith(Result.success(resultCode == Activity.RESULT_OK))
+
+            return true
+        } else {
+            return false
+        }
+    }
+
     companion object {
         const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1001
+        const val REQUEST_CHECK_SETTINGS = 2001
         private const val TAG = "PermissionUtil"
     }
 }

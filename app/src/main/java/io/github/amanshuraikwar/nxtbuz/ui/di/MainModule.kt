@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.ui.di
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import dagger.Binds
@@ -15,6 +16,9 @@ internal abstract class MainModule {
 
     @Binds
     internal abstract fun a(a: MainActivity): AppCompatActivity
+
+    @Binds
+    internal abstract fun b(a: MainActivity): Activity
 
     @Binds
     @IntoMap

@@ -14,6 +14,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusStopArrival
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
+import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.BusStopArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
@@ -34,6 +35,7 @@ class BusStopArrivalsViewModel @Inject constructor(
     private val toggleStar: ToggleBusStopStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
+    private val navigationUtil: NavigationUtil,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -125,6 +127,13 @@ class BusStopArrivalsViewModel @Inject constructor(
                     R.drawable.ic_marker_bus_stop_48,
                     busStop.description
                 )
+            )
+        )
+
+        pushMapEventUseCase(
+            MapEvent.MoveCenter(
+                lat = busStop.latitude,
+                lng = busStop.longitude
             )
         )
     }
@@ -387,6 +396,12 @@ class BusStopArrivalsViewModel @Inject constructor(
             handleBusArrivalList(
                 busArrivalList
             )
+        }
+    }
+
+    fun onGoToBusStopClicked() {
+        busStop?.let { busStop ->
+            navigationUtil.goTo(busStop.latitude, busStop.longitude)
         }
     }
 

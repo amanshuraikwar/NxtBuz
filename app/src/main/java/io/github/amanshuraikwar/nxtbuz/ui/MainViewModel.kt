@@ -55,9 +55,7 @@ class MainViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        viewModelScope.launch(coroutineContext) {
-            cleanupLocationUpdatesUseCase()
-        }
+        cleanupLocationUpdatesUseCase()
     }
 
     @Synchronized
