@@ -25,49 +25,51 @@ fun BusStopHeaderItem(
     busStopDescription: String,
     busStopRoadName: String,
     busStopCode: String,
+    onGoToBusStopClicked: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier,
-        contentAlignment = Alignment.CenterEnd
+        modifier = modifier.padding(vertical = 16.dp),
     ) {
-        Row(
+        Surface(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 16.dp, bottom = 16.dp),
-            verticalAlignment = Alignment.Top
+                .align(Alignment.CenterStart)
+                .padding(start = 16.dp),
+            color = MaterialTheme.colors.primary,
+            shape = MaterialTheme.shapes.small
         ) {
-            Surface(
-                color = MaterialTheme.colors.primary,
-                shape = MaterialTheme.shapes.small
-            ) {
-                Icon(
-                    painter = painterResource(
-                        R.drawable.ic_bus_stop_24
-                    ),
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .size(24.dp),
-                    contentDescription = "Bus Stop",
-                    tint = MaterialTheme.colors.onPrimary
-                )
-            }
+            Icon(
+                painter = painterResource(
+                    R.drawable.ic_bus_stop_24
+                ),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(24.dp),
+                contentDescription = "Bus Stop",
+                tint = MaterialTheme.colors.onPrimary
+            )
+        }
 
-            Column(
-                Modifier.padding(start = 16.dp)
-            ) {
-                Text(
-                    text = busStopDescription,
-                    color = MaterialTheme.colors.onSurface,
-                    style = MaterialTheme.typography.h6Bold,
-                )
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 72.dp, end = 88.dp)
+        ) {
+            Text(
+                text = busStopDescription,
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.h6Bold,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
 
-                Text(
-                    text = "$busStopRoadName • $busStopCode",
-                    color = MaterialTheme.colors.onSurface,
-                    style = MaterialTheme.typography.body2,
-                    modifier = Modifier.padding(top = 2.dp)
-                )
-            }
+            Text(
+                text = "$busStopRoadName • $busStopCode",
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.body2,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 2.dp)
+            )
         }
 
         Icon(
@@ -75,13 +77,17 @@ fun BusStopHeaderItem(
             contentDescription = "Directions",
             tint = MaterialTheme.colors.onSurface,
             modifier = Modifier
+                .align(Alignment.CenterEnd)
                 .padding(end = 16.dp)
                 .clip(shape = MaterialTheme.shapes.small)
                 .clickable {
-                    TODO()
+                    onGoToBusStopClicked()
                 }
                 .padding(16.dp)
+                .size(24.dp)
         )
+
+        Spacer(modifier = Modifier.width(16.dp))
     }
 }
 

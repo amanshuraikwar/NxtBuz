@@ -91,6 +91,6 @@ fun NxtBuzBottomSheet(
                 )
             }
         },
-        sheetPeekHeight = (LocalConfiguration.current.screenHeightDp / 3).dp + bottomSheetBgOffset
+        sheetPeekHeight = (LocalConfiguration.current.screenHeightDp / 2).dp + bottomSheetBgOffset
     ) { }
 }

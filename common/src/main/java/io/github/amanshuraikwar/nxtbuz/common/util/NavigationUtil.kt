@@ -3,6 +3,22 @@ package io.github.amanshuraikwar.nxtbuz.common.util
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
+import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import java.lang.ref.WeakReference
+import javax.inject.Inject
+import androidx.core.content.ContextCompat.startActivity
+
+
+
 
 fun Activity.startMainActivity() {
     startActivity(
@@ -34,4 +50,64 @@ fun Activity.startSettingsActivity() {
             getActivityClass("io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity")
         )
     )
+}
+
+@ActivityScoped
+class NavigationUtil @Inject constructor(
+    _activity: AppCompatActivity
+) {
+    private val activity = WeakReference(_activity)
+    private var cont: CancellableContinuation<Unit>? = null
+    private var lock = Mutex()
+
+    suspend fun goToAppSettings() {
+        if (lock.isLocked) return
+        return lock.withLock {
+            suspendCancellableCoroutine { cont ->
+                this@NavigationUtil.cont = cont
+                activity.get()
+                    ?.startActivityForResult(
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = Uri.fromParts(
+                                "package",
+                                activity.get()?.packageName,
+                                null
+                            )
+                        },
+                        REQUEST_GO_TO_APP_SETTINGS
+                    )
+                    ?: run {
+                        this@NavigationUtil.cont = null
+                        cont.resumeWith(Result.success(Unit))
+                    }
+            }
+        }
+    }
+
+    fun onActivityResult(
+        requestCode: Int,
+    ): Boolean {
+        return if (requestCode == REQUEST_GO_TO_APP_SETTINGS) {
+            if (cont?.isActive == true) {
+                cont?.resumeWith(Result.success(Unit))
+                cont = null
+            }
+            true
+        } else {
+            false
+        }
+    }
+
+    fun goTo(
+        lat: Double,
+        lng: Double
+    ) {
+        val uri = "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=walking"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        activity.get()?.startActivity(intent)
+    }
+
+    companion object {
+        const val REQUEST_GO_TO_APP_SETTINGS = 3001
+    }
 }

@@ -7,7 +7,7 @@ class CleanupLocationUpdatesUseCase @Inject constructor(
     private val locationEmitter: LocationEmitter,
 ) {
 
-    suspend operator fun invoke() {
+    operator fun invoke() {
         return locationEmitter.cleanup()
     }
 }

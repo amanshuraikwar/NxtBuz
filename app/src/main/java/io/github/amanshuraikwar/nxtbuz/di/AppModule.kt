@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.BuildConfig
 import io.github.amanshuraikwar.nxtbuz.MainApplication
+import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNavigationParams
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,24 +28,25 @@ class AppModule {
 
     @Provides
     @Singleton
+    @ApplicationContext
     fun provideContext(application: MainApplication): Context {
         return application.applicationContext
     }
 
     @Provides
     @Singleton
-    fun providesWifiManager(context: Context): WifiManager =
+    fun providesWifiManager(@ApplicationContext context: Context): WifiManager =
         context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
     @Provides
     @Singleton
-    fun providesConnectivityManager(context: Context): ConnectivityManager =
+    fun providesConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
         context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
                 as ConnectivityManager
 
     @Provides
     @Singleton
-    fun providesClipboardManager(context: Context): ClipboardManager =
+    fun providesClipboardManager(@ApplicationContext context: Context): ClipboardManager =
         context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
                 as ClipboardManager
 

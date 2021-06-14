@@ -15,6 +15,7 @@ interface PreferenceStorage {
     var alertStarredBusArrivalsMinutes: Int
     var alertStarredBusArrivalsFrequency: AlertFrequency
     var showMap: Boolean
+    var permissionDeniedPermanently: Boolean
 }
 
 

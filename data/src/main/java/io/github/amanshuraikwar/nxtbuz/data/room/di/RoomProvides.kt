@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
+import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
 import io.github.amanshuraikwar.nxtbuz.data.room.AppDatabase
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusArrivalDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusOperatorDao
@@ -16,7 +17,7 @@ import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
 class RoomProvides {
 
     @Provides
-    fun a(context: Context): AppDatabase {
+    fun a(@ApplicationContext context: Context): AppDatabase {
         return Room
             .databaseBuilder(
                 context,

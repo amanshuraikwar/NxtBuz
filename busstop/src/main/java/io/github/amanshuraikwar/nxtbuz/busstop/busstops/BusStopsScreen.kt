@@ -39,13 +39,13 @@ fun BusStopsScreen(
     val screenState by vm.screenState.collectAsState()
 
     LaunchedEffect(key1 = bottomSheetState.isInitialised) {
-        if (bottomSheetState.isInitialised) {
+        if (bottomSheetState.isInitialised && screenState == BusStopsScreenState.Fetching) {
             vm.fetchBusStops()
         }
     }
 
     LaunchedEffect(key1 = showBottomSheet) {
-        if (!showBottomSheet) {
+        if (!showBottomSheet  && screenState == BusStopsScreenState.Fetching) {
             vm.fetchBusStops()
         }
     }
@@ -97,6 +97,15 @@ fun BusStopsView(
                 state.listItems,
                 padding,
                 onBusStopClick
+            )
+        }
+        is BusStopsScreenState.LocationError -> {
+            LocationErrorView(
+                title = state.title,
+                primaryButtonText = state.primaryButtonText,
+                onPrimaryButtonClick = state.onPrimaryButtonClick,
+                secondaryButtonText = state.secondaryButtonText,
+                onSecondaryButtonClick = state.onSecondaryButtonClick
             )
         }
     }
