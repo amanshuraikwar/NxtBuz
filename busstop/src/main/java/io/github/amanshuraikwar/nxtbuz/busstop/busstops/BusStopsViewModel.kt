@@ -16,10 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationSettingStateUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.PermissionDeniedPermanentlyUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,10 +33,11 @@ class BusStopsViewModel @Inject constructor(
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
     private val getDefaultLocationUseCase: DefaultLocationUseCase,
     private val getLocationSettingStateUseCase: GetLocationSettingStateUseCase,
+    private val locationPermissionStatusUseCase: LocationPermissionStatusUseCase,
     private val permissionUtil: PermissionUtil,
     private val navigationUtil: NavigationUtil,
     private val getLastKnownLocationUseCase: GetLastKnownLocationUseCase,
-    private val permissionDeniedPermanentlyUseCase: PermissionDeniedPermanentlyUseCase,
+    private val locationPermissionDeniedPermanentlyUseCase: LocationPermissionDeniedPermanentlyUseCase,
     dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, th ->
@@ -139,16 +137,27 @@ class BusStopsViewModel @Inject constructor(
                     return@launch
                 }
                 is LocationOutput.Success -> {
-                    permissionDeniedPermanentlyUseCase(false)
+                    locationPermissionDeniedPermanentlyUseCase(false)
                     location = locationOutput
                 }
                 is LocationOutput.SettingsNotEnabled -> {
-                    permissionDeniedPermanentlyUseCase(false)
+                    locationPermissionDeniedPermanentlyUseCase(false)
                     _screenState.value = BusStopsScreenState.LocationError(
                         title = "Location setting is not enabled :(",
-                        primaryButtonText = "ENABLE LOCATION",
+                        primaryButtonText = if (locationOutput.settingsState?.exception != null) {
+                            "ENABLE LOCATION"
+                        } else {
+                            "RETRY"
+                        },
                         onPrimaryButtonClick = {
-                            askForSettingsChange(locationOutput.settingsState.exception)
+                            val ex = locationOutput.settingsState?.exception
+                            if (ex != null) {
+                                askForSettingsChange(ex)
+                            } else {
+                                fetchBusStops(
+                                    waitForSettings = true
+                                )
+                            }
                         },
                         secondaryButtonText = "USE DEFAULT LOCATION",
                         onSecondaryButtonClick = {
@@ -241,15 +250,16 @@ class BusStopsViewModel @Inject constructor(
         viewModelScope.launch(coroutineContext) {
             when (permissionUtil.askPermission()) {
                 PermissionStatus.GRANTED -> {
-                    permissionDeniedPermanentlyUseCase(false)
+                    locationPermissionDeniedPermanentlyUseCase(false)
                 }
                 PermissionStatus.DENIED_PERMANENTLY -> {
-                    permissionDeniedPermanentlyUseCase(true)
+                    locationPermissionDeniedPermanentlyUseCase(true)
                 }
                 PermissionStatus.DENIED -> {
                     // do nothing
                 }
             }
+            locationPermissionStatusUseCase.refresh()
             fetchBusStops()
         }
     }

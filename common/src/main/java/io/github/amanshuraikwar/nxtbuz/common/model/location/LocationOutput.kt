@@ -6,7 +6,7 @@ sealed class LocationOutput {
     data class PermissionsNotGranted(val permissionStatus: PermissionStatus) : LocationOutput()
 
     data class SettingsNotEnabled(
-        val settingsState: LocationSettingsState.ResolvableError
+        val settingsState: LocationSettingsState.ResolvableError? = null
     ) : LocationOutput()
 
     data class Error(val reason: String) : LocationOutput()

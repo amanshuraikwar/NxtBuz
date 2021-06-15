@@ -113,7 +113,7 @@ class PermissionUtil(
         if (requestCode > 2001) {
             val id = requestCode - REQUEST_CHECK_SETTINGS
             val cont = checkSettingsContinuationMap[id] ?: run {
-                Log.w(TAG, "onPermissionResult: No continuation found for $id")
+                Log.w(TAG, "onCheckSettingResult: No continuation found for $id")
                 return false
             }
 
