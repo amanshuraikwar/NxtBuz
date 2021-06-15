@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.busstops
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -9,7 +10,10 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocationOff
+import androidx.compose.material.icons.rounded.NearMeDisabled
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -37,7 +41,7 @@ fun LocationErrorView(
             shape = MaterialTheme.shapes.medium
         ) {
             Icon(
-                imageVector = Icons.Rounded.LocationOff,
+                imageVector = Icons.Rounded.NearMeDisabled,
                 modifier = Modifier
                     .padding(16.dp)
                     .size(48.dp),
@@ -60,29 +64,33 @@ fun LocationErrorView(
             color = MaterialTheme.colors.onSurface
         )
 
-        Surface(
-            modifier = Modifier
-                .padding(
-                    top = 32.dp,
-                    start = 32.dp,
-                    end = 32.dp
-                )
-                .fillMaxWidth(),
-            color = MaterialTheme.colors.primary,
-            elevation = 0.dp,
-            shape = MaterialTheme.shapes.small
+        CompositionLocalProvider(
+            LocalIndication provides rememberRipple(color = MaterialTheme.colors.surface)
         ) {
-            Text(
-                text = primaryButtonText,
-                style = MaterialTheme.typography.button,
-                color = MaterialTheme.colors.onPrimary,
-                textAlign = TextAlign.Center,
+            Surface(
                 modifier = Modifier
-                    .clickable {
-                        onPrimaryButtonClick()
-                    }
-                    .padding(12.dp)
-            )
+                    .padding(
+                        top = 32.dp,
+                        start = 32.dp,
+                        end = 32.dp
+                    )
+                    .fillMaxWidth(),
+                color = MaterialTheme.colors.primary,
+                elevation = 0.dp,
+                shape = MaterialTheme.shapes.small
+            ) {
+                Text(
+                    text = primaryButtonText,
+                    style = MaterialTheme.typography.button,
+                    color = MaterialTheme.colors.onPrimary,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .clickable {
+                            onPrimaryButtonClick()
+                        }
+                        .padding(12.dp)
+                )
+            }
         }
 
         Surface(

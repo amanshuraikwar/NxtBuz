@@ -47,8 +47,8 @@ fun NxtBuzMap(
                             .build()
                     )
                     .compassEnabled(false)
-                    .mapToolbarEnabled(false)
-                    .minZoomPreference(mapInitData.zoom),
+                    .mapToolbarEnabled(false),
+                //.minZoomPreference(mapInitData.zoom),
                 onMapInit = { googleMap ->
                     googleMap.setMapStyle(
                         if (isLight) {

@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -112,11 +113,23 @@ fun BusArrivalItem(
                 }
             }
 
+            val elevationOverlay = LocalElevationOverlay.current
+            val absoluteElevation = LocalAbsoluteElevation.current
+            val backgroundColor =
+                elevationOverlay
+                    ?.apply(
+                        MaterialTheme.colors.surface,
+                        absoluteElevation
+                    )
+                    ?: MaterialTheme.colors.surface
+
             LastWrapColumn(
                 modifier = Modifier
+                    .padding(1.dp)
+                    .clip(MaterialTheme.shapes.medium)
                     .offset { IntOffset(0, swipeableState.offset.value.roundToInt()) }
                     .background(
-                        color = MaterialTheme.colors.surface,
+                        color = backgroundColor,
                     )
                     .clickable {
                         onClick()
