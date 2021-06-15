@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -137,14 +138,18 @@ class MainActivity : DaggerAppCompatActivity() {
                                 },
                                 decorationType = DecorationType.SHADOW
                             )
-
-                            RecenterButton(
-                                Modifier
-                                    .align(Alignment.End)
-                                    .padding(horizontal =  16.dp, vertical = 8.dp),
-                                viewModelProvider(viewModelFactory)
-                            )
                         }
+
+                        RecenterButton(
+                            Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(
+                                    bottom =
+                                    (LocalConfiguration.current.screenHeightDp / 2).dp + 16.dp
+                                )
+                                .padding(horizontal =  16.dp),
+                            viewModelProvider(viewModelFactory)
+                        )
 
                         ContentNavGraph(
                             navigationState = screenState.navigationState,
