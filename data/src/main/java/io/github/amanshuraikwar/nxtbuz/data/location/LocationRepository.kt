@@ -38,7 +38,7 @@ class LocationRepository @Inject constructor(
         activity: Activity
     ): LocationOutput {
         return withContext(dispatcherProvider.io) {
-            when (val permissionStatus = hasLocationPermission()) {
+            when (val permissionStatus = getLocationPermissionStatus()) {
                 PermissionStatus.GRANTED -> {
                     when (val settingsState = getLocationSettingsState(activity)) {
                         is LocationSettingsState.Error -> {
@@ -107,7 +107,7 @@ class LocationRepository @Inject constructor(
         }
     }
 
-    fun hasLocationPermission(): PermissionStatus {
+    fun getLocationPermissionStatus(): PermissionStatus {
         return if (ContextCompat.checkSelfPermission(
                 context, Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED

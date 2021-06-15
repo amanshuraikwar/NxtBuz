@@ -5,7 +5,7 @@ import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class PermissionDeniedPermanentlyUseCase @Inject constructor(
+class LocationPermissionDeniedPermanentlyUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) {
