@@ -11,6 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUpdatesUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,8 +28,13 @@ class LocationViewModelDelegate @Inject constructor(
         FirebaseCrashlytics.getInstance().recordException(th)
     }
 
+    private var job: Job? = null
+
+    @Synchronized
     fun init(coroutineScope: CoroutineScope) {
-        coroutineScope.launch(errorHandler) {
+        job?.cancel()
+        job = null
+        job = coroutineScope.launch(errorHandler) {
             val lastKnownLocation = getLastKnownLocationUseCase()
 
             Log.i(TAG, "init: last known location = $lastKnownLocation")
@@ -46,18 +52,31 @@ class LocationViewModelDelegate @Inject constructor(
                         )
                     )
                 )
-
-                getLocationUpdatesUseCase().collect { location ->
-                    Log.i(TAG, "init: location update = $location")
-
-                    if (location is LocationOutput.Success) {
-                        pushMapEventUseCase(
-                            MapEvent.MoveMarker(
-                                "center",
-                                LatLng(location.lat, location.lng)
-                            )
+            } else {
+                pushMapEventUseCase(
+                    MapEvent.AddMarker(
+                        MapMarker(
+                            "center",
+                            0.0,
+                            0.0,
+                            R.drawable.ic_marker_location_20,
+                            "",
+                            isFlat = true
                         )
-                    }
+                    )
+                )
+            }
+
+            getLocationUpdatesUseCase().collect { location ->
+                Log.i(TAG, "init: location update = $location")
+
+                if (location is LocationOutput.Success) {
+                    pushMapEventUseCase(
+                        MapEvent.MoveMarker(
+                            "center",
+                            LatLng(location.lat, location.lng)
+                        )
+                    )
                 }
             }
         }

@@ -11,6 +11,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -33,6 +34,7 @@ import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.startSettingsActivity
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
+import io.github.amanshuraikwar.nxtbuz.map.ui.recenter.RecenterButton
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchBar
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchBarDecorationType
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchScreen
@@ -134,6 +136,13 @@ class MainActivity : DaggerAppCompatActivity() {
                                     )
                                 },
                                 decorationType = DecorationType.SHADOW
+                            )
+
+                            RecenterButton(
+                                Modifier
+                                    .align(Alignment.End)
+                                    .padding(horizontal =  16.dp, vertical = 8.dp),
+                                viewModelProvider(viewModelFactory)
                             )
                         }
 

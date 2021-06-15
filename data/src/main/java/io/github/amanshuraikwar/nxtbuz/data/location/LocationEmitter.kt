@@ -33,7 +33,6 @@ class LocationEmitter @Inject constructor(
                             )
                         )
                     }
-                // TODO-amanshuraikwar (09 Jun 2021 09:00:04 PM): handle error?
             }
 
             override fun onLocationAvailability(p0: LocationAvailability?) {
