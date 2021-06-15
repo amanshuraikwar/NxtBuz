@@ -145,7 +145,8 @@ class MainActivity : DaggerAppCompatActivity() {
                                 .align(Alignment.BottomEnd)
                                 .padding(
                                     bottom =
-                                    (LocalConfiguration.current.screenHeightDp / 2).dp + 16.dp
+                                    (LocalConfiguration.current.screenHeightDp / 2).dp
+                                            + with(density) { insets.statusBars.top.toDp() }
                                 )
                                 .padding(horizontal =  16.dp),
                             viewModelProvider(viewModelFactory)
