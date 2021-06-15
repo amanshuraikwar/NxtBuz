@@ -54,6 +54,13 @@ class LocationViewModelDelegate @Inject constructor(
                         )
                     )
                 )
+
+                pushMapEventUseCase(
+                    MapEvent.MoveCenter(
+                        lastKnownLocation.lat,
+                        lastKnownLocation.lng,
+                    )
+                )
             } else {
                 pushMapEventUseCase(
                     MapEvent.AddMarker(
