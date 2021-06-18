@@ -45,7 +45,7 @@ fun BusStopsScreen(
     }
 
     LaunchedEffect(key1 = showBottomSheet) {
-        if (!showBottomSheet  && screenState == BusStopsScreenState.Fetching) {
+        if (!showBottomSheet && screenState == BusStopsScreenState.Fetching) {
             vm.fetchBusStops()
         }
     }
@@ -59,7 +59,13 @@ fun BusStopsScreen(
             BusStopsView(
                 state = screenState,
                 padding = padding,
-                onBusStopClick = onBusStopClick
+                onBusStopClick = onBusStopClick,
+                onRetry = {
+                    vm.fetchBusStops()
+                },
+                onUseDefaultLocation = {
+                    vm.fetchBusStops(useDefaultLocation = true)
+                }
             )
         }
     } else {
@@ -70,7 +76,13 @@ fun BusStopsScreen(
             BusStopsView(
                 state = screenState,
                 padding = PaddingValues(),
-                onBusStopClick = onBusStopClick
+                onBusStopClick = onBusStopClick,
+                onRetry = {
+                    vm.fetchBusStops()
+                },
+                onUseDefaultLocation = {
+                    vm.fetchBusStops(useDefaultLocation = true)
+                }
             )
         }
     }
@@ -81,7 +93,9 @@ fun BusStopsScreen(
 fun BusStopsView(
     state: BusStopsScreenState,
     padding: PaddingValues,
-    onBusStopClick: (busStop: BusStop) -> Unit = {}
+    onBusStopClick: (busStop: BusStop) -> Unit = {},
+    onRetry: () -> Unit = {},
+    onUseDefaultLocation: () -> Unit = {}
 ) {
     when (state) {
         BusStopsScreenState.Failed -> TODO()
@@ -93,11 +107,21 @@ fun BusStopsView(
             )
         }
         is BusStopsScreenState.Success -> {
-            NearbyBusStops(
-                state.listItems,
-                padding,
-                onBusStopClick
-            )
+            if (state.listItems.isEmpty()) {
+                NoBusStopsErrorView(
+                    title = "There seem to be no bus stops near you :(",
+                    primaryButtonText = "RETRY",
+                    onPrimaryButtonClick = onRetry,
+                    secondaryButtonText = "USE DEFAULT LOCATION",
+                    onSecondaryButtonClick = onUseDefaultLocation
+                )
+            } else {
+                NearbyBusStops(
+                    state.listItems,
+                    padding,
+                    onBusStopClick
+                )
+            }
         }
         is BusStopsScreenState.LocationError -> {
             LocationErrorView(
