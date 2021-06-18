@@ -8,7 +8,12 @@ class GetBusStopsUseCase @Inject constructor(
     private val busStopRepository: BusStopRepository
 ) {
     suspend operator fun invoke(lat: Double, lon: Double, limit: Int): List<BusStop> {
-        return busStopRepository.getCloseBusStops(lat, lon, limit)
+        return busStopRepository.getCloseBusStops(
+            lat = lat,
+            lng = lon,
+            max = limit,
+            maxDistanceMetres = 500
+        )
     }
 
     suspend operator fun invoke(query: String, limit: Int): List<BusStop> {

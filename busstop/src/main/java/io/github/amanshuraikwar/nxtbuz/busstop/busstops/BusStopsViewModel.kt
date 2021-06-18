@@ -102,7 +102,7 @@ class BusStopsViewModel @Inject constructor(
                     when (locationOutput.permissionStatus) {
                         PermissionStatus.DENIED -> {
                             _screenState.value = BusStopsScreenState.LocationError(
-                                title = "We don't have location permission :(",
+                                title = "We need location permission to get nearby bus stops :)",
                                 primaryButtonText = "GIVE PERMISSION",
                                 onPrimaryButtonClick = {
                                     askPermissions()
@@ -120,7 +120,7 @@ class BusStopsViewModel @Inject constructor(
                         }
                         PermissionStatus.DENIED_PERMANENTLY -> {
                             _screenState.value = BusStopsScreenState.LocationError(
-                                title = "We don't have location permission :(",
+                                title = "We need location permission to get nearby bus stops :)",
                                 primaryButtonText = "GO TO SETTINGS",
                                 onPrimaryButtonClick = {
                                     goToAppSettings()
@@ -143,7 +143,7 @@ class BusStopsViewModel @Inject constructor(
                 is LocationOutput.SettingsNotEnabled -> {
                     locationPermissionDeniedPermanentlyUseCase(false)
                     _screenState.value = BusStopsScreenState.LocationError(
-                        title = "Location setting is not enabled :(",
+                        title = "Location is not turned on :(",
                         primaryButtonText = if (locationOutput.settingsState?.exception != null) {
                             "ENABLE LOCATION"
                         } else {
@@ -191,15 +191,17 @@ class BusStopsViewModel @Inject constructor(
     ) {
         val listItems = SnapshotStateList<BusStopsItemData>()
 
-        listItems.add(
-            BusStopsItemData.Header(headerTitle)
-        )
-
         val busStopList = getBusStopsUseCase(
             lat = lat,
             lon = lng,
             limit = busStopsQueryLimitUseCase()
         )
+
+        if (busStopList.isNotEmpty()) {
+            listItems.add(
+                BusStopsItemData.Header(headerTitle)
+            )
+        }
 
         listItems.addAll(
             busStopList.map { busStop ->
