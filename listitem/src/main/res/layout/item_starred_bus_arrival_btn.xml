@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginEnd="12dp"
-        android:fontFamily="@font/rubik_medium"
+
         android:gravity="center"
         android:textAppearance="?textAppearanceOverline"
         android:textColor="?android:textColorSecondary"

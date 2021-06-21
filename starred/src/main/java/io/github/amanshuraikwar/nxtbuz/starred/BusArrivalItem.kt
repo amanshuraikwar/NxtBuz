@@ -216,15 +216,3 @@ fun Int.toArrivalString(): String {
     }
 }
 
-@Composable
-@Preview
-fun BusArrivalItemPreview() {
-//    PreviewSurface {
-//        BusArrivalItem(
-//            "Opp Blk 19",
-//            "961M",
-//            Arrivals.NotOperating,
-//        )
-//    }
-}
-
