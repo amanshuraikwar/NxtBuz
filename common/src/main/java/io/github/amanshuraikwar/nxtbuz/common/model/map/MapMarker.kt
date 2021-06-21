@@ -25,18 +25,3 @@ open class MapMarker(
         return true
     }
 }
-
-class ArrivingBusMapMarker(
-    id: String,
-    lat: Double,
-    lng: Double,
-    description: String,
-    val busServiceNumber: String,
-) : MapMarker(id, lat, lng, 0, description) {
-
-    fun copy(newLat: Double, newLng: Double, newDescription: String): ArrivingBusMapMarker {
-        return ArrivingBusMapMarker(
-            id, newLat, newLng, newDescription, busServiceNumber
-        )
-    }
-}

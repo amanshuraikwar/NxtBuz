@@ -20,7 +20,6 @@ data class CoroutinesDispatcherProvider(
     val arrivalService: CoroutineDispatcher,
     val location: CoroutineDispatcher
 ) {
-
     @Inject
     constructor() : this(
         Main,

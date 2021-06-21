@@ -26,7 +26,7 @@ fun BusDestination(
         )
 
         Text(
-            text = destinationBusStopDescription.toUpperCase(Locale.ROOT),
+            text = destinationBusStopDescription.uppercase(Locale.ROOT),
             style = MaterialTheme.typography.overline,
             color = MaterialTheme.colors.onSurface,
             modifier = Modifier.padding(start = 2.dp)

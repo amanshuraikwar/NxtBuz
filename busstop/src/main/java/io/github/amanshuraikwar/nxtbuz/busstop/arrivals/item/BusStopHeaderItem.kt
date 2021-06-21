@@ -68,7 +68,7 @@ fun BusStopHeaderItem(
             )
 
             Text(
-                text = "$busStopRoadName • $busStopCode".toUpperCase(Locale.ROOT),
+                text = "$busStopRoadName • $busStopCode".uppercase(Locale.ROOT),
                 color = MaterialTheme.colors.onSurface,
                 style = MaterialTheme.typography.overline,
                 modifier = Modifier
@@ -141,7 +141,7 @@ fun BusStopHeaderItem(
             )
 
             Text(
-                text = "                   ".toUpperCase(Locale.ROOT),
+                text = "                   ".uppercase(Locale.ROOT),
                 color = MaterialTheme.colors.onSurface,
                 style = MaterialTheme.typography.overline,
                 modifier = Modifier

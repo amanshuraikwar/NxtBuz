@@ -14,7 +14,7 @@ fun Header(
     title: String
 ) {
     Text(
-        text = title.toUpperCase(Locale.ROOT),
+        text = title.uppercase(Locale.ROOT),
         modifier = modifier
             .padding(
                 start = 16.dp,

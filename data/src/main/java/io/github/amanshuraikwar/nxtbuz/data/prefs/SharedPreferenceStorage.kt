@@ -3,7 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.data.prefs
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import io.github.amanshuraikwar.nxtbuz.common.model.AlertFrequency
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.data.prefs.helper.*
 import javax.inject.Inject
 import javax.inject.Singleton

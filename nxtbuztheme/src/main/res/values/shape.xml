@@ -12,7 +12,7 @@
 
     <!--Shape Appearance for large components like side and bottom navigation drawers-->
     <style name="ShapeAppearance.AppTheme.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
-        <!--Your custom shape here-->
+        <item name="cornerSize">@dimen/cornerSizeLargeComponent</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.TopFlat">

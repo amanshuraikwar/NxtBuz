@@ -7,7 +7,6 @@ import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
 
 @Module
 class UtilModule {
-
     @Provides
     fun a(activity: Activity): PermissionUtil {
         return PermissionUtil(

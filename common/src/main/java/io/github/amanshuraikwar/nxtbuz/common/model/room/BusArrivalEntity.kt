@@ -1,9 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.common.model.room
 
 import androidx.room.Entity
-import io.github.amanshuraikwar.nxtbuz.common.model.BusArrivalStatus
-import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
-import io.github.amanshuraikwar.nxtbuz.common.model.BusType
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivalStatus
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
 import org.threeten.bp.OffsetDateTime
 
 @Entity(primaryKeys = ["busServiceNumber", "busStopCode", "seqNumber"])

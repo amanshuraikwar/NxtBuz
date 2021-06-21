@@ -29,11 +29,11 @@ private val DarkColorPalette = darkColors(
     secondary = blueLighter,
     background = black,
     surface = black,
+    error = redLighter,
     onPrimary = gray900,
     onSecondary = gray900,
     onBackground = blueGrey50,
     onSurface = blueGrey50,
-    error = redLighter,
     onError = gray900
 )
 
@@ -41,13 +41,14 @@ private val LightColorPalette = lightColors(
     primary = blue,
     primaryVariant = blueDark,
     secondary = blue,
+    secondaryVariant = blueDark,
     background = blueGrey50,
     surface = white,
+    error = red,
     onPrimary = blueGrey50,
     onSecondary = blueGrey50,
     onBackground = blueGreyDark,
     onSurface = blueGreyDark,
-    error = red,
     onError = blueGrey50
 )
 

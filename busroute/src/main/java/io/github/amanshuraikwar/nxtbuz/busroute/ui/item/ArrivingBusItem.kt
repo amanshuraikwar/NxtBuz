@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busroute.R
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.ArrivingBus
-import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
-import io.github.amanshuraikwar.nxtbuz.common.model.BusType
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
 
 @Composable
 fun ArrivingBusItem(

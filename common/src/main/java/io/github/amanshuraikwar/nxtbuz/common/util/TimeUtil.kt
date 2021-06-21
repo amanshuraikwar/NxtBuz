@@ -5,7 +5,6 @@ import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
 object TimeUtil {
-
     @JvmStatic
     val TIME_READABLE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("h:mm a")
 

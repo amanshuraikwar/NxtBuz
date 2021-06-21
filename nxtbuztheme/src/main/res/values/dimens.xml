@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="cornerSizeSmallComponent">16dp</dimen>
-    <dimen name="cornerSizeMediumComponent">16dp</dimen>
+    <dimen name="cornerSizeMediumComponent">20dp</dimen>
+    <dimen name="cornerSizeLargeComponent">24dp</dimen>
 </resources>

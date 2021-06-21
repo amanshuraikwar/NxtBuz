@@ -24,7 +24,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
@@ -32,7 +31,7 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.theme.onStar
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.outline
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
-import io.github.amanshuraikwar.nxtbuz.common.model.BusType
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
 import kotlin.math.roundToInt
 
 @Composable

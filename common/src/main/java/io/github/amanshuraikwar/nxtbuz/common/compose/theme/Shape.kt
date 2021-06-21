@@ -28,5 +28,6 @@ val NxtBuzThemeShapes = Shapes(
     large = RoundedCornerShape(LargeShapeSizeDp.dp)
 )
 
+@Suppress("unused")
 val Shapes.largeShapeSizeDp: Dp
     get() = LargeShapeSizeDp.dp

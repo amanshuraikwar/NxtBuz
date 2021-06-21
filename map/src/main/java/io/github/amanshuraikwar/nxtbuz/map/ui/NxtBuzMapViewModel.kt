@@ -15,7 +15,6 @@ import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.map.*
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
-import io.github.amanshuraikwar.nxtbuz.common.util.map.MarkerUtil
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultMapZoomUseCase
 import io.github.amanshuraikwar.nxtbuz.map.LocationViewModelDelegate
@@ -45,7 +44,6 @@ class NxtBuzMapViewModel @Inject constructor(
     @Named("mapCenter") private val mapCenter: MutableStateFlow<LatLng?>,
     private val mapViewModelDelegate: LocationViewModelDelegate,
     private val mapUtil: MapUtil,
-    private val markerUtil: MarkerUtil,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) : ViewModel() {
 
@@ -224,11 +222,7 @@ class NxtBuzMapViewModel @Inject constructor(
                         )
                     )
                     .icon(
-                        if (mapMarker is ArrivingBusMapMarker) {
-                            markerUtil.arrivingBusBitmapDescriptor(mapMarker.busServiceNumber)
-                        } else {
-                            mapUtil.bitmapDescriptorFromVector(mapMarker.iconDrawableRes)
-                        }
+                        mapUtil.bitmapDescriptorFromVector(mapMarker.iconDrawableRes)
                     )
                     .title(mapMarker.description)
                     .flat(mapMarker.isFlat)
@@ -277,11 +271,7 @@ class NxtBuzMapViewModel @Inject constructor(
                         )
                     )
                     .icon(
-                        if (mapMarker is ArrivingBusMapMarker) {
-                            markerUtil.arrivingBusBitmapDescriptor(mapMarker.busServiceNumber)
-                        } else {
-                            mapUtil.bitmapDescriptorFromVector(mapMarker.iconDrawableRes)
-                        }
+                        mapUtil.bitmapDescriptorFromVector(mapMarker.iconDrawableRes)
                     )
                     .title(mapMarker.description)
                     .flat(mapMarker.isFlat)
@@ -343,7 +333,6 @@ class NxtBuzMapViewModel @Inject constructor(
             )
         }
     }
-
 
     private suspend fun GoogleMap.addRoute(
         mapEvent: MapEvent.AddRoute

@@ -59,7 +59,7 @@ class PermissionUtil(
 
     fun onPermissionResult(
         requestCode: Int,
-        permissions: Array<out String>,
+        @Suppress("UNUSED_PARAMETER") permissions: Array<out String>,
         grantResults: IntArray
     ) {
         val id = requestCode - PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
