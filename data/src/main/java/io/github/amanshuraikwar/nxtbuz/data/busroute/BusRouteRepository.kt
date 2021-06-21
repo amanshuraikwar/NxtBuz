@@ -223,6 +223,7 @@ class BusRouteRepository @Inject constructor(
             .awaitAll()
     }
 
+    @Suppress("NAME_SHADOWING")
     suspend fun getBusRoute(
         busServiceNumber: String,
         direction: Int? = null,

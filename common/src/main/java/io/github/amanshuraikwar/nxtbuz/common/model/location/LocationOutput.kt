@@ -1,7 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.common.model.location
 
-import io.github.amanshuraikwar.nxtbuz.common.model.PermissionStatus
-
 sealed class LocationOutput {
     data class PermissionsNotGranted(val permissionStatus: PermissionStatus) : LocationOutput()
 

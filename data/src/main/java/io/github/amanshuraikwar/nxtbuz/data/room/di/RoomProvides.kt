@@ -15,7 +15,6 @@ import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
 
 @Module
 class RoomProvides {
-
     @Provides
     fun a(@ApplicationContext context: Context): AppDatabase {
         return Room

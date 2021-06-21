@@ -7,7 +7,6 @@ import io.github.amanshuraikwar.nxtbuz.data.prefs.SharedPreferenceStorage
 
 @Module
 abstract class PrefsModuleBinds {
-
     @Binds
     abstract fun a(
         storage: SharedPreferenceStorage

@@ -11,7 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.common.model.room.OperatingBusEntity
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
-import io.github.amanshuraikwar.nxtbuz.data.IllegalDbStateException
+import io.github.amanshuraikwar.nxtbuz.common.model.exception.IllegalDbStateException
 import kotlinx.coroutines.withContext
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetTime

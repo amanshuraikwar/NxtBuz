@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.common.model
+package io.github.amanshuraikwar.nxtbuz.common.model.starred
 
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 

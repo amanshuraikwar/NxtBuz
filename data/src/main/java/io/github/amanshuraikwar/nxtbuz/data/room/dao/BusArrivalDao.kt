@@ -3,9 +3,9 @@ package io.github.amanshuraikwar.nxtbuz.data.room.dao
 import androidx.room.*
 import io.github.amanshuraikwar.nxtbuz.common.model.room.BusArrivalEntity
 
+@Suppress("unused")
 @Dao
 interface BusArrivalDao {
-
     @Insert
     suspend fun insertAll(entities: List<BusArrivalEntity>)
 

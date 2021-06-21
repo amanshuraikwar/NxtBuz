@@ -29,7 +29,6 @@ import io.github.amanshuraikwar.nxtbuz.data.room.dao.*
 )
 @TypeConverters(DateTimeTypeConverters::class, BusArrivalTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
-
     abstract val busStopDao: BusStopDao
 
     abstract val operatingBusDao: OperatingBusDao

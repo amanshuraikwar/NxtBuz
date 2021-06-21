@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.data
+package io.github.amanshuraikwar.nxtbuz.common.model.exception
 
 import java.lang.IllegalStateException
 

@@ -42,7 +42,6 @@ dependencies {
     api Libs.AndroidX.Room.runtime
     kapt Libs.AndroidX.Room.compiler
     implementation Libs.AndroidX.Room.ktx
-    androidTestImplementation Libs.AndroidX.Room.testing
 
     implementation Libs.threeTenAbp
 
@@ -50,10 +49,4 @@ dependencies {
     api Libs.Google.playServicesLocation
 
     implementation Libs.Google.crashlytics
-
-    testImplementation Libs.Retrofit.retrofit
-    testImplementation Libs.Retrofit.gsonConverter
-    testImplementation Libs.OkHttp.loggingInterceptor
-    testImplementation Libs.Coroutines.test
-    testImplementation Libs.junit
 }

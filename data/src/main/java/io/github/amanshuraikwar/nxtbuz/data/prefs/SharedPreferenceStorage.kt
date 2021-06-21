@@ -10,7 +10,6 @@ import javax.inject.Singleton
 
 @Singleton
 class SharedPreferenceStorage @Inject constructor(context: Context) : PreferenceStorage {
-
     private val prefs: Lazy<SharedPreferences> = lazy { // Lazy to prevent IO access to main thread.
         context.applicationContext.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
     }

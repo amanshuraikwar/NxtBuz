@@ -3,6 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.data.room.dao
 import androidx.room.*
 import io.github.amanshuraikwar.nxtbuz.common.model.room.BusStopEntity
 
+@Suppress("unused")
 @Dao
 interface BusStopDao {
 

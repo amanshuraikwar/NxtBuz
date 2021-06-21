@@ -7,7 +7,7 @@ import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.common.model.BusService
-import io.github.amanshuraikwar.nxtbuz.common.model.SearchResult
+import io.github.amanshuraikwar.nxtbuz.common.model.search.SearchResult
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
@@ -21,7 +21,6 @@ class SearchRepository @Inject constructor(
     private val operatingBusDao: OperatingBusDao,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) {
-
     suspend fun search(query: String, limit: Int): SearchResult =
         withContext(dispatcherProvider.computation) {
 

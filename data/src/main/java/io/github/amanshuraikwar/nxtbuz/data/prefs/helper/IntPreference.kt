@@ -11,7 +11,6 @@ class IntPreference(
     private val name: String,
     private val defaultValue: Int
 ) : ReadWriteProperty<Any, Int> {
-
     @WorkerThread
     override fun getValue(thisRef: Any, property: KProperty<*>): Int {
         return preferences.value.getInt(name, defaultValue)
