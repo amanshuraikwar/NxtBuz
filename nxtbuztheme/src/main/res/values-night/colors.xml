@@ -15,8 +15,6 @@
     <color name="colorOnSurface">#ffffff</color>
     <color name="colorOnError">#000000</color>
 
-    <color name="color_distribution_bar_def">#414142</color>
-
     <color name="yellow">#FFF176</color>
     <color name="orange">#FFB74D</color>
     <color name="orange_variant">#FFA726</color>
@@ -29,8 +27,6 @@
     <color name="teal">#4DB6AC</color>
 
     <color name="red">#E57373</color>
-
-    <color name="divider">#1effffff</color>
 
     <color name="orange_transparent">#22FFB74D</color>
 
