@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">NxtBuz</string>
+    <string name="app_name_internal">NxtBuz INTERNAL</string>
+    <string name="app_name_debug">NxtBuz DEBUG</string>
     <string name="btn_txt_retry">RETRY</string>
 
     <string name="bus_direction_1">\u2192</string>

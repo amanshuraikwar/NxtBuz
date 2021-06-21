@@ -39,7 +39,7 @@ dependencies {
 
     implementation Libs.Coroutines.core
 
-    implementation Libs.AndroidX.Room.runtime
+    api Libs.AndroidX.Room.runtime
     kapt Libs.AndroidX.Room.compiler
     implementation Libs.AndroidX.Room.ktx
     androidTestImplementation Libs.AndroidX.Room.testing
@@ -47,7 +47,7 @@ dependencies {
     implementation Libs.threeTenAbp
 
     implementation Libs.Google.playServicesMap
-    implementation Libs.Google.playServicesLocation
+    api Libs.Google.playServicesLocation
 
     implementation Libs.Google.crashlytics
 
