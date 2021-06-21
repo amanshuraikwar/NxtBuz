@@ -32,6 +32,8 @@ android {
         renderScript false
         resValues false
         shaders false
+        dataBinding false
+        viewBinding false
     }
 
     composeOptions {
@@ -40,12 +42,7 @@ android {
 }
 
 dependencies {
-    implementation project(":common")
     implementation project(":domain")
-    implementation project(":multiitemadapter")
-    implementation project(":map")
-    debugImplementation project(':basetheme')
-    implementation project(':nxtbuztheme')
 
     Libs.Kotlin.stdlib
 
@@ -57,16 +54,7 @@ dependencies {
     kapt Libs.Dagger.compiler
     kapt Libs.Dagger.androidProcessor
 
-    implementation Libs.Google.material
-
-    implementation Libs.AndroidX.coreKtx
-    implementation Libs.AndroidX.appcompat
-    implementation Libs.AndroidX.constraintlayout
-
     implementation Libs.AndroidX.Lifecycle.viewmodel
-    implementation Libs.AndroidX.Lifecycle.livedata
-    implementation Libs.AndroidX.Lifecycle.extensions
-    implementation Libs.AndroidX.Lifecycle.runtime
 
     for (dependency in Libs.AndroidX.Compose.all) {
         implementation dependency

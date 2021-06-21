@@ -4,8 +4,6 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import javax.inject.Scope;
-
 /**
  * By default, if no scope annotation is present, the injector creates an instance , uses the
  * instance for one injection, and then forgets it. If a scope annotation is present, the

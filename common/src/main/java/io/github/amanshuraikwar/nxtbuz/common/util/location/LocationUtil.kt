@@ -26,7 +26,6 @@ class LocationUtil(
     }
 
     private fun getLocationSettingsRequest(): LocationSettingsRequest? {
-
         val locationRequest =
             LocationRequest.create()
                 ?.apply {
@@ -38,7 +37,6 @@ class LocationUtil(
     }
 
     suspend fun settingEnabled(): SettingsState = suspendCoroutine { cont ->
-
         val locationSettingsRequest = getLocationSettingsRequest() ?: run {
             Log.w(
                 TAG,

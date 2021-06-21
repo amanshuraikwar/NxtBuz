@@ -117,10 +117,11 @@ android {
         resValues true
 
         // Disable unused AGP features
-        viewBinding false
         aidl false
         renderScript false
         shaders false
+        dataBinding false
+        viewBinding false
     }
 
     composeOptions {
@@ -129,7 +130,6 @@ android {
 }
 
 dependencies {
-    implementation project(':common')
     implementation project(':data')
     implementation project(':domain')
     implementation project(':launcher')

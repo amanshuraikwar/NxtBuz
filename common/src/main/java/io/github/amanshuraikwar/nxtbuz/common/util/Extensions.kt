@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.common.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
@@ -10,9 +11,6 @@ import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
-import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
@@ -41,6 +39,7 @@ fun isDarkTheme(activity: Activity): Boolean {
             Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 }
 
+@SuppressLint("ObsoleteSdkInt")
 fun Activity.makeStatusBarTransparent() {
     if (isDarkTheme(this)) {
         window.apply {
@@ -81,12 +80,6 @@ fun Activity.makeStatusBarTransparent() {
 fun View.setMarginTop(marginTop: Int) {
     val layoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
     layoutParams.setMargins(0, marginTop, 0, 0)
-    this.layoutParams = layoutParams
-}
-
-fun View.setMarginBottom(marginBottom: Int) {
-    val layoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
-    layoutParams.setMargins(marginLeft, this.marginTop, this.marginRight, marginBottom)
     this.layoutParams = layoutParams
 }
 

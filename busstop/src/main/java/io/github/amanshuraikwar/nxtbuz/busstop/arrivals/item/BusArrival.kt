@@ -17,7 +17,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
-import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
 
 @Composable
 fun BusArrival(

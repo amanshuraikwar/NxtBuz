@@ -7,7 +7,6 @@ import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
 
 @Module
 class LocationUtilProvides {
-
     @Provides
     @ActivityScoped
     fun locationUtil(activity: Activity): LocationUtil {

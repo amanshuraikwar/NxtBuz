@@ -1,9 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.common.model.arrival
 
-import io.github.amanshuraikwar.nxtbuz.common.model.ArrivingBusStop
-import io.github.amanshuraikwar.nxtbuz.common.model.BusLoad
-import io.github.amanshuraikwar.nxtbuz.common.model.BusType
-
 /**
  * @property arrival Arrival time in next N minutes.
  * @author amanshuraikwar

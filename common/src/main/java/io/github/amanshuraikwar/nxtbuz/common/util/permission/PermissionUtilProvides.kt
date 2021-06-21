@@ -7,7 +7,6 @@ import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
 
 @Module
 class PermissionUtilProvides {
-
     @Provides
     @ActivityScoped
     fun a(activity: Activity): PermissionUtil {

@@ -1,7 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.busstops
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.LocationSearching
 import androidx.compose.material.icons.rounded.WrongLocation
 import androidx.compose.runtime.Composable
 

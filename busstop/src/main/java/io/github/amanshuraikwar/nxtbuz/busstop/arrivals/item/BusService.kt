@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
-import io.github.amanshuraikwar.nxtbuz.common.model.BusType
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
 
 @Composable
 fun BusService(

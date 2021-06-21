@@ -5,8 +5,6 @@
     <dimen name="margin_large">32dp</dimen>
     <dimen name="padding_sign_in_btn">12dp</dimen>
 
-<!--    <dimen name="shape_corner_size_small_component">8dp</dimen>-->
-<!--    <dimen name="shape_corner_size_medium_component">12dp</dimen>-->
     <dimen name="padding_normal">16dp</dimen>
     <dimen name="padding_large">32dp</dimen>
     <dimen name="avatar_size">40dp</dimen>

@@ -31,7 +31,7 @@ fun Activity.startOnboardingActivity() {
     )
 }
 
-private fun Context.getActivityClass(target: String): Class<out Activity?>? {
+private fun Context.getActivityClass(target: String): Class<out Activity?> {
     @Suppress("UNCHECKED_CAST")
     return classLoader.loadClass(target) as Class<out Activity?>
 }

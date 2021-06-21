@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.data.prefs
 
-import io.github.amanshuraikwar.nxtbuz.common.model.AlertFrequency
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.AlertFrequency
 
 /**
  * Storage for app and user preferences.

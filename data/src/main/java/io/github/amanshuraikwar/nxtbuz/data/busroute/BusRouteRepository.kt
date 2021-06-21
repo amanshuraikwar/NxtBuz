@@ -4,8 +4,8 @@ import android.util.Log
 import io.github.amanshuraikwar.ltaapi.LtaApi
 import io.github.amanshuraikwar.ltaapi.model.BusRouteItemDto
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.BusRoute
-import io.github.amanshuraikwar.nxtbuz.common.model.BusRouteNode
+import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRoute
+import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNode
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
 import io.github.amanshuraikwar.nxtbuz.common.model.room.BusRouteEntity
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao

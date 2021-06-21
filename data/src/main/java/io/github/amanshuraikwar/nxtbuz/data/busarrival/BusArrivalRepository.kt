@@ -5,9 +5,7 @@ import io.github.amanshuraikwar.ltaapi.model.ArrivingBusItemDto
 import io.github.amanshuraikwar.ltaapi.model.BusArrivalItemDto
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.ArrivingBus
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusStopArrival
+import io.github.amanshuraikwar.nxtbuz.common.model.arrival.*
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
 import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
