@@ -26,10 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.onStar
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.outline
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.*
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
 import kotlin.math.roundToInt
@@ -202,6 +199,63 @@ fun BusArrivalItem(
                         color = MaterialTheme.colors.onSurface,
                     )
                 }
+            }
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun BusArrivalItem(
+    modifier: Modifier = Modifier,
+    decorationType: DecorationType,
+) {
+    Surface(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colors.surface,
+        elevation = if (decorationType == DecorationType.SHADOW) 4.dp else 0.dp,
+        border = if (decorationType == DecorationType.OUTLINE) {
+            BorderStroke(1.dp, MaterialTheme.colors.outline)
+        } else {
+            null
+        }
+    ) {
+        LastWrapColumn(
+            modifier = Modifier
+                .padding(1.dp)
+                .padding(
+                    vertical = 8.dp,
+                    horizontal = 12.dp
+                )
+        ) {
+            Text(
+                "STARRED",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.background(
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colors.onSurface.disabled
+                ),
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.onSurface.disabled
+            )
+
+            Spacer(modifier = Modifier.size(8.dp))
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .background(
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colors.onSurface.disabled
+                    )
+                    .padding(vertical = 2.dp, horizontal = 4.dp)
+            ) {
+                Text(
+                    text = "                    ",
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.alpha(0f)
+                )
             }
         }
     }
