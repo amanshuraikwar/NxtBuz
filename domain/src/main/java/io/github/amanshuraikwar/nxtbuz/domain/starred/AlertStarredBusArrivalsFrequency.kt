@@ -10,7 +10,6 @@ class AlertStarredBusArrivalsFrequency @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) {
-
     suspend operator fun invoke(): AlertFrequency = withContext(dispatcherProvider.io) {
         preferenceStorage.alertStarredBusArrivalsFrequency
     }

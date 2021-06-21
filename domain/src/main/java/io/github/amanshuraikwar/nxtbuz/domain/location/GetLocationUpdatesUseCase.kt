@@ -8,7 +8,6 @@ import javax.inject.Inject
 class GetLocationUpdatesUseCase @Inject constructor(
     private val locationEmitter: LocationEmitter,
 ) {
-
     suspend operator fun invoke(): SharedFlow<LocationOutput> {
         return locationEmitter.getLocation()
     }

@@ -9,8 +9,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUpdatesUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionStatusUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.map.PushMapEventUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

@@ -7,7 +7,6 @@ import javax.inject.Inject
 class GetBusRouteUseCase @Inject constructor(
     private val busRouteRepository: BusRouteRepository
 ) {
-
     suspend operator fun invoke(
         busServiceNumber: String,
         direction: Int? = null,

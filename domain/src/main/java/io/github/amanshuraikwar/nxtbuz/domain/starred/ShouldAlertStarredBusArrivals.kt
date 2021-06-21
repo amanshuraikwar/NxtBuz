@@ -9,7 +9,6 @@ class ShouldAlertStarredBusArrivals @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) {
-
     suspend operator fun invoke(): Boolean = withContext(dispatcherProvider.io) {
         preferenceStorage.alertStarredBusArrivals
     }
