@@ -10,7 +10,6 @@ import io.github.amanshuraikwar.nxtbuz.map.ui.recenter.RecenterViewModel
 
 @Module
 abstract class MapModule {
-
     @Binds
     @IntoMap
     @ViewModelKey(NxtBuzMapViewModel::class)

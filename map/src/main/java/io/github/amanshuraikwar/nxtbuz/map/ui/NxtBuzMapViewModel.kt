@@ -3,8 +3,6 @@ package io.github.amanshuraikwar.nxtbuz.map.ui
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.annotation.UiThread
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -13,7 +11,6 @@ import com.google.android.gms.maps.model.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.map.*
-import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.DefaultMapZoomUseCase
@@ -29,14 +26,8 @@ import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Named
 
-
 private const val TAG = "NxtBuzMapViewModel"
 
-/**
- * [ViewModel] for [NxtBuzMapFragment].
- * @author amanshuraikwar
- * @since 24 Jan 2021 03:29:23 PM
- */
 class NxtBuzMapViewModel @Inject constructor(
     private val defaultLocationUseCase: DefaultLocationUseCase,
     private val defaultMapZoomUseCase: DefaultMapZoomUseCase,
@@ -48,9 +39,6 @@ class NxtBuzMapViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var map: GoogleMap? = null
-
-    private val _initMap = MutableLiveData<MapInitData>()
-    val initMap = _initMap.asEvent()
 
     private val _initMapFlow = MutableSharedFlow<MapInitData?>(replay = 1)
     val initMapFlow: SharedFlow<MapInitData?> = _initMapFlow
@@ -178,12 +166,6 @@ class NxtBuzMapViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    @UiThread
-    fun onReCreate() {
-        // update map style in case of dark mode changes
-        mapUtil.updateMapStyle(map ?: return)
     }
 
     private val mainHandler: Handler by lazy {
