@@ -10,7 +10,6 @@ import io.github.amanshuraikwar.nxtbuz.common.di.ViewModelKey
 
 @Module
 abstract class SettingsModule {
-
     @Binds
     @IntoMap
     @ViewModelKey(SettingsViewModel::class)

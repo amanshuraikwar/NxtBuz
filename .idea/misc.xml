@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/compose-model-1624289694627.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1624289733142.xml" value="0.1" />
         <entry key="search/src/main/res/drawable/ic_round_open_in_new_24.xml" value="0.4203703703703704" />
         <entry key="search/src/main/res/drawable/ic_round_star_16.xml" value="0.4203703703703704" />
         <entry key="search/src/main/res/drawable/ic_search_128.xml" value="0.4203703703703704" />
+        <entry key="settings/src/main/res/layout/activity_settings.xml" value="0.1859375" />
         <entry key="starred/src/main/res/layout/dialog_starred_bus_arrival_options.xml" value="0.1793478260869565" />
       </map>
     </option>
