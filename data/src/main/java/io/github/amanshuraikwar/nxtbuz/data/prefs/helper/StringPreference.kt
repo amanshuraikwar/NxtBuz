@@ -6,12 +6,12 @@ import androidx.core.content.edit
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+@Suppress("unused")
 class StringPreference(
     private val preferences: Lazy<SharedPreferences>,
     private val name: String,
     private val defaultValue: String?
 ) : ReadWriteProperty<Any, String?> {
-
     @WorkerThread
     override fun getValue(thisRef: Any, property: KProperty<*>): String? {
         return preferences.value.getString(name, defaultValue)

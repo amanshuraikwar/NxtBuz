@@ -13,7 +13,6 @@ class ObjectPreference<T>(
     private val toString: (T) -> String,
     private val fromString: (String?) -> T?
 ) : ReadWriteProperty<Any, T> {
-
     @WorkerThread
     override fun getValue(thisRef: Any, property: KProperty<*>): T {
         return preferences

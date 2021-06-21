@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.common.model
+package io.github.amanshuraikwar.nxtbuz.common.model.user
 
 import androidx.annotation.FloatRange
 

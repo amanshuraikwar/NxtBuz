@@ -9,7 +9,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.ResolvableApiException
-import io.github.amanshuraikwar.nxtbuz.common.model.PermissionStatus
+import io.github.amanshuraikwar.nxtbuz.common.model.location.PermissionStatus
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
 

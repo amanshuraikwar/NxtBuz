@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.data.user
 
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.UserState
+import io.github.amanshuraikwar.nxtbuz.common.model.user.UserState
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -12,7 +12,6 @@ class UserRepository @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
-
     suspend fun getUserState(): UserState = withContext(dispatcherProvider.io) {
         return@withContext if (preferenceStorage.onboardingCompleted) {
             UserState.SetupComplete

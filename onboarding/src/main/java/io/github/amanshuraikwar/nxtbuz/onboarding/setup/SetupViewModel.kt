@@ -7,8 +7,8 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.SetupState
-import io.github.amanshuraikwar.nxtbuz.common.model.UserState
+import io.github.amanshuraikwar.nxtbuz.common.model.user.SetupState
+import io.github.amanshuraikwar.nxtbuz.common.model.user.UserState
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.domain.user.DoSetupUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetUserStateUseCase

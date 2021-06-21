@@ -9,7 +9,6 @@ import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
 
 @Module
 class LocationModuleProvides {
-
     @Provides
     fun getFusedLocationProviderClient(
         @ApplicationContext context: Context

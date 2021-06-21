@@ -62,6 +62,7 @@ class BusStopRepository @Inject constructor(
 
     }.flowOn(dispatcherProvider.computation)
 
+    @Suppress("unused")
     suspend fun getCloseBusStops(
         latitude: Double,
         longitude: Double,

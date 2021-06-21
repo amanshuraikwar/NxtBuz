@@ -11,7 +11,6 @@ class BooleanPreference(
     private val name: String,
     private val defaultValue: Boolean
 ) : ReadWriteProperty<Any, Boolean> {
-
     @WorkerThread
     override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
         return preferences.value.getBoolean(name, defaultValue)

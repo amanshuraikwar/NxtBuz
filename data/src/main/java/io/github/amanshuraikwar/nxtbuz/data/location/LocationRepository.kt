@@ -13,7 +13,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Tasks
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
-import io.github.amanshuraikwar.nxtbuz.common.model.PermissionStatus
+import io.github.amanshuraikwar.nxtbuz.common.model.location.PermissionStatus
 import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationSettingsState
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
