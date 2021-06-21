@@ -1,6 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.domain.busarrival
-
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusStopArrival
+package io.github.amanshuraikwar.nxtbuz.common.model.arrival
 
 data class BusServiceArrivalsLoopData(
     val busStopCode: String,

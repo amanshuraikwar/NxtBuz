@@ -12,9 +12,7 @@ class DoSetupUseCase @Inject constructor(
     private val busStopRepository: BusStopRepository,
     private val busRouteRepository: BusRouteRepository
 ) {
-
     operator fun invoke(): Flow<SetupState> = flow outerFlow@{
-
         userRepository.markSetupIncomplete()
 
         busStopRepository.setup()

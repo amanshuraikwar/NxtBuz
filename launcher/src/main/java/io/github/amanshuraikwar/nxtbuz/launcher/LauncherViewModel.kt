@@ -21,7 +21,6 @@ class LauncherViewModel @Inject constructor(
     private val getUserStateUseCase: GetUserStateUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
-
     private val _launchDestination = MutableLiveData<LaunchDestination>()
     val launchDestination = _launchDestination.asEvent()
 

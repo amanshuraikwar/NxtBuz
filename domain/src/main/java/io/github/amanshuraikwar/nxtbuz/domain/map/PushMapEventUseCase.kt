@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.domain.location
+package io.github.amanshuraikwar.nxtbuz.domain.map
 
 import android.util.Log
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
@@ -14,11 +14,6 @@ class PushMapEventUseCase @Inject constructor(
     @Named("mapScope") private val coroutineScope: CoroutineScope,
     @Named("mapEventFlow") private val mapEventFlow: MutableSharedFlow<MapEvent>
 ) {
-
-//    suspend operator fun invoke(mapEvent: MapEvent): MapResult {
-//        return mapEventFlow.emit(mapEvent)
-//    }
-
     operator fun invoke(mapEvent: MapEvent) {
         coroutineScope.launch {
             Log.d(TAG, "invoke: $mapEvent")

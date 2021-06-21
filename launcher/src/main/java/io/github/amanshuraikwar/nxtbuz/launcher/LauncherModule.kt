@@ -12,7 +12,6 @@ import io.github.amanshuraikwar.nxtbuz.common.di.ViewModelKey
 @Module
 @Suppress("UNUSED")
 abstract class LauncherModule {
-
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
      * want to get a [LauncherViewModel] class.

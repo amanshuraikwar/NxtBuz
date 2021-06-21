@@ -16,7 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.*
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultMapZoomUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.map.DefaultMapZoomUseCase
 import io.github.amanshuraikwar.nxtbuz.map.LocationViewModelDelegate
 import io.github.amanshuraikwar.nxtbuz.map.R
 import kotlinx.coroutines.*

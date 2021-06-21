@@ -8,7 +8,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUpdatesUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionStatusUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.PushMapEventUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.map.PushMapEventUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,5 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.github.amanshuraikwar.nxtbuz.busroute">
-
-    /
-</manifest>
+<manifest package="io.github.amanshuraikwar.nxtbuz.busroute" />
