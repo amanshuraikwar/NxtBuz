@@ -8,7 +8,6 @@ import io.github.amanshuraikwar.nxtbuz.common.di.ViewModelKey
 
 @Module
 abstract class StarredModule {
-
     @Binds
     @IntoMap
     @ViewModelKey(StarredViewModel::class)
