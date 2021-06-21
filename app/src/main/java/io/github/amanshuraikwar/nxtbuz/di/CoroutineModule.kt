@@ -12,7 +12,6 @@ import javax.inject.Named
 
 @Module
 class CoroutineModule {
-
     @Provides
     @ActivityScoped
     @Named("mapScope")

@@ -1,9 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.common.util.map
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.annotation.ColorInt
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
@@ -17,7 +17,7 @@ import kotlin.math.*
 
 
 class MapUtil @Inject constructor(
-    private val activity: AppCompatActivity,
+    private val activity: Activity,
 ) {
 
     fun bitmapDescriptorFromVector(vectorResId: Int): BitmapDescriptor {

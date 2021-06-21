@@ -129,7 +129,6 @@ android {
 }
 
 dependencies {
-    implementation project(':multiitemadapter')
     implementation project(':common')
 
     // todo: remove after complete migration
