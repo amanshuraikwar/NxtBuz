@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.common.util.map
 
+import android.app.Activity
 import android.graphics.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.gms.maps.model.*
@@ -10,7 +10,7 @@ import javax.inject.Inject
 import kotlin.math.*
 
 
-class MarkerUtil @Inject constructor(private val activity: AppCompatActivity) {
+class MarkerUtil @Inject constructor(private val activity: Activity) {
 
     private val arrivingBusTextSize: Float by lazy {
         activity.resources.getDimension(R.dimen.bus_service_number_map_marker_text_size)

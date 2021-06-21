@@ -1,18 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.di
 
-import android.content.ClipboardManager
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.wifi.WifiManager
 import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.BuildConfig
 import io.github.amanshuraikwar.nxtbuz.MainApplication
 import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNavigationParams
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.*
 import javax.inject.Named
 import javax.inject.Singleton
@@ -35,23 +28,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesWifiManager(@ApplicationContext context: Context): WifiManager =
-        context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-
-    @Provides
-    @Singleton
-    fun providesConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
-        context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
-                as ConnectivityManager
-
-    @Provides
-    @Singleton
-    fun providesClipboardManager(@ApplicationContext context: Context): ClipboardManager =
-        context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
-                as ClipboardManager
-
-    @Provides
-    @Singleton
     @Named("appVersionInfo")
     fun provideAppVersionInfo(): String {
         return if (BuildConfig.DEBUG) {
@@ -59,31 +35,10 @@ class AppModule {
                     "<<" +
                     "${BuildConfig.VERSION_CODE}" +
                     " • " +
-                    BuildConfig.BUILD_TYPE.toUpperCase(Locale.getDefault()) +
+                    BuildConfig.BUILD_TYPE.uppercase(Locale.getDefault()) +
                     ">>"
         } else {
             "V${BuildConfig.VERSION_NAME}"
         }
-    }
-
-    @Provides
-    @Singleton
-    @Named("bottomSheetSlideOffset")
-    fun provideBottomSheetSlideOffsetFlow(): MutableStateFlow<Float> {
-        return MutableStateFlow(0f)
-    }
-
-    @Provides
-    @Singleton
-    @Named("navigateToBusStopArrivals")
-    fun provideNavigateToBusStopArrivals(): MutableSharedFlow<BusStop> {
-        return MutableSharedFlow(replay = 0)
-    }
-
-    @Provides
-    @Singleton
-    @Named("navigateToBusRoute")
-    fun provideNavigateToBusRoute(): MutableSharedFlow<BusRouteNavigationParams> {
-        return MutableSharedFlow(replay = 0)
     }
 }

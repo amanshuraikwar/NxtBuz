@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
 
     <application
         android:name="io.github.amanshuraikwar.nxtbuz.MainApplication"
@@ -23,16 +22,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".busstop.arrivals.ComposeTestActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
-
         <activity
             android:name=".launcher.LauncherActivity"
-            android:theme="@style/AppTheme.NxtBuz.Launcher">
+            android:theme="@style/AppTheme.NxtBuz.Launcher"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,13 +42,7 @@
             android:name="io.github.amanshuraikwar.nxtbuz.ui.MainActivity"
             android:windowSoftInputMode="adjustResize"/>
 
-        <activity
-            android:name="io.github.amanshuraikwar.nxtbuz.search.SearchActivity"
-            android:windowSoftInputMode="stateAlwaysVisible"/>
-
         <activity android:name="io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity" />
-
-        <activity android:name=".starred.ui.StarredBusArrivalsActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -67,5 +54,4 @@
             android:exported="false"
             android:foregroundServiceType="dataSync"/>
     </application>
-
 </manifest>

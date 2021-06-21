@@ -6,18 +6,15 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.ResolvableApiException
 import io.github.amanshuraikwar.nxtbuz.common.model.PermissionStatus
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.suspendCoroutine
 
 class PermissionUtil(
-    private val activity: AppCompatActivity,
+    private val activity: Activity,
 ) {
 
     private val countContinuationMap: MutableMap<Int, CancellableContinuation<PermissionStatus>> =

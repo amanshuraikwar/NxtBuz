@@ -5,9 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -15,10 +12,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.lang.ref.WeakReference
 import javax.inject.Inject
-import androidx.core.content.ContextCompat.startActivity
-
-
-
 
 fun Activity.startMainActivity() {
     startActivity(
@@ -54,7 +47,7 @@ fun Activity.startSettingsActivity() {
 
 @ActivityScoped
 class NavigationUtil @Inject constructor(
-    _activity: AppCompatActivity
+    _activity: Activity
 ) {
     private val activity = WeakReference(_activity)
     private var cont: CancellableContinuation<Unit>? = null

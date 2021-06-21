@@ -18,7 +18,6 @@ import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsModule
 import io.github.amanshuraikwar.nxtbuz.starred.StarredModule
 import io.github.amanshuraikwar.nxtbuz.ui.MainActivity
-import io.github.amanshuraikwar.nxtbuz.ui.di.MainLiveDataProvides
 import io.github.amanshuraikwar.nxtbuz.ui.di.MainModule
 
 /**
@@ -52,7 +51,6 @@ abstract class ActivityBindingModule {
     @ContributesAndroidInjector(
         modules = [
             MainModule::class,
-            MainLiveDataProvides::class,
             PermissionUtilProvides::class,
             LocationUtilProvides::class,
             MapModule::class,

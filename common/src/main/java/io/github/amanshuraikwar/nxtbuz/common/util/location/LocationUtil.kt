@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
@@ -13,7 +12,7 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.suspendCoroutine
 
 class LocationUtil(
-    private val activity: AppCompatActivity
+    private val activity: Activity
 ) {
 
     private val countContinuationMap: MutableMap<Int, Continuation<SettingsState>> =

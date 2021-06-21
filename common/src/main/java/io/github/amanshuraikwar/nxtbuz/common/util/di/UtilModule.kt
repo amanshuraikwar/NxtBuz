@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.common.util.di
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
@@ -9,7 +9,7 @@ import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
 class UtilModule {
 
     @Provides
-    fun a(activity: AppCompatActivity): PermissionUtil {
+    fun a(activity: Activity): PermissionUtil {
         return PermissionUtil(
             activity
         )
