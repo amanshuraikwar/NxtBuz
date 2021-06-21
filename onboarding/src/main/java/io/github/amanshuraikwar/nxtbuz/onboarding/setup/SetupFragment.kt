@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_setup.*
 import javax.inject.Inject
 
 class SetupFragment : DaggerFragment() {
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 

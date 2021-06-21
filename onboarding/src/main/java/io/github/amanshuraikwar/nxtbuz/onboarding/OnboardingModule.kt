@@ -16,7 +16,6 @@ import io.github.amanshuraikwar.nxtbuz.onboarding.welcome.WelcomeFragment
 @Suppress("unused")
 @Module
 abstract class OnboardingModule {
-
     @Binds
     internal abstract fun a(a: OnboardingActivity): Activity
 

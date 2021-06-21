@@ -9,7 +9,6 @@ import io.github.amanshuraikwar.nxtbuz.search.ui.SearchViewModel
 
 @Module
 abstract class SearchModule {
-
     @Binds
     @IntoMap
     @ViewModelKey(SearchViewModel::class)

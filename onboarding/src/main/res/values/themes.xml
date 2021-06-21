@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="AppTheme.NxtBuz.Onboarding">
         <item name="android:statusBarColor">@android:color/transparent</item>
-<!--        <item name="android:navigationBarColor">?colorPrimary</item>-->
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
