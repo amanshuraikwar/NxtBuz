@@ -37,7 +37,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
     )
 
     override var showErrorStarredBusArrivals by BooleanPreference(
-        prefs, PREF_SHOW_ERROR_STARRED_BUS_ARRIVALS, false
+        prefs, PREF_SHOW_ERROR_STARRED_BUS_ARRIVALS, true
     )
 
     override var alertStarredBusArrivals by BooleanPreference(

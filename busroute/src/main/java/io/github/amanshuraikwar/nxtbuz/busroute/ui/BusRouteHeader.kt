@@ -113,7 +113,6 @@ fun BusRouteHeader(
                 Text(
                     text = "",
                     style = MaterialTheme.typography.body1Bold,
-                    color = MaterialTheme.colors.onSurface,
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(MaterialTheme.colors.onSurface.disabled)
@@ -122,7 +121,6 @@ fun BusRouteHeader(
                 Text(
                     text = "                   ",
                     style = MaterialTheme.typography.overline,
-                    color = MaterialTheme.colors.onSurface,
                     modifier = Modifier
                         .padding(top = 4.dp)
                         .background(MaterialTheme.colors.onSurface.disabled),
