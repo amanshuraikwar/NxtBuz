@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_onboarding.*
 import javax.inject.Inject
 
 class OnboardingActivity : DaggerAppCompatActivity() {
-
     @Inject
     lateinit var permissionUtil: PermissionUtil
 

@@ -19,7 +19,6 @@ import kotlinx.android.synthetic.main.fragment_permission.*
 import javax.inject.Inject
 
 class PermissionFragment : DaggerFragment() {
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 

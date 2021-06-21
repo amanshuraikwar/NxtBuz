@@ -17,7 +17,6 @@ class PermissionDialog @Inject constructor(
     private val activity: AppCompatActivity,
     private val viewModelFactory: ViewModelProvider.Factory
 ) {
-
     lateinit var viewModel: PermissionViewModel
     lateinit var view: View
     lateinit var dialog: AlertDialog

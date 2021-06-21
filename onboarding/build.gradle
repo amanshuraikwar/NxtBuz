@@ -25,7 +25,6 @@ android {
 }
 
 dependencies {
-    implementation project(":common")
     implementation project(":domain")
     debugImplementation project(':basetheme')
     implementation project(':nxtbuztheme')
