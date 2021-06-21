@@ -108,6 +108,7 @@
         <entry key="listitem/src/main/res/layout/item_search_bus_stop.xml" value="0.14427083333333332" />
         <entry key="listitem/src/main/res/layout/item_setting.xml" value="0.1484375" />
         <entry key="listitem/src/main/res/layout/item_starred_bus_arrival.xml" value="0.16510416666666666" />
+        <entry key="nxtbuztheme/src/main/res/font/cabin.xml" value="0.2074074074074074" />
         <entry key="nxtbuztheme/src/main/res/font/rubik_bold.xml" value="0.18802083333333333" />
         <entry key="nxtbuztheme/src/main/res/font/rubik_medium.xml" value="0.18802083333333333" />
         <entry key="onboarding/src/main/res/drawable-night/ic_bus_72.xml" value="0.315625" />
