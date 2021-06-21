@@ -19,10 +19,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import com.google.accompanist.insets.ExperimentalAnimatedInsets
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.statusBarsPadding
 import dagger.android.support.DaggerAppCompatActivity
-import dev.chrisbanes.accompanist.insets.ExperimentalAnimatedInsets
-import dev.chrisbanes.accompanist.insets.LocalWindowInsets
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsScreen
@@ -97,7 +97,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
             }
             is MainScreenState.Success -> {
-                if (screenState.showMap) {
+                if (!screenState.showMap) {
                     Box {
                         NxtBuzMap(
                             modifier = Modifier.fillMaxSize(),
@@ -148,7 +148,7 @@ class MainActivity : DaggerAppCompatActivity() {
                                     (LocalConfiguration.current.screenHeightDp / 2).dp
                                             + with(density) { insets.statusBars.top.toDp() }
                                 )
-                                .padding(horizontal =  16.dp),
+                                .padding(horizontal = 16.dp),
                             viewModelProvider(viewModelFactory)
                         )
 

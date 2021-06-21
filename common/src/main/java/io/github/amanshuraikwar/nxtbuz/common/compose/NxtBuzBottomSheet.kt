@@ -12,7 +12,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -74,7 +73,6 @@ fun NxtBuzBottomSheet(
             .alpha(alpha = alpha)
             .offset(y = offsetY),
         bottomSheetState = state.bottomSheetState,
-        backgroundColor = Color.Transparent,
         bgOffset = bottomSheetBgOffset,
         sheetContent = {
             Box {
@@ -91,6 +89,7 @@ fun NxtBuzBottomSheet(
                 )
             }
         },
-        sheetPeekHeight = (LocalConfiguration.current.screenHeightDp / 2).dp + bottomSheetBgOffset
-    ) { }
+        sheetPeekHeight =
+        (LocalConfiguration.current.screenHeightDp * 2 / 5).dp + bottomSheetBgOffset
+    ) {}
 }

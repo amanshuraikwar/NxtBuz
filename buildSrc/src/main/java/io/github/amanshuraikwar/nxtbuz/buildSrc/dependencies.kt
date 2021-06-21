@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.buildSrc
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta03"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta04"
 
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 
@@ -23,7 +23,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.4.32"
+        private const val version = "1.5.10"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -83,7 +83,7 @@ object Libs {
         }
 
         object Compose {
-            const val version = "1.0.0-beta04"
+            const val version = "1.0.0-beta09"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -138,6 +138,6 @@ object Libs {
     }
 
     object Accompanist {
-        const val insets = "dev.chrisbanes.accompanist:accompanist-insets:0.6.2"
+        const val insets = "com.google.accompanist:accompanist-insets:0.12.0"
     }
 }

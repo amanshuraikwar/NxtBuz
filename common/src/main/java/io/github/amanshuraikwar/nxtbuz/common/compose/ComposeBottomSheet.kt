@@ -4,12 +4,12 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -53,8 +53,6 @@ fun ComposeBottomSheet(
     sheetContent: @Composable () -> Unit,
     sheetPeekHeight: Dp = BottomSheetScaffoldDefaults.SheetPeekHeight,
     bottomSheetState: BottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed),
-    backgroundColor: Color = MaterialTheme.colors.background,
-    contentColor: Color = contentColorFor(backgroundColor),
     bgOffset: Dp = 0.dp,
     body: @Composable () -> Unit
 ) {
@@ -73,11 +71,8 @@ fun ComposeBottomSheet(
 
         ComposeBottomSheetStack(
             body = {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    color = backgroundColor,
-                    contentColor = contentColor
+                Box(
+                    modifier = Modifier.fillMaxSize(),
                 ) {
                     body()
                 }

@@ -84,7 +84,7 @@
             app:layout_constraintStart_toEndOf="@id/iconIv"
             app:layout_constraintTop_toBottomOf="@id/stopCodeTv"
             app:layout_constraintEnd_toEndOf="parent"
-            android:fontFamily="@font/rubik_medium"
+
             android:textStyle="bold"
             android:textColor="@color/blue"
             app:lineHeight="20sp"

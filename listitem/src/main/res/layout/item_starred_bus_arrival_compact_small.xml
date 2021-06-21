@@ -48,7 +48,7 @@
                 android:id="@+id/nextDeparture1Tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/rubik_medium"
+
                 android:gravity="center_horizontal"
                 android:text="04"
                 android:textAppearance="?textAppearanceHeadline5"
@@ -107,7 +107,7 @@
                 android:id="@+id/nextDeparture2Tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/rubik_medium"
+
                 android:gravity="center_horizontal"
                 android:text="10"
                 android:textAppearance="?textAppearanceHeadline5"
@@ -166,7 +166,7 @@
                 android:id="@+id/nextDeparture3Tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/rubik_medium"
+
                 android:gravity="center_horizontal"
                 android:text="10"
                 android:textAppearance="?textAppearanceHeadline5"

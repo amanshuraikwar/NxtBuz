@@ -17,7 +17,7 @@
             android:text="@string/onboarding_dialog_title_location_permission"
             android:textAppearance="?textAppearanceSubtitle1" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/iconIv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
