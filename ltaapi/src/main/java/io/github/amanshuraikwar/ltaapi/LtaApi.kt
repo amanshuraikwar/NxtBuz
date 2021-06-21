@@ -7,7 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface LtaApi {
-
     @GET("BusStops")
     suspend fun getBusStops(@Query("`$`skip") skip: Int = 0): BusStopsResponseDto
 

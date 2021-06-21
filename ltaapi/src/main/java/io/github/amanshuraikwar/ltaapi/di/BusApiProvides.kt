@@ -13,7 +13,6 @@ import javax.inject.Singleton
 
 @Module
 class BusApiProvides {
-
     @Provides
     @Singleton
     fun a(): LtaApi {
@@ -24,7 +23,6 @@ class BusApiProvides {
                 OkHttpClient
                     .Builder()
                     .addInterceptor { chain ->
-
                         // replace the encoded '$' back to normal
                         // weird query param names required by the api -_-
                         val newUrl =
@@ -42,7 +40,6 @@ class BusApiProvides {
                         chain.proceed(newRequest)
                     }
                     .apply {
-
                         // log the api requests' body for debug and internal builds
                         @Suppress("ConstantConditionIf")
                         if (BuildConfig.BUILD_TYPE == "debug"

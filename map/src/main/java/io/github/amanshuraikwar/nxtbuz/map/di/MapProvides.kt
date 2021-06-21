@@ -1,7 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.map.di
 
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
@@ -12,20 +11,11 @@ import javax.inject.Singleton
 
 @Module
 class MapProvides {
-
     @Provides
     @Singleton
     @Named("mapEventFlow")
     fun provideMapEventFlow(): MutableSharedFlow<MapEvent> {
-        // TODO: 24/1/21 dynamically decide replay
         return MutableSharedFlow(replay = 0)
-    }
-
-    @Provides
-    @Singleton
-    @Named("markerClicked")
-    fun provideMarkerClickedFlow(): MutableStateFlow<Marker?> {
-        return MutableStateFlow(null)
     }
 
     @Provides
