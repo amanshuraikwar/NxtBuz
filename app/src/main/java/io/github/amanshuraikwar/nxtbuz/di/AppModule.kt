@@ -1,14 +1,12 @@
 package io.github.amanshuraikwar.nxtbuz.di
 
-import android.content.ClipboardManager
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.wifi.WifiManager
-import androidx.lifecycle.MutableLiveData
 import dagger.Module
 import dagger.Provides
+import io.github.amanshuraikwar.nxtbuz.BuildConfig
 import io.github.amanshuraikwar.nxtbuz.MainApplication
-import io.github.amanshuraikwar.nxtbuz.data.busstop.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
+import java.util.*
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -22,21 +20,25 @@ import javax.inject.Singleton
 class AppModule {
 
     @Provides
+    @Singleton
+    @ApplicationContext
     fun provideContext(application: MainApplication): Context {
         return application.applicationContext
     }
 
     @Provides
-    fun providesWifiManager(context: Context): WifiManager =
-        context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-
-    @Provides
-    fun providesConnectivityManager(context: Context): ConnectivityManager =
-        context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
-                as ConnectivityManager
-
-    @Provides
-    fun providesClipboardManager(context: Context): ClipboardManager =
-        context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
-                as ClipboardManager
+    @Singleton
+    @Named("appVersionInfo")
+    fun provideAppVersionInfo(): String {
+        return if (BuildConfig.DEBUG) {
+            "V${BuildConfig.VERSION_NAME}\n" +
+                    "<<" +
+                    "${BuildConfig.VERSION_CODE}" +
+                    " • " +
+                    BuildConfig.BUILD_TYPE.uppercase(Locale.getDefault()) +
+                    ">>"
+        } else {
+            "V${BuildConfig.VERSION_NAME}"
+        }
+    }
 }

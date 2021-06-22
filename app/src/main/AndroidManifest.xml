@@ -14,7 +14,7 @@
         android:label="${appName}"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.DayNight"
+        android:theme="@style/AppTheme.NxtBuz"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
 
@@ -23,8 +23,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.launcher.LauncherActivity"
-            android:theme="@style/AppTheme.Launcher">
+            android:name=".launcher.LauncherActivity"
+            android:theme="@style/AppTheme.NxtBuz.Launcher"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,33 +35,17 @@
         </activity>
 
         <activity
-            android:theme="@style/AppTheme.Onboarding"
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingActivity" />
+            android:theme="@style/AppTheme.NxtBuz.Onboarding"
+            android:name="io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity" />
 
         <activity
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity"
-            android:windowSoftInputMode="adjustNothing" />
+            android:name="io.github.amanshuraikwar.nxtbuz.ui.MainActivity"
+            android:windowSoftInputMode="adjustResize"/>
 
-        <activity
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity"
-            android:windowSoftInputMode="stateAlwaysVisible"/>
+        <activity android:name="io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity" />
 
-        <activity android:name="io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity" />
-
-        <activity android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity"
-            android:exported="true"/>
-
-        <activity android:name=".ui.starred.StarredBusArrivalsActivity" />
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
-        <service
-            android:name=".data.busarrival.service.BusArrivalService"
-            android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="dataSync"/>
+<!--        <meta-data-->
+<!--            android:name="preloaded_fonts"-->
+<!--            android:resource="@array/preloaded_fonts" />-->
     </application>
-
 </manifest>

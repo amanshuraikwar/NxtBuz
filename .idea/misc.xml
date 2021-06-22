@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="CMakeSettings">
-    <configurations>
-      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
-    </configurations>
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../layout/compose-model-1624289694627.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1624289733142.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1624332551852.xml" value="0.45" />
+        <entry key="../../../../layout/compose-model-1624333203094.xml" value="0.55" />
+        <entry key="../../../../layout/compose-model-1624335122129.xml" value="0.10884918986289988" />
+        <entry key="../../../../layout/compose-model-1624339549325.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1624374348224.xml" value="0.4787037037037037" />
+        <entry key="app/src/debug/res/drawable/ic_launcher_foreground.xml" value="0.4295882053889171" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.21145833333333333" />
+        <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.4295882053889171" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.4295882053889171" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.4295882053889171" />
+        <entry key="common/src/main/res/drawable/ic_bus_24.xml" value="0.190625" />
+        <entry key="common/src/main/res/drawable/ic_bus_72.xml" value="0.21145833333333333" />
+        <entry key="common/src/main/res/drawable/ic_round_warning_16.xml" value="0.14739583333333334" />
+        <entry key="launcher/src/main/res/drawable-night/preview_window.xml" value="0.190625" />
+        <entry key="launcher/src/main/res/drawable-night/preview_window_background.xml" value="0.1" />
+        <entry key="launcher/src/main/res/drawable-night/preview_window_logo.xml" value="0.190625" />
+        <entry key="launcher/src/main/res/drawable/ic_preview_window_logo.xml" value="0.190625" />
+        <entry key="launcher/src/main/res/drawable/ic_preview_window_logo_2_light.xml" value="0.190625" />
+        <entry key="launcher/src/main/res/drawable/preview_window_background.xml" value="0.4295882053889171" />
+        <entry key="launcher/src/main/res/drawable/preview_window_logo.xml" value="0.4295882053889171" />
+        <entry key="onboarding/src/main/res/drawable/ic_pin_drop_72.xml" value="0.21145833333333333" />
+        <entry key="onboarding/src/main/res/layout/fragment_permission.xml" value="0.18645833333333334" />
+        <entry key="search/src/main/res/drawable/ic_round_open_in_new_24.xml" value="0.4203703703703704" />
+        <entry key="search/src/main/res/drawable/ic_round_star_16.xml" value="0.4203703703703704" />
+        <entry key="search/src/main/res/drawable/ic_search_128.xml" value="0.4203703703703704" />
+        <entry key="settings/src/main/res/layout/activity_settings.xml" value="0.1859375" />
+        <entry key="starred/src/main/res/layout/dialog_starred_bus_arrival_options.xml" value="0.1793478260869565" />
+      </map>
+    </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

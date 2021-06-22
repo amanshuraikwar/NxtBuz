@@ -1,0 +1,55 @@
+import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+    }
+
+    buildTypes {
+        release {
+            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
+            consumerProguardFiles 'consumer-rules.pro'
+        }
+        internal {
+            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
+            consumerProguardFiles 'consumer-rules.pro'
+        }
+        debug {
+            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.debug']+"\""
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
+    }
+}
+
+dependencies {
+    Libs.Kotlin.stdlib
+
+    implementation Libs.Dagger.library
+    implementation Libs.Dagger.androidSupport
+    kapt Libs.Dagger.compiler
+    kapt Libs.Dagger.androidProcessor
+
+    implementation Libs.Retrofit.retrofit
+    implementation Libs.Retrofit.gsonConverter
+    implementation Libs.OkHttp.loggingInterceptor
+}

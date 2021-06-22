@@ -1,0 +1,41 @@
+import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
+    }
+}
+
+dependencies {
+    api project(":common")
+    implementation project(":data")
+
+    implementation Libs.Kotlin.stdlib
+
+    implementation Libs.AndroidX.coreKtx
+
+    implementation Libs.Dagger.library
+    implementation Libs.Dagger.androidSupport
+    kapt Libs.Dagger.compiler
+    kapt Libs.Dagger.androidProcessor
+
+    implementation Libs.Coroutines.core
+}

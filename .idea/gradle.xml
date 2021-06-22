@@ -4,17 +4,28 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="testRunner" value="PLATFORM" />
+        <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="1.8" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/annotationProcessors" />
-            <option value="$PROJECT_DIR$/annotations" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/multiitemadapter" />
+            <option value="$PROJECT_DIR$/basetheme" />
+            <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/busroute" />
+            <option value="$PROJECT_DIR$/busstop" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/data" />
+            <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/launcher" />
+            <option value="$PROJECT_DIR$/ltaapi" />
+            <option value="$PROJECT_DIR$/map" />
+            <option value="$PROJECT_DIR$/nxtbuztheme" />
+            <option value="$PROJECT_DIR$/onboarding" />
+            <option value="$PROJECT_DIR$/search" />
+            <option value="$PROJECT_DIR$/settings" />
+            <option value="$PROJECT_DIR$/starred" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
