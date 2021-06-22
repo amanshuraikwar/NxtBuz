@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowRight
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -24,6 +25,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.*
@@ -201,71 +203,6 @@ fun BusArrivalItem(
                 }
             }
         }
-    }
-}
-
-@ExperimentalMaterialApi
-@Composable
-fun BusArrivalItem(
-    modifier: Modifier = Modifier,
-    decorationType: DecorationType,
-) {
-    Surface(
-        modifier = modifier,
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colors.surface,
-        elevation = if (decorationType == DecorationType.SHADOW) 4.dp else 0.dp,
-        border = if (decorationType == DecorationType.OUTLINE) {
-            BorderStroke(1.dp, MaterialTheme.colors.outline)
-        } else {
-            null
-        }
-    ) {
-        LastWrapColumn(
-            modifier = Modifier
-                .padding(1.dp)
-                .padding(
-                    vertical = 8.dp,
-                    horizontal = 12.dp
-                )
-        ) {
-            Text(
-                "STARRED",
-                textAlign = TextAlign.Center,
-                modifier = Modifier.background(
-                    shape = RoundedCornerShape(8.dp),
-                    color = MaterialTheme.colors.onSurface.disabled
-                ),
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onSurface.disabled
-            )
-
-            Spacer(modifier = Modifier.size(8.dp))
-
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .background(
-                        shape = RoundedCornerShape(8.dp),
-                        color = MaterialTheme.colors.onSurface.disabled
-                    )
-                    .padding(vertical = 2.dp, horizontal = 4.dp)
-            ) {
-                Text(
-                    text = "                    ",
-                    style = MaterialTheme.typography.body1,
-                    modifier = Modifier.alpha(0f)
-                )
-            }
-        }
-    }
-}
-
-fun Int.toArrivalString(): String {
-    return when {
-        this >= 60 -> "60+"
-        this > 0 -> String.format("%02d", this)
-        else -> "Arr"
     }
 }
 
