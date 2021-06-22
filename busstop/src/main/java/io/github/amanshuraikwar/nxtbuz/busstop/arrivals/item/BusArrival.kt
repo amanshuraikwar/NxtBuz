@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AccessibleForward
+import androidx.compose.material.icons.rounded.NotAccessible
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,13 +54,11 @@ fun BusArrival(
         )
 
         Icon(
-            painter = painterResource(
-                if (wheelchairAccess) {
-                    R.drawable.ic_accessible_16
-                } else {
-                    R.drawable.ic_not_accessible_16
-                }
-            ),
+            imageVector = if (wheelchairAccess) {
+                Icons.Rounded.AccessibleForward
+            } else {
+                Icons.Rounded.NotAccessible
+            },
             modifier = Modifier.size(18.dp),
             contentDescription = "Wheelchair Access",
             tint = MaterialTheme.colors.onSurface
