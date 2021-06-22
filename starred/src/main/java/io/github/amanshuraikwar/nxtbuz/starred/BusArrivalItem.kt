@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowRight
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -25,10 +24,12 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.*
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.onStar
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.outline
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
 import kotlin.math.roundToInt

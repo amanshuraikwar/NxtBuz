@@ -77,7 +77,7 @@ fun RadioGroupSettingItem(
                             .fillMaxWidth()
                             .padding(
                                 start = 16.dp,
-                                top = 8.dp,
+                                top = 4.dp,
                                 bottom = 16.dp,
                             )
                     )

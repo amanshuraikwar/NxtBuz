@@ -1,5 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.ui
 
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -17,6 +19,7 @@ import com.google.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteViewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsViewModel
+import io.github.amanshuraikwar.nxtbuz.common.compose.FabDecorationType
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMapViewModel
 import io.github.amanshuraikwar.nxtbuz.map.ui.recenter.RecenterButton
@@ -32,6 +35,7 @@ import io.github.amanshuraikwar.nxtbuz.starred.StarredViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.model.MainScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
 
+@ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimatedInsets
 @ExperimentalMaterialApi
@@ -47,6 +51,7 @@ fun MainScreen(
     recenterViewModel: RecenterViewModel,
     searchViewModel: SearchViewModel,
     onSettingsClick: () -> Unit,
+    onBackClick: () -> Unit,
 ) {
     val density = LocalDensity.current
     val insets = LocalWindowInsets.current
@@ -109,6 +114,20 @@ fun MainScreen(
                         recenterViewModel,
                     )
 
+                    BackButton(
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(
+                                bottom =
+                                (LocalConfiguration.current.screenHeightDp * 2 / 5).dp
+                                        + with(density) { insets.statusBars.top.toDp() }
+                            )
+                            .padding(horizontal = 16.dp),
+                        visible = screenState.showBackBtn,
+                        onClick = onBackClick,
+                        decorationType = FabDecorationType.SHADOW,
+                    )
+
                     ContentNavGraph(
                         navigationState = screenState.navigationState,
                         onBusStopClick = { busStop ->
@@ -146,22 +165,42 @@ fun MainScreen(
                 Surface {
                     Box {
                         Column {
-                            SearchBar(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .statusBarsPadding()
-                                    .padding(
-                                        start = 16.dp,
-                                        end = 16.dp,
-                                        top = 16.dp,
-                                        bottom = 8.dp
-                                    ),
-                                onClick = {
-                                    mainViewModel.onSearchClick()
-                                },
-                                onSettingsClicked = onSettingsClick,
-                                decorationType = SearchBarDecorationType.OUTLINE
-                            )
+                            Row(
+                                modifier = Modifier.statusBarsPadding()
+                            ) {
+                                if (screenState.showBackBtn) {
+                                    BackButton(
+                                        modifier = Modifier
+                                            .align(Alignment.CenterVertically)
+                                            .padding(
+                                                start = 16.dp,
+                                                top = 16.dp,
+                                                bottom = 8.dp
+                                            ),
+                                        onClick = onBackClick,
+                                        decorationType = FabDecorationType.OUTLINE,
+                                    )
+                                }
+
+                                SearchBar(
+                                    modifier = Modifier
+                                        .align(Alignment.CenterVertically)
+                                        .fillMaxWidth()
+                                        .padding(
+                                            start = 16.dp,
+                                            end = 16.dp,
+                                            top = 16.dp,
+                                            bottom = 8.dp
+                                        )
+                                        .animateContentSize(),
+                                    onClick = {
+                                        mainViewModel.onSearchClick()
+                                    },
+                                    onSettingsClicked = onSettingsClick,
+                                    decorationType = SearchBarDecorationType.OUTLINE,
+                                    showAppIcon = !screenState.showBackBtn
+                                )
+                            }
 
                             StarredBusArrivals(
                                 modifier = Modifier.fillMaxWidth(),

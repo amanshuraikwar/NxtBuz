@@ -44,14 +44,8 @@
 
         <activity android:name="io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity" />
 
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
-        <service
-            android:name=".data.busarrival.service.BusArrivalService"
-            android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="dataSync"/>
+<!--        <meta-data-->
+<!--            android:name="preloaded_fonts"-->
+<!--            android:resource="@array/preloaded_fonts" />-->
     </application>
 </manifest>

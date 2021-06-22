@@ -35,19 +35,23 @@ class MainViewModel @Inject constructor(
     internal fun onInit() {
         viewModelScope.launch(coroutineContext) {
             showMap = shouldShowMapUseCase()
-            when (val currentState = _screenState.value) {
-                MainScreenState.Fetching -> {
-                    _screenState.value = MainScreenState.Success(
-                        showMap = showMap,
-                        navigationState = NavigationState.BusStops
-                    )
-                }
-                is MainScreenState.Success -> {
-                    if (showMap != currentState.showMap) {
+            synchronized(_screenState) {
+                when (val currentState = _screenState.value) {
+                    MainScreenState.Fetching -> {
                         _screenState.value = MainScreenState.Success(
                             showMap = showMap,
-                            navigationState = currentState.navigationState
+                            navigationState = NavigationState.BusStops,
+                            showBackBtn = backStack.isNotEmpty()
                         )
+                    }
+                    is MainScreenState.Success -> {
+                        if (showMap != currentState.showMap) {
+                            _screenState.value = MainScreenState.Success(
+                                showMap = showMap,
+                                navigationState = currentState.navigationState,
+                                showBackBtn = backStack.isNotEmpty()
+                            )
+                        }
                     }
                 }
             }
@@ -60,18 +64,27 @@ class MainViewModel @Inject constructor(
 
     @Synchronized
     fun onBusStopClick(busStop: BusStop, pushBackStack: Boolean = true) {
-        val newState = MainScreenState.Success(
-            showMap = showMap,
-            navigationState = NavigationState.BusStopArrivals(busStop = busStop)
-        )
+        synchronized(_screenState) {
+            val currentState = _screenState.value
+            if (currentState is MainScreenState.Success) {
+                val currentNavState = currentState.navigationState
+                if (currentNavState is NavigationState.BusStopArrivals) {
+                    if (currentNavState.busStop == busStop) {
+                        return
+                    }
+                }
+            }
 
-        if (_screenState.value == newState) return
+            if (pushBackStack) {
+                pushBackStack()
+            }
 
-        if (pushBackStack) {
-            pushBackStack()
+            _screenState.value = MainScreenState.Success(
+                showMap = showMap,
+                navigationState = NavigationState.BusStopArrivals(busStop = busStop),
+                showBackBtn = backStack.isNotEmpty()
+            )
         }
-
-        _screenState.value = newState
     }
 
     @Synchronized
@@ -80,27 +93,32 @@ class MainViewModel @Inject constructor(
         busServiceNumber: String,
         pushBackStack: Boolean = true
     ) {
-        val newState = MainScreenState.Success(
-            showMap = showMap,
-            navigationState = NavigationState.BusRoute(
-                busStopCode = busStopCode,
-                busServiceNumber = busServiceNumber
+        synchronized(_screenState) {
+            val currentState = _screenState.value
+            if (currentState is MainScreenState.Success) {
+                val currentNavState = currentState.navigationState
+                if (currentNavState is NavigationState.BusRoute) {
+                    if (currentNavState.busStopCode == busStopCode &&
+                        currentNavState.busServiceNumber == busServiceNumber
+                    ) {
+                        return
+                    }
+                }
+            }
+
+            if (pushBackStack) {
+                pushBackStack()
+            }
+
+            _screenState.value = MainScreenState.Success(
+                showMap = showMap,
+                navigationState = NavigationState.BusRoute(
+                    busStopCode = busStopCode,
+                    busServiceNumber = busServiceNumber,
+                ),
+                showBackBtn = backStack.isNotEmpty()
             )
-        )
-
-        if (_screenState.value == newState) return
-
-        if (pushBackStack) {
-            pushBackStack()
         }
-
-        _screenState.value = MainScreenState.Success(
-            showMap = showMap,
-            navigationState = NavigationState.BusRoute(
-                busStopCode = busStopCode,
-                busServiceNumber = busServiceNumber
-            )
-        )
     }
 
     private fun pushBackStack() {
@@ -112,14 +130,17 @@ class MainViewModel @Inject constructor(
 
     @Synchronized
     fun onBackPressed(): Boolean {
-        return if (backStack.isNotEmpty()) {
-            _screenState.value = MainScreenState.Success(
-                showMap = showMap,
-                navigationState = backStack.pop()
-            )
-            true
-        } else {
-            false
+        synchronized(_screenState) {
+            return if (backStack.isNotEmpty()) {
+                _screenState.value = MainScreenState.Success(
+                    showMap = showMap,
+                    navigationState = backStack.pop(),
+                    showBackBtn = backStack.isNotEmpty()
+                )
+                true
+            } else {
+                false
+            }
         }
     }
 
@@ -135,10 +156,13 @@ class MainViewModel @Inject constructor(
     }
 
     fun onSearchClick() {
-        pushBackStack()
-        _screenState.value = MainScreenState.Success(
-            showMap = showMap,
-            navigationState = NavigationState.Search
-        )
+        synchronized(_screenState) {
+            pushBackStack()
+            _screenState.value = MainScreenState.Success(
+                showMap = showMap,
+                navigationState = NavigationState.Search,
+                showBackBtn = backStack.size > 1
+            )
+        }
     }
 }
