@@ -26,6 +26,7 @@
         <entry key="launcher/src/main/res/drawable/preview_window_background.xml" value="0.4295882053889171" />
         <entry key="launcher/src/main/res/drawable/preview_window_logo.xml" value="0.4295882053889171" />
         <entry key="onboarding/src/main/res/drawable/ic_pin_drop_72.xml" value="0.21145833333333333" />
+        <entry key="onboarding/src/main/res/layout/fragment_permission.xml" value="0.18645833333333334" />
         <entry key="search/src/main/res/drawable/ic_round_open_in_new_24.xml" value="0.4203703703703704" />
         <entry key="search/src/main/res/drawable/ic_round_star_16.xml" value="0.4203703703703704" />
         <entry key="search/src/main/res/drawable/ic_search_128.xml" value="0.4203703703703704" />

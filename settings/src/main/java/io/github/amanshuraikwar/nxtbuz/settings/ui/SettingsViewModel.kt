@@ -53,7 +53,7 @@ class SettingsViewModel @Inject constructor(
 
             listItems.add(
                 SettingsItemData.About(
-                    appName = "NxtBuz",
+                    appName = "Next Bus SG",
                     versionName = appVersionInfo
                 )
             )

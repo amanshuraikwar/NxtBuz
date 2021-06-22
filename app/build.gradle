@@ -93,7 +93,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             outputFileName = new File(
-                    "NxtBuz-"
+                    "Next-Bus-SG-"
                             + variant.versionName
                             + "-(" + variant.versionCode + ")-"
                             + variant.buildType.name
