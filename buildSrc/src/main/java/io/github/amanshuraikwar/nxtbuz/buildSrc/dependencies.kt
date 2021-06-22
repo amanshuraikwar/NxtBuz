@@ -1,25 +1,21 @@
+@file:Suppress("MemberVisibilityCanBePrivate", "unused")
+
 package io.github.amanshuraikwar.nxtbuz.buildSrc
 
 object Libs {
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta04"
-
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
-
-    const val junit = "junit:junit:4.13"
 
     object Google {
         const val material = "com.google.android.material:material:1.1.0"
-
         const val analytics = "com.google.firebase:firebase-analytics:17.4.0"
         const val crashlytics = "com.google.firebase:firebase-crashlytics:17.1.1"
         const val crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.5.2"
-
         const val gmsGoogleServices = "com.google.gms:google-services:4.3.3"
-
-        const val autoService = "com.google.auto.service:auto-service:1.0-rc4"
-
         const val playServicesMap = "com.google.android.gms:play-services-maps:17.0.0"
         const val playServicesLocation = "com.google.android.gms:play-services-location:17.0.0"
+        const val gmsOssLicenses = "com.google.android.gms:oss-licenses-plugin:0.10.4"
+        const val playOssLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
     }
 
     object Kotlin {
@@ -33,37 +29,16 @@ object Libs {
         private const val version = "1.4.2"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
-        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
     }
 
     object AndroidX {
-        const val appcompat = "androidx.appcompat:appcompat:1.3.0-beta01"
-        const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
-
         object Navigation {
             private const val version = "2.3.3"
             const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
-            const val ui = "androidx.navigation:navigation-ui-ktx:$version"
             const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
         }
 
-        object Fragment {
-            private const val version = "1.3.0"
-            const val fragment = "androidx.fragment:fragment:$version"
-        }
-
-        object Test {
-
-            object Ext {
-                private const val version = "1.1.2-rc01"
-                const val junit = "androidx.test.ext:junit:$version"
-            }
-
-            const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
-        }
-
         const val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta6"
-
         const val coreKtx = "androidx.core:core-ktx:1.3.0-rc01"
 
         object Lifecycle {
@@ -71,7 +46,6 @@ object Libs {
             const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
-            const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
         }
 
         object Room {
@@ -79,7 +53,6 @@ object Libs {
             const val runtime = "androidx.room:room-runtime:$version"
             const val compiler = "androidx.room:room-compiler:$version"
             const val ktx = "androidx.room:room-ktx:$version"
-            const val testing = "androidx.room:room-testing:$version"
         }
 
         object Compose {
@@ -92,10 +65,6 @@ object Libs {
             const val materialIconsExtended =
                 "androidx.compose.material:material-icons-extended:$version"
             const val activity = "androidx.activity:activity-compose:1.3.0-alpha03"
-            const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02"
-            const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
-            const val viewbinding = "androidx.compose.ui:ui-viewbinding:$version"
-            const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha09"
 
             val all = listOf(
                 ui,
@@ -105,10 +74,6 @@ object Libs {
                 materialIcons,
                 materialIconsExtended,
                 activity,
-                viewModel,
-                livedata,
-                viewbinding,
-                navigation
             )
         }
     }
@@ -130,11 +95,6 @@ object Libs {
     object OkHttp {
         private const val version = "4.7.2"
         const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$version"
-    }
-
-    object KotlinPoet {
-        private const val version = "1.1.0"
-        const val library = "com.squareup:kotlinpoet:$version"
     }
 
     object Accompanist {

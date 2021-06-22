@@ -100,6 +100,16 @@ class NavigationUtil @Inject constructor(
         activity.get()?.startActivity(intent)
     }
 
+    fun goToOssActivity() {
+        val activity = activity.get() ?: return
+        activity.startActivity(
+            Intent(
+                activity,
+                activity.getActivityClass("com.google.android.gms.oss.licenses.OssLicensesMenuActivity")
+            )
+        )
+    }
+
     companion object {
         const val REQUEST_GO_TO_APP_SETTINGS = 3001
     }

@@ -25,7 +25,10 @@ import io.github.amanshuraikwar.nxtbuz.settings.ui.model.SettingsItemData
 
 @ExperimentalAnimationApi
 @Composable
-fun SettingsScreen(vm: SettingsViewModel, onBackClick: () -> Unit) {
+fun SettingsScreen(
+    vm: SettingsViewModel,
+    onBackClick: () -> Unit,
+) {
     val listItems by vm.listItemsFlow.collectAsState(emptyList())
 
     Column {
@@ -76,6 +79,8 @@ fun SettingsScreen(vm: SettingsViewModel, onBackClick: () -> Unit) {
                         is SettingsItemData.RadioGroup -> item.title
                         is SettingsItemData.Header -> item.title
                         is SettingsItemData.Switch -> item.title
+                        SettingsItemData.Oss -> "oss"
+                        SettingsItemData.MadeWith -> "made-with"
                     }
                 },
                 errorKey = "bus-route-arrivals-error-key",
@@ -98,6 +103,14 @@ fun SettingsScreen(vm: SettingsViewModel, onBackClick: () -> Unit) {
                     }
                     is SettingsItemData.Switch -> {
                         SwitchSettingItem(item)
+                    }
+                    SettingsItemData.Oss -> {
+                        OssItem {
+                            vm.onOssClick()
+                        }
+                    }
+                    SettingsItemData.MadeWith -> {
+                        MadeWithItem()
                     }
                 }
             }

@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.compose.Header
+import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.ShouldShowMapUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
@@ -22,6 +24,7 @@ class SettingsViewModel @Inject constructor(
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
     private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
     private val shouldShowMapUseCase: ShouldShowMapUseCase,
+    private val navigationUtil: NavigationUtil,
     dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -145,7 +148,23 @@ class SettingsViewModel @Inject constructor(
                 )
             )
 
+            listItems.add(
+                SettingsItemData.Header(title = "")
+            )
+
+            listItems.add(
+                SettingsItemData.Oss
+            )
+
+            listItems.add(
+                SettingsItemData.MadeWith
+            )
+
             this@SettingsViewModel.listItems = listItems
             listItemsFlow.emit(listItems)
         }
+
+    fun onOssClick() {
+        navigationUtil.goToOssActivity()
+    }
 }
