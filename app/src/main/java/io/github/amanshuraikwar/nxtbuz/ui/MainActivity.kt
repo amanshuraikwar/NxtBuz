@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -73,6 +74,7 @@ class MainActivity : DaggerAppCompatActivity() {
         viewModelProvider(viewModelFactory)
     }
 
+    @ExperimentalAnimationApi
     @ExperimentalAnimatedInsets
     @ExperimentalMaterialApi
     @ExperimentalComposeUiApi
@@ -92,7 +94,8 @@ class MainActivity : DaggerAppCompatActivity() {
                     searchViewModel = searchViewModel,
                     starredViewModel = starredViewModel,
                     recenterViewModel = recenterViewModel,
-                    onSettingsClick = ::startSettingsActivity
+                    onSettingsClick = ::startSettingsActivity,
+                    onBackClick = this@MainActivity::onBackPressed
                 )
             }
         }

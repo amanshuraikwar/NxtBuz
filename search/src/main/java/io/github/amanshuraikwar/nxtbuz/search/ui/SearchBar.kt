@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.search.ui
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -151,7 +152,15 @@ fun SearchBar(
     onClick: () -> Unit = {},
     onSettingsClicked: () -> Unit = {},
     decorationType: SearchBarDecorationType = SearchBarDecorationType.SHADOW,
+    showAppIcon: Boolean = true,
 ) {
+    val textPaddingStart by animateDpAsState(
+        targetValue = if (showAppIcon) {
+            56.dp
+        } else {
+            16.dp
+        }
+    )
     Surface(
         modifier,
         shape = MaterialTheme.shapes.medium,
@@ -168,24 +177,27 @@ fun SearchBar(
                 onClick()
             }
         ) {
-            Icon(
-                painter = painterResource(
-                    R.drawable.ic_bus_24
-                ),
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(vertical = 12.dp, horizontal = 16.dp)
-                    .size(24.dp),
-                contentDescription = "Bus",
-                tint = MaterialTheme.colors.primary
-            )
+            if (showAppIcon) {
+                Icon(
+                    painter = painterResource(
+                        R.drawable.ic_bus_24
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(vertical = 12.dp, horizontal = 16.dp)
+                        .size(24.dp),
+                    contentDescription = "Bus",
+                    tint = MaterialTheme.colors.primary
+                )
+            }
 
             Text(
                 text = "Search for Bus Stops...",
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .fillMaxWidth()
-                    .padding(horizontal = 56.dp, vertical = 12.dp),
+                    .padding(vertical = 12.dp)
+                    .padding(start = textPaddingStart, end = 56.dp),
                 color = MaterialTheme.colors.onSurface.medium,
                 style = MaterialTheme.typography.subtitle1,
             )

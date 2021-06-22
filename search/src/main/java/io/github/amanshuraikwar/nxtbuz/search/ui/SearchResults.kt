@@ -9,10 +9,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.*
+import com.google.accompanist.insets.ExperimentalAnimatedInsets
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.rememberInsetsPaddingValues
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchResult
@@ -39,10 +40,8 @@ fun SearchResults(
         }
         is SearchScreenState.Success -> {
             LazyColumn(
-                modifier = modifier.nestedScroll(
-                    connection = rememberImeNestedScrollConnection()
-                ),
-                contentPadding = LocalWindowInsets.current.ime.toPaddingValues()
+                modifier = modifier,
+                contentPadding = rememberInsetsPaddingValues(LocalWindowInsets.current.ime)
             ) {
                 items(
                     screenState.searchResultList,

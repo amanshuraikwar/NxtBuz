@@ -5,6 +5,7 @@ sealed class MainScreenState {
     data class Success(
         val showMap: Boolean,
         val navigationState: NavigationState,
+        val showBackBtn: Boolean,
     ) : MainScreenState()
 }
 

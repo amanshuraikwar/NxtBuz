@@ -19,9 +19,11 @@ android {
     buildTypes {
         release {
             buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
+            consumerProguardFiles 'consumer-rules.pro'
         }
         internal {
             buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
+            consumerProguardFiles 'consumer-rules.pro'
         }
         debug {
             buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.debug']+"\""

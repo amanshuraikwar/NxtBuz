@@ -65,7 +65,7 @@ fun SwitchSettingItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = 8.dp,
+                            top = 4.dp,
                         )
                 )
             }

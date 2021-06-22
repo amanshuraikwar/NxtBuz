@@ -15,7 +15,7 @@ fun NxtBuzApp(
     content: @Composable () -> Unit,
 ) {
     NxtBuzTheme {
-        ProvideWindowInsets(windowInsetsAnimationsEnabled = true) {
+        ProvideWindowInsets(windowInsetsAnimationsEnabled = false) {
             CompositionLocalProvider(
                 LocalIndication provides rememberRipple(color = MaterialTheme.colors.primary)
             ) {
