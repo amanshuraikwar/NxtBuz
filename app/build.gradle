@@ -1,10 +1,13 @@
+import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 apply from: "$project.rootDir/git_version.gradle"
-apply from: '../shared_dependencies.gradle'
 
 def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("local.properties")))
@@ -20,12 +23,12 @@ android {
         }
     }
 
-    compileSdkVersion versions.compileSdk
+    compileSdkVersion buildConfig.compileSdk
 
     defaultConfig {
         applicationId names.applicationId
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
         versionCode gitVersionCode
         versionName gitVersionName
 
@@ -89,7 +92,13 @@ android {
     // apk file name
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            outputFileName = new File("NxtBuz-" + variant.versionName + "-(" + variant.versionCode + ")-" + variant.buildType.name + ".apk")
+            outputFileName = new File(
+                    "Next-Bus-SG-"
+                            + variant.versionName
+                            + "-(" + variant.versionCode + ")-"
+                            + variant.buildType.name
+                            + ".apk"
+            )
         }
     }
 
@@ -102,64 +111,66 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
     }
+
+    buildFeatures {
+        compose true
+        buildConfig true
+        resValues true
+
+        // Disable unused AGP features
+        aidl false
+        renderScript false
+        shaders false
+        dataBinding false
+        viewBinding false
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation project(':data')
+    implementation project(':domain')
+    implementation project(':launcher')
+    implementation project(':onboarding')
+    implementation project(':ltaapi')
+    implementation project(':search')
+    implementation project(':starred')
+    implementation project(':settings')
+    implementation project(':map')
+    implementation project(':busstop')
+    implementation project(':busroute')
 
-    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
+    debugImplementation project(':basetheme')
+    internalImplementation project(':basetheme')
+    implementation project(':nxtbuztheme')
 
-    implementation "com.google.android.gms:play-services-auth:${versions.playServices}"
+    implementation Libs.Kotlin.stdlib
 
-    implementation("com.google.api-client:google-api-client-android:${versions.googleApiClient}") {
-        exclude group: 'org.apache.httpcomponents'
+    implementation Libs.Coroutines.core
+    implementation Libs.Coroutines.android
+
+    implementation Libs.Google.material
+
+    implementation Libs.AndroidX.Lifecycle.viewmodel
+
+    implementation Libs.threeTenAbp
+
+    implementation Libs.Dagger.library
+    implementation Libs.Dagger.androidSupport
+    kapt Libs.Dagger.compiler
+    kapt Libs.Dagger.androidProcessor
+
+    for (dependency in Libs.AndroidX.Compose.all) {
+        implementation dependency
     }
 
-    implementation("com.google.apis:google-api-services-sheets:${versions.googleSheetsApi}") {
-        exclude group: 'org.apache.httpcomponents'
-    }
+    implementation Libs.Accompanist.insets
 
-    // glide
-    implementation "com.github.bumptech.glide:glide:${versions.glide}"
-    kapt "com.github.bumptech.glide:compiler:${versions.glide}"
-
-    implementation "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
-    implementation "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
-
-    // room
-    implementation "androidx.room:room-runtime:${versions.room}"
-    kapt "androidx.room:room-compiler:${versions.room}"
-    implementation "androidx.room:room-ktx:${versions.room}"
-    androidTestImplementation "androidx.room:room-testing:${versions.room}"
-
-    kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
-    kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
-
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
-
-    implementation project(':multiitemadapter')
-    kapt project(':annotationProcessors')
-    compileOnly project(':annotations')
-
-    implementation 'com.google.firebase:firebase-analytics:17.4.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-    // flipper
-    debugImplementation 'com.facebook.flipper:flipper:0.35.0'
-    debugImplementation 'com.facebook.soloader:soloader:0.9.0'
-    debugImplementation 'com.facebook.flipper:flipper-network-plugin:0.35.0'
-
-    // flipper
-    internalImplementation 'com.facebook.flipper:flipper:0.35.0'
-    internalImplementation 'com.facebook.soloader:soloader:0.9.0'
-    internalImplementation 'com.facebook.flipper:flipper-network-plugin:0.35.0'
+    implementation Libs.Google.analytics
+    implementation Libs.Google.crashlytics
 }
 
 apply plugin: 'com.google.gms.google-services'
