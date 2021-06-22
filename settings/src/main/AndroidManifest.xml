@@ -1,1 +1,11 @@
-<manifest package="io.github.amanshuraikwar.nxtbuz.settings" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.github.amanshuraikwar.nxtbuz.settings">
+    <application>
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme.NxtBuz.ActionBar" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/AppTheme.NxtBuz.ActionBar" />
+    </application>
+</manifest>

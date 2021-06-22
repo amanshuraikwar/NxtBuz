@@ -24,4 +24,8 @@ sealed class SettingsItemData {
         val enabled: Boolean,
         val onClick: (newValue: Boolean) -> Unit,
     ) : SettingsItemData()
+
+    object Oss : SettingsItemData()
+
+    object MadeWith : SettingsItemData()
 }

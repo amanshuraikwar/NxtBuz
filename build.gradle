@@ -28,6 +28,8 @@ buildscript {
         classpath Libs.Google.crashlyticsGradle
 
         classpath Libs.AndroidX.Navigation.safeArgs
+
+        classpath Libs.Google.gmsOssLicenses
     }
 }
 
