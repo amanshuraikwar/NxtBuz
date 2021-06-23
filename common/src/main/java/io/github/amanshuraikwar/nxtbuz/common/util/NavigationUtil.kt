@@ -5,6 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import com.google.android.play.core.ktx.launchReview
+import com.google.android.play.core.ktx.requestReview
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
 import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -96,18 +100,56 @@ class NavigationUtil @Inject constructor(
         lng: Double
     ) {
         val uri = "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=walking"
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activity.get()?.startActivity(intent)
+        activity.get()?.startActivitySafe(
+            Intent(Intent.ACTION_VIEW, Uri.parse(uri)).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+        )
     }
 
     fun goToOssActivity() {
         val activity = activity.get() ?: return
-        activity.startActivity(
+        activity.startActivitySafe(
             Intent(
                 activity,
-                activity.getActivityClass("com.google.android.gms.oss.licenses.OssLicensesMenuActivity")
+                activity.getActivityClass(
+                    "com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+                )
             )
         )
+    }
+
+    fun goToEmail(address: String, subject: String) {
+        activity.get()?.startActivitySafe(
+            Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(address))
+                putExtra(Intent.EXTRA_SUBJECT, subject)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+        )
+    }
+
+    fun goToTwitter(username: String) {
+        activity.get()?.startActivitySafe(
+            Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/$username"))
+        )
+    }
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    fun Activity.startActivitySafe(intent: Intent) {
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+
+    private val reviewManager: ReviewManager? by lazy {
+        ReviewManagerFactory.create(activity.get()?.applicationContext ?: return@lazy null)
+    }
+
+    suspend fun startPlayStoreReview() {
+        val reviewInfo = reviewManager?.requestReview() ?: return
+        reviewManager?.launchReview(activity.get() ?: return, reviewInfo)
     }
 
     companion object {

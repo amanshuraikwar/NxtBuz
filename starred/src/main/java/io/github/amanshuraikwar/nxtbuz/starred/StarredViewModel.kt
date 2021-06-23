@@ -33,8 +33,8 @@ class StarredViewModel @Inject constructor(
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
     }
-
     private val coroutineContext = errorHandler + dispatcherProvider.computation
+
     private val busArrivalListLock = Mutex()
     var listItemsFlow = MutableStateFlow(SnapshotStateList<StarredBusArrivalData>())
     private var loop: StarredBusArrivalsLoop? = null

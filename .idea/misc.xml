@@ -18,6 +18,7 @@
         <entry key="common/src/main/res/drawable/ic_bus_24.xml" value="0.190625" />
         <entry key="common/src/main/res/drawable/ic_bus_72.xml" value="0.21145833333333333" />
         <entry key="common/src/main/res/drawable/ic_round_warning_16.xml" value="0.14739583333333334" />
+        <entry key="common/src/main/res/layout/dialog_error.xml" value="0.16510416666666666" />
         <entry key="launcher/src/main/res/drawable-night/preview_window.xml" value="0.190625" />
         <entry key="launcher/src/main/res/drawable-night/preview_window_background.xml" value="0.1" />
         <entry key="launcher/src/main/res/drawable-night/preview_window_logo.xml" value="0.190625" />
@@ -27,6 +28,7 @@
         <entry key="launcher/src/main/res/drawable/preview_window_logo.xml" value="0.4295882053889171" />
         <entry key="onboarding/src/main/res/drawable/ic_pin_drop_72.xml" value="0.21145833333333333" />
         <entry key="onboarding/src/main/res/layout/fragment_permission.xml" value="0.18645833333333334" />
+        <entry key="onboarding/src/main/res/layout/fragment_welcome.xml" value="0.19701086956521738" />
         <entry key="search/src/main/res/drawable/ic_round_open_in_new_24.xml" value="0.4203703703703704" />
         <entry key="search/src/main/res/drawable/ic_round_star_16.xml" value="0.4203703703703704" />
         <entry key="search/src/main/res/drawable/ic_search_128.xml" value="0.4203703703703704" />

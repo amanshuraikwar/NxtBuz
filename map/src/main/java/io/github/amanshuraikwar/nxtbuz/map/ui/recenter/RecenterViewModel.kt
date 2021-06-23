@@ -1,7 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.map.ui.recenter
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
@@ -9,6 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCa
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUpdatesUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionStatusUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.PushMapEventUseCase
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,12 +19,14 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "RecenterViewModel"
+
 class RecenterViewModel @Inject constructor(
     private val getLastKnownLocationUseCase: GetLastKnownLocationUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
     private val locationPermissionStatusUseCase: LocationPermissionStatusUseCase,
     private val getLocationUpdatesUseCase: GetLocationUpdatesUseCase,
-    private val dispatcherProvider: CoroutinesDispatcherProvider,
+    dispatcherProvider: CoroutinesDispatcherProvider,
 ) : ViewModel() {
     private val _recenterButtonState =
         MutableStateFlow<RecenterButtonState>(RecenterButtonState.LocationAvailable)
@@ -30,11 +35,17 @@ class RecenterViewModel @Inject constructor(
     private var lastLocationOutput: LocationOutput.Success? = null
     private var job: Job? = null
 
+    private val errorHandler = CoroutineExceptionHandler { _, th ->
+        Log.e(TAG, "errorHandler: $th", th)
+        FirebaseCrashlytics.getInstance().recordException(th)
+    }
+    private val coroutineContext = errorHandler + dispatcherProvider.map
+
     @Synchronized
     fun init() {
         job?.cancel()
         job = null
-        job = viewModelScope.launch(dispatcherProvider.computation) {
+        job = viewModelScope.launch(coroutineContext) {
             updateState(getLastKnownLocationUseCase())
             getLocationUpdatesUseCase().collect { locationOutput ->
                 updateState(locationOutput)
@@ -47,9 +58,11 @@ class RecenterViewModel @Inject constructor(
             is LocationOutput.Error,
             is LocationOutput.PermissionsNotGranted,
             is LocationOutput.SettingsNotEnabled -> {
+                FirebaseCrashlytics.getInstance().setCustomKey("locationAvailable", false)
                 _recenterButtonState.value = RecenterButtonState.LocationNotAvailable
             }
             is LocationOutput.Success -> {
+                FirebaseCrashlytics.getInstance().setCustomKey("locationAvailable", true)
                 lastLocationOutput = locationOutput
                 _recenterButtonState.value = RecenterButtonState.LocationAvailable
             }
@@ -57,7 +70,7 @@ class RecenterViewModel @Inject constructor(
     }
 
     fun recenterClick() {
-        viewModelScope.launch(dispatcherProvider.computation) {
+        viewModelScope.launch(coroutineContext) {
             locationPermissionStatusUseCase.refresh()
             lastLocationOutput?.let { locationOutput ->
                 pushMapEventUseCase(

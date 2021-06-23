@@ -47,15 +47,17 @@ class BusStopRepository @Inject constructor(
 
         // save all bus stops in local db
         busStopDao.insertAll(
-            busStopItemList.map {
-                BusStopEntity(
-                    it.code,
-                    it.roadName,
-                    it.description,
-                    it.latitude,
-                    it.longitude
-                )
-            }
+            busStopItemList
+                .distinctBy { it.code }
+                .map {
+                    BusStopEntity(
+                        it.code,
+                        it.roadName,
+                        it.description,
+                        it.latitude,
+                        it.longitude
+                    )
+                }
         )
 
         emit(1.0)
@@ -68,9 +70,9 @@ class BusStopRepository @Inject constructor(
         longitude: Double,
         limit: Int
     ): List<BusStop> = withContext(dispatcherProvider.io) {
-
         busStopDao
             .findClose(latitude, longitude, limit)
+            .distinctBy { it.code }
             .map { busStopEntity ->
                 async(dispatcherProvider.pool8) {
                     BusStop(
@@ -86,7 +88,8 @@ class BusStopRepository @Inject constructor(
                             }
                     )
                 }
-            }.awaitAll()
+            }
+            .awaitAll()
     }
 
     suspend fun getBusStopQueryLimit(): Int = withContext(dispatcherProvider.io) {
@@ -113,6 +116,7 @@ class BusStopRepository @Inject constructor(
         withContext(dispatcherProvider.io) {
             busStopDao
                 .searchLikeDescription(query, limit)
+                .distinctBy { it.code }
                 .map { busStopEntity ->
                     async(dispatcherProvider.pool8) {
                         BusStop(
@@ -173,6 +177,7 @@ class BusStopRepository @Inject constructor(
                     lng2 = busStopEntity.longitude
                 ) <= maxDistanceMetres
             }
+            .distinctBy { it.code }
             .map { busStopEntity ->
                 async(dispatcherProvider.pool8) {
                     BusStop(
