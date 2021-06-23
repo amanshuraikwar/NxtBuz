@@ -69,6 +69,11 @@ dependencies {
 
     implementation Libs.threeTenAbp
 
+    implementation Libs.Google.playCore
+    implementation Libs.Google.playCoreKtx
+
+    implementation Libs.Google.material
+
     for (dependency in Libs.AndroidX.Compose.all) {
         implementation dependency
     }

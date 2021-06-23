@@ -5,12 +5,16 @@ import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
 
 sealed class BusStopArrivalListItemData {
-    data class Header(val title: String) : BusStopArrivalListItemData()
+    data class Header(
+        val id: String,
+        val title: String
+    ) : BusStopArrivalListItemData()
 
     sealed class BusStopArrival(
         val busServiceNumber: String,
         val busStop: BusStop,
         val starred: Boolean,
+        val id: String = "${busStop.code}-$busServiceNumber-arrival",
     ) : BusStopArrivalListItemData() {
 
         class Arriving(
@@ -94,16 +98,9 @@ sealed class BusStopArrivalListItemData {
     }
 
     data class BusStopHeader(
+        val id: String,
         val busStopDescription: String,
         val busStopRoadName: String,
         val busStopCode: String,
-    ) : BusStopArrivalListItemData() {
-        companion object {
-            operator fun invoke() = BusStopHeader(
-                "Opp Blk 19",
-                busStopRoadName = "Rebecca Rd",
-                busStopCode = "123456",
-            )
-        }
-    }
+    ) : BusStopArrivalListItemData()
 }

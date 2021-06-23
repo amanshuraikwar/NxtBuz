@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.compose.Header
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.ShouldShowMapUseCase
@@ -155,6 +154,14 @@ class SettingsViewModel @Inject constructor(
             listItems.add(
                 SettingsItemData.Oss
             )
+            
+            listItems.add(
+                SettingsItemData.RequestFeature
+            )
+
+            listItems.add(
+                SettingsItemData.MadeBy
+            )
 
             listItems.add(
                 SettingsItemData.MadeWith
@@ -166,5 +173,24 @@ class SettingsViewModel @Inject constructor(
 
     fun onOssClick() {
         navigationUtil.goToOssActivity()
+    }
+
+    fun onRequestFeatureClick() {
+        navigationUtil.goToEmail(
+            address = "amanshuraikwar.dev@gmail.com",
+            subject = "Next Bus SG Feature Request",
+        )
+    }
+
+    fun onMadeByClick() {
+        navigationUtil.goToTwitter(
+            username = "amanshuraikwar_",
+        )
+    }
+
+    fun onRateOnPlayStoreClick() {
+        viewModelScope.launch(coroutineContext) {
+            navigationUtil.startPlayStoreReview()
+        }
     }
 }

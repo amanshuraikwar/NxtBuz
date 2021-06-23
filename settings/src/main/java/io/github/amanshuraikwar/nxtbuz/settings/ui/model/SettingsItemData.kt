@@ -27,5 +27,11 @@ sealed class SettingsItemData {
 
     object Oss : SettingsItemData()
 
+    object RequestFeature : SettingsItemData()
+
+    object MadeBy : SettingsItemData()
+
+    object RateOnPlayStore : SettingsItemData()
+
     object MadeWith : SettingsItemData()
 }

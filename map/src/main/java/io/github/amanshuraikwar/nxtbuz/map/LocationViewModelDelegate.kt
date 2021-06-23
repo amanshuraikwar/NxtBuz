@@ -23,12 +23,13 @@ class LocationViewModelDelegate @Inject constructor(
     private val getLocationUpdatesUseCase: GetLocationUpdatesUseCase,
     private val getLastKnownLocationUseCase: GetLastKnownLocationUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
-    private val dispatcherProvider: CoroutinesDispatcherProvider,
+    dispatcherProvider: CoroutinesDispatcherProvider,
 ) {
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
     }
+    private val coroutineContext = errorHandler + dispatcherProvider.map
 
     private var job: Job? = null
 
@@ -36,7 +37,7 @@ class LocationViewModelDelegate @Inject constructor(
     fun init(coroutineScope: CoroutineScope) {
         job?.cancel()
         job = null
-        job = coroutineScope.launch(errorHandler + dispatcherProvider.computation) {
+        job = coroutineScope.launch(coroutineContext) {
             val lastKnownLocation = getLastKnownLocationUseCase()
             Log.i(TAG, "init: last known location = $lastKnownLocation")
 

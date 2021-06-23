@@ -59,6 +59,10 @@ class BusStopArrivalsViewModel @Inject constructor(
     private var listenStarUpdatesJob: Job? = null
 
     fun init(busStopCode: String) {
+        FirebaseCrashlytics.getInstance().setCustomKey(
+            "viewModel", "$TAG-$busStopCode"
+        )
+
         viewModelScope.launch(coroutineContext) {
             var busStop = this@BusStopArrivalsViewModel.busStop
 
@@ -70,6 +74,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                 _screenState.emit(
                     BusStopArrivalsScreenState.Success(
                         BusStopArrivalListItemData.BusStopHeader(
+                            id = "bus-stop-arrivals-screen-${busStop.code}-header",
                             busStopCode = busStop.code,
                             busStopDescription = busStop.description,
                             busStopRoadName = busStop.roadName,
@@ -89,6 +94,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                 _screenState.emit(
                     BusStopArrivalsScreenState.Success(
                         BusStopArrivalListItemData.BusStopHeader(
+                            id = "bus-stop-arrivals-screen-${busStop.code}-header",
                             busStopCode = busStop.code,
                             busStopDescription = busStop.description,
                             busStopRoadName = busStop.roadName,
@@ -181,6 +187,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                             busStopCode = code,
                             busStopDescription = description,
                             busStopRoadName = roadName,
+                            id = "bus-stop-arrivals-screen-$code-header",
                         )
                     }
                 )

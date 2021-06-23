@@ -20,7 +20,7 @@ import javax.inject.Inject
 class SetupViewModel @Inject constructor(
     private val getUserStateUseCase: GetUserStateUseCase,
     private val doSetupUseCase: DoSetupUseCase,
-    private val dispatcherProvider: CoroutinesDispatcherProvider
+    dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
     private val _error = MutableLiveData<Throwable>()
@@ -36,6 +36,7 @@ class SetupViewModel @Inject constructor(
         FirebaseCrashlytics.getInstance().recordException(th)
         _error.postValue(th)
     }
+    private val coroutineContext = errorHandler + dispatcherProvider.computation
 
     private val _userState = MutableLiveData<UserState>()
     val userState = _userState.map { it }
@@ -48,7 +49,7 @@ class SetupViewModel @Inject constructor(
         initiateSetup()
     }
 
-    fun initiateSetup() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+    fun initiateSetup() = viewModelScope.launch(coroutineContext) {
         var userState = getUserStateUseCase()
         _userState.postValue(userState)
         if (userState is UserState.New) {

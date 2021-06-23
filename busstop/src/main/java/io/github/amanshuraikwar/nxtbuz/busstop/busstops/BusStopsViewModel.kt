@@ -57,6 +57,10 @@ class BusStopsViewModel @Inject constructor(
         useDefaultLocation: Boolean = false,
         waitForSettings: Boolean = false
     ) {
+        FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
+        FirebaseCrashlytics.getInstance().setCustomKey("useDefaultLocation", useDefaultLocation)
+        FirebaseCrashlytics.getInstance().setCustomKey("waitForSettings", waitForSettings)
+
         viewModelScope.launch(coroutineContext) {
             _screenState.value = BusStopsScreenState.Fetching
 
@@ -199,13 +203,17 @@ class BusStopsViewModel @Inject constructor(
 
         if (busStopList.isNotEmpty()) {
             listItems.add(
-                BusStopsItemData.Header(headerTitle)
+                BusStopsItemData.Header(
+                    id = "bus-stops-screen-header",
+                    title = headerTitle
+                )
             )
         }
 
         listItems.addAll(
             busStopList.map { busStop ->
                 BusStopsItemData.BusStop(
+                    id = "bus-stops-screen-${busStop.code}",
                     busStopDescription = busStop.description,
                     busStopInfo = "${busStop.roadName} • ${busStop.code}",
                     operatingBuses = busStop.operatingBusList
@@ -255,10 +263,11 @@ class BusStopsViewModel @Inject constructor(
                     locationPermissionDeniedPermanentlyUseCase(false)
                 }
                 PermissionStatus.DENIED_PERMANENTLY -> {
+                    FirebaseCrashlytics.getInstance().log("Permission denied permanently.")
                     locationPermissionDeniedPermanentlyUseCase(true)
                 }
                 PermissionStatus.DENIED -> {
-                    // do nothing
+                    FirebaseCrashlytics.getInstance().log("Permission denied.")
                 }
             }
             locationPermissionStatusUseCase.refresh()
