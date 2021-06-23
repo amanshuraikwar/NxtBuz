@@ -16,6 +16,8 @@ object Libs {
         const val playServicesLocation = "com.google.android.gms:play-services-location:17.0.0"
         const val gmsOssLicenses = "com.google.android.gms:oss-licenses-plugin:0.10.4"
         const val playOssLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
+        const val playCore = "com.google.android.play:core:1.10.0"
+        const val playCoreKtx = "com.google.android.play:core-ktx:1.8.1"
     }
 
     object Kotlin {

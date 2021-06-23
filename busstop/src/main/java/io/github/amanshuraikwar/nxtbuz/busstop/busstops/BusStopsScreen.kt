@@ -160,8 +160,8 @@ fun NearbyBusStops(
             items = listItems,
             key = { _, item ->
                 when (item) {
-                    is BusStopsItemData.BusStop -> item.busStopInfo
-                    is BusStopsItemData.Header -> item.title
+                    is BusStopsItemData.BusStop -> item.id
+                    is BusStopsItemData.Header -> item.id
                 }
             },
             errorKey = "bus-route-arrivals-error-key",

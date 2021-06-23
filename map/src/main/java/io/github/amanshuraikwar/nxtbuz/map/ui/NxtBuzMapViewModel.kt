@@ -47,6 +47,7 @@ class NxtBuzMapViewModel @Inject constructor(
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
     }
+    private val coroutineContext = errorHandler + dispatcherProvider.map
 
     private val markerSet = mutableSetOf<MapMarker>()
     private val markerMap = mutableMapOf<String, Marker>()
@@ -55,11 +56,10 @@ class NxtBuzMapViewModel @Inject constructor(
 
     init {
         init()
-        FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
     }
 
     private fun init() {
-        viewModelScope.launch(errorHandler) {
+        viewModelScope.launch(coroutineContext) {
             val (defaultLat, defaultLng) = defaultLocationUseCase()
             val defaultMapZoom = defaultMapZoomUseCase()
             initMap(defaultLat, defaultLng, defaultMapZoom)
@@ -130,7 +130,7 @@ class NxtBuzMapViewModel @Inject constructor(
     }
 
     private fun startCollectingEvents(coroutineScope: CoroutineScope) {
-        coroutineScope.launch(dispatcherProvider.computation) {
+        coroutineScope.launch(coroutineContext) {
             mapEventFlow.collect { mapEvent ->
                 when (mapEvent) {
                     is MapEvent.ClearMap -> {

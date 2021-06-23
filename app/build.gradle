@@ -73,7 +73,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            applicationIdSuffix ".internal"
+            applicationIdSuffix ".release"
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.release']
             buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
             manifestPlaceholders = [ appName : APP_NAME_INTERNAL]
@@ -153,6 +153,7 @@ dependencies {
     implementation Libs.Coroutines.android
 
     implementation Libs.Google.material
+    implementation Libs.AndroidX.constraintlayout
 
     implementation Libs.AndroidX.Lifecycle.viewmodel
 

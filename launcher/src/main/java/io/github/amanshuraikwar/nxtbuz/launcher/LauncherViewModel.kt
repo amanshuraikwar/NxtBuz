@@ -19,15 +19,17 @@ import javax.inject.Inject
  */
 class LauncherViewModel @Inject constructor(
     private val getUserStateUseCase: GetUserStateUseCase,
-    private val dispatcherProvider: CoroutinesDispatcherProvider
+    dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
-    private val _launchDestination = MutableLiveData<LaunchDestination>()
-    val launchDestination = _launchDestination.asEvent()
-
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
     }
+    private val coroutineContext = errorHandler + dispatcherProvider.computation
+
+    private val _launchDestination = MutableLiveData<LaunchDestination>()
+    val launchDestination = _launchDestination.asEvent()
+
 
     init {
         FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
@@ -35,12 +37,13 @@ class LauncherViewModel @Inject constructor(
     }
 
     private fun checkOnboarding() {
-        viewModelScope.launch(dispatcherProvider.main + errorHandler) {
-            _launchDestination.value =
+        viewModelScope.launch(coroutineContext) {
+            _launchDestination.postValue(
                 if (getUserStateUseCase() is UserState.SetupComplete)
                     LaunchDestination.MAIN_ACTIVITY
                 else
                     LaunchDestination.ONBOARDING
+            )
 
         }
     }
