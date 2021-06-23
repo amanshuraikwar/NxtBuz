@@ -161,13 +161,6 @@ fun BusRouteArrivalsScreenStateView(
                                 .background(color = backgroundColor),
                             data = header,
                             onStarToggle = onStarToggle
-//                                    onStarToggle { newValue ->
-//                                vm.onStarToggle(
-//                                    busServiceNumber = header.busServiceNumber,
-//                                    busStopCode = header.busStopCode,
-//                                    newValue = newValue,
-//                                )
-//                            }
                         )
                     }
 
@@ -175,8 +168,6 @@ fun BusRouteArrivalsScreenStateView(
 
                     FailedView(
                         onRetryClicked = onRetry
-                        //vm.init(busServiceNumber, busStopCode)
-                        //}
                     )
                 }
             }
@@ -200,13 +191,6 @@ fun BusRouteArrivalsScreenStateView(
                             .padding(top = padding.calculateTopPadding()),
                         data = state.header,
                         onStarToggle = onStarToggle
-//                        { newValue ->
-//                            vm.onStarToggle(
-//                                busServiceNumber = screenState.header.busServiceNumber,
-//                                busStopCode = screenState.header.busStopCode,
-//                                newValue = newValue,
-//                            )
-//                        }
                     )
 
                     Divider()
@@ -217,17 +201,8 @@ fun BusRouteArrivalsScreenStateView(
                         BusRouteArrivalsView(
                             listItems = state.listItems,
                             onPreviousAllClicked = onPreviousAllClicked,
-//                            {
-//                                vm.previousAllClicked()
-//                            }
                             onExpand = onExpand,
-//                            {
-//                                vm.onExpand(it)
-//                            },
                             onCollapse = onCollapse,
-//                            {
-//                                vm.onCollapse(it)
-//                            }
                         )
                     }
                 }
@@ -266,9 +241,9 @@ fun BusRouteArrivalsView(
             items = listItems,
             key = { _, item ->
                 when (item) {
-                    is BusRouteListItemData.Header -> item.title
-                    is BusRouteListItemData.BusRoutePreviousAll -> item.title
-                    is BusRouteListItemData.BusRouteNode -> item.busStopDescription
+                    is BusRouteListItemData.Header -> item.id
+                    is BusRouteListItemData.BusRoutePreviousAll -> item.id
+                    is BusRouteListItemData.BusRouteNode -> item.id
                 }
             },
             errorKey = "bus-route-arrivals-error-key"

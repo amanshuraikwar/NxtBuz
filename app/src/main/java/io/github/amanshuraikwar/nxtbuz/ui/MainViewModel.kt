@@ -1,8 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
@@ -10,11 +12,14 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.CleanupLocationUpdatesUse
 import io.github.amanshuraikwar.nxtbuz.domain.map.ShouldShowMapUseCase
 import io.github.amanshuraikwar.nxtbuz.ui.model.MainScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+
+private const val TAG = "MainViewModel"
 
 class MainViewModel @Inject constructor(
     private val cleanupLocationUpdatesUseCase: CleanupLocationUpdatesUseCase,
@@ -23,7 +28,11 @@ class MainViewModel @Inject constructor(
     dispatcherProvider: CoroutinesDispatcherProvider,
 ) : ViewModel() {
 
-    private val coroutineContext = dispatcherProvider.computation
+    private val errorHandler = CoroutineExceptionHandler { _, th ->
+        Log.e(TAG, "errorHandler: $th", th)
+        FirebaseCrashlytics.getInstance().recordException(th)
+    }
+    private val coroutineContext = dispatcherProvider.computation + errorHandler
 
     private val _screenState =
         MutableStateFlow<MainScreenState>(MainScreenState.Fetching)
@@ -35,6 +44,7 @@ class MainViewModel @Inject constructor(
     internal fun onInit() {
         viewModelScope.launch(coroutineContext) {
             showMap = shouldShowMapUseCase()
+            FirebaseCrashlytics.getInstance().setCustomKey("showMap", showMap)
             synchronized(_screenState) {
                 when (val currentState = _screenState.value) {
                     MainScreenState.Fetching -> {

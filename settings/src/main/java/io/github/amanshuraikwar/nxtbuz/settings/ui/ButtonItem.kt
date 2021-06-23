@@ -11,18 +11,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun OssItem(
+fun ButtonItem(
+    title: String,
     onClick: () -> Unit,
 ) {
     Surface(
         modifier = Modifier
+            .padding(top = 2.dp)
             .clickable(onClick = onClick)
             .fillMaxWidth(),
         color = MaterialTheme.colors.surface,
         elevation = 2.dp
     ) {
         Text(
-            text = "Open Source Licenses",
+            text = title,
             style = MaterialTheme.typography.subtitle1,
             color = MaterialTheme.colors.onSurface,
             modifier = Modifier

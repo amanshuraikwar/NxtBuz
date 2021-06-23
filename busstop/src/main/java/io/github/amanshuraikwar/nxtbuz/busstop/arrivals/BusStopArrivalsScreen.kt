@@ -245,10 +245,9 @@ fun BusStopArrivalsView(
             items = listItems,
             key = { _, item ->
                 when (item) {
-                    is BusStopArrivalListItemData.BusStopArrival ->
-                        "${item.busServiceNumber}-arrival"
-                    is BusStopArrivalListItemData.BusStopHeader -> item.busStopCode
-                    is BusStopArrivalListItemData.Header -> item.title
+                    is BusStopArrivalListItemData.BusStopArrival -> item.id
+                    is BusStopArrivalListItemData.BusStopHeader -> item.id
+                    is BusStopArrivalListItemData.Header -> item.id
                 }
             },
             errorKey = "bus-stop-arrivals-error-key"

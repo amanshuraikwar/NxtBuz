@@ -21,7 +21,7 @@ import javax.inject.Inject
 class PermissionViewModel @Inject constructor(
     private val permissionUtil: PermissionUtil,
     private val locationUtil: LocationUtil,
-    private val dispatcherProvider: CoroutinesDispatcherProvider
+    dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
     private val _nextPage = MutableLiveData<Unit>()
@@ -47,13 +47,14 @@ class PermissionViewModel @Inject constructor(
         FirebaseCrashlytics.getInstance().recordException(th)
         _error.postValue(th)
     }
+    private val coroutineContext = errorHandler + dispatcherProvider.computation
 
     init {
         FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
     }
 
     fun checkPermissions() {
-        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+        viewModelScope.launch(coroutineContext) {
             when (permissionUtil.hasLocationPermission()) {
                 PermissionStatus.GRANTED -> {
                     if (locationUtil.settingEnabled() == SettingsState.Enabled) {
@@ -73,7 +74,7 @@ class PermissionViewModel @Inject constructor(
         }
     }
 
-    fun askPermissions() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+    fun askPermissions() = viewModelScope.launch(coroutineContext) {
         val permissionResult = permissionUtil.askPermission()
         Log.i(TAG, "askPermissions: Permission result = ${permissionResult.name}")
         when (permissionResult) {
@@ -94,7 +95,7 @@ class PermissionViewModel @Inject constructor(
         }
     }
 
-    fun enableSettings() = viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+    fun enableSettings() = viewModelScope.launch(coroutineContext) {
         when (locationUtil.enableSettings()) {
             is SettingsState.Enabled -> {
                 _nextPage.postValue(Unit)

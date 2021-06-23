@@ -17,24 +17,23 @@ private const val TAG = "SearchViewModel"
 
 class SearchViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
-    private val dispatcherProvider: CoroutinesDispatcherProvider
+    dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
     }
+    private val coroutineContext = errorHandler + dispatcherProvider.computation
 
     internal val screenState = MutableSharedFlow<SearchScreenState>()
 
-    init {
+    fun searchBusStops(query: String) {
         FirebaseCrashlytics.getInstance().setCustomKey(
             "viewModel",
-            TAG
+            "$TAG-query"
         )
-    }
 
-    fun searchBusStops(query: String) {
-        viewModelScope.launch(dispatcherProvider.io + errorHandler) {
+        viewModelScope.launch(coroutineContext) {
             if (query.isNotEmpty()) {
                 val searchResult = searchUseCase(query, 20)
                 if (searchResult.busStopList.isEmpty()) {
@@ -64,7 +63,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun clear() {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineContext) {
             screenState.emit(SearchScreenState.Nothing)
         }
     }

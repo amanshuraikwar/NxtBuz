@@ -81,6 +81,9 @@ fun SettingsScreen(
                         is SettingsItemData.Switch -> item.title
                         SettingsItemData.Oss -> "oss"
                         SettingsItemData.MadeWith -> "made-with"
+                        SettingsItemData.MadeBy -> "made-by"
+                        SettingsItemData.RequestFeature -> "request-feature"
+                        SettingsItemData.RateOnPlayStore -> "rate-on-play-store"
                     }
                 },
                 errorKey = "bus-route-arrivals-error-key",
@@ -105,8 +108,23 @@ fun SettingsScreen(
                         SwitchSettingItem(item)
                     }
                     SettingsItemData.Oss -> {
-                        OssItem {
+                        ButtonItem("Open Source Licenses") {
                             vm.onOssClick()
+                        }
+                    }
+                    SettingsItemData.RequestFeature -> {
+                        ButtonItem("Request a Feature") {
+                            vm.onRequestFeatureClick()
+                        }
+                    }
+                    SettingsItemData.MadeBy -> {
+                        ButtonItem("Made by Amanshu Raikwar") {
+                            vm.onMadeByClick()
+                        }
+                    }
+                    SettingsItemData.RateOnPlayStore -> {
+                        ButtonItem("Rate on Play Store") {
+                            vm.onRateOnPlayStoreClick()
                         }
                     }
                     SettingsItemData.MadeWith -> {
