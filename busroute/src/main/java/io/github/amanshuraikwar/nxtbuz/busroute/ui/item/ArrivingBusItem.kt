@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
 
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -19,6 +19,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.arrival.ArrivingBus
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
 
+@ExperimentalAnimationApi
 @Composable
 fun ArrivingBusItem(
     arrivingBus: ArrivingBus,
@@ -42,12 +43,25 @@ fun ArrivingBusItem(
 
         Spacer(modifier = Modifier.size(8.dp))
 
-        Text(
-            text = arrivingBus.arrival.toArrivalString(),
-            style = MaterialTheme.typography.h6Bold,
-            color = contentColor,
-            modifier = Modifier.animateContentSize()
-        )
+        AnimatedContent(
+            targetState = arrivingBus.arrival,
+            transitionSpec = {
+                if (targetState > initialState) {
+                    slideInVertically({ it }) + fadeIn() with
+                            slideOutVertically({ -it }) + fadeOut()
+                } else {
+                    slideInVertically({ -it }) + fadeIn() with
+                            slideOutVertically({ it }) + fadeOut()
+                }.using(SizeTransform(clip = false))
+            }
+        ) { target ->
+            Text(
+                text = target.toArrivalString(),
+                style = MaterialTheme.typography.h6Bold,
+                color = contentColor,
+                modifier = Modifier.animateContentSize()
+            )
+        }
 
         Spacer(modifier = Modifier.size(8.dp))
 

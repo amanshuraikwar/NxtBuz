@@ -25,7 +25,7 @@ class SetupFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var viewModel: SetupViewModel
+    private lateinit var viewModelOld: SetupViewModelOld
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,9 +66,9 @@ class SetupFragment : DaggerFragment() {
 
         requireActivity().let { activity ->
 
-            viewModel = viewModelProvider(viewModelFactory)
+            viewModelOld = viewModelProvider(viewModelFactory)
 
-            viewModel.userState.observe(viewLifecycleOwner) { userState ->
+            viewModelOld.userState.observe(viewLifecycleOwner) { userState ->
                 when (userState) {
                     is UserState.New -> {
                         // do nothing
@@ -80,7 +80,7 @@ class SetupFragment : DaggerFragment() {
                 }
             }
 
-            viewModel.error.observe(
+            viewModelOld.error.observe(
                 viewLifecycleOwner,
                 EventObserver { errorMsg ->
 
@@ -94,7 +94,7 @@ class SetupFragment : DaggerFragment() {
 
                     view.findViewById<TextView>(R.id.errorMessageTv).text = errorMsg
                     view.findViewById<MaterialButton>(R.id.retryBtn).setOnClickListener {
-                        viewModel.initiateSetup()
+                        viewModelOld.initiateSetup()
                         dialog.dismiss()
                     }
 
@@ -102,7 +102,7 @@ class SetupFragment : DaggerFragment() {
                 }
             )
 
-            viewModel.setupProgress.observe(
+            viewModelOld.setupProgress.observe(
                 viewLifecycleOwner,
                 EventObserver {
                     ObjectAnimator.ofInt(

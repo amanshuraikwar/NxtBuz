@@ -24,6 +24,8 @@ import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMapViewModel
 import io.github.amanshuraikwar.nxtbuz.map.ui.recenter.RecenterButton
 import io.github.amanshuraikwar.nxtbuz.map.ui.recenter.RecenterViewModel
+import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupScreen
+import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupViewModel
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchBar
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchBarDecorationType
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchScreen
@@ -50,8 +52,10 @@ fun MainScreen(
     starredViewModel: StarredViewModel,
     recenterViewModel: RecenterViewModel,
     searchViewModel: SearchViewModel,
+    setupViewModel: SetupViewModel,
     onSettingsClick: () -> Unit,
     onBackClick: () -> Unit,
+    onSetupComplete: () -> Unit,
 ) {
     val density = LocalDensity.current
     val insets = LocalWindowInsets.current
@@ -254,6 +258,9 @@ fun MainScreen(
                     }
                 }
             }
+        }
+        MainScreenState.Setup -> {
+            SetupScreen(vm = setupViewModel, onSetupComplete)
         }
     }
 }
