@@ -29,15 +29,6 @@ fun Activity.startMainActivity() {
     )
 }
 
-fun Activity.startOnboardingActivity() {
-    startActivity(
-        Intent(
-            this,
-            getActivityClass("io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity")
-        )
-    )
-}
-
 private fun Context.getActivityClass(target: String): Class<out Activity?> {
     @Suppress("UNCHECKED_CAST")
     return classLoader.loadClass(target) as Class<out Activity?>

@@ -11,8 +11,6 @@ import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtilProv
 import io.github.amanshuraikwar.nxtbuz.launcher.LauncherActivity
 import io.github.amanshuraikwar.nxtbuz.launcher.LauncherModule
 import io.github.amanshuraikwar.nxtbuz.map.di.MapModule
-import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity
-import io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingModule
 import io.github.amanshuraikwar.nxtbuz.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsModule
@@ -36,16 +34,6 @@ abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = [LauncherModule::class])
     internal abstract fun a(): LauncherActivity
-
-    @ActivityScoped
-    @ContributesAndroidInjector(
-        modules = [
-            OnboardingModule::class,
-            PermissionUtilProvides::class,
-            LocationUtilProvides::class
-        ]
-    )
-    internal abstract fun b(): OnboardingActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(

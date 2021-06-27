@@ -28,8 +28,6 @@ class LauncherActivity : DaggerAppCompatActivity() {
                 when (destination) {
                     LaunchDestination.MAIN_ACTIVITY ->
                         startMainActivity()
-                    LaunchDestination.ONBOARDING ->
-                        startOnboardingActivity()
                 }.checkAllMatched
                 finish()
             }
