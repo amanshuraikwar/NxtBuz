@@ -52,7 +52,6 @@ class SetupWorkerNotificationHelper {
     fun updateProgress(context: Context, progress: Int) {
         notificationBuilder?.run {
             setProgress(100, progress, false)
-            setContentTitle("Caching bus stop and bus service info")
             with(context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager) {
                 notify(notificationId, build())
             }
@@ -80,10 +79,10 @@ class SetupWorkerNotificationHelper {
             setProgress(0, 0, false)
             setOngoing(false)
             clearActions()
-            setContentTitle("Setup completed successfully!")
-            setContentText("")
+            setContentTitle("Setup completed successfully")
+            setContentText("You can start using the app now :)")
             setAutoCancel(true)
-            setTimeoutAfter(10000)
+            setTimeoutAfter(60000)
             with(context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager) {
                 notify(
                     System.currentTimeMillis().toInt(),

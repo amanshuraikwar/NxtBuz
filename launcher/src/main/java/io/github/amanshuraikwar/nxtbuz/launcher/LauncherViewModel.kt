@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.LaunchDestination
-import io.github.amanshuraikwar.nxtbuz.common.model.user.UserState
 import io.github.amanshuraikwar.nxtbuz.common.util.asEvent
-import io.github.amanshuraikwar.nxtbuz.domain.user.GetUserStateUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +16,6 @@ import javax.inject.Inject
  * Logic for determining which screen to send users to on app launch.
  */
 class LauncherViewModel @Inject constructor(
-    private val getUserStateUseCase: GetUserStateUseCase,
     dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, th ->
@@ -38,12 +35,7 @@ class LauncherViewModel @Inject constructor(
 
     private fun checkOnboarding() {
         viewModelScope.launch(coroutineContext) {
-            _launchDestination.postValue(
-                //if (getUserStateUseCase() is UserState.SetupComplete)
-                    LaunchDestination.MAIN_ACTIVITY
-//                else
-//                    LaunchDestination.ONBOARDING
-            )
+            _launchDestination.postValue(LaunchDestination.MAIN_ACTIVITY)
 
         }
     }

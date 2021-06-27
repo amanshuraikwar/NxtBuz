@@ -18,10 +18,12 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
 
+        <!--suppress AndroidDomInspection -->
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
-            tools:node="remove"/>
+            tools:node="remove"
+            tools:ignore="MissingClass" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -38,10 +40,6 @@
             </intent-filter>
 
         </activity>
-
-        <activity
-            android:theme="@style/AppTheme.NxtBuz.Onboarding"
-            android:name="io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity" />
 
         <activity
             android:name="io.github.amanshuraikwar.nxtbuz.ui.MainActivity"

@@ -1,6 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.onboarding.setup.worker
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.asFlow
@@ -39,9 +38,12 @@ class SetupWorker(
         )
         setForeground(ForegroundInfo(notificationId, notification))
 
+        var success = true
+
         doSetupUseCase()
             .catch {
                 notificationHelper.cancelNotification(applicationContext)
+                success = false
             }
             .collect { value ->
                 when (value) {
@@ -62,7 +64,11 @@ class SetupWorker(
                 }
             }
 
-        return Result.success()
+        return if (success) {
+            Result.success()
+        } else {
+            Result.failure()
+        }
     }
 
     companion object {
@@ -73,7 +79,6 @@ class SetupWorker(
         }
 
         @Suppress("BlockingMethodInNonBlockingContext")
-        @SuppressLint("UnsafeExperimentalUsageError")
         suspend fun start(
             appContext: Context,
             dispatcherProvider: CoroutinesDispatcherProvider

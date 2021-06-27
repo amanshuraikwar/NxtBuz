@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -27,6 +28,7 @@ import io.github.amanshuraikwar.nxtbuz.map.ui.recenter.RecenterViewModel
 import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupViewModel
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchViewModel
 import io.github.amanshuraikwar.nxtbuz.starred.StarredViewModel
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {

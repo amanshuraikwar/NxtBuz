@@ -43,9 +43,6 @@ android {
 
 dependencies {
     implementation project(":domain")
-    debugImplementation project(':basetheme')
-    implementation project(':nxtbuztheme')
-    implementation project(':data')
 
     Libs.Kotlin.stdlib
 
@@ -59,16 +56,9 @@ dependencies {
 
     implementation Libs.AndroidX.Lifecycle.viewmodel
     implementation Libs.AndroidX.Lifecycle.livedata
-    implementation Libs.AndroidX.Lifecycle.extensions
 
     api Libs.AndroidX.Work.runtime
     api Libs.AndroidX.Work.ktx
-
-    implementation Libs.Google.material
-
-    implementation Libs.AndroidX.Navigation.fragment
-
-    implementation Libs.AndroidX.constraintlayout
 
     for (dependency in Libs.AndroidX.Compose.all) {
         implementation dependency
