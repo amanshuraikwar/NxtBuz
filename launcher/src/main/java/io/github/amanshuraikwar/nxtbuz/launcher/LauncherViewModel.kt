@@ -39,10 +39,10 @@ class LauncherViewModel @Inject constructor(
     private fun checkOnboarding() {
         viewModelScope.launch(coroutineContext) {
             _launchDestination.postValue(
-                if (getUserStateUseCase() is UserState.SetupComplete)
+                //if (getUserStateUseCase() is UserState.SetupComplete)
                     LaunchDestination.MAIN_ACTIVITY
-                else
-                    LaunchDestination.ONBOARDING
+//                else
+//                    LaunchDestination.ONBOARDING
             )
 
         }

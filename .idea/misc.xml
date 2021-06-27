@@ -10,13 +10,17 @@
         <entry key="../../../../layout/compose-model-1624335122129.xml" value="0.10884918986289988" />
         <entry key="../../../../layout/compose-model-1624339549325.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1624374348224.xml" value="0.4787037037037037" />
+        <entry key="../../../../layout/compose-model-1624785977471.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1624802200244.xml" value="0.1" />
         <entry key="app/src/debug/res/drawable/ic_launcher_foreground.xml" value="0.4295882053889171" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.4295882053889171" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.4295882053889171" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.4295882053889171" />
+        <entry key="common/src/main/res/drawable-anydpi-v24/ic_noti_bus_arrival.xml" value="0.4702592780884596" />
         <entry key="common/src/main/res/drawable/ic_bus_24.xml" value="0.190625" />
         <entry key="common/src/main/res/drawable/ic_bus_72.xml" value="0.21145833333333333" />
+        <entry key="common/src/main/res/drawable/ic_round_error_48.xml" value="0.4537037037037037" />
         <entry key="common/src/main/res/drawable/ic_round_warning_16.xml" value="0.14739583333333334" />
         <entry key="common/src/main/res/layout/dialog_error.xml" value="0.16510416666666666" />
         <entry key="launcher/src/main/res/drawable-night/preview_window.xml" value="0.190625" />
@@ -27,7 +31,9 @@
         <entry key="launcher/src/main/res/drawable/preview_window_background.xml" value="0.4295882053889171" />
         <entry key="launcher/src/main/res/drawable/preview_window_logo.xml" value="0.4295882053889171" />
         <entry key="onboarding/src/main/res/drawable/ic_pin_drop_72.xml" value="0.21145833333333333" />
+        <entry key="onboarding/src/main/res/drawable/round_cancel_24.xml" value="0.4499237417386884" />
         <entry key="onboarding/src/main/res/layout/fragment_permission.xml" value="0.18645833333333334" />
+        <entry key="onboarding/src/main/res/layout/fragment_setup.xml" value="0.2604218985434455" />
         <entry key="onboarding/src/main/res/layout/fragment_welcome.xml" value="0.19701086956521738" />
         <entry key="search/src/main/res/drawable/ic_round_open_in_new_24.xml" value="0.4203703703703704" />
         <entry key="search/src/main/res/drawable/ic_round_star_16.xml" value="0.4203703703703704" />

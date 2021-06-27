@@ -34,6 +34,12 @@ object Libs {
     }
 
     object AndroidX {
+        object Work {
+            private const val version = "2.7.0-alpha04"
+            const val runtime = "androidx.work:work-runtime:$version"
+            const val ktx = "androidx.work:work-runtime-ktx:$version"
+        }
+
         object Navigation {
             private const val version = "2.3.3"
             const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"

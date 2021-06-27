@@ -10,7 +10,7 @@ import io.github.amanshuraikwar.nxtbuz.common.di.ViewModelKey
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionFragment
 import io.github.amanshuraikwar.nxtbuz.onboarding.permission.PermissionViewModel
 import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupFragment
-import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupViewModel
+import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupViewModelOld
 import io.github.amanshuraikwar.nxtbuz.onboarding.welcome.WelcomeFragment
 
 @Suppress("unused")
@@ -24,8 +24,8 @@ abstract class OnboardingModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SetupViewModel::class)
-    internal abstract fun c(a: SetupViewModel): ViewModel
+    @ViewModelKey(SetupViewModelOld::class)
+    internal abstract fun c(a: SetupViewModelOld): ViewModel
 
     @ContributesAndroidInjector
     internal abstract fun d(): SetupFragment
