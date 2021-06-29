@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.data.prefs
 
+import io.github.amanshuraikwar.nxtbuz.common.model.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.AlertFrequency
 
 /**
@@ -16,6 +17,8 @@ interface PreferenceStorage {
     var alertStarredBusArrivalsFrequency: AlertFrequency
     var showMap: Boolean
     var permissionDeniedPermanently: Boolean
+    var theme: NxtBuzTheme
+    var useSystemTheme: Boolean
 }
 
 

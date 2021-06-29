@@ -19,9 +19,10 @@ sealed class SettingsItemData {
 
     data class Switch(
         val title: String,
-        val enabledDescription: String,
-        val disabledDescription: String,
-        val enabled: Boolean,
+        val onDescription: String,
+        val offDescription: String,
+        val on: Boolean,
+        val enabled: Boolean = true,
         val onClick: (newValue: Boolean) -> Unit,
     ) : SettingsItemData()
 
