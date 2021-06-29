@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -17,18 +16,19 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsViewModel
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzApp
+import io.github.amanshuraikwar.nxtbuz.common.model.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.makeStatusBarTransparent
-import io.github.amanshuraikwar.nxtbuz.common.util.startSettingsActivity
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
+import io.github.amanshuraikwar.nxtbuz.common.util.startSettingsActivity
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMapViewModel
 import io.github.amanshuraikwar.nxtbuz.map.ui.recenter.RecenterViewModel
 import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupViewModel
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchViewModel
 import io.github.amanshuraikwar.nxtbuz.starred.StarredViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -90,9 +90,27 @@ class MainActivity : DaggerAppCompatActivity() {
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        makeStatusBarTransparent()
+        makeStatusBarTransparent(
+            isDarkTheme = when (mainViewModel.theme.value) {
+                NxtBuzTheme.DARK -> true
+                NxtBuzTheme.LIGHT -> false
+            }
+        )
+
         setContent {
-            NxtBuzApp {
+            val theme by mainViewModel.theme.collectAsState()
+            LaunchedEffect(key1 = theme) {
+                launch {
+                    makeStatusBarTransparent(
+                        isDarkTheme = when (theme) {
+                            NxtBuzTheme.DARK -> true
+                            NxtBuzTheme.LIGHT -> false
+                        }
+                    )
+                }
+            }
+
+            NxtBuzApp(isDark = theme == NxtBuzTheme.DARK) {
                 val screenState by mainViewModel.screenState.collectAsState()
                 MainScreen(
                     screenState = screenState,

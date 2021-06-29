@@ -12,6 +12,8 @@
         <entry key="../../../../layout/compose-model-1624374348224.xml" value="0.4787037037037037" />
         <entry key="../../../../layout/compose-model-1624785977471.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1624802200244.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1624978063524.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1624978067129.xml" value="0.1" />
         <entry key="app/src/debug/res/drawable/ic_launcher_foreground.xml" value="0.4295882053889171" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.4295882053889171" />
@@ -28,6 +30,7 @@
         <entry key="launcher/src/main/res/drawable-night/preview_window_logo.xml" value="0.190625" />
         <entry key="launcher/src/main/res/drawable/ic_preview_window_logo.xml" value="0.190625" />
         <entry key="launcher/src/main/res/drawable/ic_preview_window_logo_2_light.xml" value="0.190625" />
+        <entry key="launcher/src/main/res/drawable/preview_window.xml" value="0.4609375" />
         <entry key="launcher/src/main/res/drawable/preview_window_background.xml" value="0.4295882053889171" />
         <entry key="launcher/src/main/res/drawable/preview_window_logo.xml" value="0.4295882053889171" />
         <entry key="onboarding/src/main/res/drawable-night/bg_onboarding.xml" value="0.23177083333333334" />

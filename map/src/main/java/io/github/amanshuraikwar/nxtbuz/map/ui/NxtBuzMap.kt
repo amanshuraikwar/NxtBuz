@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -26,6 +27,10 @@ fun NxtBuzMap(
     val isLight = MaterialTheme.colors.isLight
     val context = LocalContext.current
     val mapState = rememberMapState(initCenter = LatLng(0.0, 0.0), initZoom = 0f)
+
+    LaunchedEffect(key1 = isLight) {
+        viewModel.updateMapStyle(isLight)
+    }
 
     Surface(modifier) {
         mapInitData?.let { mapInitData ->

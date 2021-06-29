@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.common.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
@@ -11,10 +12,12 @@ import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import io.github.amanshuraikwar.nxtbuz.common.model.Event
+import io.github.amanshuraikwar.nxtbuz.common.R
 
 //region result
 
@@ -39,9 +42,16 @@ fun isDarkTheme(activity: Activity): Boolean {
             Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 }
 
+fun Context.isDarkTheme(): Boolean {
+    return resources.configuration.uiMode and
+            Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+}
+
 @SuppressLint("ObsoleteSdkInt")
-fun Activity.makeStatusBarTransparent() {
-    if (isDarkTheme(this)) {
+fun Activity.makeStatusBarTransparent(
+    isDarkTheme: Boolean = isDarkTheme(this)
+) {
+    if (isDarkTheme) {
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -51,6 +61,12 @@ fun Activity.makeStatusBarTransparent() {
                 decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             }
             statusBarColor = Color.TRANSPARENT
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                navigationBarDividerColor =
+                    ContextCompat.getColor(this@makeStatusBarTransparent, R.color.black)
+            }
+            navigationBarColor =
+                ContextCompat.getColor(this@makeStatusBarTransparent, R.color.black)
         }
     } else {
         window.apply {
@@ -73,6 +89,15 @@ fun Activity.makeStatusBarTransparent() {
                 }
             }
             statusBarColor = Color.TRANSPARENT
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                navigationBarDividerColor =
+                    ContextCompat.getColor(
+                        this@makeStatusBarTransparent,
+                        R.color.blueGrey50
+                    )
+            }
+            navigationBarColor =
+                ContextCompat.getColor(this@makeStatusBarTransparent, R.color.blueGrey50)
         }
     }
 }

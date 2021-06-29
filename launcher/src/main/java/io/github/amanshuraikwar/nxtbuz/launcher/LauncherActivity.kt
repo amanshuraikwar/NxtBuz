@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.nxtbuz.common.model.EventObserver
 import io.github.amanshuraikwar.nxtbuz.common.model.LaunchDestination
+import io.github.amanshuraikwar.nxtbuz.common.model.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.util.*
 import javax.inject.Inject
 
@@ -18,7 +19,6 @@ class LauncherActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        makeStatusBarTransparent()
         val viewModel: LauncherViewModel = viewModelProvider(viewModelFactory)
 
         viewModel.launchDestination.observe(

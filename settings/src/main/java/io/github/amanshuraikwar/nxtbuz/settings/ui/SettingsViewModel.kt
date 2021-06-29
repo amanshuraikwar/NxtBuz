@@ -6,13 +6,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.model.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.ShouldShowMapUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetForcedThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetUseSystemThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.SetForcedThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.SetUseSystemThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.settings.ui.delegate.AppThemeDelegate
+import io.github.amanshuraikwar.nxtbuz.settings.ui.delegate.AppThemeDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.settings.ui.model.SettingsItemData
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -23,9 +31,14 @@ class SettingsViewModel @Inject constructor(
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
     private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
     private val shouldShowMapUseCase: ShouldShowMapUseCase,
+    private val getForcedThemeUseCase: GetForcedThemeUseCase,
+    private val setForcedThemeUseCase: SetForcedThemeUseCase,
+    private val getUseSystemThemeUseCase: GetUseSystemThemeUseCase,
+    private val setUseSystemThemeUseCase: SetUseSystemThemeUseCase,
     private val navigationUtil: NavigationUtil,
+    appThemeDelegateImpl: AppThemeDelegateImpl,
     dispatcherProvider: CoroutinesDispatcherProvider
-) : ViewModel() {
+) : ViewModel(), AppThemeDelegate by appThemeDelegateImpl {
 
     @Inject
     @Named("appVersionInfo")
@@ -37,16 +50,15 @@ class SettingsViewModel @Inject constructor(
     }
     private val coroutineContext = errorHandler + dispatcherProvider.computation
 
-    val listItemsFlow = MutableSharedFlow<SnapshotStateList<SettingsItemData>>(replay = 1)
-    private var listItems = SnapshotStateList<SettingsItemData>()
+    val listItemsFlow = MutableStateFlow<SnapshotStateList<SettingsItemData>>(SnapshotStateList())
 
     init {
         FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
-        fetchSettings()
     }
 
-    private fun fetchSettings() =
+    fun fetchSettings() {
         viewModelScope.launch(coroutineContext) {
+            refreshTheme()
 
             val listItems = SnapshotStateList<SettingsItemData>()
 
@@ -104,13 +116,13 @@ class SettingsViewModel @Inject constructor(
             listItems.add(
                 SettingsItemData.Switch(
                     title = "Show starred buses that are not arriving",
-                    enabledDescription = "Starred buses that are not arriving will be shown on the home screen",
-                    disabledDescription = "Only starred buses that are arriving will be shown on the home screen",
-                    enabled = shouldShowStarredBusArrivals,
+                    onDescription = "Starred buses that are not arriving will be shown on the home screen",
+                    offDescription = "Only starred buses that are arriving will be shown on the home screen",
+                    on = shouldShowStarredBusArrivals,
                     onClick = { newValue ->
                         viewModelScope.launch {
                             (listItems[4] as? SettingsItemData.Switch)?.let {
-                                listItems[4] = it.copy(enabled = newValue)
+                                listItems[4] = it.copy(on = newValue)
                             }
                             showErrorStarredBusArrivalsUseCase(newValue)
                         }
@@ -129,19 +141,77 @@ class SettingsViewModel @Inject constructor(
             listItems.add(
                 SettingsItemData.Switch(
                     title = "Show map for easy navigation",
-                    enabledDescription =
+                    onDescription =
                     "Map will be shown to help locate bus stops and routes, " +
                             "might impact the app performance",
-                    disabledDescription =
+                    offDescription =
                     "I'm a SingaPro! " +
                             "I want performance, not some silly lil map",
-                    enabled = shouldShowMap,
+                    on = shouldShowMap,
                     onClick = { newValue ->
                         viewModelScope.launch {
                             (listItems[6] as? SettingsItemData.Switch)?.let {
-                                listItems[6] = it.copy(enabled = newValue)
+                                listItems[6] = it.copy(on = newValue)
                             }
                             shouldShowMapUseCase(newValue)
+                        }
+                    }
+                )
+            )
+
+            listItems.add(
+                SettingsItemData.Header(
+                    "Appearance"
+                )
+            )
+
+            val useSystemTheme = getUseSystemThemeUseCase()
+
+            listItems.add(
+                SettingsItemData.Switch(
+                    title = "Use System Theme",
+                    onDescription = "The app will follow the System Theme",
+                    offDescription = "The app will use the Theme set in the App",
+                    on = useSystemTheme,
+                    onClick = { newValue ->
+                        viewModelScope.launch {
+                            (listItems[8] as? SettingsItemData.Switch)?.let {
+                                listItems[8] = it.copy(on = newValue)
+                            }
+                            (listItems[9] as? SettingsItemData.Switch)?.let {
+                                listItems[9] = it.copy(enabled = !newValue)
+                            }
+                            setUseSystemThemeUseCase(newValue)
+                            delay(300)
+                            refreshTheme()
+                        }
+                    }
+                )
+            )
+
+            val theme = getForcedThemeUseCase()
+
+            listItems.add(
+                SettingsItemData.Switch(
+                    enabled = !useSystemTheme,
+                    title = "Enable \"Dark\" Mode :)",
+                    onDescription = "The app will be in dark theme",
+                    offDescription = "The app will be in light theme",
+                    on = theme == NxtBuzTheme.DARK,
+                    onClick = { newValue ->
+                        viewModelScope.launch {
+                            (listItems[9] as? SettingsItemData.Switch)?.let {
+                                listItems[9] = it.copy(on = newValue)
+                            }
+                            setForcedThemeUseCase(
+                                if (newValue) {
+                                    NxtBuzTheme.DARK
+                                } else {
+                                    NxtBuzTheme.LIGHT
+                                }
+                            )
+                            delay(300)
+                            refreshTheme()
                         }
                     }
                 )
@@ -154,7 +224,7 @@ class SettingsViewModel @Inject constructor(
             listItems.add(
                 SettingsItemData.Oss
             )
-            
+
             listItems.add(
                 SettingsItemData.RequestFeature
             )
@@ -167,9 +237,9 @@ class SettingsViewModel @Inject constructor(
                 SettingsItemData.MadeWith
             )
 
-            this@SettingsViewModel.listItems = listItems
             listItemsFlow.emit(listItems)
         }
+    }
 
     fun onOssClick() {
         navigationUtil.goToOssActivity()
