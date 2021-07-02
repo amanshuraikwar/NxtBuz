@@ -18,22 +18,4 @@
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
         <item name="android:navigationBarDividerColor" tools:ignore="NewApi">?colorControlHighlight</item>
     </style>
-
-    <style name="AppTheme.NxtBuz.Light" parent="AppTheme">
-<!--        <item name="android:statusBarColor">?colorSurface</item>-->
-        <item name="android:statusBarColor">@color/red</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:navigationBarColor">?android:colorBackground</item>
-        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
-        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">?colorControlHighlight</item>
-    </style>
-
-    <style name="AppTheme.NxtBuz.Dark" parent="AppTheme">
-<!--        <item name="android:statusBarColor">?colorSurface</item>-->
-        <item name="android:statusBarColor">@color/blue</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:navigationBarColor">?android:colorBackground</item>
-        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
-        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">?colorControlHighlight</item>
-    </style>
 </resources>

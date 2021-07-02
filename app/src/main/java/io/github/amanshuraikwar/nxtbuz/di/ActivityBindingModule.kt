@@ -8,8 +8,6 @@ import io.github.amanshuraikwar.nxtbuz.busstop.di.BusStopsModule
 import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtilProvides
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtilProvides
-import io.github.amanshuraikwar.nxtbuz.launcher.LauncherActivity
-import io.github.amanshuraikwar.nxtbuz.launcher.LauncherModule
 import io.github.amanshuraikwar.nxtbuz.map.di.MapModule
 import io.github.amanshuraikwar.nxtbuz.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
@@ -30,11 +28,6 @@ import io.github.amanshuraikwar.nxtbuz.ui.di.MainModule
 @Module
 @Suppress("UNUSED")
 abstract class ActivityBindingModule {
-
-    @ActivityScoped
-    @ContributesAndroidInjector(modules = [LauncherModule::class])
-    internal abstract fun a(): LauncherActivity
-
     @ActivityScoped
     @ContributesAndroidInjector(
         modules = [

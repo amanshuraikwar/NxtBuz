@@ -70,3 +70,6 @@ val Typography.body1Bold: TextStyle
 
 val Typography.h6Bold: TextStyle
     get() = h6.copy(fontWeight = FontWeight.Bold)
+
+val Typography.h4Bold: TextStyle
+    get() = h4.copy(fontWeight = FontWeight.Bold)

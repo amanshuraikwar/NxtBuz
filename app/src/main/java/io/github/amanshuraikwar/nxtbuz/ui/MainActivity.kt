@@ -19,7 +19,7 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzApp
 import io.github.amanshuraikwar.nxtbuz.common.model.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtil
-import io.github.amanshuraikwar.nxtbuz.common.util.makeStatusBarTransparent
+import io.github.amanshuraikwar.nxtbuz.common.util.setupSystemBars
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.startSettingsActivity
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
@@ -90,7 +90,7 @@ class MainActivity : DaggerAppCompatActivity() {
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        makeStatusBarTransparent(
+        setupSystemBars(
             isDarkTheme = when (mainViewModel.theme.value) {
                 NxtBuzTheme.DARK -> true
                 NxtBuzTheme.LIGHT -> false
@@ -101,7 +101,7 @@ class MainActivity : DaggerAppCompatActivity() {
             val theme by mainViewModel.theme.collectAsState()
             LaunchedEffect(key1 = theme) {
                 launch {
-                    makeStatusBarTransparent(
+                    setupSystemBars(
                         isDarkTheme = when (theme) {
                             NxtBuzTheme.DARK -> true
                             NxtBuzTheme.LIGHT -> false

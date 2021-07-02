@@ -14,9 +14,15 @@
         <entry key="../../../../layout/compose-model-1624802200244.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1624978063524.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1624978067129.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1625136413299.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1625137388061.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1625233715993.xml" value="0.21333610303282094" />
+        <entry key="../../../../layout/compose-model-1625234718037.xml" value="0.23016202742002492" />
+        <entry key="../../.gradle/caches/transforms-3/6c539b0cb039dbd318b8957a0d10c614/transformed/jetified-core-splashscreen-1.0.0-alpha01/res/layout/splash_screen_view.xml" value="0.290625" />
         <entry key="app/src/debug/res/drawable/ic_launcher_foreground.xml" value="0.4295882053889171" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.4295882053889171" />
+        <entry key="app/src/main/res/drawable/preview_window.xml" value="0.43703703703703706" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.4295882053889171" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.4295882053889171" />
         <entry key="common/src/main/res/drawable-anydpi-v24/ic_noti_bus_arrival.xml" value="0.4702592780884596" />
