@@ -16,7 +16,7 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzApp
 import io.github.amanshuraikwar.nxtbuz.common.model.NxtBuzTheme
-import io.github.amanshuraikwar.nxtbuz.common.util.makeStatusBarTransparent
+import io.github.amanshuraikwar.nxtbuz.common.util.setupSystemBars
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +32,7 @@ class SettingsActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         val vm = viewModelProvider<SettingsViewModel>(viewModelFactory)
 
-        makeStatusBarTransparent(
+        setupSystemBars(
             isDarkTheme = when (vm.theme.value) {
                 NxtBuzTheme.DARK -> true
                 NxtBuzTheme.LIGHT -> false
@@ -43,7 +43,7 @@ class SettingsActivity : DaggerAppCompatActivity() {
             val theme by vm.theme.collectAsState()
             LaunchedEffect(key1 = theme) {
                 launch {
-                    makeStatusBarTransparent(
+                    setupSystemBars(
                         isDarkTheme = when (theme) {
                             NxtBuzTheme.DARK -> true
                             NxtBuzTheme.LIGHT -> false

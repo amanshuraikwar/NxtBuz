@@ -7,7 +7,7 @@ object Libs {
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 
     object Google {
-        const val material = "com.google.android.material:material:1.1.0"
+        const val material = "com.google.android.material:material:1.4.0-rc01"
         const val analytics = "com.google.firebase:firebase-analytics:17.4.0"
         const val crashlytics = "com.google.firebase:firebase-crashlytics:17.1.1"
         const val crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.5.2"
@@ -46,7 +46,6 @@ object Libs {
             const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
         }
 
-        const val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta6"
         const val coreKtx = "androidx.core:core-ktx:1.3.0-rc01"
 
         object Lifecycle {

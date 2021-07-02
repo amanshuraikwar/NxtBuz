@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
@@ -22,28 +23,35 @@
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
-            tools:node="remove"
-            tools:ignore="MissingClass" />
+            tools:ignore="MissingClass"
+            tools:node="remove" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".launcher.LauncherActivity"
-            android:theme="@style/AppTheme.NxtBuz.Launcher"
-            android:exported="true">
+<!--        <activity-->
+<!--            android:name=".launcher.LauncherActivity"-->
+<!--            android:exported="true"-->
+<!--            android:theme="@style/AppTheme.NxtBuz.Launcher">-->
 
+<!--&lt;!&ndash;            <intent-filter>&ndash;&gt;-->
+<!--&lt;!&ndash;                <action android:name="android.intent.action.MAIN" />&ndash;&gt;-->
+<!--&lt;!&ndash;                <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
+<!--&lt;!&ndash;            </intent-filter>&ndash;&gt;-->
+
+<!--        </activity>-->
+
+        <activity
+            android:name="io.github.amanshuraikwar.nxtbuz.ui.MainActivity"
+            android:theme="@style/AppTheme.NxtBuz.Main"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
-        <activity
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.MainActivity"
-            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name="io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity" />
     </application>

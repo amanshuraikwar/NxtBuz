@@ -1,25 +1,23 @@
 package io.github.amanshuraikwar.nxtbuz.onboarding.setup
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.statusBarsPadding
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled
-import io.github.amanshuraikwar.nxtbuz.onboarding.R
+import io.github.amanshuraikwar.nxtbuz.common.compose.PrimaryButton
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
 
 @Composable
 fun SetupScreen(
@@ -33,148 +31,104 @@ fun SetupScreen(
         onDispose { }
     }
 
-    SetupScreen(
-        screenState = screenState,
-        onSetupComplete = onSetupComplete,
-        onRetryClick = {
-            vm.initiateSetup()
-        }
-    )
+    WelcomeScreen(screenState.versionName) {
+        SetupProgressView(
+            progressState = screenState.setupProgressState,
+            onSetupComplete = onSetupComplete,
+            onRetryClick = {
+                vm.initiateSetup()
+            }
+        )
+    }
 }
 
 @Composable
-fun SetupScreen(
-    screenState: SetupScreenState,
+fun SetupProgressView(
+    progressState: SetupProgressState,
     onSetupComplete: () -> Unit,
     onRetryClick: () -> Unit,
 ) {
-    val surfaceColor by animateColorAsState(
-        targetValue = if (screenState is SetupScreenState.Error) {
-            MaterialTheme.colors.error.disabled
-        } else {
-            MaterialTheme.colors.surface
+    when (progressState) {
+        is SetupProgressState.Starting -> {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                text = "Setting up...",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.body1Bold,
+                color = MaterialTheme.colors.onSurface
+            )
+
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(50)),
+            )
         }
-    )
+        is SetupProgressState.InProgress -> {
+            val progress by animateIntAsState(
+                targetValue = progressState.progress,
+                animationSpec = tween(900)
+            )
 
-    Surface(
-        Modifier
-            .fillMaxSize(),
-        color = surfaceColor
-    ) {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-        ) {
-            Column {
-                Spacer(modifier = Modifier.height(128.dp))
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                text = "Setting up...",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.body1Bold,
+                color = MaterialTheme.colors.onSurface
+            )
 
-                val iconSurfaceColor by animateColorAsState(
-                    targetValue = if (screenState is SetupScreenState.Error) {
-                        MaterialTheme.colors.error
-                    } else {
-                        MaterialTheme.colors.primary
-                    }
-                )
-
-                Surface(
-                    shape = MaterialTheme.shapes.medium,
-                    color = iconSurfaceColor,
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    elevation = 2.dp
-                ) {
-                    val tint by animateColorAsState(
-                        targetValue = if (screenState is SetupScreenState.Error) {
-                            MaterialTheme.colors.onError
-                        } else {
-                            MaterialTheme.colors.onPrimary
-                        }
-                    )
-
-                    Icon(
-                        painter = painterResource(
-                            id = R.drawable.ic_setup_108
-                        ),
-                        contentDescription = "Setup Icon",
-                        tint = tint,
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .size(48.dp)
-                    )
-                }
-
-                Text(
+            if (progress == 0) {
+                LinearProgressIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 48.dp)
-                        .padding(horizontal = 32.dp)
-                        .animateContentSize(),
-                    text = if (screenState is SetupScreenState.Error) {
-                        screenState.message
-                    } else {
-                        stringResource(id = R.string.onboarding_title_setup)
-                    },
-                    color = MaterialTheme.colors.onSurface,
-                    style = MaterialTheme.typography.h4,
-                    textAlign = TextAlign.Center
+                        .clip(RoundedCornerShape(50)),
+                )
+            } else {
+                LinearProgressIndicator(
+                    progress = progress.toFloat() / 100f,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(50)),
                 )
             }
-
-            Box(
-                Modifier
-                    .align(Alignment.BottomCenter)
+        }
+        is SetupProgressState.SetupComplete -> {
+            PrimaryButton(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = "GET STARTED",
+                onClick = onSetupComplete
+            )
+        }
+        is SetupProgressState.Error -> {
+            Text(
+                modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 32.dp, start = 32.dp, bottom = 48.dp)
-            ) {
-                when (screenState) {
-                    SetupScreenState.Fetching -> {
-                        LinearProgressIndicator(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(50)),
-                        )
-                    }
-                    is SetupScreenState.InProgress -> {
-                        val progress by animateIntAsState(
-                            targetValue = screenState.progress,
-                            animationSpec = tween(900)
-                        )
+                    .padding(bottom = 16.dp),
+                text = progressState.message,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.body1Bold,
+                color = MaterialTheme.colors.onSurface
+            )
 
-                        if (progress == 0) {
-                            LinearProgressIndicator(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(50)),
-                            )
-                        } else {
-                            LinearProgressIndicator(
-                                progress = progress.toFloat() / 100f,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(50)),
-                            )
-                        }
-                    }
-                    SetupScreenState.SetupComplete -> {
-                        onSetupComplete()
-                    }
-                    is SetupScreenState.Error -> {
-                        CompositionLocalProvider(
-                            LocalIndication provides rememberRipple(color = MaterialTheme.colors.error)
-                        ) {
-                            OutlinedButton(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                onClick = onRetryClick,
-                            ) {
-                                Text(
-                                    "RETRY",
-                                    modifier = Modifier.padding(vertical = 4.dp),
-                                    color = MaterialTheme.colors.error
-                                )
-                            }
-                        }
-                    }
+            CompositionLocalProvider(
+                LocalIndication provides rememberRipple(color = MaterialTheme.colors.error)
+            ) {
+                OutlinedButton(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    onClick = onRetryClick,
+                ) {
+                    Text(
+                        "RETRY",
+                        modifier = Modifier.padding(vertical = 4.dp),
+                        color = MaterialTheme.colors.error
+                    )
                 }
             }
         }

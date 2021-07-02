@@ -31,12 +31,12 @@ class AppModule {
     @Named("appVersionInfo")
     fun provideAppVersionInfo(): String {
         return if (BuildConfig.DEBUG) {
-            "V${BuildConfig.VERSION_NAME}\n" +
-                    "<<" +
+            "V${BuildConfig.VERSION_NAME}(" +
+                    "" +
                     "${BuildConfig.VERSION_CODE}" +
                     " • " +
                     BuildConfig.BUILD_TYPE.uppercase(Locale.getDefault()) +
-                    ">>"
+                    ")"
         } else {
             "V${BuildConfig.VERSION_NAME}"
         }

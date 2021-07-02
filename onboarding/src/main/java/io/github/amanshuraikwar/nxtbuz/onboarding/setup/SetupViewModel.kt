@@ -14,9 +14,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 class SetupViewModel @Inject constructor(
     private val setupWorkerUseCase: SetupWorkerUseCase,
+    @Named("appVersionInfo") private val appVersionInfo: String,
     dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, th ->
@@ -25,12 +27,14 @@ class SetupViewModel @Inject constructor(
     }
     private val coroutineContext = errorHandler + dispatcherProvider.computation
 
-    private val _screenState = MutableStateFlow<SetupScreenState>(SetupScreenState.Fetching)
+    private val _screenState = MutableStateFlow(
+        SetupScreenState(appVersionInfo, SetupProgressState.Starting)
+    )
+
     val screenState = _screenState.asStateFlow()
 
     init {
         FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
-        //initiateSetup()
     }
 
     fun initiateSetup() {
@@ -39,24 +43,37 @@ class SetupViewModel @Inject constructor(
                 ?.collect { workInfo ->
                     when (workInfo.state) {
                         WorkInfo.State.ENQUEUED -> {
-                            // do nothing
+                            _screenState.value = SetupScreenState(
+                                appVersionInfo,
+                                SetupProgressState.Starting
+                            )
                         }
                         WorkInfo.State.RUNNING -> {
-                            _screenState.value = SetupScreenState.InProgress(
-                                progress = workInfo.getSetupProgress()
+                            _screenState.value = SetupScreenState(
+                                appVersionInfo,
+                                SetupProgressState.InProgress(
+                                    progress = workInfo.getSetupProgress()
+                                )
                             )
                         }
                         WorkInfo.State.SUCCEEDED -> {
-                            _screenState.value = SetupScreenState.SetupComplete
+                            _screenState.value = SetupScreenState(
+                                appVersionInfo,
+                                SetupProgressState.SetupComplete
+                            )
                         }
                         WorkInfo.State.FAILED,
                         WorkInfo.State.BLOCKED -> {
-                            _screenState.value =
-                                SetupScreenState.Error("Setup failed, please try again :(")
+                            _screenState.value = SetupScreenState(
+                                appVersionInfo,
+                                SetupProgressState.Error("Setup failed, please try again :(")
+                            )
                         }
                         WorkInfo.State.CANCELLED -> {
-                            _screenState.value =
-                                SetupScreenState.Error("Setup was cancelled, please try again :(")
+                            _screenState.value = SetupScreenState(
+                                appVersionInfo,
+                                SetupProgressState.Error("Setup was cancelled, please try again :(")
+                            )
                         }
                     }
                 }
