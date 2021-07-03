@@ -49,9 +49,9 @@ class MapUtil @Inject constructor(
             .strokeColor(ContextCompat.getColor(activity, R.color.white))
     }
 
-    fun updateMapStyle(googleMap: GoogleMap) {
+    fun updateMapStyle(googleMap: GoogleMap, isLight: Boolean) {
         googleMap.setMapStyle(
-            if (isDarkTheme(activity)) {
+            if (!isLight) {
                 MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style_dark)
             } else {
                 MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style_light)

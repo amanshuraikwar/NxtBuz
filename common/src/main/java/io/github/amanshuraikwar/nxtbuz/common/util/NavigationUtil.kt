@@ -1,8 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.common.util
 
 import android.app.Activity
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.*
 import android.net.Uri
 import android.provider.Settings
 import com.google.android.play.core.ktx.launchReview
@@ -22,15 +25,6 @@ fun Activity.startMainActivity() {
         Intent(
             this,
             getActivityClass("io.github.amanshuraikwar.nxtbuz.ui.MainActivity")
-        )
-    )
-}
-
-fun Activity.startOnboardingActivity() {
-    startActivity(
-        Intent(
-            this,
-            getActivityClass("io.github.amanshuraikwar.nxtbuz.onboarding.OnboardingActivity")
         )
     )
 }
@@ -101,8 +95,8 @@ class NavigationUtil @Inject constructor(
     ) {
         val uri = "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=walking"
         activity.get()?.startActivitySafe(
-            Intent(Intent.ACTION_VIEW, Uri.parse(uri)).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            Intent(ACTION_VIEW, Uri.parse(uri)).apply {
+                addFlags(FLAG_ACTIVITY_NEW_TASK)
             }
         )
     }
@@ -121,30 +115,44 @@ class NavigationUtil @Inject constructor(
 
     fun goToEmail(address: String, subject: String) {
         activity.get()?.startActivitySafe(
-            Intent(Intent.ACTION_SENDTO).apply {
+            Intent(ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf(address))
-                putExtra(Intent.EXTRA_SUBJECT, subject)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                putExtra(EXTRA_EMAIL, arrayOf(address))
+                putExtra(EXTRA_SUBJECT, subject)
+                addFlags(FLAG_ACTIVITY_NEW_TASK)
             }
         )
     }
 
     fun goToTwitter(username: String) {
         activity.get()?.startActivitySafe(
-            Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/$username"))
+            Intent(ACTION_VIEW, Uri.parse("https://twitter.com/$username"))
         )
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
     fun Activity.startActivitySafe(intent: Intent) {
-        if (intent.resolveActivity(packageManager) != null) {
+        try {
             startActivity(intent)
+        } catch (e: Exception) {
+            // do nothing
         }
     }
 
     private val reviewManager: ReviewManager? by lazy {
         ReviewManagerFactory.create(activity.get()?.applicationContext ?: return@lazy null)
+    }
+
+    fun goToPlayStoreListing() {
+        activity.get()?.startActivitySafe(
+            Intent(
+                ACTION_VIEW,
+                Uri.parse(
+                    "https://play.google.com/store/apps/details?" +
+                            "id=io.github.amanshuraikwar.nxtbuz.release"
+                )
+            )
+        )
     }
 
     suspend fun startPlayStoreReview() {
@@ -154,5 +162,22 @@ class NavigationUtil @Inject constructor(
 
     companion object {
         const val REQUEST_GO_TO_APP_SETTINGS = 3001
+
+        fun getMainActivityPendingIntent(context: Context): PendingIntent {
+            val intent = Intent(
+                context,
+                context.getActivityClass("io.github.amanshuraikwar.nxtbuz.ui.MainActivity")
+            ).apply {
+                flags = flags or
+                        FLAG_ACTIVITY_SINGLE_TOP or
+                        FLAG_ACTIVITY_CLEAR_TOP
+            }
+            return PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT
+            )
+        }
     }
 }

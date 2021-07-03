@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteScreenState
 import io.github.amanshuraikwar.nxtbuz.common.compose.*
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun BusRouteScreen(
@@ -135,6 +137,7 @@ fun BusRouteScreen(
 
 }
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun BusRouteArrivalsScreenStateView(
@@ -212,6 +215,7 @@ fun BusRouteArrivalsScreenStateView(
 }
 
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun BusRouteArrivalsView(

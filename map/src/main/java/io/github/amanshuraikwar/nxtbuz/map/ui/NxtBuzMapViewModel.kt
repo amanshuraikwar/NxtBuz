@@ -383,4 +383,8 @@ class NxtBuzMapViewModel @Inject constructor(
         super.onCleared()
         map = null
     }
+
+    fun updateMapStyle(isLight: Boolean) {
+        mapUtil.updateMapStyle(map ?: return, isLight)
+    }
 }

@@ -3,8 +3,6 @@ package io.github.amanshuraikwar.nxtbuz.settings.ui
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -15,12 +13,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.settings.ui.model.SettingsItemData
-import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @Composable
@@ -149,93 +144,5 @@ fun RadioGroupOptions(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-    }
-}
-
-@ExperimentalAnimationApi
-@Composable
-@Preview
-fun RadioGroupSettingsItemPreview() {
-    val scope = rememberCoroutineScope()
-
-    var data by remember {
-        mutableStateOf(
-            SettingsItemData.RadioGroup(
-                title = "Bus Stop Query Limit",
-                description = "Maximum number of bus stops fetched while searching.",
-                options = listOf("10 KM", "20 KM", "50 KM"),
-                selectedIndex = 1,
-                onClick = {
-                    scope.launch {
-
-                    }
-                }
-            )
-        )
-    }
-
-    val initialData = SettingsItemData.RadioGroup(
-        title = "Bus Stop Query Limit",
-        description = "Maximum number of bus stops fetched while searching.",
-        options = listOf("10 KM", "20 KM", "50 KM"),
-        selectedIndex = 1,
-        onClick = {
-            scope.launch {
-                data = data.copy(selectedIndex = it)
-            }
-        }
-    )
-
-    data = initialData
-
-    NxtBuzTheme {
-        RadioGroupSettingItem(
-            radioGroup = data
-        )
-    }
-}
-
-@ExperimentalAnimationApi
-@Composable
-@Preview
-fun RadioGroupSettingsItemPreviewDark() {
-    val scope = rememberCoroutineScope()
-
-    var data by remember {
-        mutableStateOf(
-            SettingsItemData.RadioGroup(
-                title = "Bus Stop Query Limit",
-                description = "Maximum number of bus stops fetched while searching.",
-                options = listOf("10 KM", "20 KM", "50 KM"),
-                selectedIndex = 1,
-                onClick = {
-                    scope.launch {
-
-                    }
-                }
-            )
-        )
-    }
-
-    val initialData = SettingsItemData.RadioGroup(
-        title = "Bus Stop Query Limit",
-        description = "Maximum number of bus stops fetched while searching.",
-        options = listOf("10 KM", "20 KM", "50 KM"),
-        selectedIndex = 1,
-        onClick = {
-            scope.launch {
-                data = data.copy(selectedIndex = it)
-            }
-        }
-    )
-
-    data = initialData
-
-    NxtBuzTheme(
-        darkTheme = true
-    ) {
-        RadioGroupSettingItem(
-            radioGroup = data
-        )
     }
 }

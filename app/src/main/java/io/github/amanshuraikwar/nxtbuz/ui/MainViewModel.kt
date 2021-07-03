@@ -7,9 +7,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.common.model.user.UserState
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.CleanupLocationUpdatesUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.ShouldShowMapUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetUserStateUseCase
+import io.github.amanshuraikwar.nxtbuz.settings.ui.delegate.AppThemeDelegate
+import io.github.amanshuraikwar.nxtbuz.settings.ui.delegate.AppThemeDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.ui.model.MainScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -23,10 +27,12 @@ private const val TAG = "MainViewModel"
 
 class MainViewModel @Inject constructor(
     private val cleanupLocationUpdatesUseCase: CleanupLocationUpdatesUseCase,
+    private val userStateUseCase: GetUserStateUseCase,
     private val busStopUseCase: GetBusStopUseCase,
     private val shouldShowMapUseCase: ShouldShowMapUseCase,
+    appThemeDelegateImpl: AppThemeDelegateImpl,
     dispatcherProvider: CoroutinesDispatcherProvider,
-) : ViewModel() {
+) : ViewModel(), AppThemeDelegate by appThemeDelegateImpl {
 
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
@@ -43,24 +49,33 @@ class MainViewModel @Inject constructor(
 
     internal fun onInit() {
         viewModelScope.launch(coroutineContext) {
+            refreshTheme()
             showMap = shouldShowMapUseCase()
             FirebaseCrashlytics.getInstance().setCustomKey("showMap", showMap)
-            synchronized(_screenState) {
-                when (val currentState = _screenState.value) {
-                    MainScreenState.Fetching -> {
-                        _screenState.value = MainScreenState.Success(
-                            showMap = showMap,
-                            navigationState = NavigationState.BusStops,
-                            showBackBtn = backStack.isNotEmpty()
-                        )
-                    }
-                    is MainScreenState.Success -> {
-                        if (showMap != currentState.showMap) {
-                            _screenState.value = MainScreenState.Success(
-                                showMap = showMap,
-                                navigationState = currentState.navigationState,
-                                showBackBtn = backStack.isNotEmpty()
-                            )
+            when (userStateUseCase()) {
+                UserState.New -> {
+                    _screenState.value = MainScreenState.Setup
+                }
+                UserState.SetupComplete -> {
+                    synchronized(_screenState) {
+                        when (val currentState = _screenState.value) {
+                            MainScreenState.Fetching,
+                            MainScreenState.Setup -> {
+                                _screenState.value = MainScreenState.Success(
+                                    showMap = showMap,
+                                    navigationState = NavigationState.BusStops,
+                                    showBackBtn = backStack.isNotEmpty()
+                                )
+                            }
+                            is MainScreenState.Success -> {
+                                if (showMap != currentState.showMap) {
+                                    _screenState.value = MainScreenState.Success(
+                                        showMap = showMap,
+                                        navigationState = currentState.navigationState,
+                                        showBackBtn = backStack.isNotEmpty()
+                                    )
+                                }
+                            }
                         }
                     }
                 }
