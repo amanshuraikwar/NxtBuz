@@ -132,13 +132,27 @@ class NavigationUtil @Inject constructor(
 
     @Suppress("MemberVisibilityCanBePrivate")
     fun Activity.startActivitySafe(intent: Intent) {
-        if (intent.resolveActivity(packageManager) != null) {
+        try {
             startActivity(intent)
+        } catch (e: Exception) {
+            // do nothing
         }
     }
 
     private val reviewManager: ReviewManager? by lazy {
         ReviewManagerFactory.create(activity.get()?.applicationContext ?: return@lazy null)
+    }
+
+    fun goToPlayStoreListing() {
+        activity.get()?.startActivitySafe(
+            Intent(
+                ACTION_VIEW,
+                Uri.parse(
+                    "https://play.google.com/store/apps/details?" +
+                            "id=io.github.amanshuraikwar.nxtbuz.release"
+                )
+            )
+        )
     }
 
     suspend fun startPlayStoreReview() {

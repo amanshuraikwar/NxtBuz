@@ -77,6 +77,10 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         prefs, PREF_USE_SYSTEM_THEME, true
     )
 
+    override var playStoreReviewTimeMillis by LongPreference(
+        prefs, PREF_SETUP_COMPLETE_TIME_MILLIS, -1
+    )
+
     companion object {
         const val PREFS_NAME = "io.github.amanshuraikwar.nxtbuz"
         const val PREF_ONBOARDING = "pref_onboarding"
@@ -91,5 +95,6 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         const val PREF_PERMISSION_DENIED_PERMANENTLY = "permission_denied_permanently"
         const val PREF_THEME = "pref_theme"
         const val PREF_USE_SYSTEM_THEME = "pref_use_system_theme"
+        const val PREF_SETUP_COMPLETE_TIME_MILLIS = "pref_setup_complete_time_millis"
     }
 }

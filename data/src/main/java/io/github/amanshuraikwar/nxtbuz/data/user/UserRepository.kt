@@ -40,11 +40,27 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun markSetupComplete() = withContext(dispatcherProvider.io) {
+        updatePlayStoreReviewTime()
         preferenceStorage.onboardingCompleted = true
     }
 
     suspend fun markSetupIncomplete() = withContext(dispatcherProvider.io) {
+        preferenceStorage.playStoreReviewTimeMillis = -1L
         preferenceStorage.onboardingCompleted = false
+    }
+
+    suspend fun shouldStartPlayStoreReview(): Boolean {
+        return withContext(dispatcherProvider.io) {
+            preferenceStorage.playStoreReviewTimeMillis != -1L &&
+                    ((System.currentTimeMillis() - preferenceStorage.playStoreReviewTimeMillis) /
+                            (1000 * 60 * 60 * 24 * 7) > 1)
+        }
+    }
+
+    suspend fun updatePlayStoreReviewTime() {
+        withContext(dispatcherProvider.io) {
+            preferenceStorage.playStoreReviewTimeMillis = System.currentTimeMillis()
+        }
     }
 
     fun getTheme(): NxtBuzTheme {
