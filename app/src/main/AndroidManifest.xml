@@ -37,18 +37,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-<!--        <activity-->
-<!--            android:name=".launcher.LauncherActivity"-->
-<!--            android:exported="true"-->
-<!--            android:theme="@style/AppTheme.NxtBuz.Launcher">-->
-
-<!--&lt;!&ndash;            <intent-filter>&ndash;&gt;-->
-<!--&lt;!&ndash;                <action android:name="android.intent.action.MAIN" />&ndash;&gt;-->
-<!--&lt;!&ndash;                <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
-<!--&lt;!&ndash;            </intent-filter>&ndash;&gt;-->
-
-<!--        </activity>-->
-
         <activity
             android:name="io.github.amanshuraikwar.nxtbuz.ui.MainActivity"
             android:theme="@style/AppTheme.NxtBuz.Main"
