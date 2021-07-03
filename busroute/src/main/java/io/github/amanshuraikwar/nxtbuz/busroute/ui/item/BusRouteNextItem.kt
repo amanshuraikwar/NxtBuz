@@ -29,8 +29,8 @@ fun BusRouteNextItem(
                     onCollapse()
                 }
             }
-            .fillMaxWidth()
-            .animateContentSize(),
+            .fillMaxWidth(),
+            //.animateContentSize(),
     ) {
         CircleAvatarItem(
             busStopDescription = busStopDescription,
