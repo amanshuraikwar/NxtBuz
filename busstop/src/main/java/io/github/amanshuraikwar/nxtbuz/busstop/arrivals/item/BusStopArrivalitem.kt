@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,6 +20,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalList
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
 import io.github.amanshuraikwar.nxtbuz.common.util.toArrivalString
 
+@ExperimentalAnimationApi
 @Composable
 fun BusStopArrivalItem(
     modifier: Modifier = Modifier,
@@ -50,7 +52,7 @@ fun BusStopArrivalItem(
                         modifier = Modifier.padding(top = 4.dp, start = 16.dp)
                     ) {
                         BusArrival(
-                            arrival = data.arrival.toArrivalString(),
+                            arrival = data.arrival,
                             busLoad = data.busLoad,
                             wheelchairAccess = data.wheelchairAccess
                         )

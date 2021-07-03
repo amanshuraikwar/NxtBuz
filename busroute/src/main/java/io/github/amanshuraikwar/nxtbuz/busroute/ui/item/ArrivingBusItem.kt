@@ -1,12 +1,17 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
 
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AccessibleForward
+import androidx.compose.material.icons.rounded.NotAccessible
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busroute.R
+import io.github.amanshuraikwar.nxtbuz.common.compose.VerticalInOutAnimatedContent
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.ArrivingBus
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
@@ -43,23 +49,15 @@ fun ArrivingBusItem(
 
         Spacer(modifier = Modifier.size(8.dp))
 
-        AnimatedContent(
-            targetState = arrivingBus.arrival,
-            transitionSpec = {
-                if (targetState > initialState) {
-                    slideInVertically({ it }) + fadeIn() with
-                            slideOutVertically({ -it }) + fadeOut()
-                } else {
-                    slideInVertically({ -it }) + fadeIn() with
-                            slideOutVertically({ it }) + fadeOut()
-                }.using(SizeTransform(clip = false))
-            }
-        ) { target ->
+        VerticalInOutAnimatedContent(
+            targetValue = arrivingBus.arrival
+        ) { value ->
             Text(
-                text = target.toArrivalString(),
+                text = value.toArrivalString(),
                 style = MaterialTheme.typography.h6Bold,
                 color = contentColor,
-                modifier = Modifier.animateContentSize()
+                modifier = Modifier
+                    .animateContentSize()
             )
         }
 
@@ -75,6 +73,20 @@ fun ArrivingBusItem(
             ),
             modifier = Modifier.size(16.dp),
             contentDescription = "Bus Load",
+            tint = contentColor
+        )
+
+
+        Icon(
+            imageVector = if (arrivingBus.wheelchairAccess) {
+                Icons.Rounded.AccessibleForward
+            } else {
+                Icons.Rounded.NotAccessible
+            },
+            modifier = Modifier
+                .size(16.dp)
+                .padding(1.dp),
+            contentDescription = "Wheelchair Access",
             tint = contentColor
         )
     }
