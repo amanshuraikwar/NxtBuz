@@ -17,5 +17,7 @@
         <item name="android:navigationBarColor">?android:colorBackground</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
         <item name="android:navigationBarDividerColor" tools:ignore="NewApi">?colorControlHighlight</item>
+        <item name="android:actionBarStyle">@style/Widget.NxtBuz.ActionBar</item>
+        <item name="actionBarStyle">@style/Widget.NxtBuz.ActionBar</item>
     </style>
 </resources>

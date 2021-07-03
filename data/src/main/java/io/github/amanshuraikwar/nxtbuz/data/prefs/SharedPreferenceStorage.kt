@@ -3,6 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.data.prefs
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import io.github.amanshuraikwar.nxtbuz.common.model.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.data.prefs.helper.*
 import javax.inject.Inject
@@ -64,6 +65,22 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         prefs, PREF_PERMISSION_DENIED_PERMANENTLY, false
     )
 
+    override var theme: NxtBuzTheme by ObjectPreference(
+        prefs,
+        PREF_THEME,
+        NxtBuzTheme.DARK,
+        { it.toString() },
+        fromStr@{ str -> NxtBuzTheme.valueOf(str ?: return@fromStr null) }
+    )
+
+    override var useSystemTheme by BooleanPreference(
+        prefs, PREF_USE_SYSTEM_THEME, true
+    )
+
+    override var playStoreReviewTimeMillis by LongPreference(
+        prefs, PREF_SETUP_COMPLETE_TIME_MILLIS, -1
+    )
+
     companion object {
         const val PREFS_NAME = "io.github.amanshuraikwar.nxtbuz"
         const val PREF_ONBOARDING = "pref_onboarding"
@@ -76,5 +93,8 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         const val PREF_ALERT_STARRED_BUS_ARRIVALS_FREQUENCY = "alert_starred_bus_arrivals_frequency"
         const val PREF_SHOW_MAP = "show_map"
         const val PREF_PERMISSION_DENIED_PERMANENTLY = "permission_denied_permanently"
+        const val PREF_THEME = "pref_theme"
+        const val PREF_USE_SYSTEM_THEME = "pref_use_system_theme"
+        const val PREF_SETUP_COMPLETE_TIME_MILLIS = "pref_setup_complete_time_millis"
     }
 }

@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
 import java.util.*
 
+@ExperimentalAnimationApi
 @Composable
 fun ArrivingItem(
     modifier: Modifier = Modifier,

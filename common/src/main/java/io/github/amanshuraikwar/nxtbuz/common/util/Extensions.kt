@@ -2,15 +2,17 @@ package io.github.amanshuraikwar.nxtbuz.common.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
@@ -39,61 +41,25 @@ fun isDarkTheme(activity: Activity): Boolean {
             Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 }
 
+fun Context.isDarkTheme(): Boolean {
+    return resources.configuration.uiMode and
+            Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+}
+
 @SuppressLint("ObsoleteSdkInt")
-fun Activity.makeStatusBarTransparent() {
-    if (isDarkTheme(this)) {
-        window.apply {
-            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            } else {
-                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            }
-            statusBarColor = Color.TRANSPARENT
-        }
-    } else {
-        window.apply {
-            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
-                    decorView.systemUiVisibility =
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
-                                View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                }
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                    decorView.systemUiVisibility =
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                }
-                else -> {
-                    decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                }
-            }
-            statusBarColor = Color.TRANSPARENT
-        }
+fun Activity.setupSystemBars(
+    isDarkTheme: Boolean = isDarkTheme(this)
+) {
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+    window.apply {
+        statusBarColor = Color.TRANSPARENT
+        navigationBarColor = Color.TRANSPARENT
     }
-}
-
-fun View.setMarginTop(marginTop: Int) {
-    val layoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
-    layoutParams.setMargins(0, marginTop, 0, 0)
-    this.layoutParams = layoutParams
-}
-
-fun Activity.goToApplicationSettings(requestCode: Int? = null) {
-    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    val uri = Uri.fromParts(
-        "package", packageName, null
-    )
-    intent.data = uri
-    if (requestCode != null) {
-        startActivityForResult(intent, requestCode)
-    } else {
-        startActivity(intent)
+    window.decorView.doOnLayout {
+        WindowInsetsControllerCompat(window, it).apply {
+            isAppearanceLightNavigationBars = false
+            isAppearanceLightStatusBars = !isDarkTheme
+        }
     }
 }
 

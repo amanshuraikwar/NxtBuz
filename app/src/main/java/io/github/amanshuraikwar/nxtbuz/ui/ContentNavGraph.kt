@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.ui
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsViewModel
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
 
+@ExperimentalAnimationApi
 @ExperimentalAnimatedInsets
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi

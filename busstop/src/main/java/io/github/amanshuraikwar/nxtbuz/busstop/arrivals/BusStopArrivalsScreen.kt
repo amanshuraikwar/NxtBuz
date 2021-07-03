@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import kotlinx.coroutines.launch
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun BusStopArrivalsScreen(
@@ -43,6 +45,7 @@ fun BusStopArrivalsScreen(
     )
 }
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun BusStopArrivalsScreen(
@@ -134,6 +137,7 @@ fun BusStopArrivalsScreen(
     }
 }
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun BusStopArrivalsScreenStateView(
@@ -215,6 +219,7 @@ fun BusStopArrivalsScreenStateView(
     }
 }
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun BusStopArrivalsView(
