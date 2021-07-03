@@ -37,6 +37,10 @@ class MainApplication : DaggerApplication(), Configuration.Provider {
 
     override fun getWorkManagerConfiguration() =
         Configuration.Builder()
-            .setMinimumLoggingLevel(android.util.Log.DEBUG)
+            .apply {
+                if (BuildConfig.DEBUG) {
+                    setMinimumLoggingLevel(android.util.Log.DEBUG)
+                }
+            }
             .build()
 }
