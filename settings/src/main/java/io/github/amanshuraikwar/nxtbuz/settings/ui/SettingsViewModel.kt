@@ -11,10 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.ShouldShowMapUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.user.GetForcedThemeUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.user.GetUseSystemThemeUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.user.SetForcedThemeUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.user.SetUseSystemThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.*
 import io.github.amanshuraikwar.nxtbuz.settings.ui.delegate.AppThemeDelegate
 import io.github.amanshuraikwar.nxtbuz.settings.ui.delegate.AppThemeDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.settings.ui.model.SettingsItemData
@@ -35,6 +32,8 @@ class SettingsViewModel @Inject constructor(
     private val setForcedThemeUseCase: SetForcedThemeUseCase,
     private val getUseSystemThemeUseCase: GetUseSystemThemeUseCase,
     private val setUseSystemThemeUseCase: SetUseSystemThemeUseCase,
+    private val shouldStartPlayStoreReviewUseCase: ShouldStartPlayStoreReviewUseCase,
+    private val updatePlayStoreReviewTimeUseCase: UpdatePlayStoreReviewTimeUseCase,
     private val navigationUtil: NavigationUtil,
     appThemeDelegateImpl: AppThemeDelegateImpl,
     dispatcherProvider: CoroutinesDispatcherProvider
@@ -56,6 +55,23 @@ class SettingsViewModel @Inject constructor(
         FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
     }
 
+    private inline fun <reified T : SettingsItemData> List<SettingsItemData>.findFirst(
+        id: String
+    ): Pair<Int, T>? {
+        return indexOfFirst {
+            it is T &&
+                    it.id == id
+        }.let { index ->
+            if (index == -1) {
+                null
+            } else {
+                (get(index) as? T)?.let {
+                    Pair(index, it)
+                }
+            }
+        }
+    }
+
     fun fetchSettings() {
         viewModelScope.launch(coroutineContext) {
             refreshTheme()
@@ -66,6 +82,81 @@ class SettingsViewModel @Inject constructor(
                 SettingsItemData.About(
                     appName = "Next Bus SG",
                     versionName = appVersionInfo
+                )
+            )
+
+            listItems.add(
+                SettingsItemData.Header(
+                    "Appearance"
+                )
+            )
+
+            val useSystemTheme = getUseSystemThemeUseCase()
+
+            listItems.add(
+                SettingsItemData.Switch(
+                    id = "use-system-theme",
+                    title = "Use System Theme",
+                    onDescription = "The app will follow the System Theme",
+                    offDescription = "The app will use the Theme set in the App",
+                    on = useSystemTheme,
+                    onClick = { newValue ->
+                        viewModelScope.launch {
+                            listItems
+                                .findFirst<SettingsItemData.Switch>("use-system-theme")
+                                ?.let { (index, item) ->
+                                    listItems[index] = item.copy(
+                                        on = newValue,
+                                        enabled = item.enabled
+                                    )
+                                }
+
+                            listItems
+                                .findFirst<SettingsItemData.Switch>("enable-dark-mode")
+                                ?.let { (index, item) ->
+                                    listItems[index] = item.copy(on = item.on, enabled = !newValue)
+                                }
+
+                            setUseSystemThemeUseCase(newValue)
+                            delay(300)
+                            refreshTheme()
+                        }
+                    }
+                )
+            )
+
+            val theme = getForcedThemeUseCase()
+
+            listItems.add(
+                SettingsItemData.Switch(
+                    id = "enable-dark-mode",
+                    enabled = !useSystemTheme,
+                    title = "Come to the \"Dark\" side padawan :)",
+                    onDescription = "The app will be in dark theme",
+                    offDescription = "The app will be in light theme",
+                    on = theme == NxtBuzTheme.DARK,
+                    onClick = { newValue ->
+                        viewModelScope.launch {
+                            listItems
+                                .findFirst<SettingsItemData.Switch>("enable-dark-mode")
+                                ?.let { (index, item) ->
+                                    listItems[index] = item.copy(
+                                        on = newValue,
+                                        enabled = item.enabled
+                                    )
+                                }
+
+                            setForcedThemeUseCase(
+                                if (newValue) {
+                                    NxtBuzTheme.DARK
+                                } else {
+                                    NxtBuzTheme.LIGHT
+                                }
+                            )
+                            delay(300)
+                            refreshTheme()
+                        }
+                    }
                 )
             )
 
@@ -84,21 +175,24 @@ class SettingsViewModel @Inject constructor(
 
             listItems.add(
                 SettingsItemData.RadioGroup(
+                    id = "bus-stops-query-limit",
                     title = "Bus stops query limit",
                     description = "Maximum number of bus stops fetched while searching",
                     options = listOf("10 bus stops", "50 bus stops", "100 bus stops"),
                     selectedIndex = checkedItemIndex,
-                    onClick = { index ->
+                    onClick = { selectedIndex ->
                         viewModelScope.launch {
-                            val newValue = when (index) {
+                            val newValue = when (selectedIndex) {
                                 0 -> 10
                                 1 -> 50
                                 2 -> 100
                                 else -> 50
                             }
-                            (listItems[2] as? SettingsItemData.RadioGroup)?.let {
-                                listItems[2] = it.copy(selectedIndex = index)
-                            }
+                            listItems
+                                .findFirst<SettingsItemData.RadioGroup>("bus-stops-query-limit")
+                                ?.let { (index, item) ->
+                                    listItems[index] = item.copy(selectedIndex = selectedIndex)
+                                }
                             busStopsQueryLimitUseCase(newValue)
                         }
                     }
@@ -115,15 +209,21 @@ class SettingsViewModel @Inject constructor(
 
             listItems.add(
                 SettingsItemData.Switch(
+                    id = "starred-buses-not-arriving",
                     title = "Show starred buses that are not arriving",
                     onDescription = "Starred buses that are not arriving will be shown on the home screen",
                     offDescription = "Only starred buses that are arriving will be shown on the home screen",
                     on = shouldShowStarredBusArrivals,
                     onClick = { newValue ->
                         viewModelScope.launch {
-                            (listItems[4] as? SettingsItemData.Switch)?.let {
-                                listItems[4] = it.copy(on = newValue)
-                            }
+                            listItems
+                                .findFirst<SettingsItemData.Switch>("starred-buses-not-arriving")
+                                ?.let { (index, item) ->
+                                    listItems[index] = item.copy(
+                                        on = newValue,
+                                        enabled = item.enabled
+                                    )
+                                }
                             showErrorStarredBusArrivalsUseCase(newValue)
                         }
                     }
@@ -140,6 +240,7 @@ class SettingsViewModel @Inject constructor(
 
             listItems.add(
                 SettingsItemData.Switch(
+                    id = "show-map",
                     title = "Show map for easy navigation",
                     onDescription =
                     "Map will be shown to help locate bus stops and routes, " +
@@ -150,9 +251,14 @@ class SettingsViewModel @Inject constructor(
                     on = shouldShowMap,
                     onClick = { newValue ->
                         viewModelScope.launch {
-                            (listItems[6] as? SettingsItemData.Switch)?.let {
-                                listItems[6] = it.copy(on = newValue)
-                            }
+                            listItems
+                                .findFirst<SettingsItemData.Switch>("show-map")
+                                ?.let { (index, item) ->
+                                    listItems[index] = item.copy(
+                                        on = newValue,
+                                        enabled = item.enabled
+                                    )
+                                }
                             shouldShowMapUseCase(newValue)
                         }
                     }
@@ -160,65 +266,11 @@ class SettingsViewModel @Inject constructor(
             )
 
             listItems.add(
-                SettingsItemData.Header(
-                    "Appearance"
-                )
-            )
-
-            val useSystemTheme = getUseSystemThemeUseCase()
-
-            listItems.add(
-                SettingsItemData.Switch(
-                    title = "Use System Theme",
-                    onDescription = "The app will follow the System Theme",
-                    offDescription = "The app will use the Theme set in the App",
-                    on = useSystemTheme,
-                    onClick = { newValue ->
-                        viewModelScope.launch {
-                            (listItems[8] as? SettingsItemData.Switch)?.let {
-                                listItems[8] = it.copy(on = newValue)
-                            }
-                            (listItems[9] as? SettingsItemData.Switch)?.let {
-                                listItems[9] = it.copy(enabled = !newValue)
-                            }
-                            setUseSystemThemeUseCase(newValue)
-                            delay(300)
-                            refreshTheme()
-                        }
-                    }
-                )
-            )
-
-            val theme = getForcedThemeUseCase()
-
-            listItems.add(
-                SettingsItemData.Switch(
-                    enabled = !useSystemTheme,
-                    title = "Enable \"Dark\" Mode :)",
-                    onDescription = "The app will be in dark theme",
-                    offDescription = "The app will be in light theme",
-                    on = theme == NxtBuzTheme.DARK,
-                    onClick = { newValue ->
-                        viewModelScope.launch {
-                            (listItems[9] as? SettingsItemData.Switch)?.let {
-                                listItems[9] = it.copy(on = newValue)
-                            }
-                            setForcedThemeUseCase(
-                                if (newValue) {
-                                    NxtBuzTheme.DARK
-                                } else {
-                                    NxtBuzTheme.LIGHT
-                                }
-                            )
-                            delay(300)
-                            refreshTheme()
-                        }
-                    }
-                )
-            )
-
-            listItems.add(
                 SettingsItemData.Header(title = "")
+            )
+
+            listItems.add(
+                SettingsItemData.RateOnPlayStore
             )
 
             listItems.add(
@@ -238,6 +290,11 @@ class SettingsViewModel @Inject constructor(
             )
 
             listItemsFlow.emit(listItems)
+
+            if (shouldStartPlayStoreReviewUseCase()) {
+                navigationUtil.startPlayStoreReview()
+                updatePlayStoreReviewTimeUseCase()
+            }
         }
     }
 
@@ -260,7 +317,7 @@ class SettingsViewModel @Inject constructor(
 
     fun onRateOnPlayStoreClick() {
         viewModelScope.launch(coroutineContext) {
-            navigationUtil.startPlayStoreReview()
+            navigationUtil.goToPlayStoreListing()
         }
     }
 }

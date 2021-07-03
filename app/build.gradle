@@ -81,7 +81,7 @@ android {
             matchingFallbacks = ['release']
         }
         debug {
-            applicationIdSuffix ".debug"
+            applicationIdSuffix ".release"
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.debug']
             buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.debug']+"\""
             manifestPlaceholders = [ appName : APP_NAME_DEBUG]

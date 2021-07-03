@@ -8,16 +8,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.FillFirstRow
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.settings.ui.model.SettingsItemData
-import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @Composable
@@ -109,87 +107,5 @@ fun SwitchSettingItem(
                 }
             )
         }
-    }
-}
-
-@ExperimentalAnimationApi
-@Composable
-@Preview
-fun SwitchSettingItemPreview() {
-    val scope = rememberCoroutineScope()
-
-    var data by remember {
-        mutableStateOf(
-            SettingsItemData.Switch(
-                title = "Show starred buses that are not arriving",
-                onDescription = "Starred buses that are not arriving will be shown on the home screen",
-                offDescription = "Only starred buses that are arriving will be shown on the home screen",
-                on = true,
-                onClick = {
-
-                }
-            )
-        )
-    }
-
-    val initialData = SettingsItemData.Switch(
-        title = "Show starred buses that are not arriving",
-        onDescription = "Starred buses that are not arriving will be shown on the home screen",
-        offDescription = "Only starred buses that are arriving will be shown on the home screen",
-        on = true,
-        onClick = {
-            scope.launch {
-                data = data.copy(on = it)
-            }
-        }
-    )
-
-    data = initialData
-
-    NxtBuzTheme {
-        SwitchSettingItem(
-            data = data
-        )
-    }
-}
-
-@ExperimentalAnimationApi
-@Composable
-@Preview
-fun SwitchSettingItemPreviewDark() {
-    val scope = rememberCoroutineScope()
-
-    var data by remember {
-        mutableStateOf(
-            SettingsItemData.Switch(
-                title = "Show starred buses that are not arriving",
-                onDescription = "Starred buses that are not arriving will be shown on the home screen",
-                offDescription = "Only starred buses that are arriving will be shown on the home screen",
-                on = false,
-                onClick = {
-
-                }
-            )
-        )
-    }
-
-    val initialData = SettingsItemData.Switch(
-        title = "Show starred buses that are not arriving",
-        onDescription = "Starred buses that are not arriving will be shown on the home screen",
-        offDescription = "Only starred buses that are arriving will be shown on the home screen",
-        on = false,
-        onClick = {
-            scope.launch {
-                data = data.copy(on = it)
-            }
-        }
-    )
-
-    data = initialData
-
-    NxtBuzTheme(darkTheme = true) {
-        SwitchSettingItem(
-            data = data
-        )
     }
 }

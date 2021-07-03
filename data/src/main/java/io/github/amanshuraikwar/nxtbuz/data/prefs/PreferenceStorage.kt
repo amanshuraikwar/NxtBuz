@@ -19,6 +19,7 @@ interface PreferenceStorage {
     var permissionDeniedPermanently: Boolean
     var theme: NxtBuzTheme
     var useSystemTheme: Boolean
+    var playStoreReviewTimeMillis: Long
 }
 
 

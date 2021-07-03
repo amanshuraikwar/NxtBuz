@@ -1,38 +1,61 @@
 package io.github.amanshuraikwar.nxtbuz.settings.ui.model
 
-sealed class SettingsItemData {
+sealed class SettingsItemData(
+    val id: String
+) {
     data class Header(
         val title: String
-    ) : SettingsItemData()
+    ) : SettingsItemData(title)
+
     data class About(
         val appName: String,
         val versionName: String,
-    ) : SettingsItemData()
+    ) : SettingsItemData("about")
 
-    data class RadioGroup(
+    class RadioGroup(
+        id: String,
         val title: String,
         val description: String,
         val options: List<String>,
         val selectedIndex: Int,
         val onClick: (optionIndex: Int) -> Unit,
-    ) : SettingsItemData()
+    ) : SettingsItemData(id) {
+        fun copy(selectedIndex: Int): RadioGroup {
+            return RadioGroup(
+                id = id,
+                title = title,
+                description = description,
+                options = options,
+                selectedIndex = selectedIndex,
+                onClick = onClick
+            )
+        }
 
-    data class Switch(
+    }
+
+    class Switch(
+        id: String,
         val title: String,
         val onDescription: String,
         val offDescription: String,
         val on: Boolean,
         val enabled: Boolean = true,
         val onClick: (newValue: Boolean) -> Unit,
-    ) : SettingsItemData()
+    ) : SettingsItemData(id) {
+        fun copy(on: Boolean, enabled: Boolean): Switch {
+            return Switch(
+                id, title, onDescription, offDescription, on, enabled, onClick
+            )
+        }
+    }
 
-    object Oss : SettingsItemData()
+    object Oss : SettingsItemData("oss")
 
-    object RequestFeature : SettingsItemData()
+    object RequestFeature : SettingsItemData("request-feature")
 
-    object MadeBy : SettingsItemData()
+    object MadeBy : SettingsItemData("made-by")
 
-    object RateOnPlayStore : SettingsItemData()
+    object RateOnPlayStore : SettingsItemData("rate-on-play-store")
 
-    object MadeWith : SettingsItemData()
+    object MadeWith : SettingsItemData("made-with")
 }
