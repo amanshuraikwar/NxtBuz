@@ -1,11 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.data.search
 
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.datasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.common.model.Bus
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
 import io.github.amanshuraikwar.nxtbuz.common.model.BusService
 import io.github.amanshuraikwar.nxtbuz.common.model.search.SearchResult
 import kotlinx.coroutines.async
@@ -16,16 +14,14 @@ import javax.inject.Singleton
 
 @Singleton
 class SearchRepository @Inject constructor(
-    private val busStopDao: BusStopDao,
-    private val busRouteDao: BusRouteDao,
-    private val operatingBusDao: OperatingBusDao,
+    private val localDataSource: LocalDataSource,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) {
     suspend fun search(query: String, limit: Int): SearchResult =
         withContext(dispatcherProvider.computation) {
 
             val busStopList =
-                busStopDao.searchLikeDescription(query, limit)
+                localDataSource.findBusStopsByDescription(query, limit)
                     .map { busStopEntity ->
                         async(dispatcherProvider.pool8) {
                             BusStop(
@@ -34,31 +30,35 @@ class SearchRepository @Inject constructor(
                                 busStopEntity.description,
                                 busStopEntity.latitude,
                                 busStopEntity.longitude,
-                                operatingBusDao
-                                    .findByBusStopCode(busStopEntity.code)
+                                localDataSource
+                                    .findOperatingBuses(
+                                        busStopCode = busStopEntity.code
+                                    )
                                     .map { Bus(it.busServiceNumber) }
                             )
                         }
                     }.awaitAll()
 
             val busServiceList =
-                busRouteDao.searchLikeBusServiceNumber(query, limit)
+                localDataSource.findBusRouteByBusServiceNumber(query, limit)
                     .map { busRouteEntity ->
                         async {
 
-                            val busRouteEntityList = busRouteDao
-                                .findByBusServiceNumber(busRouteEntity.busServiceNumber)
+                            val busRouteEntityList = localDataSource
+                                .findBusRoute(busServiceNumber = busRouteEntity.busServiceNumber)
                                 .filter { it.direction == busRouteEntity.direction }
                                 .sortedBy { it.stopSequence }
 
                             if (busRouteEntityList.isEmpty()) {
-                                throw Exception("Bus route entity list is empty for bus service number ${busRouteEntity.busServiceNumber}.")
+                                throw Exception(
+                                    "Bus route entity list is empty for bus service number " +
+                                            "${busRouteEntity.busServiceNumber}."
+                                )
                             }
 
                             val originBusStopDescription =
-                                busStopDao
-                                    .findByCode(busRouteEntityList[0].busStopCode)
-                                    .firstOrNull()
+                                localDataSource
+                                    .findBusStopByCode(busRouteEntityList[0].busStopCode)
                                     ?.description
                                     ?: throw Exception(
                                         "No bus stop found for bus stop code " +
@@ -66,9 +66,10 @@ class SearchRepository @Inject constructor(
                                     )
 
                             val destinationBusStopDescription =
-                                busStopDao
-                                    .findByCode(busRouteEntityList.last().busStopCode)
-                                    .firstOrNull()
+                                localDataSource
+                                    .findBusStopByCode(
+                                        busRouteEntityList.last().busStopCode
+                                    )
                                     ?.description
                                     ?: throw Exception(
                                         "No bus stop found for bus stop code " +

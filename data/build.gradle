@@ -33,6 +33,7 @@ android {
 dependencies {
     api project(":common")
     implementation project(":ltaapi")
+    implementation project(":roomdb")
 
     implementation Libs.Kotlin.stdlib
 

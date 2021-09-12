@@ -1,11 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.data.starred
 
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.room.StarredBusStopEntity
+import io.github.amanshuraikwar.nxtbuz.common.datasource.LocalDataSource
+import io.github.amanshuraikwar.nxtbuz.common.datasource.StarredBusStopEntity
 import io.github.amanshuraikwar.nxtbuz.common.model.starred.StarredBusService
 import io.github.amanshuraikwar.nxtbuz.common.model.starred.ToggleStarUpdate
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class StarredBusArrivalRepository @Inject constructor(
-    private val starredBusStopsDao: StarredBusStopsDao,
+    private val localDataSource: LocalDataSource,
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -47,8 +47,8 @@ class StarredBusArrivalRepository @Inject constructor(
 
     suspend fun getStarredBusServices(): List<StarredBusService> {
         return withContext(dispatcherProvider.computation) {
-            starredBusStopsDao
-                .findAll()
+            localDataSource
+                .findAllStarredBuses()
                 .map { starredBusStopEntity ->
                     StarredBusService(
                         busStopCode = starredBusStopEntity.busStopCode,
@@ -60,20 +60,19 @@ class StarredBusArrivalRepository @Inject constructor(
 
     suspend fun toggleBusStopStar(busStopCode: String, busServiceNumber: String) {
         withContext(dispatcherProvider.io) {
-            val isAlreadyStarred =
-                starredBusStopsDao.findByBusStopCodeAndBusServiceNumber(
-                    busStopCode,
-                    busServiceNumber
-                ).isNotEmpty()
+            val isAlreadyStarred = localDataSource.findStarredBus(
+                busStopCode = busStopCode,
+                busServiceNumber = busServiceNumber,
+            ) != null
 
             if (isAlreadyStarred) {
-
-                starredBusStopsDao.deleteByBusStopCodeAndBusServiceNumber(
-                    busStopCode, busServiceNumber
+                localDataSource.deleteStarredBus(
+                    busStopCode = busStopCode,
+                    busServiceNumber = busServiceNumber
                 )
 
             } else {
-                starredBusStopsDao.insertAll(
+                localDataSource.insertStarredBuses(
                     listOf(
                         StarredBusStopEntity(
                             busStopCode,
@@ -102,16 +101,14 @@ class StarredBusArrivalRepository @Inject constructor(
     ) {
         withContext(dispatcherProvider.io) {
             val isAlreadyStarred =
-                starredBusStopsDao.findByBusStopCodeAndBusServiceNumber(
-                    busStopCode,
-                    busServiceNumber
-                ).isNotEmpty()
+                localDataSource.findStarredBus(
+                    busStopCode = busStopCode,
+                    busServiceNumber = busServiceNumber,
+                ) != null
 
             if (toggleTo != isAlreadyStarred) {
-
                 if (toggleTo) {
-
-                    starredBusStopsDao.insertAll(
+                    localDataSource.insertStarredBuses(
                         listOf(
                             StarredBusStopEntity(
                                 busStopCode,
@@ -119,10 +116,10 @@ class StarredBusArrivalRepository @Inject constructor(
                             )
                         )
                     )
-
                 } else {
-                    starredBusStopsDao.deleteByBusStopCodeAndBusServiceNumber(
-                        busStopCode, busServiceNumber
+                    localDataSource.deleteStarredBus(
+                        busStopCode = busStopCode,
+                        busServiceNumber = busServiceNumber,
                     )
                 }
 
@@ -143,11 +140,10 @@ class StarredBusArrivalRepository @Inject constructor(
         busStopCode: String,
         busServiceNumber: String,
     ): Boolean = withContext(dispatcherProvider.io) {
-        return@withContext starredBusStopsDao
-            .findByBusStopCodeAndBusServiceNumber(
-                busStopCode,
-                busServiceNumber
-            )
-            .isNotEmpty()
+        return@withContext localDataSource
+            .findStarredBus(
+                busStopCode = busStopCode,
+                busServiceNumber = busServiceNumber
+            ) != null
     }
 }

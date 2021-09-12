@@ -4,13 +4,12 @@ import androidx.annotation.IntRange
 import io.github.amanshuraikwar.ltaapi.LtaApi
 import io.github.amanshuraikwar.ltaapi.model.BusStopItemDto
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.datasource.BusStopEntity
+import io.github.amanshuraikwar.nxtbuz.common.datasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.common.model.Bus
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
-import io.github.amanshuraikwar.nxtbuz.common.model.room.BusStopEntity
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
@@ -20,18 +19,16 @@ import javax.inject.Singleton
 
 @Singleton
 class BusStopRepository @Inject constructor(
-    private val busStopDao: BusStopDao,
-    private val operatingBusDao: OperatingBusDao,
+    private val localDataSource: LocalDataSource,
     private val busApi: LtaApi,
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
 
     fun setup(): Flow<Double> = flow {
-
         emit(0.0)
 
-        busStopDao.deleteAll()
+        localDataSource.deleteAllBusStops()
 
         // fetch bus stops from the api until the api returns an empty list
         var skip = 0
@@ -46,22 +43,21 @@ class BusStopRepository @Inject constructor(
         emit(0.5)
 
         // save all bus stops in local db
-        busStopDao.insertAll(
+        localDataSource.insertBusStops(
             busStopItemList
                 .distinctBy { it.code }
                 .map {
                     BusStopEntity(
-                        it.code,
-                        it.roadName,
-                        it.description,
-                        it.latitude,
-                        it.longitude
+                        code = it.code,
+                        roadName = it.roadName,
+                        description = it.description,
+                        latitude = it.latitude,
+                        longitude = it.longitude
                     )
                 }
         )
 
         emit(1.0)
-
     }.flowOn(dispatcherProvider.computation)
 
     @Suppress("unused")
@@ -70,8 +66,8 @@ class BusStopRepository @Inject constructor(
         longitude: Double,
         limit: Int
     ): List<BusStop> = withContext(dispatcherProvider.io) {
-        busStopDao
-            .findClose(latitude, longitude, limit)
+        localDataSource
+            .findCloseBusStops(latitude, longitude, limit)
             .distinctBy { it.code }
             .map { busStopEntity ->
                 async(dispatcherProvider.pool8) {
@@ -81,8 +77,7 @@ class BusStopRepository @Inject constructor(
                         busStopEntity.description,
                         busStopEntity.latitude,
                         busStopEntity.longitude,
-                        operatingBusDao
-                            .findByBusStopCode(busStopEntity.code)
+                        localDataSource.findOperatingBuses(busStopEntity.code)
                             .map {
                                 Bus(it.busServiceNumber)
                             }
@@ -114,8 +109,7 @@ class BusStopRepository @Inject constructor(
 
     suspend fun searchBusStops(query: String, limit: Int): List<BusStop> =
         withContext(dispatcherProvider.io) {
-            busStopDao
-                .searchLikeDescription(query, limit)
+            localDataSource.findBusStopsByDescription(query, limit)
                 .distinctBy { it.code }
                 .map { busStopEntity ->
                     async(dispatcherProvider.pool8) {
@@ -125,8 +119,8 @@ class BusStopRepository @Inject constructor(
                             busStopEntity.description,
                             busStopEntity.latitude,
                             busStopEntity.longitude,
-                            operatingBusDao
-                                .findByBusStopCode(busStopEntity.code)
+                            localDataSource
+                                .findOperatingBuses(busStopEntity.code)
                                 .map { Bus(it.busServiceNumber) }
                         )
                     }
@@ -134,14 +128,10 @@ class BusStopRepository @Inject constructor(
         }
 
     suspend fun getBusStop(busStopCode: String): BusStop = withContext(dispatcherProvider.io) {
-        busStopDao
-            .findByCode(busStopCode)
-            .let { list ->
-                if (list.isEmpty()) {
-                    throw Exception("No bus stop found for code $busStopCode")
-                } else {
-                    list[0]
-                }
+        localDataSource
+            .findBusStopByCode(busStopCode)
+            .let { busStopEntity ->
+                busStopEntity ?: throw Exception("No bus stop found for code $busStopCode")
             }
             .let { busStopEntity ->
                 BusStop(
@@ -150,8 +140,8 @@ class BusStopRepository @Inject constructor(
                     busStopEntity.description,
                     busStopEntity.latitude,
                     busStopEntity.longitude,
-                    operatingBusDao
-                        .findByBusStopCode(busStopEntity.code)
+                    localDataSource
+                        .findOperatingBuses(busStopEntity.code)
                         .map { Bus(it.busServiceNumber) }
                 )
             }
@@ -163,12 +153,11 @@ class BusStopRepository @Inject constructor(
         max: Int,
         maxDistanceMetres: Int,
     ): List<BusStop> = withContext(dispatcherProvider.io) {
-        busStopDao
-            .findClose(
-                latitude = lat,
-                longitude = lng,
-                limit = max,
-            )
+        localDataSource.findCloseBusStops(
+            lat = lat,
+            lng = lng,
+            limit = max,
+        )
             .filter { busStopEntity ->
                 MapUtil.measureDistanceMetres(
                     lat1 = lat,
@@ -186,8 +175,8 @@ class BusStopRepository @Inject constructor(
                         busStopEntity.description,
                         busStopEntity.latitude,
                         busStopEntity.longitude,
-                        operatingBusDao
-                            .findByBusStopCode(busStopEntity.code)
+                        localDataSource
+                            .findOperatingBuses(busStopEntity.code)
                             .map {
                                 Bus(it.busServiceNumber)
                             }
