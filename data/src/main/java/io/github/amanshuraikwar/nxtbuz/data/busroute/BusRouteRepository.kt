@@ -4,14 +4,11 @@ import android.util.Log
 import io.github.amanshuraikwar.ltaapi.LtaApi
 import io.github.amanshuraikwar.ltaapi.model.BusRouteItemDto
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.datasource.BusRouteEntity
+import io.github.amanshuraikwar.nxtbuz.common.datasource.LocalDataSource
+import io.github.amanshuraikwar.nxtbuz.common.datasource.OperatingBusEntity
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRoute
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNode
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
-import io.github.amanshuraikwar.nxtbuz.common.model.room.BusRouteEntity
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
-import io.github.amanshuraikwar.nxtbuz.common.model.room.OperatingBusEntity
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.StarredBusStopsDao
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -24,10 +21,7 @@ import javax.inject.Singleton
 
 @Singleton
 class BusRouteRepository @Inject constructor(
-    private val busRouteDao: BusRouteDao,
-    private val operatingBusDao: OperatingBusDao,
-    private val busStopDao: BusStopDao,
-    private val starredBusStopsDao: StarredBusStopsDao,
+    private val localDataSource: LocalDataSource,
     private val busApi: LtaApi,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -36,8 +30,8 @@ class BusRouteRepository @Inject constructor(
 
         emit(0.0)
 
-        busRouteDao.deleteAll()
-        operatingBusDao.deleteAll()
+        localDataSource.deleteAllBusRoutes()
+        localDataSource.deleteAllOperatingBuses()
 
         val startTimeMillis = System.currentTimeMillis()
 
@@ -156,7 +150,7 @@ class BusRouteRepository @Inject constructor(
         busStopCodeBusRouteItemListMap
             .map { (busStopCode, busRouteItem) ->
                 async(dispatcherProvider.pool8) {
-                    operatingBusDao.insertAll(
+                    localDataSource.insertOperatingBuses(
                         busRouteItem.map {
                             OperatingBusEntity(
                                 busStopCode = busStopCode,
@@ -207,7 +201,7 @@ class BusRouteRepository @Inject constructor(
         busServiceNumberBusRouteItemListMap
             .map { (serviceNumber, busRouteItem) ->
                 async(dispatcherProvider.pool8) {
-                    busRouteDao.insertAll(
+                    localDataSource.insertBusRoute(
                         busRouteItem.map {
                             BusRouteEntity(
                                 serviceNumber,
@@ -230,7 +224,7 @@ class BusRouteRepository @Inject constructor(
         busStopCode: String? = null
     ): BusRoute = withContext(dispatcherProvider.io) {
 
-        val busRouteEntityList = busRouteDao.findByBusServiceNumber(busServiceNumber)
+        val busRouteEntityList = localDataSource.findBusRoute(busServiceNumber = busServiceNumber)
 
         val direction1 = busRouteEntityList.filter { it.direction == 1 }
         val direction2 = busRouteEntityList.filter { it.direction == 2 }
@@ -269,10 +263,13 @@ class BusRouteRepository @Inject constructor(
             selectedBusRouteEntityList
                 .map { busRouteEntity ->
                     async(dispatcherProvider.pool8) {
-                        val busStopEntity = busStopDao.findByCode(busRouteEntity.busStopCode).let {
-                            if (it.isEmpty()) throw Exception("No bus stop found for bus stop code ${busRouteEntity.busStopCode}")
-                            it[0]
-                        }
+                        val busStopEntity =
+                            localDataSource.findBusStopByCode(busRouteEntity.busStopCode)
+                                ?: throw Exception(
+                                    "No bus stop found for bus stop code " +
+                                            busRouteEntity.busStopCode
+                                )
+
                         BusRouteNode(
                             busServiceNumber,
                             busStopEntity.code,
@@ -293,8 +290,7 @@ class BusRouteRepository @Inject constructor(
             busServiceNumber = busServiceNumber,
             direction = direction,
             starred = busStopCode?.let {
-                starredBusStopsDao
-                    .findByBusStopCode(busStopCode)
+                localDataSource.findStarredBuses(busStopCode = busStopCode)
                     .map { it.busServiceNumber }
                     .toSet()
                     .contains(busServiceNumber)

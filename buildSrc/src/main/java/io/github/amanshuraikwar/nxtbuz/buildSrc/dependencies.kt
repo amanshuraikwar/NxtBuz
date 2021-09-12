@@ -3,6 +3,10 @@
 package io.github.amanshuraikwar.nxtbuz.buildSrc
 
 object Libs {
+    const val compileSdk = 30
+    const val minSdk = 23
+    const val targetSdk = 30
+
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta04"
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 

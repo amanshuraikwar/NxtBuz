@@ -4,14 +4,12 @@ import io.github.amanshuraikwar.ltaapi.LtaApi
 import io.github.amanshuraikwar.ltaapi.model.ArrivingBusItemDto
 import io.github.amanshuraikwar.ltaapi.model.BusArrivalItemDto
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.common.datasource.LocalDataSource
+import io.github.amanshuraikwar.nxtbuz.common.datasource.OperatingBusEntity
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.*
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusRouteDao
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.BusStopDao
-import io.github.amanshuraikwar.nxtbuz.data.room.dao.OperatingBusDao
-import io.github.amanshuraikwar.nxtbuz.common.model.room.OperatingBusEntity
-import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.common.model.exception.IllegalDbStateException
+import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import kotlinx.coroutines.withContext
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetTime
@@ -21,9 +19,7 @@ import javax.inject.Singleton
 
 @Singleton
 class BusArrivalRepository @Inject constructor(
-    private val busRouteDao: BusRouteDao,
-    private val operatingBusDao: OperatingBusDao,
-    private val busStopDao: BusStopDao,
+    private val localDataSource: LocalDataSource,
     private val busApi: LtaApi,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -31,8 +27,7 @@ class BusArrivalRepository @Inject constructor(
         return withContext(dispatcherProvider.io) {
             // map of busServiceNumber -> OperatingBusEntity
             val operatingBusServiceNumberMap =
-                operatingBusDao
-                    .findByBusStopCode(busStopCode)
+                localDataSource.findOperatingBuses(busStopCode)
                     .groupBy { it.busServiceNumber }
                     .mapValues { (_, v) -> v[0] }
                     .toMutableMap()
@@ -73,11 +68,10 @@ class BusArrivalRepository @Inject constructor(
     suspend fun getBusArrivals(busStopCode: String, busServiceNumber: String): BusStopArrival {
         return withContext(dispatcherProvider.io) {
             val operatingBusEntity =
-                operatingBusDao
-                    .getOperatingBus(
-                        busStopCode = busStopCode,
-                        busServiceNumber = busServiceNumber
-                    )
+                localDataSource.findOperatingBus(
+                    busStopCode = busStopCode,
+                    busServiceNumber = busServiceNumber
+                )
                     ?: run {
                         // bus service number returned from remote api is not in local db
                         throw IllegalDbStateException(
@@ -93,7 +87,7 @@ class BusArrivalRepository @Inject constructor(
             if (busArrivalItemList.isNotEmpty()) {
 
                 val busArrivalItem = busArrivalItemList[0]
-                return@withContext busArrivalItem.toBusArrival(busStopCode,)
+                return@withContext busArrivalItem.toBusArrival(busStopCode)
 
             } else {
 
@@ -106,8 +100,8 @@ class BusArrivalRepository @Inject constructor(
         busStopCode: String,
     ): BusStopArrival {
         val (_, _, direction, stopSequence, distance) =
-            busRouteDao
-                .getBusRoute(busStopCode = busStopCode, busServiceNumber = serviceNumber)
+            localDataSource
+                .findBusRoute(busStopCode = busStopCode, busServiceNumber = serviceNumber)
                 ?: throw IllegalDbStateException(
                     "No bus route row found for service number " +
                             "$serviceNumber and stop code " +
@@ -167,8 +161,8 @@ class BusArrivalRepository @Inject constructor(
             )
 
         val origin: ArrivingBusStop =
-            busStopDao
-                .getBusStop(originCode)
+            localDataSource
+                .findBusStopByCode(busStopCode = originCode)
                 ?.let { busStopEntity ->
                     ArrivingBusStop(
                         busStopCode = busStopEntity.code,
@@ -181,8 +175,8 @@ class BusArrivalRepository @Inject constructor(
                 )
 
         val destination: ArrivingBusStop =
-            busStopDao
-                .getBusStop(destinationCode)
+            localDataSource
+                .findBusStopByCode(busStopCode = destinationCode)
                 ?.let { busStopEntity ->
                     ArrivingBusStop(
                         busStopCode = busStopEntity.code,
@@ -210,8 +204,8 @@ class BusArrivalRepository @Inject constructor(
 
     private suspend inline fun OperatingBusEntity.toBusArrivalError(): BusStopArrival {
         val (_, _, direction, stopSequence, distance) =
-            busRouteDao
-                .getBusRoute(
+            localDataSource
+                .findBusRoute(
                     busServiceNumber = busServiceNumber,
                     busStopCode = busStopCode
                 )
