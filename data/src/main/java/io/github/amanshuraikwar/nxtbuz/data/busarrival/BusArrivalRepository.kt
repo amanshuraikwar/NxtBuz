@@ -4,16 +4,13 @@ import io.github.amanshuraikwar.ltaapi.LtaApi
 import io.github.amanshuraikwar.ltaapi.model.ArrivingBusItemDto
 import io.github.amanshuraikwar.ltaapi.model.BusArrivalItemDto
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.datasource.LocalDataSource
-import io.github.amanshuraikwar.nxtbuz.common.datasource.OperatingBusEntity
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.*
 import io.github.amanshuraikwar.nxtbuz.common.model.exception.IllegalDbStateException
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
+import io.github.amanshuraikwar.nxtbuz.localdatasource.*
 import kotlinx.coroutines.withContext
-import org.threeten.bp.OffsetDateTime
-import org.threeten.bp.OffsetTime
-import org.threeten.bp.temporal.ChronoUnit
+import kotlinx.datetime.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -155,10 +152,13 @@ class BusArrivalRepository @Inject constructor(
     }
 
     private suspend inline fun ArrivingBusItemDto.toArrivingBus(): ArrivingBus {
-        val time =
-            ChronoUnit.MINUTES.between(
-                OffsetDateTime.now(), OffsetDateTime.parse(estimatedArrival)
+        val time = Clock.System.now()
+            .periodUntil(
+                estimatedArrival.toInstant(),
+                TimeZone.currentSystemDefault()
             )
+            .minutes
+            .coerceAtLeast(0)
 
         val origin: ArrivingBusStop =
             localDataSource
@@ -218,12 +218,12 @@ class BusArrivalRepository @Inject constructor(
         val (
             _,
             _,
-            wdFirstBus: OffsetTime?,
-            wdLastBus: OffsetTime?,
-            satFirstBus: OffsetTime?,
-            satLastBus: OffsetTime?,
-            sunFirstBus: OffsetTime?,
-            sunLastBus: OffsetTime?
+            wdFirstBus: LocalHourMinute?,
+            wdLastBus: LocalHourMinute?,
+            satFirstBus: LocalHourMinute?,
+            satLastBus: LocalHourMinute?,
+            sunFirstBus: LocalHourMinute?,
+            sunLastBus: LocalHourMinute?
         ) = this
 
         val busArrivals: BusArrivals = when {
@@ -255,16 +255,16 @@ class BusArrivalRepository @Inject constructor(
     }
 
     private fun getBusArrivalsError(
-        firstBus: OffsetTime?,
-        lastBus: OffsetTime?
+        firstBus: LocalHourMinute?,
+        lastBus: LocalHourMinute?
     ): BusArrivals {
         if (firstBus != null) {
-            if (OffsetTime.now().isBefore(firstBus)) {
+            if (firstBus.isAfter(Clock.System.now())) {
                 return BusArrivals.NotOperating
             }
         }
         if (lastBus != null) {
-            if (OffsetTime.now().isAfter(lastBus)) {
+            if (lastBus.isBefore(Clock.System.now())) {
                 return BusArrivals.NotOperating
             }
         }

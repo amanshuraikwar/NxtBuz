@@ -4,17 +4,17 @@ import android.util.Log
 import io.github.amanshuraikwar.ltaapi.LtaApi
 import io.github.amanshuraikwar.ltaapi.model.BusRouteItemDto
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.datasource.BusRouteEntity
-import io.github.amanshuraikwar.nxtbuz.common.datasource.LocalDataSource
-import io.github.amanshuraikwar.nxtbuz.common.datasource.OperatingBusEntity
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRoute
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNode
+import io.github.amanshuraikwar.nxtbuz.localdatasource.BusRouteEntity
+import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
+import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalHourMinute
+import io.github.amanshuraikwar.nxtbuz.localdatasource.OperatingBusEntity
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import org.threeten.bp.OffsetTime
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -25,16 +25,13 @@ class BusRouteRepository @Inject constructor(
     private val busApi: LtaApi,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
-
     fun setup(): Flow<Double> = flow {
-
         emit(0.0)
 
         localDataSource.deleteAllBusRoutes()
         localDataSource.deleteAllOperatingBuses()
 
         val startTimeMillis = System.currentTimeMillis()
-
         val (busStopCodeMap, busServiceNumberMap) = getBusRouteApiOutput(this)
 
         saveOperatingBusData(busStopCodeMap)
@@ -49,7 +46,6 @@ class BusRouteRepository @Inject constructor(
         )
 
         emit(1.0)
-
     }.flowOn(dispatcherProvider.computation)
 
     private data class BusRouteApiOutput(
@@ -145,7 +141,6 @@ class BusRouteRepository @Inject constructor(
     private suspend fun saveOperatingBusData(
         busStopCodeBusRouteItemListMap: Map<String, MutableSet<BusRouteItemDto>>
     ) = coroutineScope {
-
         // add all operating buses for every bus stop to local DB
         busStopCodeBusRouteItemListMap
             .map { (busStopCode, busRouteItem) ->
@@ -158,32 +153,32 @@ class BusRouteRepository @Inject constructor(
                                 wdFirstBus = if (it.wdFirstBus == "-") {
                                     null
                                 } else {
-                                    OffsetTime.parse(it.wdFirstBus.toTime())
+                                    it.wdFirstBus.ltaApiTimeStrToLocalHourMinute()
                                 },
                                 wdLastBus = if (it.wdLastBus == "-") {
                                     null
                                 } else {
-                                    OffsetTime.parse(it.wdLastBus.toTime())
+                                    it.wdLastBus.ltaApiTimeStrToLocalHourMinute()
                                 },
                                 satFirstBus = if (it.satFirstBus == "-") {
                                     null
                                 } else {
-                                    OffsetTime.parse(it.satFirstBus.toTime())
+                                    it.satFirstBus.ltaApiTimeStrToLocalHourMinute()
                                 },
                                 satLastBus = if (it.satLastBus == "-") {
                                     null
                                 } else {
-                                    OffsetTime.parse(it.satLastBus.toTime())
+                                    it.satLastBus.ltaApiTimeStrToLocalHourMinute()
                                 },
                                 sunFirstBus = if (it.sunFirstBus == "-") {
                                     null
                                 } else {
-                                    OffsetTime.parse(it.sunFirstBus.toTime())
+                                    it.sunFirstBus.ltaApiTimeStrToLocalHourMinute()
                                 },
                                 sunLastBus = if (it.sunLastBus == "-") {
                                     null
                                 } else {
-                                    OffsetTime.parse(it.sunLastBus.toTime())
+                                    it.sunLastBus.ltaApiTimeStrToLocalHourMinute()
                                 }
                             )
                         }
@@ -304,10 +299,29 @@ class BusRouteRepository @Inject constructor(
     companion object {
         const val EMPTY_ASYNC_LIMIT = 16
         private const val TAG = "BusRouteRepository"
-        fun String.toTime() =
-            substring(0..1).let { if (it == "24") "00" else it } +
-                    ":" +
-                    substring(2..3).let { if (it == "0`") "00" else it } +
-                    ":00+08:00"
+
+        fun String.ltaApiTimeStrToLocalHourMinute(): LocalHourMinute =
+            LocalHourMinute(
+                hour = substring(0..1)
+                    .let {
+                        if (it == "24") {
+                            "00"
+                        } else {
+                            it
+                        }
+                    }
+                    .toIntOrNull()
+                    ?: 0,
+                minute = substring(2..3)
+                    .let {
+                        if (it == "0`") {
+                            "00"
+                        } else {
+                            it
+                        }
+                    }
+                    .toIntOrNull()
+                    ?: 0
+            )
     }
 }

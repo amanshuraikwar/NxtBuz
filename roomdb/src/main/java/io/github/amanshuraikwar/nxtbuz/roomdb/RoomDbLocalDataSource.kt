@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.roomdb
 
-import io.github.amanshuraikwar.nxtbuz.common.datasource.*
+import io.github.amanshuraikwar.nxtbuz.localdatasource.*
 import io.github.amanshuraikwar.nxtbuz.roomdb.model.BusRouteRoomDbEntity
 import io.github.amanshuraikwar.nxtbuz.roomdb.model.BusStopRoomDbEntity
 import io.github.amanshuraikwar.nxtbuz.roomdb.model.OperatingBusRoomDbEntity

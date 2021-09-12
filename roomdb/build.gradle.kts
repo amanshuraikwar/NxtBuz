@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    compileSdk = Libs.compileSdk
+    compileSdkVersion(Libs.compileSdk)
 
     defaultConfig {
-        minSdk = Libs.minSdk
-        targetSdk = Libs.targetSdk
+        minSdkVersion(Libs.minSdk)
+        targetSdkVersion(Libs.targetSdk)
     }
 
     compileOptions {
@@ -27,8 +27,10 @@ android {
 dependencies {
     implementation(Libs.Kotlin.stdlib)
     api(project(":common"))
+    api(project(":nxtbuzlocaldatasource"))
     api(Libs.AndroidX.Room.runtime)
     kapt(Libs.AndroidX.Room.compiler)
-    implementation(Libs.threeTenAbp)
+    implementation(Libs.AndroidX.Room.ktx)
+    implementation(Libs.KotlinX.datetime)
     implementation(Libs.Coroutines.core)
 }

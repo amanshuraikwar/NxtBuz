@@ -9,6 +9,7 @@ import io.github.amanshuraikwar.nxtbuz.MainApplication
 import io.github.amanshuraikwar.nxtbuz.data.location.di.LocationModuleProvides
 import io.github.amanshuraikwar.nxtbuz.data.prefs.di.PrefsModuleBinds
 import io.github.amanshuraikwar.nxtbuz.data.room.di.RoomProvides
+import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.map.di.MapProvides
 import io.github.amanshuraikwar.nxtbuz.onboarding.setup.di.SetupModule
 import javax.inject.Singleton
@@ -36,6 +37,8 @@ import javax.inject.Singleton
     ]
 )
 interface AppComponent : AndroidInjector<MainApplication> {
+    fun getLocalDataSource(): LocalDataSource
+
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance application: MainApplication): AppComponent
