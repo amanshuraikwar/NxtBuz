@@ -7,7 +7,7 @@ import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalHourMinute
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 @Entity(tableName = "OperatingBusEntity")
-data class OperatingBusRoomDbEntity(
+internal data class OperatingBusRoomDbEntity(
     val busStopCode: String,
     val busServiceNumber: String,
     val wdFirstBus: LocalHourMinute?,

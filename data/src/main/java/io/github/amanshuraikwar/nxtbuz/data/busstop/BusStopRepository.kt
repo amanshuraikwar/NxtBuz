@@ -1,18 +1,20 @@
 package io.github.amanshuraikwar.nxtbuz.data.busstop
 
 import androidx.annotation.IntRange
-import io.github.amanshuraikwar.ltaapi.LtaApi
-import io.github.amanshuraikwar.ltaapi.model.BusStopItemDto
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.Bus
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
+import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.localdatasource.BusStopEntity
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusStopItemDto
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,7 +22,7 @@ import javax.inject.Singleton
 @Singleton
 class BusStopRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
-    private val busApi: LtaApi,
+    private val remoteDataSource: RemoteDataSource,
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
@@ -34,7 +36,7 @@ class BusStopRepository @Inject constructor(
         var skip = 0
         val busStopItemList = mutableListOf<BusStopItemDto>()
         while (true) {
-            val fetchedBusStops = busApi.getBusStops(skip).busStops
+            val fetchedBusStops = remoteDataSource.getBusStops(skip)
             if (fetchedBusStops.isEmpty()) break
             busStopItemList.addAll(fetchedBusStops)
             skip += 500
@@ -51,8 +53,8 @@ class BusStopRepository @Inject constructor(
                         code = it.code,
                         roadName = it.roadName,
                         description = it.description,
-                        latitude = it.latitude,
-                        longitude = it.longitude
+                        latitude = it.lat,
+                        longitude = it.lng
                     )
                 }
         )

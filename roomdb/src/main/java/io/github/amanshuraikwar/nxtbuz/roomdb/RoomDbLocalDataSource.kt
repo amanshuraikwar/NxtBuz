@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.roomdb
 
+import android.content.Context
 import io.github.amanshuraikwar.nxtbuz.localdatasource.*
 import io.github.amanshuraikwar.nxtbuz.roomdb.model.BusRouteRoomDbEntity
 import io.github.amanshuraikwar.nxtbuz.roomdb.model.BusStopRoomDbEntity
@@ -8,7 +9,7 @@ import io.github.amanshuraikwar.nxtbuz.roomdb.model.StarredBusStopRoomDbEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-class RoomDbLocalDataSource(
+class RoomDbLocalDataSource internal constructor(
     private val ioDispatcher: CoroutineDispatcher,
     private val appDatabase: AppDatabase,
 ) : LocalDataSource {
@@ -323,6 +324,18 @@ class RoomDbLocalDataSource(
                         busStopCode = it.busStopCode
                     )
                 }
+        }
+    }
+
+    companion object {
+        fun createInstance(
+            context: Context,
+            ioDispatcher: CoroutineDispatcher
+        ): LocalDataSource {
+            return RoomDbLocalDataSource(
+                ioDispatcher = ioDispatcher,
+                AppDatabase.getInstance(context),
+            )
         }
     }
 }

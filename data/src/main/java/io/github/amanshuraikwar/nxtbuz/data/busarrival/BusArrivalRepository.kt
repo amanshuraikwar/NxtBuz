@@ -1,14 +1,14 @@
 package io.github.amanshuraikwar.nxtbuz.data.busarrival
 
-import io.github.amanshuraikwar.ltaapi.LtaApi
-import io.github.amanshuraikwar.ltaapi.model.ArrivingBusItemDto
-import io.github.amanshuraikwar.ltaapi.model.BusArrivalItemDto
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.*
 import io.github.amanshuraikwar.nxtbuz.common.model.exception.IllegalDbStateException
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.localdatasource.*
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.ArrivingBusItemDto
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusArrivalItemDto
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.*
 import javax.inject.Inject
@@ -17,7 +17,7 @@ import javax.inject.Singleton
 @Singleton
 class BusArrivalRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
-    private val busApi: LtaApi,
+    private val remoteDataSource: RemoteDataSource,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
     suspend fun getBusArrivals(busStopCode: String): List<BusStopArrival> {
@@ -31,7 +31,7 @@ class BusArrivalRepository @Inject constructor(
 
             val busStopArrivalList = mutableListOf<BusStopArrival>()
 
-            busApi.getBusArrivals(busStopCode)
+            remoteDataSource.getBusArrivals(busStopCode)
                 .busArrivals
                 .forEach { busArrivalItemDto ->
 
@@ -79,7 +79,7 @@ class BusArrivalRepository @Inject constructor(
                     }
 
             val busArrivalItemList =
-                busApi.getBusArrivals(busStopCode, busServiceNumber).busArrivals
+                remoteDataSource.getBusArrivals(busStopCode, busServiceNumber).busArrivals
 
             if (busArrivalItemList.isNotEmpty()) {
 
@@ -192,9 +192,9 @@ class BusArrivalRepository @Inject constructor(
         return ArrivingBus(
             origin,
             destination,
-            time.toInt().coerceAtLeast(0),
-            latitude.toDouble(),
-            longitude.toDouble(),
+            time.coerceAtLeast(0),
+            lat.toDouble(),
+            lng.toDouble(),
             visitNumber.toInt(),
             BusLoad.valueOf(load),
             feature == "WAB",

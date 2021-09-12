@@ -2,7 +2,7 @@ package io.github.amanshuraikwar.ltaapi.model
 
 import com.google.gson.annotations.SerializedName
 
-data class BusRouteItemDto(
+internal data class BusRouteItemRetrofitDto(
     @SerializedName("ServiceNo") val serviceNumber: String,
     @SerializedName("Operator") val operator: String,
     @SerializedName("Direction") val direction: Int,

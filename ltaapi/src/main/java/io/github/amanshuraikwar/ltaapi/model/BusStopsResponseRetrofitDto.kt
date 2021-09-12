@@ -2,7 +2,7 @@ package io.github.amanshuraikwar.ltaapi.model
 
 import com.google.gson.annotations.SerializedName
 
-data class BusStopsResponseDto(
+internal data class BusStopsResponseRetrofitDto(
     @SerializedName("odata.metadata") val metadata: String,
-    @SerializedName("value") val busStops: List<BusStopItemDto>
+    @SerializedName("value") val busStops: List<BusStopItemRetrofitDto>
 )

@@ -8,7 +8,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
-object DateTimeTypeConverters {
+internal object DateTimeTypeConverters {
     @TypeConverter
     @JvmStatic
     fun stringToLocalDateTime(a: String?): LocalDateTime? {

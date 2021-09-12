@@ -5,7 +5,7 @@ import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivalStatus
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
 
-object BusArrivalTypeConverters {
+internal object BusArrivalTypeConverters {
     @TypeConverter
     @JvmStatic
     fun a(a: String?): BusArrivalStatus? {

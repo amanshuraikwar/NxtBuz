@@ -43,13 +43,11 @@ android {
 
 dependencies {
     Libs.Kotlin.stdlib
-
-    implementation Libs.Dagger.library
-    implementation Libs.Dagger.androidSupport
-    kapt Libs.Dagger.compiler
-    kapt Libs.Dagger.androidProcessor
+    implementation project(":nxtbuzremotedatasource")
 
     implementation Libs.Retrofit.retrofit
     implementation Libs.Retrofit.gsonConverter
     implementation Libs.OkHttp.loggingInterceptor
+
+    implementation Libs.Coroutines.core
 }

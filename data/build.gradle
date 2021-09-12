@@ -35,6 +35,7 @@ dependencies {
     implementation project(":ltaapi")
     implementation project(":roomdb")
     api project(":nxtbuzlocaldatasource")
+    api project(":nxtbuzremotedatasource")
 
     implementation Libs.Kotlin.stdlib
 
