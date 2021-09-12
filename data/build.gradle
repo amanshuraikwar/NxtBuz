@@ -2,7 +2,7 @@ import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -34,6 +34,7 @@ dependencies {
     api project(":common")
     implementation project(":ltaapi")
     implementation project(":roomdb")
+    api project(":nxtbuzlocaldatasource")
 
     implementation Libs.Kotlin.stdlib
 
@@ -46,14 +47,10 @@ dependencies {
 
     implementation Libs.Coroutines.core
 
-    api Libs.AndroidX.Room.runtime
-    kapt Libs.AndroidX.Room.compiler
-    implementation Libs.AndroidX.Room.ktx
-
-    implementation Libs.threeTenAbp
-
     implementation Libs.Google.playServicesMap
     api Libs.Google.playServicesLocation
 
     implementation Libs.Google.crashlytics
+
+    implementation Libs.KotlinX.datetime
 }

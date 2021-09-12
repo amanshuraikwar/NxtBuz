@@ -53,9 +53,9 @@ abstract class AppDatabase : RoomDatabase() {
                 .databaseBuilder(
                     context,
                     AppDatabase::class.java,
-                    AppDatabase.DATABASE_NAME
+                    DATABASE_NAME
                 )
-                .addMigrations(AppDatabase.MIGRATION_6_7)
+                .addMigrations(MIGRATION_6_7)
                 .build()
         }
     }

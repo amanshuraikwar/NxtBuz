@@ -1,39 +1,47 @@
 package io.github.amanshuraikwar.nxtbuz.roomdb.converter
 
 import androidx.room.TypeConverter
-import org.threeten.bp.OffsetDateTime
-import org.threeten.bp.OffsetTime
-import org.threeten.bp.format.DateTimeFormatter
+import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalHourMinute
+import io.github.amanshuraikwar.nxtbuz.localdatasource.toLocalHourMinute
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 
 object DateTimeTypeConverters {
-    private val timeFormatter = DateTimeFormatter.ISO_OFFSET_TIME
-    private val dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-
     @TypeConverter
     @JvmStatic
-    fun a(a: String?): OffsetTime? {
-        return a?.let {
-            return timeFormatter.parse(a, OffsetTime::from)
-        }
+    fun stringToLocalDateTime(a: String?): LocalDateTime? {
+        return a?.toLocalDateTime()
     }
 
     @TypeConverter
     @JvmStatic
-    fun b(a: OffsetTime?): String? {
-        return a?.format(timeFormatter)
+    fun localDateTimeToString(a: LocalDateTime?): String? {
+        return a?.toString()
     }
 
     @TypeConverter
     @JvmStatic
-    fun c(a: String?): OffsetDateTime? {
-        return a?.let {
-            return dateTimeFormatter.parse(a, OffsetDateTime::from)
-        }
+    fun stringToInstant(a: String?): Instant? {
+        return a?.toInstant()
     }
 
     @TypeConverter
     @JvmStatic
-    fun d(a: OffsetDateTime?): String? {
-        return a?.format(dateTimeFormatter)
+    fun instantToString(a: Instant?): String? {
+        return a?.toString()
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToLocalHourMinute(a: String?): LocalHourMinute? {
+        return a?.toLocalHourMinute()
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun localHourMinuteToString(a: LocalHourMinute?): String? {
+        return a?.toString()
     }
 }

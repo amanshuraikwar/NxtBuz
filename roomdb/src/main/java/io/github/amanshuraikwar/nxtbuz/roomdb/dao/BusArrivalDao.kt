@@ -9,11 +9,11 @@ interface BusArrivalDao {
     @Insert
     suspend fun insertAll(entities: List<BusArrivalRoomDbEntity>)
 
-    @Update
-    suspend fun updateAll(entities: List<BusArrivalRoomDbEntity>)
+//    @Update
+//    suspend fun updateAll(entities: List<BusArrivalRoomDbEntity>)
 
-    @Delete
-    suspend fun delete(entity: BusArrivalRoomDbEntity)
+//    @Delete
+//    suspend fun delete(entity: BusArrivalRoomDbEntity)
 
     @Query("DELETE from BusArrivalEntity")
     suspend fun deleteAll()

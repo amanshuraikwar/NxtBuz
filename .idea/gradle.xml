@@ -16,10 +16,12 @@
             <option value="$PROJECT_DIR$/busroute" />
             <option value="$PROJECT_DIR$/busstop" />
             <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/commonkmm" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/ltaapi" />
             <option value="$PROJECT_DIR$/map" />
+            <option value="$PROJECT_DIR$/nxtbuzlocaldatasource" />
             <option value="$PROJECT_DIR$/nxtbuztheme" />
             <option value="$PROJECT_DIR$/onboarding" />
             <option value="$PROJECT_DIR$/roomdb" />
@@ -31,6 +33,5 @@
         <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
-    <option name="offlineMode" value="true" />
   </component>
 </project>

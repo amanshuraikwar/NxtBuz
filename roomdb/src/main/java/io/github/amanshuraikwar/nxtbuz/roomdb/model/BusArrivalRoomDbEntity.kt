@@ -5,7 +5,8 @@ import androidx.room.Entity
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivalStatus
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
-import org.threeten.bp.OffsetDateTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 @Entity(
@@ -19,17 +20,16 @@ data class BusArrivalRoomDbEntity(
     val busArrivalStatus: BusArrivalStatus = BusArrivalStatus.ARRIVING,
     val originCode: String,
     val destinationCode: String,
-    val estimatedArrivalTimestamp: OffsetDateTime,
+    val estimatedArrivalTimestamp: Instant,
     val latitude: Double,
     val longitude: Double,
     val visitNumber: Int,
     val load: BusLoad,
     val feature: String,
     val type: BusType,
-    val lastUpdatedOn: OffsetDateTime = OffsetDateTime.now()
+    val lastUpdatedOn: Instant = Clock.System.now()
 ) {
     companion object {
-
         fun notOperating(
             busServiceNumber: String,
             busStopCode: String,
@@ -67,7 +67,7 @@ data class BusArrivalRoomDbEntity(
                 busArrivalStatus = busArrivalStatus,
                 originCode = "N/A",
                 destinationCode = "N/A",
-                estimatedArrivalTimestamp = OffsetDateTime.MIN,
+                estimatedArrivalTimestamp = Instant.DISTANT_PAST,
                 latitude = -1.0,
                 longitude = -1.0,
                 visitNumber = -1,

@@ -7,7 +7,7 @@ object Libs {
     const val minSdk = 23
     const val targetSdk = 30
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta04"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.2"
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 
     object Google {
@@ -25,10 +25,14 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.5.10"
+        private const val version = "1.5.21"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
+    }
+
+    object KotlinX {
+        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.1"
     }
 
     object Coroutines {
@@ -60,14 +64,14 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.2.5"
+            private const val version = "2.3.0"
             const val runtime = "androidx.room:room-runtime:$version"
             const val compiler = "androidx.room:room-compiler:$version"
             const val ktx = "androidx.room:room-ktx:$version"
         }
 
         object Compose {
-            const val version = "1.0.0-beta09"
+            const val version = "1.0.1"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -109,6 +113,6 @@ object Libs {
     }
 
     object Accompanist {
-        const val insets = "com.google.accompanist:accompanist-insets:0.12.0"
+        const val insets = "com.google.accompanist:accompanist-insets:0.15.0"
     }
 }
