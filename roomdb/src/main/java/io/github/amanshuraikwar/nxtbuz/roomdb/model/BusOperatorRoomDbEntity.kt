@@ -10,7 +10,7 @@ import kotlinx.datetime.Instant
     primaryKeys = ["busServiceNumber", "busStopCode"],
     tableName = "BusOperatorEntity"
 )
-data class BusOperatorRoomDbEntity(
+internal data class BusOperatorRoomDbEntity(
     val busServiceNumber: String,
     val busStopCode: String,
     val operator: String,

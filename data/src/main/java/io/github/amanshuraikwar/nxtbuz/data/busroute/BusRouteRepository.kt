@@ -1,8 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.data.busroute
 
 import android.util.Log
-import io.github.amanshuraikwar.ltaapi.LtaApi
-import io.github.amanshuraikwar.ltaapi.model.BusRouteItemDto
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRoute
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNode
@@ -10,6 +8,8 @@ import io.github.amanshuraikwar.nxtbuz.localdatasource.BusRouteEntity
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalHourMinute
 import io.github.amanshuraikwar.nxtbuz.localdatasource.OperatingBusEntity
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusRouteItemDto
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -22,7 +22,7 @@ import javax.inject.Singleton
 @Singleton
 class BusRouteRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
-    private val busApi: LtaApi,
+    private val remoteDataSource: RemoteDataSource,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
     fun setup(): Flow<Double> = flow {
@@ -81,7 +81,7 @@ class BusRouteRepository @Inject constructor(
                         "Something went wrong while getting skip param."
                     )
 
-                    val busRouteItemList = busApi.getBusRoutes(threadLocalSkip).busRouteList
+                    val busRouteItemList = remoteDataSource.getBusRoutes(threadLocalSkip)
 
                     // if bus route list fetched is empty
                     // set flag to stop the loop

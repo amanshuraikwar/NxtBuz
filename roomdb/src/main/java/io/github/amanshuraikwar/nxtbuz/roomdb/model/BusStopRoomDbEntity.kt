@@ -8,7 +8,7 @@ import androidx.room.Entity
     primaryKeys = ["code"],
     tableName = "BusStopEntity"
 )
-data class BusStopRoomDbEntity(
+internal data class BusStopRoomDbEntity(
     val code: String,
     val roadName: String,
     val description: String,

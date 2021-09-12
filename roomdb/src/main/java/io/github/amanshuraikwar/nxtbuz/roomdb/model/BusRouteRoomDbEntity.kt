@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 @Entity(tableName = "BusRouteEntity")
-data class BusRouteRoomDbEntity(
+internal data class BusRouteRoomDbEntity(
     val busServiceNumber: String,
     val busStopCode: String,
     val direction: Int,

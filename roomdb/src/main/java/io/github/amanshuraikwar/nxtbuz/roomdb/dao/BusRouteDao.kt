@@ -6,7 +6,7 @@ import kotlin.math.max
 
 @Suppress("unused")
 @Dao
-interface BusRouteDao {
+internal interface BusRouteDao {
     @Insert
     suspend fun insertAll(entities: List<BusRouteRoomDbEntity>)
 

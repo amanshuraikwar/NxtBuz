@@ -2,7 +2,7 @@ package io.github.amanshuraikwar.ltaapi.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ArrivingBusItemDto(
+internal data class ArrivingBusItemRetrofitDto(
     @SerializedName("OriginCode") val originCode: String,
     @SerializedName("DestinationCode") val destinationCode: String,
     @SerializedName("EstimatedArrival") val estimatedArrival: String,

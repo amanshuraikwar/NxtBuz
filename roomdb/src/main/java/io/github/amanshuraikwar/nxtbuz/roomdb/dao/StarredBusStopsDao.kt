@@ -8,7 +8,7 @@ import io.github.amanshuraikwar.nxtbuz.roomdb.model.StarredBusStopRoomDbEntity
 
 @Suppress("unused")
 @Dao
-interface StarredBusStopsDao {
+internal interface StarredBusStopsDao {
     @Insert
     fun insertAll(entities: List<StarredBusStopRoomDbEntity>)
 

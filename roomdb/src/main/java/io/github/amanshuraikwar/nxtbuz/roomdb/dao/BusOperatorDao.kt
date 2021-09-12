@@ -5,7 +5,7 @@ import io.github.amanshuraikwar.nxtbuz.roomdb.model.BusOperatorRoomDbEntity
 
 @Suppress("unused")
 @Dao
-interface BusOperatorDao {
+internal interface BusOperatorDao {
     @Insert
     suspend fun insertAll(entities: List<BusOperatorRoomDbEntity>)
 
