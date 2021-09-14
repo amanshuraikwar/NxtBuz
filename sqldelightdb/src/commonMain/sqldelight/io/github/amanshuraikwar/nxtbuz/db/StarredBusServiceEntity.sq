@@ -1,0 +1,24 @@
+CREATE TABLE StarredBusServiceEntity (
+    busStopCode TEXT NOT NULL,
+    busServiceNumber TEXT NOT NULL,
+    PRIMARY KEY (busStopCode, busServiceNumber)
+);
+
+insert:
+INSERT INTO StarredBusServiceEntity
+VALUES ?;
+
+deleteAll:
+DELETE FROM StarredBusServiceEntity;
+
+findAll:
+SELECT * FROM StarredBusServiceEntity;
+
+findByBusStopCode:
+SELECT * FROM StarredBusServiceEntity WHERE busStopCode = :busStopCode;
+
+findByBusStopCodeAndBusServiceNumber:
+SELECT * FROM StarredBusServiceEntity WHERE busStopCode = :busStopCode AND busServiceNumber = :busServiceNumber;
+
+deleteByBusStopCodeAndBusServiceNumber:
+DELETE FROM StarredBusServiceEntity WHERE busStopCode = :busStopCode AND busServiceNumber = :busServiceNumber;

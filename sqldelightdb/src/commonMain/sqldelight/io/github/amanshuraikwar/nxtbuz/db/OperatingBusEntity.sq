@@ -1,0 +1,27 @@
+CREATE TABLE OperatingBusEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    busStopCode TEXT NOT NULL,
+    busServiceNumber TEXT NOT NULL,
+    wdFirstBus TEXT DEFAULT NULL,
+    wdLastBus TEXT DEFAULT NULL,
+    satFirstBus TEXT DEFAULT NULL,
+    satLastBus TEXT DEFAULT NULL,
+    sunFirstBus TEXT DEFAULT NULL,
+    sunLastBus TEXT DEFAULT NULL
+);
+
+insert:
+INSERT INTO OperatingBusEntity(busStopCode, busServiceNumber, wdFirstBus, wdLastBus, satFirstBus, satLastBus, sunFirstBus, sunLastBus)
+VALUES(:busStopCode, :busServiceNumber, :wdFirstBus, :wdLastBus, :satFirstBus, :satLastBus, :sunFirstBus, :sunLastBus);
+
+deleteAll:
+DELETE FROM OperatingBusEntity;
+
+findAll:
+SELECT * FROM OperatingBusEntity;
+
+findByBusStopCode:
+SELECT * FROM OperatingBusEntity WHERE busStopCode = :busStopCode;
+
+findByBusStopCodeAndBusServiceNumber:
+SELECT * FROM OperatingBusEntity WHERE busStopCode = :busStopCode AND busServiceNumber = :busServiceNumber;

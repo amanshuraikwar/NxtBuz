@@ -5,9 +5,9 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import io.github.amanshuraikwar.nxtbuz.MainApplication
-import io.github.amanshuraikwar.nxtbuz.data.di.BusApiProvides
+import io.github.amanshuraikwar.nxtbuz.data.di.RemoteDataSourceProvides
 import io.github.amanshuraikwar.nxtbuz.data.di.PreferenceProvides
-import io.github.amanshuraikwar.nxtbuz.data.di.RoomProvides
+import io.github.amanshuraikwar.nxtbuz.data.di.LocalDataSourceProvides
 import io.github.amanshuraikwar.nxtbuz.data.location.di.LocationModuleProvides
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.map.di.MapProvides
@@ -30,10 +30,10 @@ import javax.inject.Singleton
         AppModule::class,
         ActivityBindingModule::class,
         ViewModelModule::class,
-        BusApiProvides::class,
+        RemoteDataSourceProvides::class,
         LocationModuleProvides::class,
         PreferenceProvides::class,
-        RoomProvides::class,
+        LocalDataSourceProvides::class,
         MapProvides::class,
         SetupModule::class,
     ]

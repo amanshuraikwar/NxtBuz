@@ -118,4 +118,10 @@ object Libs {
     object Accompanist {
         const val insets = "com.google.accompanist:accompanist-insets:0.15.0"
     }
+
+    object SqlDelight {
+        const val gradlePlugin = "com.squareup.sqldelight:gradle-plugin:1.5.0"
+        const val androidDriver = "com.squareup.sqldelight:android-driver:1.5.0"
+        const val nativeDriver = "com.squareup.sqldelight:native-driver:1.5.0"
+    }
 }

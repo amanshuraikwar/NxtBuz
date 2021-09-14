@@ -9,7 +9,7 @@ import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
 import javax.inject.Singleton
 
 @Module
-class BusApiProvides {
+class RemoteDataSourceProvides {
     @Provides
     @Singleton
     fun provideRemoteDataSource(

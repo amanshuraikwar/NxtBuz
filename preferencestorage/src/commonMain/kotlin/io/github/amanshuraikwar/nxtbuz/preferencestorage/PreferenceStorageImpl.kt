@@ -58,7 +58,7 @@ internal class PreferenceStorageImpl(
     )
 
     override var showMap by BooleanPreference(
-        settings, PREF_SHOW_MAP, true
+        settings, PREF_SHOW_MAP, false
     )
 
     override var permissionDeniedPermanently by BooleanPreference(
