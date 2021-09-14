@@ -3,9 +3,9 @@ package io.github.amanshuraikwar.nxtbuz.data.starred
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.starred.StarredBusService
 import io.github.amanshuraikwar.nxtbuz.common.model.starred.ToggleStarUpdate
-import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.localdatasource.StarredBusStopEntity
+import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject

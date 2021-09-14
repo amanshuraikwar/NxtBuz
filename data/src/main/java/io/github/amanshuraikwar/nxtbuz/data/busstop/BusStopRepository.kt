@@ -5,9 +5,9 @@ import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.Bus
 import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
-import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.localdatasource.BusStopEntity
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
+import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusStopItemDto
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
 import kotlinx.coroutines.async
