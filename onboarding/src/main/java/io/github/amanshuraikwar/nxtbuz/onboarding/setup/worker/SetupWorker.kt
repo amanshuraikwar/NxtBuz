@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.asFlow
 import androidx.work.*
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.android.HasAndroidInjector
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.user.SetupState
@@ -42,6 +43,9 @@ class SetupWorker(
 
         doSetupUseCase()
             .catch {
+                FirebaseCrashlytics.getInstance().recordException(it)
+                Log.e(TAG, "doWork: $it")
+                it.printStackTrace()
                 notificationHelper.cancelNotification(applicationContext)
                 success = false
             }

@@ -36,6 +36,9 @@ object Libs {
 
     object KotlinX {
         const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.1"
+        const val serializationCore = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1"
+        const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1"
+        const val serializationGradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.10"
     }
 
     object Coroutines {
@@ -123,5 +126,18 @@ object Libs {
         const val gradlePlugin = "com.squareup.sqldelight:gradle-plugin:1.5.0"
         const val androidDriver = "com.squareup.sqldelight:android-driver:1.5.0"
         const val nativeDriver = "com.squareup.sqldelight:native-driver:1.5.0"
+    }
+
+    object Ktor {
+        private const val version = "1.6.1"
+        const val clientCore = "io.ktor:ktor-client-core:$version"
+        const val clientJson = "io.ktor:ktor-client-json:$version"
+        const val clientLogging = "io.ktor:ktor-client-logging:$version"
+        const val clientSerialization = "io.ktor:ktor-client-serialization:$version"
+        const val clientAndroid = "io.ktor:ktor-client-android:$version"
+        const val clientApache = "io.ktor:ktor-client-apache:$version}"
+        const val clientIos = "io.ktor:ktor-client-ios:$version"
+        const val clientCio = "io.ktor:ktor-client-cio:$version"
+        const val clientJs = "io.ktor:ktor-client-js:$version"
     }
 }

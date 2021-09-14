@@ -65,7 +65,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".release"
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.release']
-            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
+            buildConfigField "String", "ltaAccountKey", "\""+localProperties['lta.account.key.release']+"\""
             manifestPlaceholders = [ appName : APP_NAME_RELEASE]
             debuggable false
         }
@@ -75,7 +75,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".release"
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.release']
-            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.release']+"\""
+            buildConfigField "String", "ltaAccountKey", "\""+localProperties['lta.account.key.release']+"\""
             manifestPlaceholders = [ appName : APP_NAME_INTERNAL]
             debuggable true
             matchingFallbacks = ['release']
@@ -83,7 +83,7 @@ android {
         debug {
             applicationIdSuffix ".debug"
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.debug']
-            buildConfigField "String", "ltaAccountkey", "\""+localProperties['lta.account.key.debug']+"\""
+            buildConfigField "String", "ltaAccountKey", "\""+localProperties['lta.account.key.debug']+"\""
             manifestPlaceholders = [ appName : APP_NAME_DEBUG]
             debuggable true
         }

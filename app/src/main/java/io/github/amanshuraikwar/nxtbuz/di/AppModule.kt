@@ -40,4 +40,11 @@ class AppModule {
             "${BuildConfig.VERSION_NAME}"
         }
     }
+
+    @Provides
+    @Singleton
+    @Named("ltaAccountKey")
+    fun provideLtaAccountKey(): String {
+        return BuildConfig.ltaAccountKey
+    }
 }
