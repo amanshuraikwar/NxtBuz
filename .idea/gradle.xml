@@ -19,13 +19,13 @@
             <option value="$PROJECT_DIR$/commonkmm" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/localdatasource" />
             <option value="$PROJECT_DIR$/ltaapi" />
             <option value="$PROJECT_DIR$/map" />
-            <option value="$PROJECT_DIR$/nxtbuzlocaldatasource" />
-            <option value="$PROJECT_DIR$/nxtbuzremotedatasource" />
             <option value="$PROJECT_DIR$/nxtbuztheme" />
             <option value="$PROJECT_DIR$/onboarding" />
             <option value="$PROJECT_DIR$/preferencestorage" />
+            <option value="$PROJECT_DIR$/remotedatasource" />
             <option value="$PROJECT_DIR$/roomdb" />
             <option value="$PROJECT_DIR$/search" />
             <option value="$PROJECT_DIR$/settings" />
