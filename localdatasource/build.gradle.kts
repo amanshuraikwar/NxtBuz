@@ -24,12 +24,16 @@ kotlin {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "14.1"
-        frameworkName = "nxtbuzremotedatasource"
+        frameworkName = "localdatasource"
         // set path to your ios project podfile, e.g. podfile = project.file("../iosApp/Podfile")
     }
     
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(Libs.KotlinX.datetime)
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))

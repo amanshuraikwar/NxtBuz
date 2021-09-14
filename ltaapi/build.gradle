@@ -43,7 +43,7 @@ android {
 
 dependencies {
     Libs.Kotlin.stdlib
-    implementation project(":nxtbuzremotedatasource")
+    implementation project(':remotedatasource')
 
     implementation Libs.Retrofit.retrofit
     implementation Libs.Retrofit.gsonConverter

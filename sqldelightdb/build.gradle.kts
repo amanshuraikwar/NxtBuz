@@ -39,7 +39,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":nxtbuzlocaldatasource"))
+                implementation(project(":localdatasource"))
                 implementation(Libs.Coroutines.core)
             }
         }

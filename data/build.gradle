@@ -36,8 +36,8 @@ dependencies {
     implementation project(":ltaapi")
     implementation project(":roomdb")
     implementation project(":sqldelightdb")
-    api project(":nxtbuzlocaldatasource")
-    api project(":nxtbuzremotedatasource")
+    api project(':localdatasource')
+    api project(':remotedatasource')
     api project(":preferencestorage")
 
     implementation Libs.Kotlin.stdlib

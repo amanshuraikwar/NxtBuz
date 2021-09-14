@@ -27,7 +27,7 @@ android {
 dependencies {
     implementation(Libs.Kotlin.stdlib)
     api(project(":common"))
-    api(project(":nxtbuzlocaldatasource"))
+    api(project(":localdatasource"))
     api(Libs.AndroidX.Room.runtime)
     kapt(Libs.AndroidX.Room.compiler)
     implementation(Libs.AndroidX.Room.ktx)
