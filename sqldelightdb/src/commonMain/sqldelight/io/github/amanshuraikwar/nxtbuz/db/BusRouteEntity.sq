@@ -1,0 +1,24 @@
+CREATE TABLE BusRouteEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    busServiceNumber TEXT NOT NULL,
+    busStopCode TEXT NOT NULL,
+    direction INTEGER NOT NULL,
+    stopSequence INTEGER NOT NULL,
+    distance REAL NOT NULL
+);
+
+insert:
+INSERT INTO BusRouteEntity(busServiceNumber, busStopCode, direction, stopSequence, distance)
+VALUES(:busServiceNumber, :busStopCode, :direction, :stopSequence, :distance);
+
+deleteAll:
+DELETE FROM BusRouteEntity;
+
+findByBusServiceNumber:
+SELECT * FROM BusRouteEntity WHERE busServiceNumber = :busServiceNumber;
+
+findByBusServiceNumberAndBusStopCode:
+SELECT * FROM BusRouteEntity WHERE busServiceNumber = :busServiceNumber AND busStopCode = :busStopCode;
+
+searchLikeBusServiceNumberAllOrder:
+SELECT * FROM BusRouteEntity WHERE busServiceNumber LIKE '%' || :busServiceNumber || '%' GROUP BY busServiceNumber, direction ORDER BY direction;

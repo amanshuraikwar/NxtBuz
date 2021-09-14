@@ -5,9 +5,17 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
+    id("com.squareup.sqldelight")
 }
 
 version = "1.0"
+
+sqldelight {
+    database("NxtBuzDb") {
+        packageName = "io.github.amanshuraikwar.nxtbuz.db"
+        sourceFolders = listOf("sqldelight")
+    }
+}
 
 kotlin {
     android()
@@ -24,14 +32,15 @@ kotlin {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "14.1"
-        frameworkName = "commonkmm"
+        frameworkName = "sqldelightdb"
         // set path to your ios project podfile, e.g. podfile = project.file("../iosApp/Podfile")
     }
     
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(Libs.Kotlin.stdlib)
+                implementation(project(":nxtbuzlocaldatasource"))
+                implementation(Libs.Coroutines.core)
             }
         }
         val commonTest by getting {
@@ -40,23 +49,31 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation(Libs.SqlDelight.androidDriver)
+            }
+        }
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosMain by getting
+        val iosMain by getting {
+            dependencies {
+                implementation(Libs.SqlDelight.nativeDriver)
+            }
+        }
         val iosTest by getting
     }
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = Libs.compileSdk
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(23)
-        targetSdkVersion(30)
+        minSdk = Libs.minSdk
+        targetSdk = Libs.targetSdk
     }
 }

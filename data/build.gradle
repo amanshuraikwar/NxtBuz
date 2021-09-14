@@ -35,6 +35,7 @@ dependencies {
     api project(":commonkmm")
     implementation project(":ltaapi")
     implementation project(":roomdb")
+    implementation project(":sqldelightdb")
     api project(":nxtbuzlocaldatasource")
     api project(":nxtbuzremotedatasource")
     api project(":preferencestorage")
