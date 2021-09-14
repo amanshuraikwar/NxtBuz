@@ -32,10 +32,12 @@ android {
 
 dependencies {
     api project(":common")
+    api project(":commonkmm")
     implementation project(":ltaapi")
     implementation project(":roomdb")
     api project(":nxtbuzlocaldatasource")
     api project(":nxtbuzremotedatasource")
+    api project(":preferencestorage")
 
     implementation Libs.Kotlin.stdlib
 

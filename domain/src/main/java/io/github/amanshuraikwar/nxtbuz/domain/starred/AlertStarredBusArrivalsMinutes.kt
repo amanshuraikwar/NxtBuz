@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.domain.starred
 
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.prefs.PreferenceStorage
+import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

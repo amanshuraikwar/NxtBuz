@@ -26,6 +26,7 @@ android {
 
 dependencies {
     api project(":common")
+    api project(":commonkmm")
     implementation project(":data")
 
     implementation Libs.Kotlin.stdlib

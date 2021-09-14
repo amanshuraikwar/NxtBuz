@@ -16,7 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsViewModel
 import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzApp
-import io.github.amanshuraikwar.nxtbuz.common.model.NxtBuzTheme
+import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.setupSystemBars
