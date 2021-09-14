@@ -32,6 +32,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Libs.Kotlin.stdlib)
+                implementation(Libs.Coroutines.core)
             }
         }
         val commonTest by getting {

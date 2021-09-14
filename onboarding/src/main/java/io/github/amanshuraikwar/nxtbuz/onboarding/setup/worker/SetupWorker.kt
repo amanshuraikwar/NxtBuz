@@ -6,7 +6,7 @@ import androidx.lifecycle.asFlow
 import androidx.work.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.android.HasAndroidInjector
-import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.user.SetupState
 import io.github.amanshuraikwar.nxtbuz.domain.user.DoSetupUseCase
 import kotlinx.coroutines.flow.Flow
