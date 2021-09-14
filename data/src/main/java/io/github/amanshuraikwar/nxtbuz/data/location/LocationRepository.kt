@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Tasks
-import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
 import io.github.amanshuraikwar.nxtbuz.common.model.location.PermissionStatus
 import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationOutput

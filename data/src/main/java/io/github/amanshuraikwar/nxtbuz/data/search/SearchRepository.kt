@@ -1,10 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.data.search
 
-import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.Bus
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
-import io.github.amanshuraikwar.nxtbuz.common.model.BusService
-import io.github.amanshuraikwar.nxtbuz.common.model.search.SearchResult
+import io.github.amanshuraikwar.nxtbuz.commonkmm.*
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

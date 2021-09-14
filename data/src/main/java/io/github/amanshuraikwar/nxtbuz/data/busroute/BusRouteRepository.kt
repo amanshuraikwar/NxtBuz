@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.data.busroute
 
 import android.util.Log
-import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRoute
 import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNode
 import io.github.amanshuraikwar.nxtbuz.localdatasource.BusRouteEntity

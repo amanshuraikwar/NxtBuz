@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.busstops.model
 
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop as BusStopData
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop as BusStopData
 
 sealed class BusStopsItemData {
     data class Header(

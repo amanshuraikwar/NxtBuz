@@ -132,6 +132,7 @@ android {
 
 dependencies {
     implementation project(':data')
+    implementation project(':busstopdata')
     implementation project(':domain')
     implementation project(':onboarding')
     implementation project(':ltaapi')

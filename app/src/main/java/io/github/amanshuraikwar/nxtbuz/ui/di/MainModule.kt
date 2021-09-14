@@ -11,7 +11,6 @@ import io.github.amanshuraikwar.nxtbuz.ui.MainViewModel
 
 @Module
 internal abstract class MainModule {
-
     @Binds
     internal abstract fun activity(a: MainActivity): Activity
 

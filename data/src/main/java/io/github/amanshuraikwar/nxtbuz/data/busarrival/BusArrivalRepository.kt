@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.data.busarrival
 
-import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.arrival.*
 import io.github.amanshuraikwar.nxtbuz.common.model.exception.IllegalDbStateException

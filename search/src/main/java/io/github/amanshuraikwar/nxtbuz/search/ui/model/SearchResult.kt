@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.search.ui.model
 
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 
 sealed class SearchResult {
     data class BusStopResult(

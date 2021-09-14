@@ -8,7 +8,7 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsScreenState
-import io.github.amanshuraikwar.nxtbuz.common.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.location.PermissionStatus
 import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationSettingsState

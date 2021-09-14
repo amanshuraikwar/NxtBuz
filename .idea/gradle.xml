@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/busroute" />
             <option value="$PROJECT_DIR$/busstop" />
+            <option value="$PROJECT_DIR$/busstopdata" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/commonkmm" />
             <option value="$PROJECT_DIR$/data" />
