@@ -33,8 +33,7 @@ android {
 dependencies {
     api project(":common")
     api project(":commonkmm")
-    implementation project(":ltaapi")
-    implementation project(":roomdb")
+    implementation project(":ktorremotedatasource")
     implementation project(":sqldelightdb")
     api project(':localdatasource')
     api project(':remotedatasource')

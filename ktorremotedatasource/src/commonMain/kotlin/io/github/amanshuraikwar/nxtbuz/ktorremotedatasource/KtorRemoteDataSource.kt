@@ -1,11 +1,11 @@
-package io.github.amanshuraikwar.ltaapi
+package io.github.amanshuraikwar.nxtbuz.ktorremotedatasource
 
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-class RetrofitRemoteDataSource internal constructor(
-    private val ltaApi: LtaApi,
+class KtorRemoteDataSource internal constructor(
+    private val ltaApi: LtaBusApi,
     private val ioDispatcher: CoroutineDispatcher
 ) : RemoteDataSource {
     override suspend fun getBusStops(skip: Int): List<BusStopItemDto> {
@@ -111,7 +111,7 @@ class RetrofitRemoteDataSource internal constructor(
                                 direction = busRouteItem.direction,
                                 stopSequence = busRouteItem.stopSequence,
                                 busStopCode = busRouteItem.busStopCode,
-                                distance = busRouteItem.distance,
+                                distance = busRouteItem.distance ?: 0.0,
                                 wdFirstBus = busRouteItem.wdFirstBus,
                                 wdLastBus = busRouteItem.wdLastBus,
                                 satFirstBus = busRouteItem.satFirstBus,
@@ -130,8 +130,8 @@ class RetrofitRemoteDataSource internal constructor(
             addLoggingInterceptors: Boolean,
             ioDispatcher: CoroutineDispatcher
         ): RemoteDataSource {
-            return RetrofitRemoteDataSource(
-                ltaApi = LtaApi
+            return KtorRemoteDataSource(
+                ltaApi = LtaBusApi
                     .createInstance(
                         addLoggingInterceptors = addLoggingInterceptors,
                         ltaAccountKey = ltaAccountKey,

@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/commonkmm" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/ktorremotedatasource" />
             <option value="$PROJECT_DIR$/localdatasource" />
             <option value="$PROJECT_DIR$/ltaapi" />
             <option value="$PROJECT_DIR$/map" />
