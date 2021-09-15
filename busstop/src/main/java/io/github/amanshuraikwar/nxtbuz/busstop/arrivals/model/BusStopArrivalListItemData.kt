@@ -1,8 +1,8 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model
 
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusLoad
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 
 sealed class BusStopArrivalListItemData {
     data class Header(

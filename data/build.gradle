@@ -38,7 +38,8 @@ dependencies {
     api project(':localdatasource')
     api project(':remotedatasource')
     api project(":preferencestorage")
-    implementation project(":busstopdata")
+    api project(":busstopdata")
+    api project(":userdata")
 
     implementation Libs.Kotlin.stdlib
 

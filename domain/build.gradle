@@ -29,6 +29,7 @@ dependencies {
     api project(":commonkmm")
     implementation project(":data")
     implementation project(":busstopdata")
+    implementation project(":userdata")
 
     implementation Libs.Kotlin.stdlib
 

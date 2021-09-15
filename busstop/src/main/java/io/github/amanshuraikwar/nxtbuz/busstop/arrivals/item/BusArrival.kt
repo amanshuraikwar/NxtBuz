@@ -21,7 +21,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.common.compose.VerticalInOutAnimatedContent
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusLoad
 import io.github.amanshuraikwar.nxtbuz.common.util.toArrivalString
 
 @ExperimentalAnimationApi

@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.domain.starred
 
-import io.github.amanshuraikwar.nxtbuz.common.model.starred.StarredBusArrival
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
+import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusArrival
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.loop.Loop

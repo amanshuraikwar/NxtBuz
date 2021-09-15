@@ -2,9 +2,9 @@ package io.github.amanshuraikwar.nxtbuz.data.busarrival
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.*
-import io.github.amanshuraikwar.nxtbuz.common.model.exception.IllegalDbStateException
+import io.github.amanshuraikwar.nxtbuz.commonkmm.exception.IllegalDbStateException
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.*
 import io.github.amanshuraikwar.nxtbuz.localdatasource.*
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.ArrivingBusItemDto
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusArrivalItemDto

@@ -11,9 +11,9 @@ import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteScreenState
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.model.*
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusStopArrival
-import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRoute
-import io.github.amanshuraikwar.nxtbuz.common.model.busroute.BusRouteNode
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusStopArrival
+import io.github.amanshuraikwar.nxtbuz.commonkmm.busroute.BusRoute
+import io.github.amanshuraikwar.nxtbuz.commonkmm.busroute.BusRouteNode
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil

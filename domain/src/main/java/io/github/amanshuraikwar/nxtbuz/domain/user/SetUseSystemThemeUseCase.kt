@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.user
 
-import io.github.amanshuraikwar.nxtbuz.data.user.UserRepository
+import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
 import javax.inject.Inject
 
 class SetUseSystemThemeUseCase @Inject constructor(

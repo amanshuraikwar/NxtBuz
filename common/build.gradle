@@ -50,6 +50,7 @@ android {
 dependencies {
     Libs.Kotlin.stdlib
     implementation project(':nxtbuztheme')
+    implementation project(':commonkmm')
 
     implementation Libs.Coroutines.core
     implementation Libs.Coroutines.android
