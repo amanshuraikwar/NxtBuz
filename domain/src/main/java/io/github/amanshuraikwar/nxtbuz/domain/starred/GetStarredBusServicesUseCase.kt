@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.starred
 
-import io.github.amanshuraikwar.nxtbuz.common.model.starred.StarredBusService
+import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusService
 import io.github.amanshuraikwar.nxtbuz.data.starred.StarredBusArrivalRepository
 import javax.inject.Inject
 

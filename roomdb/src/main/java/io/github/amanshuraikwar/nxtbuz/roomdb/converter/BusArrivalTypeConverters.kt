@@ -1,9 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.roomdb.converter
 
 import androidx.room.TypeConverter
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivalStatus
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusArrivalStatus
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusLoad
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 
 internal object BusArrivalTypeConverters {
     @TypeConverter

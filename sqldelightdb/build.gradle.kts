@@ -33,7 +33,7 @@ kotlin {
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "14.1"
         frameworkName = "sqldelightdb"
-        // set path to your ios project podfile, e.g. podfile = project.file("../iosApp/Podfile")
+        podfile = project.file("../NxtBuz/Podfile")
     }
     
     sourceSets {

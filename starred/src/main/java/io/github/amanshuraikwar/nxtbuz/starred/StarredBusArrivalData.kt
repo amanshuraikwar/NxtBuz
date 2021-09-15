@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.starred
 
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusArrivals
 
 data class StarredBusArrivalData(
     val busStopDescription: String,

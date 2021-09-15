@@ -2,9 +2,9 @@ package io.github.amanshuraikwar.nxtbuz.roomdb.model
 
 import androidx.annotation.RestrictTo
 import androidx.room.Entity
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivalStatus
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusArrivalStatus
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusLoad
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
