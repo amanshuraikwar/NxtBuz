@@ -18,29 +18,40 @@ kotlin {
         else
             ::iosX64
 
-    iosTarget("ios") {}
+    iosTarget("ios") {
+        binaries.withType<org.jetbrains.kotlin.gradle.plugin.mpp.Framework> {
+            export(project(":commonkmm"))
+            export(project(":ktorremotedatasource"))
+            export(project(":localdatasource"))
+            export(project(":preferencestorage"))
+            export(project(":remotedatasource"))
+            export(project(":sqldelightdb"))
+            export(project(":userdata"))
+            export(project(":busstopdata"))
+            transitiveExport = true
+        }
+    }
 
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "14.1"
-        frameworkName = "busstopdata"
-        podfile = project.file("../NxtBuz/Podfile")
+        frameworkName = "iosUmbrella"
+        // set path to your ios project podfile, e.g. podfile = project.file("../iosApp/Podfile")
     }
-
+    
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(project(":commonkmm"))
-                implementation(project(":ktorremotedatasource"))
-                implementation(project(":sqldelightdb"))
+                api(project(":ktorremotedatasource"))
                 api(project(":localdatasource"))
-                api(project(":remotedatasource"))
                 api(project(":preferencestorage"))
-
-                implementation(Libs.Kotlin.stdlib)
+                api(project(":remotedatasource"))
+                api(project(":sqldelightdb"))
+                api(project(":userdata"))
+                api(project(":busstopdata"))
                 implementation(Libs.Coroutines.core)
-                implementation(Libs.KotlinX.datetime)
             }
         }
         val commonTest by getting {
@@ -62,10 +73,10 @@ kotlin {
 }
 
 android {
-    compileSdk = io.github.amanshuraikwar.nxtbuz.buildSrc.Libs.compileSdk
+    compileSdk = Libs.compileSdk
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = io.github.amanshuraikwar.nxtbuz.buildSrc.Libs.minSdk
-        targetSdk = io.github.amanshuraikwar.nxtbuz.buildSrc.Libs.targetSdk
+        minSdk = Libs.minSdk
+        targetSdk = Libs.targetSdk
     }
 }

@@ -1,11 +1,5 @@
 target 'NxtBuz' do
   use_frameworks!
   platform :ios, '14.1'
-  pod 'busstopdata', :path => '../busstopdata'
-  pod 'commonkmm', :path => '../commonkmm'
-  pod 'ktorremotedatasource', :path => '../ktorremotedatasource'
-  pod 'localdatasource', :path => '../localdatasource'
-  pod 'preferencestorage', :path => '../preferencestorage'
-  pod 'remotedatasource', :path => '../remotedatasource'
-  pod 'sqldelightdb', :path => '../sqldelightdb'
+  pod 'iosUmbrella', :path => '../iosUmbrella'
 end

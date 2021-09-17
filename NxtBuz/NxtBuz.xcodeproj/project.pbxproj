@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		330B80CE431092BF34A8E443 /* Pods_NxtBuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28AA4492D8F5FF8568D1DFF4 /* Pods_NxtBuz.framework */; };
+		330A27DEAD4AB9A714E2473A /* Pods_NxtBuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */; };
 		A5E1E81926F10213007470A4 /* NxtBuzApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E1E81826F10213007470A4 /* NxtBuzApp.swift */; };
 		A5E1E81B26F10213007470A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E1E81A26F10213007470A4 /* ContentView.swift */; };
 		A5E1E81D26F10216007470A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E1E81C26F10216007470A4 /* Assets.xcassets */; };
@@ -34,9 +34,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		28AA4492D8F5FF8568D1DFF4 /* Pods_NxtBuz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NxtBuz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		400F8E26A59226AF6D03214B /* Pods-NxtBuz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz.debug.xcconfig"; path = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.debug.xcconfig"; sourceTree = "<group>"; };
-		6FD996A6DBAD4226AD4C53EE /* Pods-NxtBuz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.release.xcconfig"; sourceTree = "<group>"; };
 		A5E1E81526F10213007470A4 /* NxtBuz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NxtBuz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E1E81826F10213007470A4 /* NxtBuzApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NxtBuzApp.swift; sourceTree = "<group>"; };
 		A5E1E81A26F10213007470A4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -49,6 +46,9 @@
 		A5E1E83126F10217007470A4 /* NxtBuzUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NxtBuzUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E1E83526F10217007470A4 /* NxtBuzUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NxtBuzUITests.swift; sourceTree = "<group>"; };
 		A5E1E83726F10217007470A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AACB50D4905E209E0EFD01A1 /* Pods-NxtBuz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz.debug.xcconfig"; path = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.debug.xcconfig"; sourceTree = "<group>"; };
+		B3D756E3D85E99C0D6B8FF34 /* Pods-NxtBuz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.release.xcconfig"; sourceTree = "<group>"; };
+		BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NxtBuz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				330B80CE431092BF34A8E443 /* Pods_NxtBuz.framework in Frameworks */,
+				330A27DEAD4AB9A714E2473A /* Pods_NxtBuz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,13 +77,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6D6BCB0E4AEB20D90F279C30 /* Pods */ = {
+		85E5C2E06476F8CE84A24F24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				400F8E26A59226AF6D03214B /* Pods-NxtBuz.debug.xcconfig */,
-				6FD996A6DBAD4226AD4C53EE /* Pods-NxtBuz.release.xcconfig */,
+				BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */,
 			);
-			name = Pods;
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9F8567213E5A41566A3F5DBF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AACB50D4905E209E0EFD01A1 /* Pods-NxtBuz.debug.xcconfig */,
+				B3D756E3D85E99C0D6B8FF34 /* Pods-NxtBuz.release.xcconfig */,
+			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -94,8 +101,8 @@
 				A5E1E82926F10217007470A4 /* NxtBuzTests */,
 				A5E1E83426F10217007470A4 /* NxtBuzUITests */,
 				A5E1E81626F10213007470A4 /* Products */,
-				6D6BCB0E4AEB20D90F279C30 /* Pods */,
-				FF9D292A9B88131C954623CE /* Frameworks */,
+				9F8567213E5A41566A3F5DBF /* Pods */,
+				85E5C2E06476F8CE84A24F24 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -147,14 +154,6 @@
 			path = NxtBuzUITests;
 			sourceTree = "<group>";
 		};
-		FF9D292A9B88131C954623CE /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				28AA4492D8F5FF8568D1DFF4 /* Pods_NxtBuz.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -162,7 +161,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A5E1E83A26F10217007470A4 /* Build configuration list for PBXNativeTarget "NxtBuz" */;
 			buildPhases = (
-				CEE39FB57F4C25095E2D4BA5 /* [CP] Check Pods Manifest.lock */,
+				F09E266CC262F56C61E93A20 /* [CP] Check Pods Manifest.lock */,
 				A5E1E81126F10213007470A4 /* Sources */,
 				A5E1E81226F10213007470A4 /* Frameworks */,
 				A5E1E81326F10213007470A4 /* Resources */,
@@ -281,7 +280,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		CEE39FB57F4C25095E2D4BA5 /* [CP] Check Pods Manifest.lock */ = {
+		F09E266CC262F56C61E93A20 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -465,7 +464,7 @@
 		};
 		A5E1E83B26F10217007470A4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 400F8E26A59226AF6D03214B /* Pods-NxtBuz.debug.xcconfig */;
+			baseConfigurationReference = AACB50D4905E209E0EFD01A1 /* Pods-NxtBuz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -479,6 +478,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-framework",
+					"\"iosUmbrella\"",
+					"-l\"sqlite3\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -488,7 +495,7 @@
 		};
 		A5E1E83C26F10217007470A4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6FD996A6DBAD4226AD4C53EE /* Pods-NxtBuz.release.xcconfig */;
+			baseConfigurationReference = B3D756E3D85E99C0D6B8FF34 /* Pods-NxtBuz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

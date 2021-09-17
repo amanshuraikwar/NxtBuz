@@ -7,250 +7,80 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		0F5EBFC10A44308415B98E4439145282 /* remotedatasource */ = {
+		BCE58225176923716EE529F94DB683EF /* iosUmbrella */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 065D25F359AD294F79EDB54A207B6DBF /* Build configuration list for PBXAggregateTarget "remotedatasource" */;
+			buildConfigurationList = F3ED4C41EDBC1F25D9662294E07AFC07 /* Build configuration list for PBXAggregateTarget "iosUmbrella" */;
 			buildPhases = (
-				F1F0DE9CBEC72C63D65E9367E87AEB3A /* [CP-User] Build remotedatasource */,
+				1AC6F1F607766423BC9692FB8182E89C /* [CP-User] Build iosUmbrella */,
 			);
 			dependencies = (
 			);
-			name = remotedatasource;
-		};
-		10D95BFCF5F9B0C55A50D8E5B8702755 /* commonkmm */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = E44600D9DF5EF68EEAABDC25F1C0588B /* Build configuration list for PBXAggregateTarget "commonkmm" */;
-			buildPhases = (
-				2D11DFB7C04489C69B06389EE83C8DAC /* [CP-User] Build commonkmm */,
-			);
-			dependencies = (
-			);
-			name = commonkmm;
-		};
-		6C24E52BC4B7ADF48D2D32C1BDB1F65C /* sqldelightdb */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = DF0586A7AA9D6AD2E0E3050DB3557D5E /* Build configuration list for PBXAggregateTarget "sqldelightdb" */;
-			buildPhases = (
-				5F4D61C338419643CE8EB390A3545767 /* [CP-User] Build sqldelightdb */,
-			);
-			dependencies = (
-			);
-			name = sqldelightdb;
-		};
-		91B9B8039CB34B863F9CC6DEFE4E5368 /* localdatasource */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 3BAA6492040D376AA11B8900D29E46A4 /* Build configuration list for PBXAggregateTarget "localdatasource" */;
-			buildPhases = (
-				0B32BB935EB4C5CD880FBE68CBB8A4E7 /* [CP-User] Build localdatasource */,
-			);
-			dependencies = (
-			);
-			name = localdatasource;
-		};
-		9D4B70B13A8BB224AD3E2828F63DCBAA /* busstopdata */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = EC1B8E963CFCC41CF146F86AEBC875B9 /* Build configuration list for PBXAggregateTarget "busstopdata" */;
-			buildPhases = (
-				8D49F2E0754E07BF6695235B60255A75 /* [CP-User] Build busstopdata */,
-			);
-			dependencies = (
-			);
-			name = busstopdata;
-		};
-		CCB05136BCE22FD240DD892A3973A22E /* preferencestorage */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 904B3748E5D40248D250C497717A5891 /* Build configuration list for PBXAggregateTarget "preferencestorage" */;
-			buildPhases = (
-				2753126670248B9A04B108A1C4B50D7F /* [CP-User] Build preferencestorage */,
-			);
-			dependencies = (
-			);
-			name = preferencestorage;
-		};
-		D39E19D40D9779831CC2417F92EB75DB /* ktorremotedatasource */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = ED1AFFD40D94F448DB160D0682DA98EC /* Build configuration list for PBXAggregateTarget "ktorremotedatasource" */;
-			buildPhases = (
-				8E65AEB3E1BD5CBF0A5A721F032B4F31 /* [CP-User] Build ktorremotedatasource */,
-			);
-			dependencies = (
-			);
-			name = ktorremotedatasource;
+			name = iosUmbrella;
 		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		4170EADADD7C4D4B44765D8A14E3B79E /* Pods-NxtBuz-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 1943CE3470D52E72BE6FB925358B3E8C /* Pods-NxtBuz-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FED62BC5917B7067DC6E1E7FBA00BD37 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		FF3951F28C28236F6E810481F38755F2 /* Pods-NxtBuz-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D492BDA514400B43BB5AB83236113A80 /* Pods-NxtBuz-dummy.m */; };
+		2CA9FA2AF30374F3B2412467E962AE66 /* Pods-NxtBuz-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 1943CE3470D52E72BE6FB925358B3E8C /* Pods-NxtBuz-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5D0AC60B5E97111B742483BD48FF6621 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		AEB8B7F3CB99335A481CB86C753EED3C /* Pods-NxtBuz-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D492BDA514400B43BB5AB83236113A80 /* Pods-NxtBuz-dummy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		277A28A17E9B08FE8E4C11BE725FB1EE /* PBXContainerItemProxy */ = {
+		1C26D146ADA4EAC7C398AD6EFC982F37 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 0F5EBFC10A44308415B98E4439145282;
-			remoteInfo = remotedatasource;
-		};
-		2F3617E448492A0E2320011ABA95B2E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9D4B70B13A8BB224AD3E2828F63DCBAA;
-			remoteInfo = busstopdata;
-		};
-		53F091F78FBE8A4DC830BC301CFC2D53 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 91B9B8039CB34B863F9CC6DEFE4E5368;
-			remoteInfo = localdatasource;
-		};
-		A15551BEED86A07370C5770D6971A61F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D39E19D40D9779831CC2417F92EB75DB;
-			remoteInfo = ktorremotedatasource;
-		};
-		AFD18619A94FE64F76ED6BFC7084D007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 10D95BFCF5F9B0C55A50D8E5B8702755;
-			remoteInfo = commonkmm;
-		};
-		EE0316A004458AD64470EEB66842ABDE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CCB05136BCE22FD240DD892A3973A22E;
-			remoteInfo = preferencestorage;
-		};
-		F5DC084103CC27239182EEE2BDC62207 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6C24E52BC4B7ADF48D2D32C1BDB1F65C;
-			remoteInfo = sqldelightdb;
+			remoteGlobalIDString = BCE58225176923716EE529F94DB683EF;
+			remoteInfo = iosUmbrella;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		080614C311BD884680BBC73BBE965BF0 /* Pods_NxtBuz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_NxtBuz.framework; path = "Pods-NxtBuz.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		175FF0947C727EB3B6104E2FDE5683DD /* commonkmm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = commonkmm.framework; path = build/cocoapods/framework/commonkmm.framework; sourceTree = "<group>"; };
+		086BEC6B96EDD9C8168C83E0DCBD6202 /* iosUmbrella.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iosUmbrella.framework; path = build/cocoapods/framework/iosUmbrella.framework; sourceTree = "<group>"; };
 		1943CE3470D52E72BE6FB925358B3E8C /* Pods-NxtBuz-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-NxtBuz-umbrella.h"; sourceTree = "<group>"; };
-		1AFC1B0FC285B2EC5410D9A431B80393 /* remotedatasource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = remotedatasource.debug.xcconfig; sourceTree = "<group>"; };
 		1E87E9AD2FE5A50B0F4D7351FB612A43 /* Pods-NxtBuz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NxtBuz.debug.xcconfig"; sourceTree = "<group>"; };
 		2EA7A90AF46E620C37D7F066D55B8AAB /* Pods-NxtBuz-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NxtBuz-acknowledgements.markdown"; sourceTree = "<group>"; };
 		3E77282AC4BBE725640DBE930E13CE2D /* Pods-NxtBuz.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-NxtBuz.modulemap"; sourceTree = "<group>"; };
 		3F1F60096424A6CD5B96D0EFBEF8985C /* Pods-NxtBuz-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NxtBuz-acknowledgements.plist"; sourceTree = "<group>"; };
-		56628B2AE4D2C031C1DD32916DEFD24C /* preferencestorage.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = preferencestorage.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		58F17DA725BE4F912D60AF13ADD88883 /* remotedatasource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = remotedatasource.release.xcconfig; sourceTree = "<group>"; };
-		5DA927CF2CF00F8F4552FA08C4055863 /* sqldelightdb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = sqldelightdb.framework; path = build/cocoapods/framework/sqldelightdb.framework; sourceTree = "<group>"; };
-		648FF9D8C4E22EBFAF9E6CCB75AACACF /* busstopdata.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = busstopdata.debug.xcconfig; sourceTree = "<group>"; };
-		65183FF30CB133A8CB8414B1A757C8C1 /* preferencestorage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = preferencestorage.release.xcconfig; sourceTree = "<group>"; };
+		4DEEEABD661E013793D862F9D055622D /* iosUmbrella.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = iosUmbrella.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		6693223BFDD9FAFD65C96547A934123B /* iosUmbrella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = iosUmbrella.debug.xcconfig; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		7AA79621F42B3825193DD68D72FD04EE /* sqldelightdb.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = sqldelightdb.release.xcconfig; sourceTree = "<group>"; };
-		7E9C3393BD49BB8D7DF0F1EF0A528B9E /* commonkmm.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = commonkmm.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		8E5CE63C15136D82A3BE3B7E8993D589 /* sqldelightdb.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = sqldelightdb.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		96E472A4F72A50903E75ABE5E926C9D7 /* remotedatasource.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = remotedatasource.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		982864691969FAB22AB2311DE65CAD0F /* localdatasource.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = localdatasource.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9D5AE9505C2FBC110E41CC8489DEE447 /* busstopdata.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = busstopdata.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A00AEF20EA5313A2BBF243C617095BFB /* ktorremotedatasource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ktorremotedatasource.debug.xcconfig; sourceTree = "<group>"; };
-		A1558F1D6EB748524492B08AF8361213 /* commonkmm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = commonkmm.debug.xcconfig; sourceTree = "<group>"; };
-		ABB2577EEB99E987E71E8881BF5DE8BF /* preferencestorage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = preferencestorage.debug.xcconfig; sourceTree = "<group>"; };
-		B006213011A1AA5A5A127E02DE3B0E30 /* busstopdata.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = busstopdata.release.xcconfig; sourceTree = "<group>"; };
-		B672F456E93C940D385AFE29E0BA8A90 /* commonkmm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = commonkmm.release.xcconfig; sourceTree = "<group>"; };
-		B8F067C60AA1D9DEDF00216993BEF1AF /* localdatasource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = localdatasource.framework; path = build/cocoapods/framework/localdatasource.framework; sourceTree = "<group>"; };
+		AA87808EA057395999F67DDF5F8494AB /* iosUmbrella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = iosUmbrella.release.xcconfig; sourceTree = "<group>"; };
 		BEB607A6D973AF2E5CE46064D1D6D071 /* Pods-NxtBuz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NxtBuz.release.xcconfig"; sourceTree = "<group>"; };
-		C2E438842424B577930454756D4E2B06 /* ktorremotedatasource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ktorremotedatasource.release.xcconfig; sourceTree = "<group>"; };
 		C46E2CACCD9C6F736465DB89541DA3CD /* Pods-NxtBuz-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NxtBuz-Info.plist"; sourceTree = "<group>"; };
-		C4758CBE01B8BEF541F439A64590A92A /* remotedatasource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = remotedatasource.framework; path = build/cocoapods/framework/remotedatasource.framework; sourceTree = "<group>"; };
-		CA25E3316538842F761B08E37649ECAB /* localdatasource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = localdatasource.release.xcconfig; sourceTree = "<group>"; };
-		CE59ADE692245A098263267EBBD9CDC5 /* preferencestorage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = preferencestorage.framework; path = build/cocoapods/framework/preferencestorage.framework; sourceTree = "<group>"; };
 		D492BDA514400B43BB5AB83236113A80 /* Pods-NxtBuz-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-NxtBuz-dummy.m"; sourceTree = "<group>"; };
-		D5A7A9F46F4C4D48E384C911F2628EB2 /* localdatasource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = localdatasource.debug.xcconfig; sourceTree = "<group>"; };
-		E88C1EC0C850BBB12B5C8BFEDD38B494 /* sqldelightdb.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = sqldelightdb.debug.xcconfig; sourceTree = "<group>"; };
-		E94B8143482900DD8B8518147EB69CEF /* ktorremotedatasource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ktorremotedatasource.framework; path = build/cocoapods/framework/ktorremotedatasource.framework; sourceTree = "<group>"; };
-		F09E19A3A5790C5E39850077ADD8FB1A /* ktorremotedatasource.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = ktorremotedatasource.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		FB11EA85CAB2DBE762756FD3ECB5E6AB /* busstopdata.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = busstopdata.framework; path = build/cocoapods/framework/busstopdata.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9E6D58D19278D7E9F56D7261125B3DE8 /* Frameworks */ = {
+		B7D8D65A582CE51CAA5006C6171A8F05 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FED62BC5917B7067DC6E1E7FBA00BD37 /* Foundation.framework in Frameworks */,
+				5D0AC60B5E97111B742483BD48FF6621 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0641637582A7AF674F9B7D39A214364F /* Support Files */ = {
+		17CA57B5B959872E544ADEA695BBF093 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E88C1EC0C850BBB12B5C8BFEDD38B494 /* sqldelightdb.debug.xcconfig */,
-				7AA79621F42B3825193DD68D72FD04EE /* sqldelightdb.release.xcconfig */,
+				086BEC6B96EDD9C8168C83E0DCBD6202 /* iosUmbrella.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1E298E6F682B9A98F8473D557C61789F /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				6693223BFDD9FAFD65C96547A934123B /* iosUmbrella.debug.xcconfig */,
+				AA87808EA057395999F67DDF5F8494AB /* iosUmbrella.release.xcconfig */,
 			);
 			name = "Support Files";
-			path = "../NxtBuz/Pods/Target Support Files/sqldelightdb";
-			sourceTree = "<group>";
-		};
-		067181977CE9E0742F972C9F60D071D0 /* commonkmm */ = {
-			isa = PBXGroup;
-			children = (
-				7FF5345AF23DE1BEDA4044CB387B2A84 /* Frameworks */,
-				FA8665D6B3590B2A9C1D82B1957CE2D5 /* Pod */,
-				E7C0A6CE9CFB2D4B435BBF06924D2D92 /* Support Files */,
-			);
-			name = commonkmm;
-			path = ../../commonkmm;
-			sourceTree = "<group>";
-		};
-		09113D3717B408B3E8FB3B076A6B1E28 /* localdatasource */ = {
-			isa = PBXGroup;
-			children = (
-				6802E3C2FCBEA3C75511B2AEAE432DB1 /* Frameworks */,
-				B285D310A7B68B0F4BAC771F694776F3 /* Pod */,
-				9D49A39759FCF3C6BE8CEFE08C94EDBA /* Support Files */,
-			);
-			name = localdatasource;
-			path = ../../localdatasource;
-			sourceTree = "<group>";
-		};
-		1023FA07D6DD1DDABFA6605338ED2FEA /* ktorremotedatasource */ = {
-			isa = PBXGroup;
-			children = (
-				A4EEDD088882B033153D48986B1D6B39 /* Frameworks */,
-				E08F13599A7872454EB5D2886D2E7643 /* Pod */,
-				46D5903AE54F2C1CCABD24536A93821A /* Support Files */,
-			);
-			name = ktorremotedatasource;
-			path = ../../ktorremotedatasource;
-			sourceTree = "<group>";
-		};
-		196A0AEFDF7AD52537D475B315613C07 /* busstopdata */ = {
-			isa = PBXGroup;
-			children = (
-				9B3F3356C1E2A23E1710BC9D5D4CA1FB /* Frameworks */,
-				1AD8900333901DD9076A416B71112ACA /* Pod */,
-				45221537B61F8E8D6B7273C2A69185DA /* Support Files */,
-			);
-			name = busstopdata;
-			path = ../../busstopdata;
-			sourceTree = "<group>";
-		};
-		1AD8900333901DD9076A416B71112ACA /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				9D5AE9505C2FBC110E41CC8489DEE447 /* busstopdata.podspec */,
-			);
-			name = Pod;
+			path = "../NxtBuz/Pods/Target Support Files/iosUmbrella";
 			sourceTree = "<group>";
 		};
 		27BE2B2B961FF01577FBE23F895388E0 /* Products */ = {
@@ -261,67 +91,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2F2B3629959801AAE8E07538C9B83E34 /* Frameworks */ = {
+		4462177CBCECB9F0B57CD1A24C65FF07 /* iosUmbrella */ = {
 			isa = PBXGroup;
 			children = (
-				CE59ADE692245A098263267EBBD9CDC5 /* preferencestorage.framework */,
+				17CA57B5B959872E544ADEA695BBF093 /* Frameworks */,
+				C33672B3B9081DCA841DD81CB428E347 /* Pod */,
+				1E298E6F682B9A98F8473D557C61789F /* Support Files */,
 			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		417E3E1A47F44876A2389E0B23612D62 /* Development Pods */ = {
-			isa = PBXGroup;
-			children = (
-				196A0AEFDF7AD52537D475B315613C07 /* busstopdata */,
-				067181977CE9E0742F972C9F60D071D0 /* commonkmm */,
-				1023FA07D6DD1DDABFA6605338ED2FEA /* ktorremotedatasource */,
-				09113D3717B408B3E8FB3B076A6B1E28 /* localdatasource */,
-				535C634584640C8C182CD1F1A51CD665 /* preferencestorage */,
-				F9B3BBEB1925B91EA42F87D5E68F2B56 /* remotedatasource */,
-				891442813C8E1C5CB392B47EBEB61FAD /* sqldelightdb */,
-			);
-			name = "Development Pods";
-			sourceTree = "<group>";
-		};
-		45221537B61F8E8D6B7273C2A69185DA /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				648FF9D8C4E22EBFAF9E6CCB75AACACF /* busstopdata.debug.xcconfig */,
-				B006213011A1AA5A5A127E02DE3B0E30 /* busstopdata.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../NxtBuz/Pods/Target Support Files/busstopdata";
-			sourceTree = "<group>";
-		};
-		46D5903AE54F2C1CCABD24536A93821A /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				A00AEF20EA5313A2BBF243C617095BFB /* ktorremotedatasource.debug.xcconfig */,
-				C2E438842424B577930454756D4E2B06 /* ktorremotedatasource.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../NxtBuz/Pods/Target Support Files/ktorremotedatasource";
-			sourceTree = "<group>";
-		};
-		525A9C42640DFAF59200DF5C2C7F86A2 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				ABB2577EEB99E987E71E8881BF5DE8BF /* preferencestorage.debug.xcconfig */,
-				65183FF30CB133A8CB8414B1A757C8C1 /* preferencestorage.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../NxtBuz/Pods/Target Support Files/preferencestorage";
-			sourceTree = "<group>";
-		};
-		535C634584640C8C182CD1F1A51CD665 /* preferencestorage */ = {
-			isa = PBXGroup;
-			children = (
-				2F2B3629959801AAE8E07538C9B83E34 /* Frameworks */,
-				7FEC3509156610B3677EE4D38373207E /* Pod */,
-				525A9C42640DFAF59200DF5C2C7F86A2 /* Support Files */,
-			);
-			name = preferencestorage;
-			path = ../../preferencestorage;
+			name = iosUmbrella;
+			path = ../../iosUmbrella;
 			sourceTree = "<group>";
 		};
 		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
@@ -330,14 +108,6 @@
 				73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */,
 			);
 			name = iOS;
-			sourceTree = "<group>";
-		};
-		5BB937C84C7E2FBDDF19A94AC6C997F0 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				5DA927CF2CF00F8F4552FA08C4055863 /* sqldelightdb.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		608DE576ADDC3501A92B31E355C1F720 /* Pods-NxtBuz */ = {
@@ -356,49 +126,6 @@
 			path = "Target Support Files/Pods-NxtBuz";
 			sourceTree = "<group>";
 		};
-		65B05655A68430C90F65BB4CE337333F /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				C4758CBE01B8BEF541F439A64590A92A /* remotedatasource.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		6802E3C2FCBEA3C75511B2AEAE432DB1 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				B8F067C60AA1D9DEDF00216993BEF1AF /* localdatasource.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		7FEC3509156610B3677EE4D38373207E /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				56628B2AE4D2C031C1DD32916DEFD24C /* preferencestorage.podspec */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		7FF5345AF23DE1BEDA4044CB387B2A84 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				175FF0947C727EB3B6104E2FDE5683DD /* commonkmm.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		891442813C8E1C5CB392B47EBEB61FAD /* sqldelightdb */ = {
-			isa = PBXGroup;
-			children = (
-				5BB937C84C7E2FBDDF19A94AC6C997F0 /* Frameworks */,
-				A7FBA7A8E9E0CD533833271DEF463905 /* Pod */,
-				0641637582A7AF674F9B7D39A214364F /* Support Files */,
-			);
-			name = sqldelightdb;
-			path = ../../sqldelightdb;
-			sourceTree = "<group>";
-		};
 		9711C12B9EB757B8F7E6C5CEC22EC316 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -407,44 +134,18 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		9B3F3356C1E2A23E1710BC9D5D4CA1FB /* Frameworks */ = {
+		B26D4F68E4A2DEAD57D27D87CC60D6DF /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FB11EA85CAB2DBE762756FD3ECB5E6AB /* busstopdata.framework */,
+				4462177CBCECB9F0B57CD1A24C65FF07 /* iosUmbrella */,
 			);
-			name = Frameworks;
+			name = "Development Pods";
 			sourceTree = "<group>";
 		};
-		9D49A39759FCF3C6BE8CEFE08C94EDBA /* Support Files */ = {
+		C33672B3B9081DCA841DD81CB428E347 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				D5A7A9F46F4C4D48E384C911F2628EB2 /* localdatasource.debug.xcconfig */,
-				CA25E3316538842F761B08E37649ECAB /* localdatasource.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../NxtBuz/Pods/Target Support Files/localdatasource";
-			sourceTree = "<group>";
-		};
-		A4EEDD088882B033153D48986B1D6B39 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E94B8143482900DD8B8518147EB69CEF /* ktorremotedatasource.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		A7FBA7A8E9E0CD533833271DEF463905 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				8E5CE63C15136D82A3BE3B7E8993D589 /* sqldelightdb.podspec */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		B285D310A7B68B0F4BAC771F694776F3 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				982864691969FAB22AB2311DE65CAD0F /* localdatasource.podspec */,
+				4DEEEABD661E013793D862F9D055622D /* iosUmbrella.podspec */,
 			);
 			name = Pod;
 			sourceTree = "<group>";
@@ -453,7 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				417E3E1A47F44876A2389E0B23612D62 /* Development Pods */,
+				B26D4F68E4A2DEAD57D27D87CC60D6DF /* Development Pods */,
 				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
 				27BE2B2B961FF01577FBE23F895388E0 /* Products */,
 				9711C12B9EB757B8F7E6C5CEC22EC316 /* Targets Support Files */,
@@ -468,69 +169,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		DE45964DE408C57CE1D662A96D53F8A3 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				96E472A4F72A50903E75ABE5E926C9D7 /* remotedatasource.podspec */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		E08F13599A7872454EB5D2886D2E7643 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				F09E19A3A5790C5E39850077ADD8FB1A /* ktorremotedatasource.podspec */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		E4D543B79089931C8D3D31C0326A7DE3 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				1AFC1B0FC285B2EC5410D9A431B80393 /* remotedatasource.debug.xcconfig */,
-				58F17DA725BE4F912D60AF13ADD88883 /* remotedatasource.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../NxtBuz/Pods/Target Support Files/remotedatasource";
-			sourceTree = "<group>";
-		};
-		E7C0A6CE9CFB2D4B435BBF06924D2D92 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				A1558F1D6EB748524492B08AF8361213 /* commonkmm.debug.xcconfig */,
-				B672F456E93C940D385AFE29E0BA8A90 /* commonkmm.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../NxtBuz/Pods/Target Support Files/commonkmm";
-			sourceTree = "<group>";
-		};
-		F9B3BBEB1925B91EA42F87D5E68F2B56 /* remotedatasource */ = {
-			isa = PBXGroup;
-			children = (
-				65B05655A68430C90F65BB4CE337333F /* Frameworks */,
-				DE45964DE408C57CE1D662A96D53F8A3 /* Pod */,
-				E4D543B79089931C8D3D31C0326A7DE3 /* Support Files */,
-			);
-			name = remotedatasource;
-			path = ../../remotedatasource;
-			sourceTree = "<group>";
-		};
-		FA8665D6B3590B2A9C1D82B1957CE2D5 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				7E9C3393BD49BB8D7DF0F1EF0A528B9E /* commonkmm.podspec */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		764CF400CB6A98C1181E1FCD20A9E68C /* Headers */ = {
+		557ABFA6AF6760C174A7F7C069EBAECF /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4170EADADD7C4D4B44765D8A14E3B79E /* Pods-NxtBuz-umbrella.h in Headers */,
+				2CA9FA2AF30374F3B2412467E962AE66 /* Pods-NxtBuz-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,23 +185,17 @@
 /* Begin PBXNativeTarget section */
 		257DAE7AD687F3321E123FAC8DBD34D0 /* Pods-NxtBuz */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3490F130E0445866F4B0AD4BB95C286B /* Build configuration list for PBXNativeTarget "Pods-NxtBuz" */;
+			buildConfigurationList = 657C51589D61F9D0CAC0707DEC40F059 /* Build configuration list for PBXNativeTarget "Pods-NxtBuz" */;
 			buildPhases = (
-				764CF400CB6A98C1181E1FCD20A9E68C /* Headers */,
-				5E8166EA009E2AD822549A588C56B4E8 /* Sources */,
-				9E6D58D19278D7E9F56D7261125B3DE8 /* Frameworks */,
-				8E714FEA1A47BE2DE7941C0F37702BC1 /* Resources */,
+				557ABFA6AF6760C174A7F7C069EBAECF /* Headers */,
+				E7F8B9E14A11EFB30911DACCEC07E29A /* Sources */,
+				B7D8D65A582CE51CAA5006C6171A8F05 /* Frameworks */,
+				79CF1F56D168FF5C2D009E2772CA680C /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				7EF12F9DDD9AB7E9C13A400E032F2ABF /* PBXTargetDependency */,
-				4D5CE5B5AC09B57B60078479B5B48AA1 /* PBXTargetDependency */,
-				1AF988C0C8C1E25EE0696651F43C0E22 /* PBXTargetDependency */,
-				597D8E92CF381BD6093F48D2DD4B09E9 /* PBXTargetDependency */,
-				17DD946C8DC2777A345165EBCB8355AD /* PBXTargetDependency */,
-				74AA7E2CA4780A33E84B20514435BDA5 /* PBXTargetDependency */,
-				20F82B5DB8E7313CBEFF2E1A2CF09881 /* PBXTargetDependency */,
+				93C7CEEE237E99E2761A15BCAADB68E9 /* PBXTargetDependency */,
 			);
 			name = "Pods-NxtBuz";
 			productName = "Pods-NxtBuz";
@@ -584,20 +224,14 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9D4B70B13A8BB224AD3E2828F63DCBAA /* busstopdata */,
-				10D95BFCF5F9B0C55A50D8E5B8702755 /* commonkmm */,
-				D39E19D40D9779831CC2417F92EB75DB /* ktorremotedatasource */,
-				91B9B8039CB34B863F9CC6DEFE4E5368 /* localdatasource */,
+				BCE58225176923716EE529F94DB683EF /* iosUmbrella */,
 				257DAE7AD687F3321E123FAC8DBD34D0 /* Pods-NxtBuz */,
-				CCB05136BCE22FD240DD892A3973A22E /* preferencestorage */,
-				0F5EBFC10A44308415B98E4439145282 /* remotedatasource */,
-				6C24E52BC4B7ADF48D2D32C1BDB1F65C /* sqldelightdb */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		8E714FEA1A47BE2DE7941C0F37702BC1 /* Resources */ = {
+		79CF1F56D168FF5C2D009E2772CA680C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -607,138 +241,42 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0B32BB935EB4C5CD880FBE68CBB8A4E7 /* [CP-User] Build localdatasource */ = {
+		1AC6F1F607766423BC9692FB8182E89C /* [CP-User] Build iosUmbrella */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			name = "[CP-User] Build localdatasource";
+			name = "[CP-User] Build iosUmbrella";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "                set -ev\n                REPO_ROOT=\"$PODS_TARGET_SRCROOT\"\n                \"$REPO_ROOT/../gradlew\" -p \"$REPO_ROOT\" :localdatasource:syncFramework                     -Pkotlin.native.cocoapods.target=$KOTLIN_TARGET                     -Pkotlin.native.cocoapods.configuration=$CONFIGURATION                     -Pkotlin.native.cocoapods.cflags=\"$OTHER_CFLAGS\"                     -Pkotlin.native.cocoapods.paths.headers=\"$HEADER_SEARCH_PATHS\"                     -Pkotlin.native.cocoapods.paths.frameworks=\"$FRAMEWORK_SEARCH_PATHS\"\n";
-		};
-		2753126670248B9A04B108A1C4B50D7F /* [CP-User] Build preferencestorage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] Build preferencestorage";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "                set -ev\n                REPO_ROOT=\"$PODS_TARGET_SRCROOT\"\n                \"$REPO_ROOT/../gradlew\" -p \"$REPO_ROOT\" :preferencestorage:syncFramework                     -Pkotlin.native.cocoapods.target=$KOTLIN_TARGET                     -Pkotlin.native.cocoapods.configuration=$CONFIGURATION                     -Pkotlin.native.cocoapods.cflags=\"$OTHER_CFLAGS\"                     -Pkotlin.native.cocoapods.paths.headers=\"$HEADER_SEARCH_PATHS\"                     -Pkotlin.native.cocoapods.paths.frameworks=\"$FRAMEWORK_SEARCH_PATHS\"\n";
-		};
-		2D11DFB7C04489C69B06389EE83C8DAC /* [CP-User] Build commonkmm */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] Build commonkmm";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "                set -ev\n                REPO_ROOT=\"$PODS_TARGET_SRCROOT\"\n                \"$REPO_ROOT/../gradlew\" -p \"$REPO_ROOT\" :commonkmm:syncFramework                     -Pkotlin.native.cocoapods.target=$KOTLIN_TARGET                     -Pkotlin.native.cocoapods.configuration=$CONFIGURATION                     -Pkotlin.native.cocoapods.cflags=\"$OTHER_CFLAGS\"                     -Pkotlin.native.cocoapods.paths.headers=\"$HEADER_SEARCH_PATHS\"                     -Pkotlin.native.cocoapods.paths.frameworks=\"$FRAMEWORK_SEARCH_PATHS\"\n";
-		};
-		5F4D61C338419643CE8EB390A3545767 /* [CP-User] Build sqldelightdb */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] Build sqldelightdb";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "                set -ev\n                REPO_ROOT=\"$PODS_TARGET_SRCROOT\"\n                \"$REPO_ROOT/../gradlew\" -p \"$REPO_ROOT\" :sqldelightdb:syncFramework                     -Pkotlin.native.cocoapods.target=$KOTLIN_TARGET                     -Pkotlin.native.cocoapods.configuration=$CONFIGURATION                     -Pkotlin.native.cocoapods.cflags=\"$OTHER_CFLAGS\"                     -Pkotlin.native.cocoapods.paths.headers=\"$HEADER_SEARCH_PATHS\"                     -Pkotlin.native.cocoapods.paths.frameworks=\"$FRAMEWORK_SEARCH_PATHS\"\n";
-		};
-		8D49F2E0754E07BF6695235B60255A75 /* [CP-User] Build busstopdata */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] Build busstopdata";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "                set -ev\n                REPO_ROOT=\"$PODS_TARGET_SRCROOT\"\n                \"$REPO_ROOT/../gradlew\" -p \"$REPO_ROOT\" :busstopdata:syncFramework                     -Pkotlin.native.cocoapods.target=$KOTLIN_TARGET                     -Pkotlin.native.cocoapods.configuration=$CONFIGURATION                     -Pkotlin.native.cocoapods.cflags=\"$OTHER_CFLAGS\"                     -Pkotlin.native.cocoapods.paths.headers=\"$HEADER_SEARCH_PATHS\"                     -Pkotlin.native.cocoapods.paths.frameworks=\"$FRAMEWORK_SEARCH_PATHS\"\n";
-		};
-		8E65AEB3E1BD5CBF0A5A721F032B4F31 /* [CP-User] Build ktorremotedatasource */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] Build ktorremotedatasource";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "                set -ev\n                REPO_ROOT=\"$PODS_TARGET_SRCROOT\"\n                \"$REPO_ROOT/../gradlew\" -p \"$REPO_ROOT\" :ktorremotedatasource:syncFramework                     -Pkotlin.native.cocoapods.target=$KOTLIN_TARGET                     -Pkotlin.native.cocoapods.configuration=$CONFIGURATION                     -Pkotlin.native.cocoapods.cflags=\"$OTHER_CFLAGS\"                     -Pkotlin.native.cocoapods.paths.headers=\"$HEADER_SEARCH_PATHS\"                     -Pkotlin.native.cocoapods.paths.frameworks=\"$FRAMEWORK_SEARCH_PATHS\"\n";
-		};
-		F1F0DE9CBEC72C63D65E9367E87AEB3A /* [CP-User] Build remotedatasource */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] Build remotedatasource";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "                set -ev\n                REPO_ROOT=\"$PODS_TARGET_SRCROOT\"\n                \"$REPO_ROOT/../gradlew\" -p \"$REPO_ROOT\" :remotedatasource:syncFramework                     -Pkotlin.native.cocoapods.target=$KOTLIN_TARGET                     -Pkotlin.native.cocoapods.configuration=$CONFIGURATION                     -Pkotlin.native.cocoapods.cflags=\"$OTHER_CFLAGS\"                     -Pkotlin.native.cocoapods.paths.headers=\"$HEADER_SEARCH_PATHS\"                     -Pkotlin.native.cocoapods.paths.frameworks=\"$FRAMEWORK_SEARCH_PATHS\"\n";
+			shellScript = "                set -ev\n                REPO_ROOT=\"$PODS_TARGET_SRCROOT\"\n                \"$REPO_ROOT/../gradlew\" -p \"$REPO_ROOT\" :iosUmbrella:syncFramework                     -Pkotlin.native.cocoapods.target=$KOTLIN_TARGET                     -Pkotlin.native.cocoapods.configuration=$CONFIGURATION                     -Pkotlin.native.cocoapods.cflags=\"$OTHER_CFLAGS\"                     -Pkotlin.native.cocoapods.paths.headers=\"$HEADER_SEARCH_PATHS\"                     -Pkotlin.native.cocoapods.paths.frameworks=\"$FRAMEWORK_SEARCH_PATHS\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		5E8166EA009E2AD822549A588C56B4E8 /* Sources */ = {
+		E7F8B9E14A11EFB30911DACCEC07E29A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF3951F28C28236F6E810481F38755F2 /* Pods-NxtBuz-dummy.m in Sources */,
+				AEB8B7F3CB99335A481CB86C753EED3C /* Pods-NxtBuz-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		17DD946C8DC2777A345165EBCB8355AD /* PBXTargetDependency */ = {
+		93C7CEEE237E99E2761A15BCAADB68E9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = preferencestorage;
-			target = CCB05136BCE22FD240DD892A3973A22E /* preferencestorage */;
-			targetProxy = EE0316A004458AD64470EEB66842ABDE /* PBXContainerItemProxy */;
-		};
-		1AF988C0C8C1E25EE0696651F43C0E22 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ktorremotedatasource;
-			target = D39E19D40D9779831CC2417F92EB75DB /* ktorremotedatasource */;
-			targetProxy = A15551BEED86A07370C5770D6971A61F /* PBXContainerItemProxy */;
-		};
-		20F82B5DB8E7313CBEFF2E1A2CF09881 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = sqldelightdb;
-			target = 6C24E52BC4B7ADF48D2D32C1BDB1F65C /* sqldelightdb */;
-			targetProxy = F5DC084103CC27239182EEE2BDC62207 /* PBXContainerItemProxy */;
-		};
-		4D5CE5B5AC09B57B60078479B5B48AA1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = commonkmm;
-			target = 10D95BFCF5F9B0C55A50D8E5B8702755 /* commonkmm */;
-			targetProxy = AFD18619A94FE64F76ED6BFC7084D007 /* PBXContainerItemProxy */;
-		};
-		597D8E92CF381BD6093F48D2DD4B09E9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = localdatasource;
-			target = 91B9B8039CB34B863F9CC6DEFE4E5368 /* localdatasource */;
-			targetProxy = 53F091F78FBE8A4DC830BC301CFC2D53 /* PBXContainerItemProxy */;
-		};
-		74AA7E2CA4780A33E84B20514435BDA5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = remotedatasource;
-			target = 0F5EBFC10A44308415B98E4439145282 /* remotedatasource */;
-			targetProxy = 277A28A17E9B08FE8E4C11BE725FB1EE /* PBXContainerItemProxy */;
-		};
-		7EF12F9DDD9AB7E9C13A400E032F2ABF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = busstopdata;
-			target = 9D4B70B13A8BB224AD3E2828F63DCBAA /* busstopdata */;
-			targetProxy = 2F3617E448492A0E2320011ABA95B2E2 /* PBXContainerItemProxy */;
+			name = iosUmbrella;
+			target = BCE58225176923716EE529F94DB683EF /* iosUmbrella */;
+			targetProxy = 1C26D146ADA4EAC7C398AD6EFC982F37 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		01AFBA2746B4E54A076257F0262D0602 /* Debug */ = {
+		256AD5647E6923C51B771E5B51ED85B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5A7A9F46F4C4D48E384C911F2628EB2 /* localdatasource.debug.xcconfig */;
+			baseConfigurationReference = 6693223BFDD9FAFD65C96547A934123B /* iosUmbrella.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -753,115 +291,7 @@
 			};
 			name = Debug;
 		};
-		13D52527925602210AB6C4B5554B400D /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B672F456E93C940D385AFE29E0BA8A90 /* commonkmm.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		37C51266E049240FD77B602B1B9900D9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BEB607A6D973AF2E5CE46064D1D6D071 /* Pods-NxtBuz.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		3FCEAE746B5473990F2BF347EBB6A3E6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B006213011A1AA5A5A127E02DE3B0E30 /* busstopdata.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		4187D0E0762473A0269260AD75750BBB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AFC1B0FC285B2EC5410D9A431B80393 /* remotedatasource.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		49A1345A1BAFC8D7987E0DA82EB9D48B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E88C1EC0C850BBB12B5C8BFEDD38B494 /* sqldelightdb.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		4B6AA37EB5C73BFAB0DE17A8A800BDB8 /* Debug */ = {
+		2AF71B568F5CD7E08A43143420796E5A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1E87E9AD2FE5A50B0F4D7351FB612A43 /* Pods-NxtBuz.debug.xcconfig */;
 			buildSettings = {
@@ -960,9 +390,9 @@
 			};
 			name = Release;
 		};
-		72CDAEA31E9BA5AA78C176050C1352A1 /* Release */ = {
+		9D3AB59C349A005020636DA263A9C98C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CA25E3316538842F761B08E37649ECAB /* localdatasource.release.xcconfig */;
+			baseConfigurationReference = AA87808EA057395999F67DDF5F8494AB /* iosUmbrella.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -977,23 +407,6 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
-		};
-		84964622EB43EFCD8572E0B99A24CF0C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 648FF9D8C4E22EBFAF9E6CCB75AACACF /* busstopdata.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
 		};
 		A0374B8CF9A7D6A45F6D116D698D1C19 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1061,159 +474,47 @@
 			};
 			name = Debug;
 		};
-		BB50B600C5E3E71C910671CE44BC18BF /* Debug */ = {
+		D4F908718A6E84E9C1DDB2D5866D88B4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ABB2577EEB99E987E71E8881BF5DE8BF /* preferencestorage.debug.xcconfig */;
+			baseConfigurationReference = BEB607A6D973AF2E5CE46064D1D6D071 /* Pods-NxtBuz.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
 				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		BCE1C570A4596C279BD9F7ED643F9872 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A1558F1D6EB748524492B08AF8361213 /* commonkmm.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		C18A37AC3E5EDB424EB130DD36F24DB3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 65183FF30CB133A8CB8414B1A757C8C1 /* preferencestorage.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		CD50401EE5E447E182170C14DF1A310E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AA79621F42B3825193DD68D72FD04EE /* sqldelightdb.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		D8245D3539113297B3F890CB38894081 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A00AEF20EA5313A2BBF243C617095BFB /* ktorremotedatasource.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		D8A2DBBA7805EE955AED13A4D4617F2A /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C2E438842424B577930454756D4E2B06 /* ktorremotedatasource.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		EBDCA62DA7651613C7A757CDE8BD5C27 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 58F17DA725BE4F912D60AF13ADD88883 /* remotedatasource.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		065D25F359AD294F79EDB54A207B6DBF /* Build configuration list for PBXAggregateTarget "remotedatasource" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4187D0E0762473A0269260AD75750BBB /* Debug */,
-				EBDCA62DA7651613C7A757CDE8BD5C27 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3490F130E0445866F4B0AD4BB95C286B /* Build configuration list for PBXNativeTarget "Pods-NxtBuz" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4B6AA37EB5C73BFAB0DE17A8A800BDB8 /* Debug */,
-				37C51266E049240FD77B602B1B9900D9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3BAA6492040D376AA11B8900D29E46A4 /* Build configuration list for PBXAggregateTarget "localdatasource" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				01AFBA2746B4E54A076257F0262D0602 /* Debug */,
-				72CDAEA31E9BA5AA78C176050C1352A1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1223,47 +524,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		904B3748E5D40248D250C497717A5891 /* Build configuration list for PBXAggregateTarget "preferencestorage" */ = {
+		657C51589D61F9D0CAC0707DEC40F059 /* Build configuration list for PBXNativeTarget "Pods-NxtBuz" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BB50B600C5E3E71C910671CE44BC18BF /* Debug */,
-				C18A37AC3E5EDB424EB130DD36F24DB3 /* Release */,
+				2AF71B568F5CD7E08A43143420796E5A /* Debug */,
+				D4F908718A6E84E9C1DDB2D5866D88B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DF0586A7AA9D6AD2E0E3050DB3557D5E /* Build configuration list for PBXAggregateTarget "sqldelightdb" */ = {
+		F3ED4C41EDBC1F25D9662294E07AFC07 /* Build configuration list for PBXAggregateTarget "iosUmbrella" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				49A1345A1BAFC8D7987E0DA82EB9D48B /* Debug */,
-				CD50401EE5E447E182170C14DF1A310E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E44600D9DF5EF68EEAABDC25F1C0588B /* Build configuration list for PBXAggregateTarget "commonkmm" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BCE1C570A4596C279BD9F7ED643F9872 /* Debug */,
-				13D52527925602210AB6C4B5554B400D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		EC1B8E963CFCC41CF146F86AEBC875B9 /* Build configuration list for PBXAggregateTarget "busstopdata" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				84964622EB43EFCD8572E0B99A24CF0C /* Debug */,
-				3FCEAE746B5473990F2BF347EBB6A3E6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		ED1AFFD40D94F448DB160D0682DA98EC /* Build configuration list for PBXAggregateTarget "ktorremotedatasource" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D8245D3539113297B3F890CB38894081 /* Debug */,
-				D8A2DBBA7805EE955AED13A4D4617F2A /* Release */,
+				256AD5647E6923C51B771E5B51ED85B8 /* Debug */,
+				9D3AB59C349A005020636DA263A9C98C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

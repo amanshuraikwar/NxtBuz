@@ -1,46 +1,16 @@
 PODS:
-  - busstopdata (1.0)
-  - commonkmm (1.0)
-  - ktorremotedatasource (1.0)
-  - localdatasource (1.0)
-  - preferencestorage (1.0)
-  - remotedatasource (1.0)
-  - sqldelightdb (1.0)
+  - iosUmbrella (1.0)
 
 DEPENDENCIES:
-  - busstopdata (from `../busstopdata`)
-  - commonkmm (from `../commonkmm`)
-  - ktorremotedatasource (from `../ktorremotedatasource`)
-  - localdatasource (from `../localdatasource`)
-  - preferencestorage (from `../preferencestorage`)
-  - remotedatasource (from `../remotedatasource`)
-  - sqldelightdb (from `../sqldelightdb`)
+  - iosUmbrella (from `../iosUmbrella`)
 
 EXTERNAL SOURCES:
-  busstopdata:
-    :path: "../busstopdata"
-  commonkmm:
-    :path: "../commonkmm"
-  ktorremotedatasource:
-    :path: "../ktorremotedatasource"
-  localdatasource:
-    :path: "../localdatasource"
-  preferencestorage:
-    :path: "../preferencestorage"
-  remotedatasource:
-    :path: "../remotedatasource"
-  sqldelightdb:
-    :path: "../sqldelightdb"
+  iosUmbrella:
+    :path: "../iosUmbrella"
 
 SPEC CHECKSUMS:
-  busstopdata: ed2b3c464c1286b0bf858ecc4f514829776680c7
-  commonkmm: 521b807245f6e32ae5072258412f67b1de97c3df
-  ktorremotedatasource: 3e37130c9d6f1f9d59cffb03ca2992854df9afe4
-  localdatasource: bf3b5c1f9ccde82e5a42ae3f5825f74d7c6e2031
-  preferencestorage: 0f65842a548ab70c1476cb5c769e992f3d2660a7
-  remotedatasource: e1fd53e6efcfda49dc23ab1678c1ac7a78d81fa6
-  sqldelightdb: fb26fc29bd918fec302fc2be04de6945658620f5
+  iosUmbrella: 2fbdf386675f78c1e8ad29248a7e5ac0d7159b91
 
-PODFILE CHECKSUM: 311c1f53997d49aab5400c6d9275ab742356ade7
+PODFILE CHECKSUM: 505ca9c94134fcf57fbd1fc1cddab642eaac6d98
 
 COCOAPODS: 1.10.1
