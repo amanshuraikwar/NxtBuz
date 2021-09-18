@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.domain.user
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.SetupState
-import io.github.amanshuraikwar.nxtbuz.data.busroute.BusRouteRepository
+import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepository
 import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
 import kotlinx.coroutines.flow.*

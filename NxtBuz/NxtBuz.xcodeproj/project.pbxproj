@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		330A27DEAD4AB9A714E2473A /* Pods_NxtBuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */; };
+		A52FEB9826F593BC00BB79DA /* BusStopItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */; };
+		A52FEB9A26F5B1C800BB79DA /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9926F5B1C800BB79DA /* Font.swift */; };
+		A52FEB9C26F5B66E00BB79DA /* BusStopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */; };
+		A52FEB9E26F5BB4D00BB79DA /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9D26F5BB4D00BB79DA /* SetupView.swift */; };
+		A52FEBA026F5C04F00BB79DA /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9F26F5C04F00BB79DA /* HomeViewModel.swift */; };
+		A52FEBA226F5C07200BB79DA /* Di.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBA126F5C07200BB79DA /* Di.swift */; };
+		A52FEBA426F5C6DB00BB79DA /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBA326F5C6DB00BB79DA /* SetupViewModel.swift */; };
+		A52FEBA626F5CB3F00BB79DA /* SetupProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBA526F5CB3F00BB79DA /* SetupProgressView.swift */; };
 		A5E1E81926F10213007470A4 /* NxtBuzApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E1E81826F10213007470A4 /* NxtBuzApp.swift */; };
 		A5E1E81B26F10213007470A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E1E81A26F10213007470A4 /* ContentView.swift */; };
 		A5E1E81D26F10216007470A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E1E81C26F10216007470A4 /* Assets.xcassets */; };
@@ -34,6 +42,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopItemView.swift; sourceTree = "<group>"; };
+		A52FEB9926F5B1C800BB79DA /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopsView.swift; sourceTree = "<group>"; };
+		A52FEB9D26F5BB4D00BB79DA /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
+		A52FEB9F26F5C04F00BB79DA /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		A52FEBA126F5C07200BB79DA /* Di.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Di.swift; sourceTree = "<group>"; };
+		A52FEBA326F5C6DB00BB79DA /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
+		A52FEBA526F5CB3F00BB79DA /* SetupProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupProgressView.swift; sourceTree = "<group>"; };
 		A5E1E81526F10213007470A4 /* NxtBuz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NxtBuz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E1E81826F10213007470A4 /* NxtBuzApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NxtBuzApp.swift; sourceTree = "<group>"; };
 		A5E1E81A26F10213007470A4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -124,6 +140,14 @@
 				A5E1E81C26F10216007470A4 /* Assets.xcassets */,
 				A5E1E82126F10216007470A4 /* Info.plist */,
 				A5E1E81E26F10216007470A4 /* Preview Content */,
+				A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */,
+				A52FEB9926F5B1C800BB79DA /* Font.swift */,
+				A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */,
+				A52FEB9D26F5BB4D00BB79DA /* SetupView.swift */,
+				A52FEB9F26F5C04F00BB79DA /* HomeViewModel.swift */,
+				A52FEBA126F5C07200BB79DA /* Di.swift */,
+				A52FEBA326F5C6DB00BB79DA /* SetupViewModel.swift */,
+				A52FEBA526F5CB3F00BB79DA /* SetupProgressView.swift */,
 			);
 			path = NxtBuz;
 			sourceTree = "<group>";
@@ -309,8 +333,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A52FEBA226F5C07200BB79DA /* Di.swift in Sources */,
+				A52FEBA426F5C6DB00BB79DA /* SetupViewModel.swift in Sources */,
+				A52FEB9A26F5B1C800BB79DA /* Font.swift in Sources */,
 				A5E1E81B26F10213007470A4 /* ContentView.swift in Sources */,
+				A52FEBA026F5C04F00BB79DA /* HomeViewModel.swift in Sources */,
 				A5E1E81926F10213007470A4 /* NxtBuzApp.swift in Sources */,
+				A52FEB9C26F5B66E00BB79DA /* BusStopsView.swift in Sources */,
+				A52FEB9E26F5BB4D00BB79DA /* SetupView.swift in Sources */,
+				A52FEB9826F593BC00BB79DA /* BusStopItemView.swift in Sources */,
+				A52FEBA626F5CB3F00BB79DA /* SetupProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

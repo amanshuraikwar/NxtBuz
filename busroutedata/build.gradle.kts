@@ -24,17 +24,16 @@ kotlin {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "14.1"
-        frameworkName = "busstopdata"
-        podfile = project.file("../NxtBuz/Podfile")
+        frameworkName = "busroutedata"
+        // set path to your ios project podfile, e.g. podfile = project.file("../iosApp/Podfile")
     }
-
+    
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(project(":commonkmm"))
                 api(project(":localdatasource"))
                 api(project(":remotedatasource"))
-                api(project(":preferencestorage"))
 
                 implementation(Libs.Coroutines.core)
                 implementation(Libs.KotlinX.datetime)
