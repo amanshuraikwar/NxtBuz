@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/basetheme" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/busroute" />
+            <option value="$PROJECT_DIR$/busroutedata" />
             <option value="$PROJECT_DIR$/busstop" />
             <option value="$PROJECT_DIR$/busstopdata" />
             <option value="$PROJECT_DIR$/common" />

@@ -28,6 +28,7 @@ kotlin {
             export(project(":sqldelightdb"))
             export(project(":userdata"))
             export(project(":busstopdata"))
+            export(project(":busroutedata"))
             transitiveExport = true
         }
     }
@@ -51,6 +52,7 @@ kotlin {
                 api(project(":sqldelightdb"))
                 api(project(":userdata"))
                 api(project(":busstopdata"))
+                api(project(":busroutedata"))
                 implementation(Libs.Coroutines.core)
             }
         }

@@ -30,6 +30,7 @@ dependencies {
     implementation project(":data")
     implementation project(":busstopdata")
     implementation project(":userdata")
+    implementation project(":busroutedata")
 
     implementation Libs.Kotlin.stdlib
 

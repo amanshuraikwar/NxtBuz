@@ -1,16 +1,18 @@
 package io.github.amanshuraikwar.nxtbuz.iosumbrella
 
+import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepository
 import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.SetupState
 import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlin.native.concurrent.freeze
 
 class DoSetupUseCase constructor(
     private val userRepository: UserRepository,
     private val busStopRepository: BusStopRepository,
-    //private val busRouteRepository: BusRouteRepository
+    private val busRouteRepository: BusRouteRepository
 ) {
     operator fun invoke(): Flow<SetupState> = flow outerFlow@{
         userRepository.markSetupIncomplete()
@@ -25,15 +27,15 @@ class DoSetupUseCase constructor(
                 )
             }
 
-//        busRouteRepository.setup()
-//            .ensureValidProgress()
-//            .collect { value ->
-//                this@outerFlow.emit(
-//                    SetupState.InProgress(
-//                        0.2 + (0.8 * value).coerceAtMost(1.0)
-//                    )
-//                )
-//            }
+        busRouteRepository.setup()
+            .ensureValidProgress()
+            .collect { value ->
+                this@outerFlow.emit(
+                    SetupState.InProgress(
+                        0.2 + (0.8 * value).coerceAtMost(1.0)
+                    )
+                )
+            }
 
         userRepository.markSetupComplete()
 
@@ -57,7 +59,7 @@ class DoSetupUseCase constructor(
     operator fun invoke(callback: (SetupState) -> Unit) {
         GlobalScope.launch {
             invoke().collect {
-                callback(it)
+                callback(it.freeze())
             }
         }
     }
