@@ -31,7 +31,9 @@ struct BusStopArrivalsView: View {
             case .Success(let busStopArrivalList, let lastUpdatedOn):
                 List {
                     Section(
-                        header: Text("Arrivals at \(lastUpdatedOn)")
+                        header: Text("Bus Arrivals")
+                            .font(NxtBuzFonts.caption),
+                        footer: Text("Last updated on \(lastUpdatedOn)".uppercased())
                             .font(NxtBuzFonts.caption)
                     ) {
                         ForEach(
