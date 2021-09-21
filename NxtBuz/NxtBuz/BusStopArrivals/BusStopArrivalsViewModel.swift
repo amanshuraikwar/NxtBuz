@@ -12,18 +12,30 @@ class BusStopArrivalsViewModel : ObservableObject {
     @Published var screenState: BusStopArrivalsScreenState = .Fetching
     
     private var busStopArrivalsLoop: BusStopArrivalsLoop?
+    private var busStopCode: String? = nil
     
     func getArrivals(busStopCode: String) {
-        Di.get()
-            .getBusArrivalsUseCase()
-            .invoke(busStopCode: busStopCode) { busStopArrivalList in
-                DispatchQueue.main.async {
-                    self.screenState = .Success(busStopArrivalList: busStopArrivalList, lastUpdatedOn: self.getTime())
+        self.busStopCode = busStopCode
+        getArrivalsAct()
+    }
+    
+    private func getArrivalsAct() {
+        if let busStopCode = self.busStopCode {
+            Di.get()
+                .getBusArrivalsUseCase()
+                .invoke(busStopCode: busStopCode) { busStopArrivalList in
+                    DispatchQueue.main.async {
+                        self.screenState = .Success(busStopArrivalList: busStopArrivalList, lastUpdatedOn: self.getTime())
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                        self.getArrivalsAct()
+                    }
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                    self.getArrivals(busStopCode: busStopCode)
-                }
-            }
+        }
+    }
+    
+    func stopArrivalsLoop() {
+        self.busStopCode = nil
     }
     
     private func getTime() -> String {

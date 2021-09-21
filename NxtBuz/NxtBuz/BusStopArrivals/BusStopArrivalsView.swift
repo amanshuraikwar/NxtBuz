@@ -42,6 +42,8 @@ struct BusStopArrivalsView: View {
                         }
                     }
                 }
+                .id(UUID())
+                .listStyle(InsetGroupedListStyle())
             }
         }
         .navigationBarTitle(
@@ -50,6 +52,9 @@ struct BusStopArrivalsView: View {
         )
         .onAppear {
             viewModel.getArrivals(busStopCode: busStop.code)
+        }
+        .onDisappear {
+            viewModel.stopArrivalsLoop()
         }
     }
 }
