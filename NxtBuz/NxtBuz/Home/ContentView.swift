@@ -8,6 +8,8 @@
 import SwiftUI
 import iosUmbrella
 
+// Added iosUmbrella manually
+// ref: https://betterprogramming.pub/migrating-an-existing-xcode-project-to-a-new-kotlin-multiplatform-mobile-app-b71d07f23b7a
 struct ContentView: View {
     @StateObject var viewModel = HomeViewModel()
     
