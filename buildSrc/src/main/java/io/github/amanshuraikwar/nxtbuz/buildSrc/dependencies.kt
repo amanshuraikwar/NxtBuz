@@ -42,7 +42,7 @@ object Libs {
     }
 
     object Coroutines {
-        private const val version = "1.4.2"
+        private const val version = "1.5.2-native-mt"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
     }
@@ -129,7 +129,7 @@ object Libs {
     }
 
     object Ktor {
-        private const val version = "1.6.1"
+        private const val version = "1.6.3"
         const val clientCore = "io.ktor:ktor-client-core:$version"
         const val clientJson = "io.ktor:ktor-client-json:$version"
         const val clientLogging = "io.ktor:ktor-client-logging:$version"

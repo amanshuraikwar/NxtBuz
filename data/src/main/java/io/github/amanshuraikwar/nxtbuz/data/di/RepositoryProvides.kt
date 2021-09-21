@@ -3,6 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.data.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import io.github.amanshuraikwar.nxtbuz.busarrivaldata.BusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepository
 import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
@@ -54,6 +55,20 @@ class RepositoryProvides {
         dispatcherProvider: CoroutinesDispatcherProvider
     ): BusRouteRepository {
         return BusRouteRepository(
+            localDataSource = localDataSource,
+            remoteDataSource = remoteDataSource,
+            dispatcherProvider = dispatcherProvider,
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideBusArrivalRepository(
+        localDataSource: LocalDataSource,
+        remoteDataSource: RemoteDataSource,
+        dispatcherProvider: CoroutinesDispatcherProvider
+    ): BusArrivalRepository {
+        return BusArrivalRepository(
             localDataSource = localDataSource,
             remoteDataSource = remoteDataSource,
             dispatcherProvider = dispatcherProvider,

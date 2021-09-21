@@ -4,7 +4,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusArrival
 import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.loop.Loop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.loop.Loop
 import kotlinx.coroutines.*
 
 class StarredBusArrivalsLoop(

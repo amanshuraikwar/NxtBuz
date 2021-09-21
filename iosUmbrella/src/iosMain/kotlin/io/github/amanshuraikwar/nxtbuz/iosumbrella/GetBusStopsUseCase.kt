@@ -23,7 +23,7 @@ class GetBusStopsUseCase constructor(
         limit: Int,
         callback: (List<BusStop>) -> Unit
     ) {
-        GlobalScope.launch {
+        IosDataCoroutineScopeProvider.coroutineScope.launch {
             callback(
                 busStopRepository.getCloseBusStops(
                     lat = lat,

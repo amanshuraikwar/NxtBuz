@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/basetheme" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/busarrivaldata" />
             <option value="$PROJECT_DIR$/busroute" />
             <option value="$PROJECT_DIR$/busroutedata" />
             <option value="$PROJECT_DIR$/busstop" />
