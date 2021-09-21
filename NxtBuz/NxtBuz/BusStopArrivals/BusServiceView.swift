@@ -11,16 +11,18 @@ import iosUmbrella
 struct BusServiceView: View {
     let busServiceNumber: String
     let busType: BusType
-    let busTypeSystemName: String
+    let busTypeName: String
     let error: Bool
     
     init(busServiceNumber: String, busType: BusType) {
         self.busServiceNumber = busServiceNumber
         self.busType = busType
         if (busType == BusType.dd) {
-            self.busTypeSystemName = "bus.doubledecker.fill"
+            self.busTypeName = "BusTypeDd"
+        } else if (busType == BusType.bd) {
+            self.busTypeName = "BusTypeFeeder"
         } else {
-            self.busTypeSystemName = "bus.fill"
+            self.busTypeName = "BusTypeNormal"
         }
         self.error = false
     }
@@ -28,18 +30,19 @@ struct BusServiceView: View {
     init(busServiceNumber: String) {
         self.busServiceNumber = busServiceNumber
         self.busType = BusType.sd
-        self.busTypeSystemName = "bus.fill"
+        self.busTypeName = "BusTypeNormal"
         self.error = true
     }
     
     var body: some View {
         HStack {
             if error {
-                Image(systemName: busTypeSystemName)
+                Image(busTypeName)
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 16, height: 16)
-                    .foregroundColor(Color(.systemGray))
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(Color.secondary)
                 
                 ZStack {
                     Text(busServiceNumber)
@@ -55,10 +58,12 @@ struct BusServiceView: View {
                 .background(Color(.systemGray))
                 .clipShape(Capsule())
             } else {
-                Image(systemName: busTypeSystemName)
+                Image(busTypeName)
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 16, height: 16)
+                    .foregroundColor(Color.primary)
                 
                 ZStack {
                     Text(busServiceNumber)

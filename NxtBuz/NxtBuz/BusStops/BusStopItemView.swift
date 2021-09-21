@@ -26,10 +26,10 @@ struct BusStopItemView: View {
                     alignment: .leading
                 )
             
-            Text(roadName.uppercased() + " • " + busStopCode)
+            Text(roadName + " • " + busStopCode)
                 .font(NxtBuzFonts.caption)
                 .padding(.top, 2)
-                .foregroundColor(Color(.systemGray))
+                .foregroundColor(Color.secondary)
                 .frame(
                     maxWidth: .infinity,
                     alignment: .leading
@@ -55,11 +55,25 @@ struct BusStopItemView: View {
 
 struct BusStopItemView_Previews: PreviewProvider {
     static var previews: some View {
-        BusStopItemView(
-            busStopName: "Opp Blk 19",
-            roadName: "Jln Jurong Kechil",
-            busStopCode: "123456",
-            operatingBusServiceNumbers: "961M  961 174 61 970 147"
-        )
+        Group {
+            BusStopItemView(
+                busStopName: "Opp Blk 19",
+                roadName: "Jln Jurong Kechil",
+                busStopCode: "123456",
+                operatingBusServiceNumbers: "961M  961 174 61 970 147"
+            )
+            .previewLayout(.sizeThatFits)
+            .preferredColorScheme(.light)
+            .padding()
+            BusStopItemView(
+                busStopName: "Opp Blk 19",
+                roadName: "Jln Jurong Kechil",
+                busStopCode: "123456",
+                operatingBusServiceNumbers: "961M  961  174  61  970  147  157  170  170A  184  41  52 66 67"
+            )
+            .previewLayout(.sizeThatFits)
+            .preferredColorScheme(.dark)
+            .padding()
+        }
     }
 }

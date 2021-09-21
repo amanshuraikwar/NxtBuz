@@ -22,20 +22,27 @@ struct ContentView: View {
                     }
                 )
             case HomeScreenState.BusStops:
-                NavigationView {
-                    BusStopsView()
-                        .navigationTitle("Next Bus SG")
-                        .listStyle(GroupedListStyle())
-                        .navigationBarItems(
-                            trailing: Button(
-                                action: {
-                                    print("User icon pressed...")
+                ZStack(
+                    alignment: Alignment(
+                        horizontal: .center,
+                        vertical: .bottom
+                    )
+                ) {
+                    NavigationView {
+                        BusStopsView()
+                            .navigationTitle("Next Bus SG")
+                            .listStyle(GroupedListStyle())
+                            .navigationBarItems(
+                                trailing: Button(
+                                    action: {
+                                        print("User icon pressed...")
+                                    }
+                                ) {
+                                    Image(systemName: "gearshape.fill")
+                                        .imageScale(.medium)
                                 }
-                            ) {
-                                Image(systemName: "gearshape.fill")
-                                    .imageScale(.medium)
-                            }
-                        )
+                            )
+                    }
                 }
             case HomeScreenState.Fetching:
                 Text("Fetching...")
