@@ -77,3 +77,9 @@ struct BusServiceView: View {
         }
     }
 }
+
+struct BusServiceView_Previews: PreviewProvider {
+    static var previews: some View {
+        BusServiceView(busServiceNumber: "961M", busType: BusType.dd)
+    }
+}
