@@ -35,6 +35,7 @@ buildscript {
         classpath Libs.SqlDelight.gradlePlugin
 
         classpath Libs.KotlinX.serializationGradlePlugin
+        classpath 'com.android.tools.build:gradle:7.0.2'
     }
 }
 
