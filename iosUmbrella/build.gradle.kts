@@ -29,6 +29,7 @@ kotlin {
             export(project(":userdata"))
             export(project(":busstopdata"))
             export(project(":busroutedata"))
+            export(project(":busarrivaldata"))
             transitiveExport = true
         }
     }
@@ -53,6 +54,7 @@ kotlin {
                 api(project(":userdata"))
                 api(project(":busstopdata"))
                 api(project(":busroutedata"))
+                api(project(":busarrivaldata"))
                 implementation(Libs.Coroutines.core)
             }
         }

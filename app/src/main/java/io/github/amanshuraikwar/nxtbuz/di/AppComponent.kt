@@ -5,6 +5,7 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import io.github.amanshuraikwar.nxtbuz.MainApplication
+import io.github.amanshuraikwar.nxtbuz.busarrivaldata.BusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepository
 import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
@@ -50,6 +51,7 @@ interface AppComponent : AndroidInjector<MainApplication> {
     fun getBusStopRepository(): BusStopRepository
     fun getUserRepository(): UserRepository
     fun getBusRouteRepository(): BusRouteRepository
+    fun getBusArrivalRepository(): BusArrivalRepository
 
     @Component.Factory
     interface Factory {

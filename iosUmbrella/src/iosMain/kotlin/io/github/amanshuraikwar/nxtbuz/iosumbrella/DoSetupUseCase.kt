@@ -4,7 +4,6 @@ import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepository
 import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.SetupState
 import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlin.native.concurrent.freeze
@@ -57,7 +56,7 @@ class DoSetupUseCase constructor(
     }
 
     operator fun invoke(callback: (SetupState) -> Unit) {
-        GlobalScope.launch {
+        IosDataCoroutineScopeProvider.coroutineScope.launch {
             invoke().collect {
                 callback(it.freeze())
             }

@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.domain.busarrival
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusStopArrival
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.BusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.busarrivaldata.BusArrivalRepository
 import javax.inject.Inject
 
 class GetBusArrivalsUseCase @Inject constructor(
