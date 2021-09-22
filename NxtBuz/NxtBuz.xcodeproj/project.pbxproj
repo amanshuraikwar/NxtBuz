@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		40EDB6F4742347C6392D1E94 /* Pods_NxtBuz_WidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED98D923D3F52B3BD3CA7123 /* Pods_NxtBuz_WidgetExtension.framework */; };
 		A52FEB9826F593BC00BB79DA /* BusStopItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */; };
 		A52FEB9A26F5B1C800BB79DA /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9926F5B1C800BB79DA /* Font.swift */; };
 		A52FEB9C26F5B66E00BB79DA /* BusStopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */; };
@@ -24,6 +25,15 @@
 		A52FEBB926F9F18300BB79DA /* BusArrivalErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBB826F9F18300BB79DA /* BusArrivalErrorView.swift */; };
 		A52FEBBB26F9F3DC00BB79DA /* BusDestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBBA26F9F3DC00BB79DA /* BusDestinationView.swift */; };
 		A57B9A1826FB4BCF0095D96A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A1726FB4BCE0095D96A /* SettingsView.swift */; };
+		A57B9A1F26FB50870095D96A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A57B9A1E26FB50870095D96A /* WidgetKit.framework */; };
+		A57B9A2126FB50870095D96A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A57B9A2026FB50870095D96A /* SwiftUI.framework */; };
+		A57B9A2426FB50870095D96A /* NxtBuz_Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A2326FB50870095D96A /* NxtBuz_Widget.swift */; };
+		A57B9A2726FB508B0095D96A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A57B9A2626FB508B0095D96A /* Assets.xcassets */; };
+		A57B9A2926FB508B0095D96A /* NxtBuz_Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A2526FB50870095D96A /* NxtBuz_Widget.intentdefinition */; };
+		A57B9A2A26FB508B0095D96A /* NxtBuz_Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A2526FB50870095D96A /* NxtBuz_Widget.intentdefinition */; };
+		A57B9A2D26FB508B0095D96A /* NxtBuz-WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A57B9A1D26FB50870095D96A /* NxtBuz-WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A57B9A3526FB58E70095D96A /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9926F5B1C800BB79DA /* Font.swift */; };
+		A57B9A3726FB5FFF0095D96A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E1E81C26F10216007470A4 /* Assets.xcassets */; };
 		A59E5B2626FA25CE0032DC88 /* Pods_NxtBuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		A59E5B2A26FA273D0032DC88 /* iosUmbrella.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59E5B2926FA273D0032DC88 /* iosUmbrella.framework */; };
 		A5E1E81926F10213007470A4 /* NxtBuzApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E1E81826F10213007470A4 /* NxtBuzApp.swift */; };
@@ -35,6 +45,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A57B9A2B26FB508B0095D96A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5E1E80D26F10213007470A4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A57B9A1C26FB50870095D96A;
+			remoteInfo = "NxtBuz-WidgetExtension";
+		};
 		A5E1E82726F10216007470A4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A5E1E80D26F10213007470A4 /* Project object */;
@@ -51,7 +68,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A57B9A3126FB508B0095D96A /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A57B9A2D26FB508B0095D96A /* NxtBuz-WidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		1745AD13085AFEA1CA1DD517 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz-WidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
 		A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopItemView.swift; sourceTree = "<group>"; };
 		A52FEB9926F5B1C800BB79DA /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopsView.swift; sourceTree = "<group>"; };
@@ -69,6 +101,13 @@
 		A52FEBB826F9F18300BB79DA /* BusArrivalErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrivalErrorView.swift; sourceTree = "<group>"; };
 		A52FEBBA26F9F3DC00BB79DA /* BusDestinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusDestinationView.swift; sourceTree = "<group>"; };
 		A57B9A1726FB4BCE0095D96A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A57B9A1D26FB50870095D96A /* NxtBuz-WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "NxtBuz-WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A57B9A1E26FB50870095D96A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		A57B9A2026FB50870095D96A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		A57B9A2326FB50870095D96A /* NxtBuz_Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NxtBuz_Widget.swift; sourceTree = "<group>"; };
+		A57B9A2526FB50870095D96A /* NxtBuz_Widget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = NxtBuz_Widget.intentdefinition; sourceTree = "<group>"; };
+		A57B9A2626FB508B0095D96A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A57B9A2826FB508B0095D96A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A59E5B2926FA273D0032DC88 /* iosUmbrella.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iosUmbrella.framework; path = ../iosUmbrella/build/cocoapods/framework/iosUmbrella.framework; sourceTree = "<group>"; };
 		A5E1E81526F10213007470A4 /* NxtBuz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NxtBuz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E1E81826F10213007470A4 /* NxtBuzApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NxtBuzApp.swift; sourceTree = "<group>"; };
@@ -84,10 +123,22 @@
 		A5E1E83726F10217007470A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AACB50D4905E209E0EFD01A1 /* Pods-NxtBuz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz.debug.xcconfig"; path = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.debug.xcconfig"; sourceTree = "<group>"; };
 		B3D756E3D85E99C0D6B8FF34 /* Pods-NxtBuz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.release.xcconfig"; sourceTree = "<group>"; };
+		B637FC6A4A02166145A04DF7 /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz-WidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NxtBuz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED98D923D3F52B3BD3CA7123 /* Pods_NxtBuz_WidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NxtBuz_WidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A57B9A1A26FB50870095D96A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A57B9A2126FB50870095D96A /* SwiftUI.framework in Frameworks */,
+				A57B9A1F26FB50870095D96A /* WidgetKit.framework in Frameworks */,
+				40EDB6F4742347C6392D1E94 /* Pods_NxtBuz_WidgetExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A5E1E81226F10213007470A4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -119,6 +170,9 @@
 			children = (
 				A59E5B2926FA273D0032DC88 /* iosUmbrella.framework */,
 				BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */,
+				A57B9A1E26FB50870095D96A /* WidgetKit.framework */,
+				A57B9A2026FB50870095D96A /* SwiftUI.framework */,
+				ED98D923D3F52B3BD3CA7123 /* Pods_NxtBuz_WidgetExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -128,6 +182,8 @@
 			children = (
 				AACB50D4905E209E0EFD01A1 /* Pods-NxtBuz.debug.xcconfig */,
 				B3D756E3D85E99C0D6B8FF34 /* Pods-NxtBuz.release.xcconfig */,
+				B637FC6A4A02166145A04DF7 /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */,
+				1745AD13085AFEA1CA1DD517 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -192,12 +248,32 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		A57B9A2226FB50870095D96A /* NxtBuz-Widget */ = {
+			isa = PBXGroup;
+			children = (
+				A57B9A3226FB57AD0095D96A /* Util */,
+				A57B9A2326FB50870095D96A /* NxtBuz_Widget.swift */,
+				A57B9A2526FB50870095D96A /* NxtBuz_Widget.intentdefinition */,
+				A57B9A2626FB508B0095D96A /* Assets.xcassets */,
+				A57B9A2826FB508B0095D96A /* Info.plist */,
+			);
+			path = "NxtBuz-Widget";
+			sourceTree = "<group>";
+		};
+		A57B9A3226FB57AD0095D96A /* Util */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		A5E1E80C26F10213007470A4 = {
 			isa = PBXGroup;
 			children = (
 				A5E1E81726F10213007470A4 /* NxtBuz */,
 				A5E1E82926F10217007470A4 /* NxtBuzTests */,
 				A5E1E83426F10217007470A4 /* NxtBuzUITests */,
+				A57B9A2226FB50870095D96A /* NxtBuz-Widget */,
 				A5E1E81626F10213007470A4 /* Products */,
 				9F8567213E5A41566A3F5DBF /* Pods */,
 				85E5C2E06476F8CE84A24F24 /* Frameworks */,
@@ -210,6 +286,7 @@
 				A5E1E81526F10213007470A4 /* NxtBuz.app */,
 				A5E1E82626F10216007470A4 /* NxtBuzTests.xctest */,
 				A5E1E83126F10217007470A4 /* NxtBuzUITests.xctest */,
+				A57B9A1D26FB50870095D96A /* NxtBuz-WidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -260,6 +337,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A57B9A1C26FB50870095D96A /* NxtBuz-WidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A57B9A2E26FB508B0095D96A /* Build configuration list for PBXNativeTarget "NxtBuz-WidgetExtension" */;
+			buildPhases = (
+				B0B5F959AD4F4741AB421014 /* [CP] Check Pods Manifest.lock */,
+				A57B9A1926FB50870095D96A /* Sources */,
+				A57B9A1A26FB50870095D96A /* Frameworks */,
+				A57B9A1B26FB50870095D96A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "NxtBuz-WidgetExtension";
+			productName = "NxtBuz-WidgetExtension";
+			productReference = A57B9A1D26FB50870095D96A /* NxtBuz-WidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		A5E1E81426F10213007470A4 /* NxtBuz */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A5E1E83A26F10217007470A4 /* Build configuration list for PBXNativeTarget "NxtBuz" */;
@@ -268,10 +363,12 @@
 				A5E1E81126F10213007470A4 /* Sources */,
 				A5E1E81226F10213007470A4 /* Frameworks */,
 				A5E1E81326F10213007470A4 /* Resources */,
+				A57B9A3126FB508B0095D96A /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A57B9A2C26FB508B0095D96A /* PBXTargetDependency */,
 			);
 			name = NxtBuz;
 			productName = NxtBuz;
@@ -320,9 +417,12 @@
 		A5E1E80D26F10213007470A4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
+					A57B9A1C26FB50870095D96A = {
+						CreatedOnToolsVersion = 13.0;
+					};
 					A5E1E81426F10213007470A4 = {
 						CreatedOnToolsVersion = 12.5;
 					};
@@ -352,11 +452,21 @@
 				A5E1E81426F10213007470A4 /* NxtBuz */,
 				A5E1E82526F10216007470A4 /* NxtBuzTests */,
 				A5E1E83026F10217007470A4 /* NxtBuzUITests */,
+				A57B9A1C26FB50870095D96A /* NxtBuz-WidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A57B9A1B26FB50870095D96A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A57B9A3726FB5FFF0095D96A /* Assets.xcassets in Resources */,
+				A57B9A2726FB508B0095D96A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A5E1E81326F10213007470A4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -383,6 +493,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		B0B5F959AD4F4741AB421014 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NxtBuz-WidgetExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		F09E266CC262F56C61E93A20 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -408,11 +540,22 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A57B9A1926FB50870095D96A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A57B9A2426FB50870095D96A /* NxtBuz_Widget.swift in Sources */,
+				A57B9A2926FB508B0095D96A /* NxtBuz_Widget.intentdefinition in Sources */,
+				A57B9A3526FB58E70095D96A /* Font.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A5E1E81126F10213007470A4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				A52FEBA226F5C07200BB79DA /* Di.swift in Sources */,
+				A57B9A2A26FB508B0095D96A /* NxtBuz_Widget.intentdefinition in Sources */,
 				A52FEBA426F5C6DB00BB79DA /* SetupViewModel.swift in Sources */,
 				A52FEBBB26F9F3DC00BB79DA /* BusDestinationView.swift in Sources */,
 				A52FEBA926F8A61500BB79DA /* BusStopsViewModel.swift in Sources */,
@@ -453,6 +596,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A57B9A2C26FB508B0095D96A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A57B9A1C26FB50870095D96A /* NxtBuz-WidgetExtension */;
+			targetProxy = A57B9A2B26FB508B0095D96A /* PBXContainerItemProxy */;
+		};
 		A5E1E82826F10216007470A4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A5E1E81426F10213007470A4 /* NxtBuz */;
@@ -466,6 +614,78 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		A57B9A2F26FB508B0095D96A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B637FC6A4A02166145A04DF7 /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "NxtBuz-Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "NxtBuz-Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-framework",
+					"\"iosUmbrella\"",
+					"-l\"sqlite3\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.amanshuraikwar.NxtBuz.NxtBuz-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A57B9A3026FB508B0095D96A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1745AD13085AFEA1CA1DD517 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "NxtBuz-Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "NxtBuz-Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.amanshuraikwar.NxtBuz.NxtBuz-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		A5E1E83826F10217007470A4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -586,6 +806,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AACB50D4905E209E0EFD01A1 /* Pods-NxtBuz.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ARCHS = (
 					"$(ARCHS_STANDARD)",
 					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
@@ -597,6 +818,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NxtBuz/Preview Content\"";
 				DEVELOPMENT_TEAM = 8R42UC58VT;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = NxtBuz/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -622,6 +845,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B3D756E3D85E99C0D6B8FF34 /* Pods-NxtBuz.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ARCHS = (
 					"$(ARCHS_STANDARD)",
 					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
@@ -633,6 +857,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NxtBuz/Preview Content\"";
 				DEVELOPMENT_TEAM = 8R42UC58VT;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = NxtBuz/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -733,6 +959,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A57B9A2E26FB508B0095D96A /* Build configuration list for PBXNativeTarget "NxtBuz-WidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A57B9A2F26FB508B0095D96A /* Debug */,
+				A57B9A3026FB508B0095D96A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A5E1E81026F10213007470A4 /* Build configuration list for PBXProject "NxtBuz" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

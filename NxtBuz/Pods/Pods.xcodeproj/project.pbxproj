@@ -20,12 +20,22 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		2CA9FA2AF30374F3B2412467E962AE66 /* Pods-NxtBuz-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 1943CE3470D52E72BE6FB925358B3E8C /* Pods-NxtBuz-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2CA9FA2AF30374F3B2412467E962AE66 /* Pods-NxtBuz-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 50949D46590240ECD4419B1FDB1F11C9 /* Pods-NxtBuz-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		47B5ABFBA6A2576DF5DB18491A90B235 /* Pods-NxtBuz-WidgetExtension-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B8EE2A2B0B25914E1F56132276C6132B /* Pods-NxtBuz-WidgetExtension-dummy.m */; };
 		5D0AC60B5E97111B742483BD48FF6621 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		AEB8B7F3CB99335A481CB86C753EED3C /* Pods-NxtBuz-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D492BDA514400B43BB5AB83236113A80 /* Pods-NxtBuz-dummy.m */; };
+		66A17D18F0BA9EB7D7BA0E781DE6CE0D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		9491AB078FC1055F14099DDB62CD659D /* Pods-NxtBuz-WidgetExtension-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FB5DB8B41325A4203D1A962B77C03CEA /* Pods-NxtBuz-WidgetExtension-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AEB8B7F3CB99335A481CB86C753EED3C /* Pods-NxtBuz-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D7141BC23C6CCAD51C0C819A7C78FA /* Pods-NxtBuz-dummy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1AFD82EF3334FD7A0B465EF142517317 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BCE58225176923716EE529F94DB683EF;
+			remoteInfo = iosUmbrella;
+		};
 		1C26D146ADA4EAC7C398AD6EFC982F37 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
@@ -38,22 +48,39 @@
 /* Begin PBXFileReference section */
 		080614C311BD884680BBC73BBE965BF0 /* Pods_NxtBuz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_NxtBuz.framework; path = "Pods-NxtBuz.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		086BEC6B96EDD9C8168C83E0DCBD6202 /* iosUmbrella.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iosUmbrella.framework; path = build/cocoapods/framework/iosUmbrella.framework; sourceTree = "<group>"; };
-		1943CE3470D52E72BE6FB925358B3E8C /* Pods-NxtBuz-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-NxtBuz-umbrella.h"; sourceTree = "<group>"; };
-		1E87E9AD2FE5A50B0F4D7351FB612A43 /* Pods-NxtBuz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NxtBuz.debug.xcconfig"; sourceTree = "<group>"; };
-		2EA7A90AF46E620C37D7F066D55B8AAB /* Pods-NxtBuz-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NxtBuz-acknowledgements.markdown"; sourceTree = "<group>"; };
-		3E77282AC4BBE725640DBE930E13CE2D /* Pods-NxtBuz.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-NxtBuz.modulemap"; sourceTree = "<group>"; };
-		3F1F60096424A6CD5B96D0EFBEF8985C /* Pods-NxtBuz-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NxtBuz-acknowledgements.plist"; sourceTree = "<group>"; };
+		0ABADA1DD84DF805FEBF592146714558 /* Pods-NxtBuz-WidgetExtension-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NxtBuz-WidgetExtension-acknowledgements.plist"; sourceTree = "<group>"; };
+		18BBBDAA0FA5AD0358FE965EBD12AA91 /* Pods-NxtBuz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NxtBuz.release.xcconfig"; sourceTree = "<group>"; };
+		416A3B679816135D1A512247591C445F /* Pods-NxtBuz.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-NxtBuz.modulemap"; sourceTree = "<group>"; };
 		4DEEEABD661E013793D862F9D055622D /* iosUmbrella.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = iosUmbrella.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		50949D46590240ECD4419B1FDB1F11C9 /* Pods-NxtBuz-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-NxtBuz-umbrella.h"; sourceTree = "<group>"; };
+		5245DBC43D26017D53C28D0BAA2D4A63 /* Pods-NxtBuz-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NxtBuz-acknowledgements.plist"; sourceTree = "<group>"; };
+		54EB7E152A5CC31BE5284AA78DB16C77 /* Pods-NxtBuz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NxtBuz.debug.xcconfig"; sourceTree = "<group>"; };
+		5682FD8635631EAB63F824831439661D /* Pods_NxtBuz_WidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_NxtBuz_WidgetExtension.framework; path = "Pods-NxtBuz-WidgetExtension.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6693223BFDD9FAFD65C96547A934123B /* iosUmbrella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = iosUmbrella.debug.xcconfig; sourceTree = "<group>"; };
+		6789288AA6851D7B4D00D618A15EF633 /* Pods-NxtBuz-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NxtBuz-acknowledgements.markdown"; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		AA87808EA057395999F67DDF5F8494AB /* iosUmbrella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = iosUmbrella.release.xcconfig; sourceTree = "<group>"; };
-		BEB607A6D973AF2E5CE46064D1D6D071 /* Pods-NxtBuz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NxtBuz.release.xcconfig"; sourceTree = "<group>"; };
-		C46E2CACCD9C6F736465DB89541DA3CD /* Pods-NxtBuz-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NxtBuz-Info.plist"; sourceTree = "<group>"; };
-		D492BDA514400B43BB5AB83236113A80 /* Pods-NxtBuz-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-NxtBuz-dummy.m"; sourceTree = "<group>"; };
+		AD0AD4090CEA9713C2114395FD55766D /* Pods-NxtBuz-WidgetExtension-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NxtBuz-WidgetExtension-Info.plist"; sourceTree = "<group>"; };
+		ADA21F6008162B06A7EDFE05D5E75E3F /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NxtBuz-WidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		B8EE2A2B0B25914E1F56132276C6132B /* Pods-NxtBuz-WidgetExtension-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-NxtBuz-WidgetExtension-dummy.m"; sourceTree = "<group>"; };
+		BA98ACD7719FA7B9F510DF7D211A8F82 /* Pods-NxtBuz-WidgetExtension.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-NxtBuz-WidgetExtension.modulemap"; sourceTree = "<group>"; };
+		C8497483197B0D3EE75A0C857879FA34 /* Pods-NxtBuz-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NxtBuz-Info.plist"; sourceTree = "<group>"; };
+		D4CC46D3BC4EA9DFFB49BEAE0E3F71B3 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NxtBuz-WidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
+		DA315DB5F26D587B8A6D6137AB793A6F /* Pods-NxtBuz-WidgetExtension-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NxtBuz-WidgetExtension-acknowledgements.markdown"; sourceTree = "<group>"; };
+		E9D7141BC23C6CCAD51C0C819A7C78FA /* Pods-NxtBuz-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-NxtBuz-dummy.m"; sourceTree = "<group>"; };
+		FB5DB8B41325A4203D1A962B77C03CEA /* Pods-NxtBuz-WidgetExtension-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-NxtBuz-WidgetExtension-umbrella.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		353EA265755F8C226F7FE7C1F2D85904 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66A17D18F0BA9EB7D7BA0E781DE6CE0D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7D8D65A582CE51CAA5006C6171A8F05 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -83,14 +110,6 @@
 			path = "../NxtBuz/Pods/Target Support Files/iosUmbrella";
 			sourceTree = "<group>";
 		};
-		27BE2B2B961FF01577FBE23F895388E0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				080614C311BD884680BBC73BBE965BF0 /* Pods_NxtBuz.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		4462177CBCECB9F0B57CD1A24C65FF07 /* iosUmbrella */ = {
 			isa = PBXGroup;
 			children = (
@@ -110,28 +129,38 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		608DE576ADDC3501A92B31E355C1F720 /* Pods-NxtBuz */ = {
+		5860FE1DEF15AD060517BB85FB713131 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3E77282AC4BBE725640DBE930E13CE2D /* Pods-NxtBuz.modulemap */,
-				2EA7A90AF46E620C37D7F066D55B8AAB /* Pods-NxtBuz-acknowledgements.markdown */,
-				3F1F60096424A6CD5B96D0EFBEF8985C /* Pods-NxtBuz-acknowledgements.plist */,
-				D492BDA514400B43BB5AB83236113A80 /* Pods-NxtBuz-dummy.m */,
-				C46E2CACCD9C6F736465DB89541DA3CD /* Pods-NxtBuz-Info.plist */,
-				1943CE3470D52E72BE6FB925358B3E8C /* Pods-NxtBuz-umbrella.h */,
-				1E87E9AD2FE5A50B0F4D7351FB612A43 /* Pods-NxtBuz.debug.xcconfig */,
-				BEB607A6D973AF2E5CE46064D1D6D071 /* Pods-NxtBuz.release.xcconfig */,
+				080614C311BD884680BBC73BBE965BF0 /* Pods_NxtBuz.framework */,
+				5682FD8635631EAB63F824831439661D /* Pods_NxtBuz_WidgetExtension.framework */,
 			);
-			name = "Pods-NxtBuz";
-			path = "Target Support Files/Pods-NxtBuz";
+			name = Products;
 			sourceTree = "<group>";
 		};
-		9711C12B9EB757B8F7E6C5CEC22EC316 /* Targets Support Files */ = {
+		9CF25F632BA9E6EB674694363090A66B /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				608DE576ADDC3501A92B31E355C1F720 /* Pods-NxtBuz */,
+				B4CAE115B86ACAEFC75ADE8E2A6357AD /* Pods-NxtBuz */,
+				9E73AAA743BB33D53F51E76CED936677 /* Pods-NxtBuz-WidgetExtension */,
 			);
 			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		9E73AAA743BB33D53F51E76CED936677 /* Pods-NxtBuz-WidgetExtension */ = {
+			isa = PBXGroup;
+			children = (
+				BA98ACD7719FA7B9F510DF7D211A8F82 /* Pods-NxtBuz-WidgetExtension.modulemap */,
+				DA315DB5F26D587B8A6D6137AB793A6F /* Pods-NxtBuz-WidgetExtension-acknowledgements.markdown */,
+				0ABADA1DD84DF805FEBF592146714558 /* Pods-NxtBuz-WidgetExtension-acknowledgements.plist */,
+				B8EE2A2B0B25914E1F56132276C6132B /* Pods-NxtBuz-WidgetExtension-dummy.m */,
+				AD0AD4090CEA9713C2114395FD55766D /* Pods-NxtBuz-WidgetExtension-Info.plist */,
+				FB5DB8B41325A4203D1A962B77C03CEA /* Pods-NxtBuz-WidgetExtension-umbrella.h */,
+				ADA21F6008162B06A7EDFE05D5E75E3F /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */,
+				D4CC46D3BC4EA9DFFB49BEAE0E3F71B3 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */,
+			);
+			name = "Pods-NxtBuz-WidgetExtension";
+			path = "Target Support Files/Pods-NxtBuz-WidgetExtension";
 			sourceTree = "<group>";
 		};
 		B26D4F68E4A2DEAD57D27D87CC60D6DF /* Development Pods */ = {
@@ -140,6 +169,22 @@
 				4462177CBCECB9F0B57CD1A24C65FF07 /* iosUmbrella */,
 			);
 			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		B4CAE115B86ACAEFC75ADE8E2A6357AD /* Pods-NxtBuz */ = {
+			isa = PBXGroup;
+			children = (
+				416A3B679816135D1A512247591C445F /* Pods-NxtBuz.modulemap */,
+				6789288AA6851D7B4D00D618A15EF633 /* Pods-NxtBuz-acknowledgements.markdown */,
+				5245DBC43D26017D53C28D0BAA2D4A63 /* Pods-NxtBuz-acknowledgements.plist */,
+				E9D7141BC23C6CCAD51C0C819A7C78FA /* Pods-NxtBuz-dummy.m */,
+				C8497483197B0D3EE75A0C857879FA34 /* Pods-NxtBuz-Info.plist */,
+				50949D46590240ECD4419B1FDB1F11C9 /* Pods-NxtBuz-umbrella.h */,
+				54EB7E152A5CC31BE5284AA78DB16C77 /* Pods-NxtBuz.debug.xcconfig */,
+				18BBBDAA0FA5AD0358FE965EBD12AA91 /* Pods-NxtBuz.release.xcconfig */,
+			);
+			name = "Pods-NxtBuz";
+			path = "Target Support Files/Pods-NxtBuz";
 			sourceTree = "<group>";
 		};
 		C33672B3B9081DCA841DD81CB428E347 /* Pod */ = {
@@ -156,8 +201,8 @@
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
 				B26D4F68E4A2DEAD57D27D87CC60D6DF /* Development Pods */,
 				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
-				27BE2B2B961FF01577FBE23F895388E0 /* Products */,
-				9711C12B9EB757B8F7E6C5CEC22EC316 /* Targets Support Files */,
+				5860FE1DEF15AD060517BB85FB713131 /* Products */,
+				9CF25F632BA9E6EB674694363090A66B /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
@@ -177,6 +222,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CA9FA2AF30374F3B2412467E962AE66 /* Pods-NxtBuz-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		99DDB639C8FF9E52D87CEB7BFCE58C3D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9491AB078FC1055F14099DDB62CD659D /* Pods-NxtBuz-WidgetExtension-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +255,25 @@
 			productReference = 080614C311BD884680BBC73BBE965BF0 /* Pods_NxtBuz.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		7F6B3F543D9E5E5A3AD60CD923C9A4E0 /* Pods-NxtBuz-WidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1ED1CEF0C0BEE1D1C52F9736D8A654E /* Build configuration list for PBXNativeTarget "Pods-NxtBuz-WidgetExtension" */;
+			buildPhases = (
+				99DDB639C8FF9E52D87CEB7BFCE58C3D /* Headers */,
+				ACF96C0D91721874B49260C367957F3C /* Sources */,
+				353EA265755F8C226F7FE7C1F2D85904 /* Frameworks */,
+				40BBA0F030F703118407017240AB611B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3648E745730749103F016E888C2A4839 /* PBXTargetDependency */,
+			);
+			name = "Pods-NxtBuz-WidgetExtension";
+			productName = "Pods-NxtBuz-WidgetExtension";
+			productReference = 5682FD8635631EAB63F824831439661D /* Pods_NxtBuz_WidgetExtension.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -220,17 +292,25 @@
 				Base,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = 27BE2B2B961FF01577FBE23F895388E0 /* Products */;
+			productRefGroup = 5860FE1DEF15AD060517BB85FB713131 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				BCE58225176923716EE529F94DB683EF /* iosUmbrella */,
 				257DAE7AD687F3321E123FAC8DBD34D0 /* Pods-NxtBuz */,
+				7F6B3F543D9E5E5A3AD60CD923C9A4E0 /* Pods-NxtBuz-WidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		40BBA0F030F703118407017240AB611B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		79CF1F56D168FF5C2D009E2772CA680C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -254,6 +334,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		ACF96C0D91721874B49260C367957F3C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47B5ABFBA6A2576DF5DB18491A90B235 /* Pods-NxtBuz-WidgetExtension-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E7F8B9E14A11EFB30911DACCEC07E29A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -265,6 +353,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3648E745730749103F016E888C2A4839 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iosUmbrella;
+			target = BCE58225176923716EE529F94DB683EF /* iosUmbrella */;
+			targetProxy = 1AFD82EF3334FD7A0B465EF142517317 /* PBXContainerItemProxy */;
+		};
 		93C7CEEE237E99E2761A15BCAADB68E9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = iosUmbrella;
@@ -274,10 +368,36 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		256AD5647E6923C51B771E5B51ED85B8 /* Debug */ = {
+		14C1DAF539AECEEAAF9083F6DF3BE93C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA87808EA057395999F67DDF5F8494AB /* iosUmbrella.release.xcconfig */;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
+				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		261F51C722FDAA771DC2EF079A9C86DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6693223BFDD9FAFD65C96547A934123B /* iosUmbrella.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
+				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -291,9 +411,9 @@
 			};
 			name = Debug;
 		};
-		2AF71B568F5CD7E08A43143420796E5A /* Debug */ = {
+		515C733D0ABF010850DE20B74FB26708 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1E87E9AD2FE5A50B0F4D7351FB612A43 /* Pods-NxtBuz.debug.xcconfig */;
+			baseConfigurationReference = ADA21F6008162B06A7EDFE05D5E75E3F /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -305,7 +425,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -314,7 +434,7 @@
 					"@loader_path/Frameworks",
 				);
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -327,6 +447,44 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
+		};
+		52A928C154F63058CBFC302E9B198634 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4CC46D3BC4EA9DFFB49BEAE0E3F71B3 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
 		};
 		593F10BFFA94DAC7D6E17FB8A7F32D72 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -387,24 +545,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
-			};
-			name = Release;
-		};
-		9D3AB59C349A005020636DA263A9C98C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA87808EA057395999F67DDF5F8494AB /* iosUmbrella.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -474,11 +614,56 @@
 			};
 			name = Debug;
 		};
-		D4F908718A6E84E9C1DDB2D5866D88B4 /* Release */ = {
+		E9AF46DF6B7AE281F6572A23EE47CE0A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BEB607A6D973AF2E5CE46064D1D6D071 /* Pods-NxtBuz.release.xcconfig */;
+			baseConfigurationReference = 54EB7E152A5CC31BE5284AA78DB16C77 /* Pods-NxtBuz.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
+				);
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		FBD737DE0D466C24264091CADFD0B4E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 18BBBDAA0FA5AD0358FE965EBD12AA91 /* Pods-NxtBuz.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
+				);
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -527,8 +712,17 @@
 		657C51589D61F9D0CAC0707DEC40F059 /* Build configuration list for PBXNativeTarget "Pods-NxtBuz" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2AF71B568F5CD7E08A43143420796E5A /* Debug */,
-				D4F908718A6E84E9C1DDB2D5866D88B4 /* Release */,
+				E9AF46DF6B7AE281F6572A23EE47CE0A /* Debug */,
+				FBD737DE0D466C24264091CADFD0B4E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E1ED1CEF0C0BEE1D1C52F9736D8A654E /* Build configuration list for PBXNativeTarget "Pods-NxtBuz-WidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				515C733D0ABF010850DE20B74FB26708 /* Debug */,
+				52A928C154F63058CBFC302E9B198634 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -536,8 +730,8 @@
 		F3ED4C41EDBC1F25D9662294E07AFC07 /* Build configuration list for PBXAggregateTarget "iosUmbrella" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				256AD5647E6923C51B771E5B51ED85B8 /* Debug */,
-				9D3AB59C349A005020636DA263A9C98C /* Release */,
+				261F51C722FDAA771DC2EF079A9C86DF /* Debug */,
+				14C1DAF539AECEEAAF9083F6DF3BE93C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
