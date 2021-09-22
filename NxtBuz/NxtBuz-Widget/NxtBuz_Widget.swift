@@ -9,16 +9,17 @@ import WidgetKit
 import SwiftUI
 import Intents
 import iosUmbrella
-import NxtBuz
 
 struct Provider: IntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(
             date: Date(),
+            busStopCode: "00000",
             busStopDescription: "Opp Jln Jurong Kechil",
             busServiceNumber: "961M",
+            arriving: true,
             busType: BusType.sd,
-            arrivalStr: "04",
+            nextArrivalInMins: 4,
             configuration: ConfigurationIntent()
         )
     }
@@ -27,26 +28,26 @@ struct Provider: IntentTimelineProvider {
         let date = Date()
         let entry: SimpleEntry
         
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "ss"
-        let stringDate = timeFormatter.string(from: date)
-        
         if context.isPreview {
             entry = SimpleEntry(
                 date: date,
+                busStopCode: "00000",
                 busStopDescription: "Opp Jln Jurong Kechil",
                 busServiceNumber: "961M",
+                arriving: true,
                 busType: BusType.sd,
-                arrivalStr: "04",
+                nextArrivalInMins: 4,
                 configuration: configuration
             )
         } else {
             entry = SimpleEntry(
                 date: date,
+                busStopCode: "00000",
                 busStopDescription: "Opp Jln Jurong Kechil",
                 busServiceNumber: "961M",
+                arriving: true,
                 busType: BusType.sd,
-                arrivalStr: stringDate,
+                nextArrivalInMins: 4,
                 configuration: configuration
             )
         }
@@ -55,42 +56,61 @@ struct Provider: IntentTimelineProvider {
     }
 
     func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        let date = Date()
-        let entry: SimpleEntry
         
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "ss"
-        let stringDate = timeFormatter.string(from: date)
-        
-        entry = SimpleEntry(
-            date: date,
-            busStopDescription: "Opp Jln Jurong Kechil",
-            busServiceNumber: "961M",
-            busType: BusType.sd,
-            arrivalStr: stringDate,
-            configuration: configuration
-        )
-        
-        // Create a date that's 15 minutes in the future.
-        let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 1, to: date)!
+        Di.get().getBusArrivalsUseCase().invoke(
+            busStopCode: "42071",
+            busServiceNumber: "61"
+        ) { busStopArrival in
+            let date = Date()
+            let entry: SimpleEntry
+            
+            if let busArrivals = busStopArrival.busArrivals as? BusArrivals.Arriving {
+                entry = SimpleEntry(
+                    date: date,
+                    busStopCode: busStopArrival.busStopCode,
+                    busStopDescription: "Pei Hwa Presby Pr Sch",
+                    busServiceNumber: busStopArrival.busServiceNumber,
+                    arriving: true,
+                    busType: busArrivals.nextArrivingBus.type,
+                    nextArrivalInMins: Int(busArrivals.nextArrivingBus.arrival),
+                    configuration: configuration
+                )
+            } else {
+                entry = SimpleEntry(
+                    date: date,
+                    busStopCode: "42071",//busStopArrival.busStopCode,
+                    busStopDescription: "Pei Hwa Presby Pr Sch",
+                    busServiceNumber: "61",//busStopArrival.busServiceNumber,
+                    arriving: true,//false,
+                    busType: BusType.sd,
+                    nextArrivalInMins: 5,
+                    configuration: configuration
+                )
+            }
+            
+            // Create a date that's 15 minutes in the future.
+            let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 5, to: date)!
 
-        // Create the timeline with the entry and a reload policy with the date
-        // for the next update.
-        let timeline = Timeline(
-            entries: [entry],
-            policy: .after(nextUpdateDate)
-        )
-        
-        completion(timeline)
+            // Create the timeline with the entry and a reload policy with the date
+            // for the next update.
+            let timeline = Timeline(
+                entries: [entry],
+                policy: .after(nextUpdateDate)
+            )
+            
+            completion(timeline)
+        }
     }
 }
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
+    let busStopCode: String
     let busStopDescription: String
     let busServiceNumber: String
+    let arriving: Bool
     let busType: BusType
-    let arrivalStr: String
+    let nextArrivalInMins: Int
     let configuration: ConfigurationIntent
 }
 
@@ -118,6 +138,9 @@ struct NxtBuz_WidgetEntryView : View {
     }
     
     var body: some View {
+        let components = DateComponents(minute: entry.nextArrivalInMins, second: 0)
+        let futureDate = Calendar.current.date(byAdding: components, to: entry.date)!
+        
         VStack {
             Text(entry.busStopDescription)
                 .font(NxtBuzFonts.body)
@@ -143,19 +166,26 @@ struct NxtBuz_WidgetEntryView : View {
                 
                 Spacer()
                 
-                Image(systemName: "arrow.right.square.fill")
-                    .renderingMode(.template)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 16, height: 16)
-                    .foregroundColor(Color.primary)
+//                Image(systemName: "arrow.right.square.fill")
+//                    .renderingMode(.template)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 16, height: 16)
+//                    .foregroundColor(Color.primary)
+//                
+//                Spacer()
                 
-                Spacer()
-                
-                Text(entry.arrivalStr)
-                    .font(NxtBuzFonts.headline)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
+                if (entry.arriving) {
+                    Text(futureDate, style: .timer)
+                        .font(NxtBuzFonts.headline)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                } else {
+                    Text("N/A")
+                        .font(NxtBuzFonts.headline)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                }
             }
             
             Spacer()
