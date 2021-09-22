@@ -34,6 +34,7 @@
 		A57B9A2D26FB508B0095D96A /* NxtBuz-WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A57B9A1D26FB50870095D96A /* NxtBuz-WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A57B9A3526FB58E70095D96A /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9926F5B1C800BB79DA /* Font.swift */; };
 		A57B9A3726FB5FFF0095D96A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E1E81C26F10216007470A4 /* Assets.xcassets */; };
+		A57B9A3B26FB87F10095D96A /* Di.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBA126F5C07200BB79DA /* Di.swift */; };
 		A59E5B2626FA25CE0032DC88 /* Pods_NxtBuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		A59E5B2A26FA273D0032DC88 /* iosUmbrella.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59E5B2926FA273D0032DC88 /* iosUmbrella.framework */; };
 		A5E1E81926F10213007470A4 /* NxtBuzApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E1E81826F10213007470A4 /* NxtBuzApp.swift */; };
@@ -45,7 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		A57B9A2B26FB508B0095D96A /* PBXContainerItemProxy */ = {
+		A57B9A3926FB874F0095D96A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A5E1E80D26F10213007470A4 /* Project object */;
 			proxyType = 1;
@@ -368,7 +369,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				A57B9A2C26FB508B0095D96A /* PBXTargetDependency */,
+				A57B9A3A26FB874F0095D96A /* PBXTargetDependency */,
 			);
 			name = NxtBuz;
 			productName = NxtBuz;
@@ -544,6 +545,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A57B9A3B26FB87F10095D96A /* Di.swift in Sources */,
 				A57B9A2426FB50870095D96A /* NxtBuz_Widget.swift in Sources */,
 				A57B9A2926FB508B0095D96A /* NxtBuz_Widget.intentdefinition in Sources */,
 				A57B9A3526FB58E70095D96A /* Font.swift in Sources */,
@@ -596,10 +598,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A57B9A2C26FB508B0095D96A /* PBXTargetDependency */ = {
+		A57B9A3A26FB874F0095D96A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A57B9A1C26FB50870095D96A /* NxtBuz-WidgetExtension */;
-			targetProxy = A57B9A2B26FB508B0095D96A /* PBXContainerItemProxy */;
+			targetProxy = A57B9A3926FB874F0095D96A /* PBXContainerItemProxy */;
 		};
 		A5E1E82826F10216007470A4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

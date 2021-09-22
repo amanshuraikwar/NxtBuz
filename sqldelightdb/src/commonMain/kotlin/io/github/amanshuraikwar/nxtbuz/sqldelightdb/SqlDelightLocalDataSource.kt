@@ -151,7 +151,10 @@ class SqlDelightLocalDataSource internal constructor(
     ): OperatingBusEntity? {
         return withContext(ioDispatcher) {
             nxtBuzDb.operatingBusEntityQueries
-                .findByBusStopCode(busStopCode)
+                .findByBusStopCodeAndBusServiceNumber(
+                    busStopCode = busStopCode,
+                    busServiceNumber = busServiceNumber
+                )
                 .executeAsList()
                 // TODO-amanshuraikwar (14 Sep 2021 06:59:58 PM):
                 //  check why this returns multiple rows
