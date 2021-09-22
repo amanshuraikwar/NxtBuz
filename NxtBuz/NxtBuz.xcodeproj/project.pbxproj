@@ -23,6 +23,7 @@
 		A52FEBB726F9EC4300BB79DA /* BusArrivalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBB626F9EC4200BB79DA /* BusArrivalView.swift */; };
 		A52FEBB926F9F18300BB79DA /* BusArrivalErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBB826F9F18300BB79DA /* BusArrivalErrorView.swift */; };
 		A52FEBBB26F9F3DC00BB79DA /* BusDestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBBA26F9F3DC00BB79DA /* BusDestinationView.swift */; };
+		A57B9A1826FB4BCF0095D96A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A1726FB4BCE0095D96A /* SettingsView.swift */; };
 		A59E5B2626FA25CE0032DC88 /* Pods_NxtBuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		A59E5B2A26FA273D0032DC88 /* iosUmbrella.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59E5B2926FA273D0032DC88 /* iosUmbrella.framework */; };
 		A5E1E81926F10213007470A4 /* NxtBuzApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E1E81826F10213007470A4 /* NxtBuzApp.swift */; };
@@ -67,6 +68,7 @@
 		A52FEBB626F9EC4200BB79DA /* BusArrivalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrivalView.swift; sourceTree = "<group>"; };
 		A52FEBB826F9F18300BB79DA /* BusArrivalErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrivalErrorView.swift; sourceTree = "<group>"; };
 		A52FEBBA26F9F3DC00BB79DA /* BusDestinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusDestinationView.swift; sourceTree = "<group>"; };
+		A57B9A1726FB4BCE0095D96A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A59E5B2926FA273D0032DC88 /* iosUmbrella.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iosUmbrella.framework; path = ../iosUmbrella/build/cocoapods/framework/iosUmbrella.framework; sourceTree = "<group>"; };
 		A5E1E81526F10213007470A4 /* NxtBuz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NxtBuz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E1E81826F10213007470A4 /* NxtBuzApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NxtBuzApp.swift; sourceTree = "<group>"; };
@@ -182,6 +184,14 @@
 			path = BusStopArrivals;
 			sourceTree = "<group>";
 		};
+		A57B9A1626FB4BBE0095D96A /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A57B9A1726FB4BCE0095D96A /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		A5E1E80C26F10213007470A4 = {
 			isa = PBXGroup;
 			children = (
@@ -207,6 +217,7 @@
 		A5E1E81726F10213007470A4 /* NxtBuz */ = {
 			isa = PBXGroup;
 			children = (
+				A57B9A1626FB4BBE0095D96A /* Settings */,
 				A52FEBAD26F8AE9500BB79DA /* BusStopArrivals */,
 				A52FEBAC26F8AE6700BB79DA /* Home */,
 				A52FEBAB26F8AE5100BB79DA /* Util */,
@@ -419,6 +430,7 @@
 				A52FEB9E26F5BB4D00BB79DA /* SetupView.swift in Sources */,
 				A52FEB9826F593BC00BB79DA /* BusStopItemView.swift in Sources */,
 				A52FEBA626F5CB3F00BB79DA /* SetupProgressView.swift in Sources */,
+				A57B9A1826FB4BCF0095D96A /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
