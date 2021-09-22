@@ -28,23 +28,19 @@ struct BusStopArrivalsView: View {
                         .font(NxtBuzFonts.body)
                         .padding()
                 }
-            case .Success(let busStopArrivalList, let lastUpdatedOn):
+            case .Success(let busStopArrivalItemDataList, _):
                 List {
                     Section(
                         header: Text("Bus Arrivals")
                             .font(NxtBuzFonts.caption),
-                        footer: Text("Last updated on \(lastUpdatedOn)".uppercased())
+                        footer: Text("Last updated on \(viewModel.lastUpdatedOn)".uppercased())
                             .font(NxtBuzFonts.caption)
                     ) {
-                        ForEach(
-                            Array(busStopArrivalList.enumerated()),
-                            id: \.1
-                        ) { index, busStopArrival in
-                                BusStopArrivalItemView(busStopArrival: busStopArrival)
+                        ForEach(busStopArrivalItemDataList) { busStopArrivalItemData in
+                            BusStopArrivalItemView(busStopArrivalItemData: busStopArrivalItemData)
                         }
                     }
                 }
-                .id(UUID())
                 .listStyle(InsetGroupedListStyle())
             }
         }

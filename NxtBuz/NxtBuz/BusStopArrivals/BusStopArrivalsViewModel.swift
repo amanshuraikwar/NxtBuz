@@ -7,9 +7,11 @@
 
 import Foundation
 import iosUmbrella
+import SwiftUI
 
 class BusStopArrivalsViewModel : ObservableObject {
     @Published var screenState: BusStopArrivalsScreenState = .Fetching
+    @Published var lastUpdatedOn: String = "NONO"
     
     private var busStopArrivalsLoop: BusStopArrivalsLoop?
     private var busStopCode: String? = nil
@@ -24,8 +26,28 @@ class BusStopArrivalsViewModel : ObservableObject {
             Di.get()
                 .getBusArrivalsUseCase()
                 .invoke(busStopCode: busStopCode) { busStopArrivalList in
+                    switch self.screenState {
+                        case .Fetching:
+                            let busStopArrivalItemDataList = busStopArrivalList.map { busStopArrival in
+                                BusStopArrivalItemData(busStopArrival: busStopArrival)
+                            }
+                            DispatchQueue.main.async {
+                                self.screenState = .Success(busStopArrivalItemDataList: busStopArrivalItemDataList, lastUpdatedOn: self.getTime())
+                            }
+                        case .Success(let busStopArrivalItemDataList, _):
+                            busStopArrivalList.forEach { busStopArrival in
+                                let busStopArrivalItemData = busStopArrivalItemDataList.first { busStopArrivalItemData in
+                                    busStopArrivalItemData.busStopArrival.busServiceNumber == busStopArrival.busServiceNumber
+                                }
+    
+                                DispatchQueue.main.async {
+                                    busStopArrivalItemData?.busStopArrival = busStopArrival
+                                    busStopArrivalItemData?.lastUpdatedOn = self.getTime()
+                                }
+                            }
+                    }
                     DispatchQueue.main.async {
-                        self.screenState = .Success(busStopArrivalList: busStopArrivalList, lastUpdatedOn: self.getTime())
+                        self.lastUpdatedOn = self.getTime()
                     }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                         self.getArrivalsAct()
@@ -49,5 +71,17 @@ class BusStopArrivalsViewModel : ObservableObject {
 
 enum BusStopArrivalsScreenState {
     case Fetching
-    case Success(busStopArrivalList: [BusStopArrival], lastUpdatedOn: String)
+    case Success(busStopArrivalItemDataList: [BusStopArrivalItemData], lastUpdatedOn: String)
+}
+
+class BusStopArrivalItemData : ObservableObject, Identifiable {
+    var id: UUID?
+    @Published var busStopArrival: BusStopArrival
+    @Published var lastUpdatedOn: String
+    
+    init(busStopArrival: BusStopArrival) {
+        id = UUID()
+        self.busStopArrival = busStopArrival
+        self.lastUpdatedOn = "NONO"
+    }
 }
