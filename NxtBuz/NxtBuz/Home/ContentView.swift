@@ -12,6 +12,7 @@ import iosUmbrella
 // ref: https://betterprogramming.pub/migrating-an-existing-xcode-project-to-a-new-kotlin-multiplatform-mobile-app-b71d07f23b7a
 struct ContentView: View {
     @StateObject var viewModel = HomeViewModel()
+    @State private var showSettings = false
     
     var body: some View {
         switch viewModel.screenState {
@@ -35,13 +36,16 @@ struct ContentView: View {
                             .navigationBarItems(
                                 trailing: Button(
                                     action: {
-                                        print("User icon pressed...")
+                                        self.showSettings = true
                                     }
                                 ) {
                                     Image(systemName: "gearshape.fill")
                                         .imageScale(.medium)
                                 }
                             )
+                    }
+                    .sheet(isPresented: $showSettings) {
+                        SettingsView()
                     }
                 }
             case HomeScreenState.Fetching:
