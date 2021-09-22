@@ -3,3 +3,9 @@ target 'NxtBuz' do
   platform :ios, '14.1'
   pod 'iosUmbrella', :path => '../iosUmbrella'
 end
+
+target 'NxtBuz-WidgetExtension' do
+  use_frameworks!
+  platform :ios, '14.1'
+  pod 'iosUmbrella', :path => '../iosUmbrella'
+end
