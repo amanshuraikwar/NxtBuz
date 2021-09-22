@@ -31,7 +31,7 @@ kotlin {
             export(project(":busroutedata"))
             export(project(":busarrivaldata"))
             transitiveExport = true
-            isStatic = false
+            isStatic = true
             linkerOpts.add("-lsqlite3")
         }
     }
