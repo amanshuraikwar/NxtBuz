@@ -10,6 +10,7 @@ import iosUmbrella
 
 struct BusStopsView: View {
     @StateObject private var viewModel = BusStopsViewModel()
+    @Binding var bottomContentPadding: CGFloat?
     
     var body: some View {
         ZStack {
@@ -23,6 +24,7 @@ struct BusStopsView: View {
                         .font(NxtBuzFonts.body)
                         .padding()
                 }
+                .padding(.bottom, bottomContentPadding)
             case .Error(let errorMessage):
                 VStack(
                     spacing: 32
@@ -45,50 +47,53 @@ struct BusStopsView: View {
                         iconSystemName: nil
                     ).padding(.horizontal)
                 }
+                .padding(.bottom, bottomContentPadding)
             case .GoToSettingsLocationPermission:
                 VStack(
                     spacing: 32
                 ) {
-                    Image(systemName: "location.fill")
+                    Image(systemName: "location.slash.fill")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 32, height: 32)
+                        .frame(width: 48, height: 48)
+                        .foregroundColor(Color.accentColor)
                     
                     Text("We need location permission to get nearby bus stops :)")
-                        .font(NxtBuzFonts.body)
-                        .fontWeight(.medium)
+                        .font(NxtBuzFonts.title3)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                         .padding(.horizontal)
                     
                     PrimaryButton(
-                        text: "Enable Location Permission in Settings",
+                        text: "Go to Settings",
                         action: { UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!) },
                         iconSystemName: "chevron.forward"
                     ).padding(.horizontal)
                 }
+                .padding(.bottom, bottomContentPadding)
             case .AskLocationPermission:
                 VStack(
                     spacing: 32
                 ) {
-                    Image(systemName: "location.fill")
+                    Image(systemName: "location.slash.fill")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 32, height: 32)
+                        .frame(width: 48, height: 48)
+                        .foregroundColor(Color.accentColor)
                     
                     Text("We need location permission to get nearby bus stops :)")
-                        .font(NxtBuzFonts.body)
-                        .fontWeight(.medium)
+                        .font(NxtBuzFonts.title3)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                         .padding(.horizontal)
                     
                     PrimaryButton(
-                        text: "Give Location Permission",
+                        text: "Give Permission",
                         action: { viewModel.requestPermission() },
                         iconSystemName: nil
                     ).padding(.horizontal)
                 }
+                .padding(.bottom, bottomContentPadding)
             case .Success(let busStopList):
                 List {
                     Section(
@@ -96,7 +101,7 @@ struct BusStopsView: View {
                             .font(NxtBuzFonts.caption),
                         // todo: this is a hack to add space at the bottom of the list, find a better way
                         footer: Spacer()
-                            .frame(minHeight: UIScreen.main.bounds.height / 3)
+                            .frame(minHeight: bottomContentPadding)
                     ) {
                         ForEach(
                             Array(busStopList.enumerated()),
@@ -104,7 +109,8 @@ struct BusStopsView: View {
                         ) { index, busStop in
                             NavigationLink(
                                 destination: BusStopArrivalsView(
-                                    busStop: busStop
+                                    busStop: busStop,
+                                    bottomContentPadding: $bottomContentPadding
                                 )
                             ) {
                                 BusStopItemView(

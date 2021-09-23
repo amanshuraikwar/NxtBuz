@@ -27,24 +27,27 @@ class BusStopArrivalsViewModel : ObservableObject {
                 .getBusArrivalsUseCase()
                 .invoke(busStopCode: busStopCode) { busStopArrivalList in
                     switch self.screenState {
-                        case .Fetching:
-                            let busStopArrivalItemDataList = busStopArrivalList.map { busStopArrival in
-                                BusStopArrivalItemData(busStopArrival: busStopArrival)
+                    case .Fetching:
+                        let busStopArrivalItemDataList = busStopArrivalList.map { busStopArrival in
+                            BusStopArrivalItemData(
+                                busStopArrival: busStopArrival,
+                                // todo: get correct value from db
+                                starred: [true, false].randomElement() ?? false)
+                        }
+                        DispatchQueue.main.async {
+                            self.screenState = .Success(busStopArrivalItemDataList: busStopArrivalItemDataList, lastUpdatedOn: self.getTime())
+                        }
+                    case .Success(let busStopArrivalItemDataList, _):
+                        busStopArrivalList.forEach { busStopArrival in
+                            let busStopArrivalItemData = busStopArrivalItemDataList.first { busStopArrivalItemData in
+                                busStopArrivalItemData.busStopArrival.busServiceNumber == busStopArrival.busServiceNumber
                             }
+
                             DispatchQueue.main.async {
-                                self.screenState = .Success(busStopArrivalItemDataList: busStopArrivalItemDataList, lastUpdatedOn: self.getTime())
+                                busStopArrivalItemData?.busStopArrival = busStopArrival
+                                busStopArrivalItemData?.lastUpdatedOn = self.getTime()
                             }
-                        case .Success(let busStopArrivalItemDataList, _):
-                            busStopArrivalList.forEach { busStopArrival in
-                                let busStopArrivalItemData = busStopArrivalItemDataList.first { busStopArrivalItemData in
-                                    busStopArrivalItemData.busStopArrival.busServiceNumber == busStopArrival.busServiceNumber
-                                }
-    
-                                DispatchQueue.main.async {
-                                    busStopArrivalItemData?.busStopArrival = busStopArrival
-                                    busStopArrivalItemData?.lastUpdatedOn = self.getTime()
-                                }
-                            }
+                        }
                     }
                     DispatchQueue.main.async {
                         self.lastUpdatedOn = self.getTime()
@@ -58,6 +61,18 @@ class BusStopArrivalsViewModel : ObservableObject {
     
     func stopArrivalsLoop() {
         self.busStopCode = nil
+    }
+    
+    func onStarToggle(busServiceNumber: String, newValue: Bool) {
+        switch self.screenState {
+        case .Success(let busStopArrivalItemDataList, _):
+            let busStopArrivalItemData = busStopArrivalItemDataList.first { busStopArrivalItemData in
+                busStopArrivalItemData.busStopArrival.busServiceNumber == busServiceNumber
+            }
+            busStopArrivalItemData?.starred = newValue
+        default:
+            break
+        }
     }
     
     private func getTime() -> String {
@@ -78,10 +93,12 @@ class BusStopArrivalItemData : ObservableObject, Identifiable {
     var id: UUID?
     @Published var busStopArrival: BusStopArrival
     @Published var lastUpdatedOn: String
+    @Published var starred: Bool
     
-    init(busStopArrival: BusStopArrival) {
+    init(busStopArrival: BusStopArrival, starred: Bool) {
         id = UUID()
         self.busStopArrival = busStopArrival
         self.lastUpdatedOn = "NONO"
+        self.starred = starred
     }
 }

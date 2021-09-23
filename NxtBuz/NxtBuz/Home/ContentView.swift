@@ -13,6 +13,7 @@ import iosUmbrella
 struct ContentView: View {
     @StateObject var viewModel = HomeViewModel()
     @State private var showSettings = false
+    @State private var starredBusesLayoutHeight: CGFloat?
     
     var body: some View {
         switch viewModel.screenState {
@@ -30,7 +31,7 @@ struct ContentView: View {
                     )
                 ) {
                     NavigationView {
-                        BusStopsView()
+                        BusStopsView(bottomContentPadding: $starredBusesLayoutHeight)
                             .navigationTitle("Next Bus SG")
                             .listStyle(GroupedListStyle())
                             .navigationBarItems(
@@ -41,11 +42,24 @@ struct ContentView: View {
                                 ) {
                                     Image(systemName: "gearshape.fill")
                                         .imageScale(.medium)
+                                        .foregroundColor(Color.primary)
                                 }
                             )
                     }
                     
                     StarredBusArrivalsView()
+                        .background(
+                            GeometryReader { geometry in
+                                Color.clear.preference(
+                                    key: StarredBusesLayoutHeightPreferenceKey.self,
+                                    value: geometry.size.height
+                                )
+                            }
+                        )
+                        // ref: https://www.swiftbysundell.com/questions/syncing-the-width-or-height-of-two-swiftui-views/
+                        .onPreferenceChange(StarredBusesLayoutHeightPreferenceKey.self) {
+                            starredBusesLayoutHeight = $0
+                        }
                 }
                 .sheet(isPresented: $showSettings) {
                     SettingsView()
@@ -56,6 +70,17 @@ struct ContentView: View {
                         viewModel.getUserState()
                     }
         }
+    }
+}
+
+struct StarredBusesLayoutHeightPreferenceKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+
+    static func reduce(
+        value: inout CGFloat,
+        nextValue: () -> CGFloat
+    ) {
+        value = max(value, nextValue())
     }
 }
 

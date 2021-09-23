@@ -26,7 +26,7 @@ struct BusStopItemView: View {
                     alignment: .leading
                 )
             
-            Text(roadName + " • " + busStopCode)
+            Text(roadName + "  •  " + busStopCode)
                 .font(NxtBuzFonts.caption)
                 .padding(.top, 2)
                 .foregroundColor(Color.secondary)

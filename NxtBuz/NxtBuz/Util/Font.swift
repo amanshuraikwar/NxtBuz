@@ -14,6 +14,8 @@ struct NxtBuzFonts {
     public static var title = Font.system(.title, design: .rounded)
     
     public static var title2 = Font.system(.title2, design: .rounded)
+    
+    public static var title3 = Font.system(.title3, design: .rounded)
 
     public static var headline = Font.system(.headline, design: .rounded)
 
