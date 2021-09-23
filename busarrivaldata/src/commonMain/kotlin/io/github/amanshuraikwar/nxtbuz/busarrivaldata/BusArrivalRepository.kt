@@ -60,19 +60,19 @@ class BusArrivalRepository constructor(
 
     suspend fun getBusArrivals(busStopCode: String, busServiceNumber: String): BusStopArrival {
         return withContext(dispatcherProvider.io) {
-//            val operatingBusEntity =
-//                localDataSource.findOperatingBus(
-//                    busStopCode = busStopCode,
-//                    busServiceNumber = busServiceNumber
-//                )
-//                    ?: run {
-//                        // bus service number returned from remote api is not in local db
-//                        throw IllegalDbStateException(
-//                            "No operating bus row found for service number " +
-//                                    "$busServiceNumber and stop code " +
-//                                    "$busStopCode in local DB."
-//                        )
-//                    }
+            val operatingBusEntity =
+                localDataSource.findOperatingBus(
+                    busStopCode = busStopCode,
+                    busServiceNumber = busServiceNumber
+                )
+                    ?: run {
+                        // bus service number returned from remote api is not in local db
+                        throw IllegalDbStateException(
+                            "No operating bus row found for service number " +
+                                    "$busServiceNumber and stop code " +
+                                    "$busStopCode in local DB."
+                        )
+                    }
 
             val busArrivalItemList =
                 remoteDataSource.getBusArrivals(busStopCode, busServiceNumber).busArrivals
@@ -83,16 +83,8 @@ class BusArrivalRepository constructor(
                 return@withContext busArrivalItem.toBusArrival(busStopCode)
 
             } else {
-                return@withContext BusStopArrival(
-                    busStopCode = busStopCode,
-                    busServiceNumber = busServiceNumber,
-                    operator = "N/A",
-                    direction = -1,
-                    stopSequence = -1,
-                    distance = 0.0,
-                    busArrivals = BusArrivals.DataNotAvailable
-                )
-                //return@withContext operatingBusEntity.toBusArrivalError()
+
+                return@withContext operatingBusEntity.toBusArrivalError()
             }
         }
     }
@@ -100,14 +92,14 @@ class BusArrivalRepository constructor(
     private suspend inline fun BusArrivalItemDto.toBusArrival(
         busStopCode: String,
     ): BusStopArrival {
-//        val (_, _, direction, stopSequence, distance) =
-//            localDataSource
-//                .findBusRoute(busStopCode = busStopCode, busServiceNumber = serviceNumber)
-//                ?: throw IllegalDbStateException(
-//                    "No bus route row found for service number " +
-//                            "$serviceNumber and stop code " +
-//                            "$busStopCode in local DB."
-//                )
+        val (_, _, direction, stopSequence, distance) =
+            localDataSource
+                .findBusRoute(busStopCode = busStopCode, busServiceNumber = serviceNumber)
+                ?: throw IllegalDbStateException(
+                    "No bus route row found for service number " +
+                            "$serviceNumber and stop code " +
+                            "$busStopCode in local DB."
+                )
 
         val arrivals = toArrivals(busStopCode)
 
@@ -115,9 +107,9 @@ class BusArrivalRepository constructor(
             busStopCode = busStopCode,
             busServiceNumber = serviceNumber,
             operator = operator,
-            direction = -1,//direction,
-            stopSequence = -1,//stopSequence,
-            distance = 0.0,//distance,
+            direction = direction,
+            stopSequence = stopSequence,
+            distance = distance,
             busArrivals = arrivals
         )
     }
@@ -164,48 +156,38 @@ class BusArrivalRepository constructor(
             .minutes
             .coerceAtLeast(0)
 
-//        val origin: ArrivingBusStop =
-//            localDataSource
-//                .findBusStopByCode(busStopCode = originCode)
-//                ?.let { busStopEntity ->
-//                    ArrivingBusStop(
-//                        busStopCode = busStopEntity.code,
-//                        roadName = busStopEntity.roadName,
-//                        busStopDescription = busStopEntity.description
-//                    )
-//                }
-//                ?: throw IllegalDbStateException(
-//                    "No bus stop row found for stop code $originCode (origin) in local DB."
-//                )
-//
-//        val destination: ArrivingBusStop =
-//            localDataSource
-//                .findBusStopByCode(busStopCode = destinationCode)
-//                ?.let { busStopEntity ->
-//                    ArrivingBusStop(
-//                        busStopCode = busStopEntity.code,
-//                        roadName = busStopEntity.roadName,
-//                        busStopDescription = busStopEntity.description
-//                    )
-//                }
-//                ?: throw IllegalDbStateException(
-//                    "No bus stop row found for stop code " +
-//                            "$destinationCode (destination) in local DB."
-//                )
+        val origin: ArrivingBusStop =
+            localDataSource
+                .findBusStopByCode(busStopCode = originCode)
+                ?.let { busStopEntity ->
+                    ArrivingBusStop(
+                        busStopCode = busStopEntity.code,
+                        roadName = busStopEntity.roadName,
+                        busStopDescription = busStopEntity.description
+                    )
+                }
+                ?: throw IllegalDbStateException(
+                    "No bus stop row found for stop code $originCode (origin) in local DB."
+                )
+
+        val destination: ArrivingBusStop =
+            localDataSource
+                .findBusStopByCode(busStopCode = destinationCode)
+                ?.let { busStopEntity ->
+                    ArrivingBusStop(
+                        busStopCode = busStopEntity.code,
+                        roadName = busStopEntity.roadName,
+                        busStopDescription = busStopEntity.description
+                    )
+                }
+                ?: throw IllegalDbStateException(
+                    "No bus stop row found for stop code " +
+                            "$destinationCode (destination) in local DB."
+                )
 
         return ArrivingBus(
-            //origin,
-            ArrivingBusStop(
-                busStopCode = "busStopEntity.code",
-                roadName = "busStopEntity.roadName",
-                busStopDescription = "busStopEntity.description"
-            ),
-            //destination,
-            ArrivingBusStop(
-                busStopCode = "busStopEntity.code",
-                roadName = "busStopEntity.roadName",
-                busStopDescription = "busStopEntity.description"
-            ),
+            origin,
+            destination,
             time.coerceAtLeast(0),
             lat.toDouble(),
             lng.toDouble(),
