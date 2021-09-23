@@ -118,6 +118,7 @@ struct NxtBuz_WidgetEntryView : View {
     var entry: Provider.Entry
     let busTypeName: String
     let lastUpdated: String
+    let arrivalStr: String
     
     init(entry: Provider.Entry) {
         self.entry = entry
@@ -135,12 +136,17 @@ struct NxtBuz_WidgetEntryView : View {
         timeFormatter.dateFormat = "hh:mm a"
         let stringDate = timeFormatter.string(from: date)
         self.lastUpdated = stringDate
+        
+        if self.entry.nextArrivalInMins > 60 {
+            self.arrivalStr = "60+"
+        } else if self.entry.nextArrivalInMins > 0 {
+            self.arrivalStr = String(format: "%02d", self.entry.nextArrivalInMins)
+        } else {
+            self.arrivalStr = "ARR"
+        }
     }
     
     var body: some View {
-        let components = DateComponents(minute: entry.nextArrivalInMins, second: 0)
-        let futureDate = Calendar.current.date(byAdding: components, to: entry.date)!
-        
         VStack {
             Text(entry.busStopDescription)
                 .font(NxtBuzFonts.body)
@@ -166,17 +172,17 @@ struct NxtBuz_WidgetEntryView : View {
                 
                 Spacer()
                 
-//                Image(systemName: "arrow.right.square.fill")
-//                    .renderingMode(.template)
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(width: 16, height: 16)
-//                    .foregroundColor(Color.primary)
-//                
-//                Spacer()
+                Image(systemName: "arrow.right.square.fill")
+                    .renderingMode(.template)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 16, height: 16)
+                    .foregroundColor(Color.primary)
+
+                Spacer()
                 
                 if (entry.arriving) {
-                    Text(futureDate, style: .timer)
+                    Text(arrivalStr)
                         .font(NxtBuzFonts.headline)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
@@ -224,9 +230,9 @@ struct NxtBuz_Widget: Widget {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             NxtBuz_WidgetEntryView(entry: entry)
         }
-        .supportedFamilies([.systemSmall])
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        //.supportedFamilies([.systemSmall])
+        //.configurationDisplayName("My Widget")
+        //.description("This is an example widget.")
     }
 }
 
