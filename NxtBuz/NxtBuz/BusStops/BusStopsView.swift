@@ -14,42 +14,108 @@ struct BusStopsView: View {
     var body: some View {
         ZStack {
             switch viewModel.busStopsScreenState {
-                case .Fetching:
-                    VStack {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                        
-                        Text("Fetching bus stops...")
-                            .font(NxtBuzFonts.body)
-                            .padding()
-                    }
-                case .Success(let busStopList):
-                    List {
-                        Section(
-                            header: Text("Nearby Bus Stops")
-                                .font(NxtBuzFonts.caption)
-                        ) {
-                            ForEach(
-                                Array(busStopList.enumerated()),
-                                id: \.1
-                            ) { index, busStop in
-                                NavigationLink(
-                                    destination: BusStopArrivalsView(
-                                        busStop: busStop
-                                    )
-                                ) {
-                                    BusStopItemView(
-                                        busStopName: busStop.description_,
-                                        roadName: busStop.roadName,
-                                        busStopCode: busStop.code,
-                                        operatingBusServiceNumbers: getOperatingBusStr(busStop.operatingBusList)
-                                    )
-                                }
+            case .Fetching:
+                VStack {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                    
+                    Text("Fetching bus stops...")
+                        .font(NxtBuzFonts.body)
+                        .padding()
+                }
+            case .Error(let errorMessage):
+                VStack(
+                    spacing: 32
+                ) {
+                    Image(systemName: "xmark.octagon.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 32, height: 32)
+                    
+                    Text(errorMessage)
+                        .font(NxtBuzFonts.body)
+                        .fontWeight(.medium)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                        .padding(.horizontal)
+                    
+                    PrimaryButton(
+                        text: "Retry",
+                        action: { viewModel.fetchBusStops() },
+                        iconSystemName: nil
+                    ).padding(.horizontal)
+                }
+            case .GoToSettingsLocationPermission:
+                VStack(
+                    spacing: 32
+                ) {
+                    Image(systemName: "location.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 32, height: 32)
+                    
+                    Text("We need location permission to get nearby bus stops :)")
+                        .font(NxtBuzFonts.body)
+                        .fontWeight(.medium)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                        .padding(.horizontal)
+                    
+                    PrimaryButton(
+                        text: "Enable Location Permission in Settings",
+                        action: { UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!) },
+                        iconSystemName: "chevron.forward"
+                    ).padding(.horizontal)
+                }
+            case .AskLocationPermission:
+                VStack(
+                    spacing: 32
+                ) {
+                    Image(systemName: "location.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 32, height: 32)
+                    
+                    Text("We need location permission to get nearby bus stops :)")
+                        .font(NxtBuzFonts.body)
+                        .fontWeight(.medium)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                        .padding(.horizontal)
+                    
+                    PrimaryButton(
+                        text: "Give Location Permission",
+                        action: { viewModel.requestPermission() },
+                        iconSystemName: nil
+                    ).padding(.horizontal)
+                }
+            case .Success(let busStopList):
+                List {
+                    Section(
+                        header: Text("Nearby Bus Stops")
+                            .font(NxtBuzFonts.caption)
+                    ) {
+                        ForEach(
+                            Array(busStopList.enumerated()),
+                            id: \.1
+                        ) { index, busStop in
+                            NavigationLink(
+                                destination: BusStopArrivalsView(
+                                    busStop: busStop
+                                )
+                            ) {
+                                BusStopItemView(
+                                    busStopName: busStop.description_,
+                                    roadName: busStop.roadName,
+                                    busStopCode: busStop.code,
+                                    operatingBusServiceNumbers: getOperatingBusStr(busStop.operatingBusList)
+                                )
                             }
                         }
                     }
-                    .id(UUID())
-                    .listStyle(InsetGroupedListStyle())
+                }
+                .id(UUID())
+                .listStyle(InsetGroupedListStyle())
             }
         }
         .onAppear {

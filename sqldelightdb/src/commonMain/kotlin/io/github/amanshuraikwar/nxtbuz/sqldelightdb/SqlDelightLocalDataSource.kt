@@ -155,10 +155,7 @@ class SqlDelightLocalDataSource internal constructor(
                     busStopCode = busStopCode,
                     busServiceNumber = busServiceNumber
                 )
-                .executeAsList()
-                // TODO-amanshuraikwar (14 Sep 2021 06:59:58 PM):
-                //  check why this returns multiple rows
-                .getOrNull(0)
+                .executeAsOneOrNull()
                 ?.let { operatingBusEntity ->
                     OperatingBusEntity(
                         busStopCode = operatingBusEntity.busStopCode,
