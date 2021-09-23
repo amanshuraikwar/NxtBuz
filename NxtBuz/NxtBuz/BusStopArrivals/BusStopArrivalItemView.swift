@@ -10,6 +10,7 @@ import iosUmbrella
 
 struct BusStopArrivalItemView: View {
     @StateObject var busStopArrivalItemData: BusStopArrivalItemData
+    var onStarToggle: (_ newValue: Bool) -> Void
     
     var body: some View {
         if let busArrivals = busStopArrivalItemData.busStopArrival.busArrivals as? BusArrivals.Arriving {
@@ -34,8 +35,32 @@ struct BusStopArrivalItemView: View {
                     BusDestinationView(destination: busArrivals.nextArrivingBus.destination.busStopDescription)
                         .padding(.top, 2)
                 }
-                .padding(.horizontal)
+                .padding(.leading)
                 .padding(.vertical, 4)
+                
+                Spacer()
+                
+                Button(
+                    action: {
+                        onStarToggle(!busStopArrivalItemData.starred)
+                    }
+                ) {
+                    if busStopArrivalItemData.starred {
+                        Image(systemName: "star.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(Color.yellow)
+                            .frame(maxHeight: .infinity, alignment: .center)
+                    } else {
+                        Image(systemName: "star")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(Color.yellow)
+                            .frame(maxHeight: .infinity, alignment: .center)
+                    }
+                }
             }
         } else {
             HStack(
@@ -74,125 +99,149 @@ struct BusStopArrivalItemView: View {
                         .padding(.horizontal)
                         .padding(.vertical, 4)
                 }
+                
+                Spacer()
+                
+                Button(
+                    action: {
+                        onStarToggle(!busStopArrivalItemData.starred)
+                    }
+                ) {
+                    if busStopArrivalItemData.starred {
+                        Image(systemName: "star.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(Color.yellow)
+                            //.frame(maxHeight: .infinity, alignment: .center)
+                    } else {
+                        Image(systemName: "star")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(Color.yellow)
+                            //.frame(maxHeight: .infinity, alignment: .center)
+                    }
+                }
             }
         }
     }
 }
 
-struct BusStopArrivalItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            BusStopArrivalItemView(
-                busStopArrivalItemData: BusStopArrivalItemData(
-                    busStopArrival: BusStopArrival(
-                        busStopCode: "123456",
-                        busServiceNumber: "961M",
-                        operator: "SMRT",
-                        direction: 1,
-                        stopSequence: 24,
-                        distance: 14.6,
-                        busArrivals: BusArrivals.Arriving.init(
-                            nextArrivingBus:
-                                ArrivingBus(
-                                    origin: ArrivingBusStop(
-                                        busStopCode: "123456",
-                                        roadName: "This Road",
-                                        busStopDescription: "Origin Bus Stop"
-                                    ),
-                                    destination: ArrivingBusStop(
-                                        busStopCode: "123456",
-                                        roadName: "This Road",
-                                        busStopDescription: "Destination Bus Stop"
-                                    ),
-                                    arrival: 6,
-                                    latitude: 1.2,
-                                    longitude: 1.2,
-                                    visitNumber: 1,
-                                    load: BusLoad.lsd,
-                                    wheelchairAccess: true,
-                                    type: BusType.bd
-                                ),
-                            followingArrivingBusList: []
-                        )
-                    )
-                )
-            )
-            .padding()
-            .previewLayout(.sizeThatFits)
-            .preferredColorScheme(.light)
-            
-            BusStopArrivalItemView(
-                busStopArrivalItemData: BusStopArrivalItemData(
-                    busStopArrival: BusStopArrival(
-                        busStopCode: "123456",
-                        busServiceNumber: "961M",
-                        operator: "SMRT",
-                        direction: 1,
-                        stopSequence: 24,
-                        distance: 14.6,
-                        busArrivals: BusArrivals.Arriving.init(
-                            nextArrivingBus:
-                                ArrivingBus(
-                                    origin: ArrivingBusStop(
-                                        busStopCode: "123456",
-                                        roadName: "This Road",
-                                        busStopDescription: "Origin Bus Stop"
-                                    ),
-                                    destination: ArrivingBusStop(
-                                        busStopCode: "123456",
-                                        roadName: "This Road",
-                                        busStopDescription: "Destination Bus Stop"
-                                    ),
-                                    arrival: 6,
-                                    latitude: 1.2,
-                                    longitude: 1.2,
-                                    visitNumber: 1,
-                                    load: BusLoad.sea,
-                                    wheelchairAccess: false,
-                                    type: BusType.dd
-                                ),
-                            followingArrivingBusList: []
-                        )
-                    )
-                )
-            )
-            .padding()
-            .previewLayout(.sizeThatFits)
-            .preferredColorScheme(.dark)
-            
-            BusStopArrivalItemView(
-                busStopArrivalItemData: BusStopArrivalItemData(
-                    busStopArrival: BusStopArrival(
-                        busStopCode: "123456",
-                        busServiceNumber: "961M",
-                        operator: "SMRT",
-                        direction: 1,
-                        stopSequence: 24,
-                        distance: 14.6,
-                        busArrivals: BusArrivals.NotOperating.init()
-                    )
-                )
-            )
-            .padding()
-            .previewLayout(.sizeThatFits)
-            .preferredColorScheme(.light)
-            
-            BusStopArrivalItemView(
-                busStopArrivalItemData: BusStopArrivalItemData(
-                    busStopArrival: BusStopArrival(
-                        busStopCode: "123456",
-                        busServiceNumber: "961M",
-                        operator: "SMRT",
-                        direction: 1,
-                        stopSequence: 24,
-                        distance: 14.6,
-                        busArrivals: BusArrivals.DataNotAvailable.init()
-                    )
-                )
-            )
-            .padding()
-            .previewLayout(.sizeThatFits)
-            .preferredColorScheme(.dark)
-        }
-    }
-}
+//struct BusStopArrivalItemView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            BusStopArrivalItemView(
+//                busStopArrivalItemData: BusStopArrivalItemData(
+//                    busStopArrival: BusStopArrival(
+//                        busStopCode: "123456",
+//                        busServiceNumber: "961M",
+//                        operator: "SMRT",
+//                        direction: 1,
+//                        stopSequence: 24,
+//                        distance: 14.6,
+//                        busArrivals: BusArrivals.Arriving.init(
+//                            nextArrivingBus:
+//                                ArrivingBus(
+//                                    origin: ArrivingBusStop(
+//                                        busStopCode: "123456",
+//                                        roadName: "This Road",
+//                                        busStopDescription: "Origin Bus Stop"
+//                                    ),
+//                                    destination: ArrivingBusStop(
+//                                        busStopCode: "123456",
+//                                        roadName: "This Road",
+//                                        busStopDescription: "Destination Bus Stop"
+//                                    ),
+//                                    arrival: 6,
+//                                    latitude: 1.2,
+//                                    longitude: 1.2,
+//                                    visitNumber: 1,
+//                                    load: BusLoad.lsd,
+//                                    wheelchairAccess: true,
+//                                    type: BusType.bd
+//                                ),
+//                            followingArrivingBusList: []
+//                        )
+//                    )
+//                )
+//            )
+//            .padding()
+//            .previewLayout(.sizeThatFits)
+//            .preferredColorScheme(.light)
+//            
+//            BusStopArrivalItemView(
+//                busStopArrivalItemData: BusStopArrivalItemData(
+//                    busStopArrival: BusStopArrival(
+//                        busStopCode: "123456",
+//                        busServiceNumber: "961M",
+//                        operator: "SMRT",
+//                        direction: 1,
+//                        stopSequence: 24,
+//                        distance: 14.6,
+//                        busArrivals: BusArrivals.Arriving.init(
+//                            nextArrivingBus:
+//                                ArrivingBus(
+//                                    origin: ArrivingBusStop(
+//                                        busStopCode: "123456",
+//                                        roadName: "This Road",
+//                                        busStopDescription: "Origin Bus Stop"
+//                                    ),
+//                                    destination: ArrivingBusStop(
+//                                        busStopCode: "123456",
+//                                        roadName: "This Road",
+//                                        busStopDescription: "Destination Bus Stop"
+//                                    ),
+//                                    arrival: 6,
+//                                    latitude: 1.2,
+//                                    longitude: 1.2,
+//                                    visitNumber: 1,
+//                                    load: BusLoad.sea,
+//                                    wheelchairAccess: false,
+//                                    type: BusType.dd
+//                                ),
+//                            followingArrivingBusList: []
+//                        )
+//                    )
+//                )
+//            )
+//            .padding()
+//            .previewLayout(.sizeThatFits)
+//            .preferredColorScheme(.dark)
+//            
+//            BusStopArrivalItemView(
+//                busStopArrivalItemData: BusStopArrivalItemData(
+//                    busStopArrival: BusStopArrival(
+//                        busStopCode: "123456",
+//                        busServiceNumber: "961M",
+//                        operator: "SMRT",
+//                        direction: 1,
+//                        stopSequence: 24,
+//                        distance: 14.6,
+//                        busArrivals: BusArrivals.NotOperating.init()
+//                    )
+//                )
+//            )
+//            .padding()
+//            .previewLayout(.sizeThatFits)
+//            .preferredColorScheme(.light)
+//            
+//            BusStopArrivalItemView(
+//                busStopArrivalItemData: BusStopArrivalItemData(
+//                    busStopArrival: BusStopArrival(
+//                        busStopCode: "123456",
+//                        busServiceNumber: "961M",
+//                        operator: "SMRT",
+//                        direction: 1,
+//                        stopSequence: 24,
+//                        distance: 14.6,
+//                        busArrivals: BusArrivals.DataNotAvailable.init()
+//                    )
+//                )
+//            )
+//            .padding()
+//            .previewLayout(.sizeThatFits)
+//            .preferredColorScheme(.dark)
+//        }
+//    }
+//}

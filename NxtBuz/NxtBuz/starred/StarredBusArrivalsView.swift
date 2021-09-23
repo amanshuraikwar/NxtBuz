@@ -14,13 +14,6 @@ struct StarredBusArrivalsView: View {
                 alignment: .leading,
                 spacing: 0
             ) {
-                Text("Starred Buses")
-                    .font(NxtBuzFonts.body)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-                    .padding(.top)
-                    .padding(.horizontal)
-                
                 ScrollView(
                     .horizontal,
                     showsIndicators: false
@@ -31,29 +24,23 @@ struct StarredBusArrivalsView: View {
                         ForEach(0...50, id: \.self) { index in
                             if index == 50 {
                                 StarredBusArrivalsItemView(error: index % 2 == 0)
-                                    .padding(.top)
-                                    .padding(.bottom, 2)
-                                    .padding(.horizontal)
-                                    .shadow(color: Color(.systemGray4), radius: 2)
+                                    .padding()
+                                    .shadow(color: Color.black.opacity(0.1), radius: 4)
                             } else {
                                 StarredBusArrivalsItemView(error: index % 2 == 0)
-                                    .padding(.top)
-                                    .padding(.bottom, 2)
+                                    .padding(.vertical)
                                     .padding(.leading)
-                                    .shadow(color: Color(.systemGray4), radius: 2)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 4)
                             }
                         }
                     }
                 }
             }
             .background(.ultraThinMaterial)
-//            .cornerRadius(20)
-//            .padding(.horizontal)
-            .shadow(color: Color(.systemGray5), radius: 4)
+            .shadow(color: Color(.systemGray5).opacity(0.4), radius: 4)
             .frame(
                 width: UIScreen.main.bounds.width
             )
-            //.padding()
         } else {
             ScrollView(.horizontal) {
                 LazyHStack {

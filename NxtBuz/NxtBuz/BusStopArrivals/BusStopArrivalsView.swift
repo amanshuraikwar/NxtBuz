@@ -9,12 +9,9 @@ import SwiftUI
 import iosUmbrella
 
 struct BusStopArrivalsView: View {
-    private let busStop: BusStop
+    let busStop: BusStop
     @StateObject private var viewModel = BusStopArrivalsViewModel()
-    
-    init(busStop: BusStop) {
-        self.busStop = busStop
-    }
+    @Binding var bottomContentPadding: CGFloat?
     
     var body: some View {
         ZStack {
@@ -28,18 +25,35 @@ struct BusStopArrivalsView: View {
                         .font(NxtBuzFonts.body)
                         .padding()
                 }
+                .padding(.bottom, bottomContentPadding)
             case .Success(let busStopArrivalItemDataList, _):
                 List {
+                    Section(
+                        header: Text("Info")
+                            .font(NxtBuzFonts.caption)
+                    ) {
+                        Text(busStop.roadName + "  •  " + busStop.code)
+                            .font(NxtBuzFonts.body)
+                    }
+                    
                     Section(
                         header: Text("Bus Arrivals")
                             .font(NxtBuzFonts.caption),
                         // todo: this is a hack to add space at the bottom of the list, find a better way
                         footer: Text("Last updated on \(viewModel.lastUpdatedOn)".uppercased())
                             .font(NxtBuzFonts.caption)
-                            .frame(minHeight: UIScreen.main.bounds.height / 3, alignment: .top)
+                            .frame(minHeight: bottomContentPadding, alignment: .top)
                     ) {
                         ForEach(busStopArrivalItemDataList) { busStopArrivalItemData in
-                            BusStopArrivalItemView(busStopArrivalItemData: busStopArrivalItemData)
+                            BusStopArrivalItemView(
+                                busStopArrivalItemData: busStopArrivalItemData,
+                                onStarToggle: { newValue in
+                                    viewModel.onStarToggle(
+                                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber,
+                                        newValue: newValue
+                                    )
+                                }
+                            )
                         }
                     }
                 }
@@ -48,7 +62,7 @@ struct BusStopArrivalsView: View {
         }
         .navigationBarTitle(
             Text(busStop.description_),
-            displayMode: .inline
+            displayMode: .automatic
         )
         .onAppear {
             viewModel.getArrivals(busStopCode: busStop.code)

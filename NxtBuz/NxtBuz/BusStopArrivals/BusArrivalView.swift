@@ -62,7 +62,7 @@ struct BusArrivalView: View {
         } else if (arrival > 0) {
             return String(format: "%02d mins", arrival)
         } else {
-            return "Arriving Now"
+            return "Arriving"
         }
     }
 }
