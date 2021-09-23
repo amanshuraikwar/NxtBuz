@@ -93,7 +93,10 @@ struct BusStopsView: View {
                 List {
                     Section(
                         header: Text("Nearby Bus Stops")
-                            .font(NxtBuzFonts.caption)
+                            .font(NxtBuzFonts.caption),
+                        // todo: this is a hack to add space at the bottom of the list, find a better way
+                        footer: Spacer()
+                            .frame(minHeight: UIScreen.main.bounds.height / 3)
                     ) {
                         ForEach(
                             Array(busStopList.enumerated()),

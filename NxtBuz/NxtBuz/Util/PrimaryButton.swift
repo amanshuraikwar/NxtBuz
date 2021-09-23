@@ -23,7 +23,7 @@ struct PrimaryButton: View {
                     Image(systemName: iconSystemName)
                 }
             }
-            .foregroundColor(Color.primary)
+            .foregroundColor(Color.white)
             .padding(14)
             .frame(
                 maxWidth: .infinity,

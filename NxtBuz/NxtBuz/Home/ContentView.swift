@@ -44,9 +44,11 @@ struct ContentView: View {
                                 }
                             )
                     }
-                    .sheet(isPresented: $showSettings) {
-                        SettingsView()
-                    }
+                    
+                    StarredBusArrivalsView()
+                }
+                .sheet(isPresented: $showSettings) {
+                    SettingsView()
                 }
             case HomeScreenState.Fetching:
                 Text("Fetching...")
