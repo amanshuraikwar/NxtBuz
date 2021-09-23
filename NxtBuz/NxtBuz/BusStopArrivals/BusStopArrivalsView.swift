@@ -33,8 +33,10 @@ struct BusStopArrivalsView: View {
                     Section(
                         header: Text("Bus Arrivals")
                             .font(NxtBuzFonts.caption),
+                        // todo: this is a hack to add space at the bottom of the list, find a better way
                         footer: Text("Last updated on \(viewModel.lastUpdatedOn)".uppercased())
                             .font(NxtBuzFonts.caption)
+                            .frame(minHeight: UIScreen.main.bounds.height / 3, alignment: .top)
                     ) {
                         ForEach(busStopArrivalItemDataList) { busStopArrivalItemData in
                             BusStopArrivalItemView(busStopArrivalItemData: busStopArrivalItemData)
