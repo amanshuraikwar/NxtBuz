@@ -33,24 +33,11 @@ struct SetupProgressView: View {
                     .font(NxtBuzFonts.body)
                     .padding()
             case SetupScreenState.Complete:
-                Button(
-                    action: {
-                        onSetupComplete()
-                    }
-                ) {
-                    Text("Get Started".uppercased())
-                        .font(NxtBuzFonts.body)
-                        .fontWeight(.medium)
-                    Image(systemName: "chevron.forward")
-                }
-                .foregroundColor(.white)
-                .frame(
-                    maxWidth: .infinity,
-                    alignment: .center
+                PrimaryButton(
+                    text: "Get Started",
+                    action: { onSetupComplete() },
+                    iconSystemName: "chevron.forward"
                 )
-                .padding()
-                .background(Color.accentColor)
-                .cornerRadius(16)
                 .padding()
         }
     }
