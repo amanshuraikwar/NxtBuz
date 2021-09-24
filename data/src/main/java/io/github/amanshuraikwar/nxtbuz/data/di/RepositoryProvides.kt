@@ -11,6 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
+import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.userdata.SystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
 import javax.inject.Singleton
@@ -71,6 +72,21 @@ class RepositoryProvides {
         return BusArrivalRepository(
             localDataSource = localDataSource,
             remoteDataSource = remoteDataSource,
+            dispatcherProvider = dispatcherProvider,
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideStarredBusArrivalRepository(
+        localDataSource: LocalDataSource,
+        remoteDataSource: RemoteDataSource,
+        preferenceStorage: PreferenceStorage,
+        dispatcherProvider: CoroutinesDispatcherProvider
+    ): StarredBusArrivalRepository {
+        return StarredBusArrivalRepository(
+            localDataSource = localDataSource,
+            preferenceStorage = preferenceStorage,
             dispatcherProvider = dispatcherProvider,
         )
     }

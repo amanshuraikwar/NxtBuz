@@ -30,6 +30,7 @@ kotlin {
             export(project(":busstopdata"))
             export(project(":busroutedata"))
             export(project(":busarrivaldata"))
+            export(project(":starreddata"))
             transitiveExport = true
             isStatic = true
             linkerOpts.add("-lsqlite3")
@@ -39,7 +40,7 @@ kotlin {
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
-        ios.deploymentTarget = "14.1"
+        ios.deploymentTarget = Libs.iosMinDeploymentTarget
         frameworkName = "iosUmbrella"
         // set path to your ios project podfile, e.g. podfile = project.file("../iosApp/Podfile")
     }
@@ -57,6 +58,7 @@ kotlin {
                 api(project(":busstopdata"))
                 api(project(":busroutedata"))
                 api(project(":busarrivaldata"))
+                api(project(":starreddata"))
                 implementation(Libs.Coroutines.core)
             }
         }

@@ -37,6 +37,7 @@
             <option value="$PROJECT_DIR$/settings" />
             <option value="$PROJECT_DIR$/sqldelightdb" />
             <option value="$PROJECT_DIR$/starred" />
+            <option value="$PROJECT_DIR$/starreddata" />
             <option value="$PROJECT_DIR$/userdata" />
           </set>
         </option>

@@ -11,12 +11,11 @@ import SwiftUI
 
 class BusStopArrivalsViewModel : ObservableObject {
     @Published var screenState: BusStopArrivalsScreenState = .Fetching
-    @Published var lastUpdatedOn: String = "NONO"
     
-    private var busStopArrivalsLoop: BusStopArrivalsLoop?
     private var busStopCode: String? = nil
     
     func getArrivals(busStopCode: String) {
+        self.screenState = .Fetching
         self.busStopCode = busStopCode
         getArrivalsAct()
     }
@@ -25,35 +24,63 @@ class BusStopArrivalsViewModel : ObservableObject {
         if let busStopCode = self.busStopCode {
             Di.get()
                 .getBusArrivalsUseCase()
-                .invoke(busStopCode: busStopCode) { busStopArrivalList in
-                    switch self.screenState {
-                    case .Fetching:
-                        let busStopArrivalItemDataList = busStopArrivalList.map { busStopArrival in
-                            BusStopArrivalItemData(
-                                busStopArrival: busStopArrival,
-                                // todo: get correct value from db
-                                starred: [true, false].randomElement() ?? false)
-                        }
-                        DispatchQueue.main.async {
-                            self.screenState = .Success(busStopArrivalItemDataList: busStopArrivalItemDataList, lastUpdatedOn: self.getTime())
-                        }
-                    case .Success(let busStopArrivalItemDataList, _):
-                        busStopArrivalList.forEach { busStopArrival in
-                            let busStopArrivalItemData = busStopArrivalItemDataList.first { busStopArrivalItemData in
-                                busStopArrivalItemData.busStopArrival.busServiceNumber == busStopArrival.busServiceNumber
+                .invoke(busStopCode: busStopCode) { busStopArrivalOutput in
+                    if let busStopArrivalList = (busStopArrivalOutput as? IosBusStopArrivalOutput.Success)?.busStopArrivalList {
+                        switch self.screenState {
+                        case .Fetching, .Error:
+                            let busStopArrivalItemDataList = busStopArrivalList.map { busStopArrival in
+                                BusStopArrivalItemData(
+                                    busStopArrival: busStopArrival,
+                                    starred: busStopArrival.starred
+                                )
                             }
-
                             DispatchQueue.main.async {
-                                busStopArrivalItemData?.busStopArrival = busStopArrival
-                                busStopArrivalItemData?.lastUpdatedOn = self.getTime()
+                                self.screenState = .Success(
+                                    data: BusStopArrivalScreenSuccessData(
+                                        busStopArrivalItemDataList: busStopArrivalItemDataList,
+                                        lastUpdatedOn: Date()
+                                    )
+                                )
+                            }
+                        case .Success(let data):
+                            busStopArrivalList.forEach { busStopArrival in
+                                let busStopArrivalItemData = data.busStopArrivalItemDataList.first { busStopArrivalItemData in
+                                    busStopArrivalItemData.busStopArrival.busServiceNumber == busStopArrival.busServiceNumber
+                                }
+
+                                DispatchQueue.main.async {
+                                    busStopArrivalItemData?.busStopArrival = busStopArrival
+                                    data.lastUpdatedOnStr = BusStopArrivalsViewModel.getTime(date: Date())
+                                    data.outdatedResults = false
+                                }
                             }
                         }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                            self.getArrivalsAct()
+                        }   
                     }
-                    DispatchQueue.main.async {
-                        self.lastUpdatedOn = self.getTime()
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                        self.getArrivalsAct()
+                    
+                    if let error = (busStopArrivalOutput as? IosBusStopArrivalOutput.Error) {
+                        switch self.screenState {
+                        case .Fetching, .Error:
+                            DispatchQueue.main.async {
+                                self.screenState = .Error(message: error.errorMessage)
+                            }
+                        case .Success(let data):
+                            // if arrivals were last updated 5 mins ago
+                            // mark the outdated
+                            let diffs = Calendar.current.dateComponents([.minute], from: data.lastUpdatedOn, to: Date())
+                            if let minutes = diffs.minute {
+                                if minutes >= 5 {
+                                    DispatchQueue.main.async {
+                                        data.outdatedResults = true
+                                    }
+                                }
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                                self.getArrivalsAct()
+                            }
+                        }
                     }
                 }
         }
@@ -65,18 +92,24 @@ class BusStopArrivalsViewModel : ObservableObject {
     
     func onStarToggle(busServiceNumber: String, newValue: Bool) {
         switch self.screenState {
-        case .Success(let busStopArrivalItemDataList, _):
-            let busStopArrivalItemData = busStopArrivalItemDataList.first { busStopArrivalItemData in
+        case .Success(let data):
+            let busStopArrivalItemData = data.busStopArrivalItemDataList.first { busStopArrivalItemData in
                 busStopArrivalItemData.busStopArrival.busServiceNumber == busServiceNumber
             }
             busStopArrivalItemData?.starred = newValue
+            if let _ = busStopArrivalItemData, let busStopCode = busStopCode {
+                Di.get().getToggleBusStopStarUseCase().invoke(
+                    busStopCode: busStopCode,
+                    busServiceNumber: busServiceNumber,
+                    toggleTo: newValue
+                )
+            }
         default:
             break
         }
     }
     
-    private func getTime() -> String {
-        let time = Date()
+    public static func getTime(date time: Date) -> String {
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "h:mm a"
         let stringDate = timeFormatter.string(from: time)
@@ -86,19 +119,32 @@ class BusStopArrivalsViewModel : ObservableObject {
 
 enum BusStopArrivalsScreenState {
     case Fetching
-    case Success(busStopArrivalItemDataList: [BusStopArrivalItemData], lastUpdatedOn: String)
+    case Error(message: String)
+    case Success(data: BusStopArrivalScreenSuccessData)
+}
+
+class BusStopArrivalScreenSuccessData : ObservableObject {
+    @Published var busStopArrivalItemDataList: [BusStopArrivalItemData]
+    @Published var lastUpdatedOnStr: String
+    var lastUpdatedOn: Date
+    @Published var outdatedResults: Bool
+    
+    init(busStopArrivalItemDataList: [BusStopArrivalItemData], lastUpdatedOn: Date) {
+        self.busStopArrivalItemDataList = busStopArrivalItemDataList
+        self.lastUpdatedOn = lastUpdatedOn
+        lastUpdatedOnStr = BusStopArrivalsViewModel.getTime(date: lastUpdatedOn)
+        outdatedResults = false
+    }
 }
 
 class BusStopArrivalItemData : ObservableObject, Identifiable {
     var id: UUID?
-    @Published var busStopArrival: BusStopArrival
-    @Published var lastUpdatedOn: String
+    @Published var busStopArrival: IosBusStopArrival
     @Published var starred: Bool
     
-    init(busStopArrival: BusStopArrival, starred: Bool) {
+    init(busStopArrival: IosBusStopArrival, starred: Bool) {
         id = UUID()
         self.busStopArrival = busStopArrival
-        self.lastUpdatedOn = "NONO"
         self.starred = starred
     }
 }

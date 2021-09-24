@@ -26,38 +26,73 @@ struct BusStopArrivalsView: View {
                         .padding()
                 }
                 .padding(.bottom, bottomContentPadding)
-            case .Success(let busStopArrivalItemDataList, _):
-                List {
-                    Section(
-                        header: Text("Info")
-                            .font(NxtBuzFonts.caption)
-                    ) {
-                        Text(busStop.roadName + "  •  " + busStop.code)
-                            .font(NxtBuzFonts.body)
+            case .Error(_):
+                ErrorView(
+                    systemName: "exclamationmark.icloud.fill",
+                    errorMessage: "Something went wrong. Please try again.",
+                    retryText: "Retry",
+                    onRetry: {
+                        viewModel.getArrivals(busStopCode: busStop.code)
+                    },
+                    iconSystemName: nil
+                ).padding(.bottom, bottomContentPadding)
+            case .Success(let data):
+                BusStopArrivalsListView(
+                    data: data,
+                    bottomContentPadding: $bottomContentPadding,
+                    busStop: busStop,
+                    onStarToggle: { busServiceNumber, newValue in
+                        viewModel.onStarToggle(
+                            busServiceNumber: busServiceNumber,
+                            newValue: newValue
+                        )
                     }
-                    
-                    Section(
-                        header: Text("Bus Arrivals")
-                            .font(NxtBuzFonts.caption),
-                        // todo: this is a hack to add space at the bottom of the list, find a better way
-                        footer: Text("Last updated on \(viewModel.lastUpdatedOn)".uppercased())
-                            .font(NxtBuzFonts.caption)
-                            .frame(minHeight: bottomContentPadding, alignment: .top)
-                    ) {
-                        ForEach(busStopArrivalItemDataList) { busStopArrivalItemData in
-                            BusStopArrivalItemView(
-                                busStopArrivalItemData: busStopArrivalItemData,
-                                onStarToggle: { newValue in
-                                    viewModel.onStarToggle(
-                                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber,
-                                        newValue: newValue
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
-                .listStyle(InsetGroupedListStyle())
+                )
+//                List {
+//                    if data.outdatedResults {
+//                        HStack {
+//                            Image(systemName: "exclamationmark.icloud.fill")
+//                                //.resizable()
+//                                //.scaledToFit()
+//                                //.frame(width: 48, height: 48)
+//                                .foregroundColor(Color.secondary)
+//
+//                            Text(
+//                                "Bus arrival times might be outdated!"
+//                            )
+//                        }
+//                    }
+//
+//                    Section(
+//                        header: Text("Info")
+//                            .font(NxtBuzFonts.caption)
+//                    ) {
+//                        Text(busStop.roadName + "  •  " + busStop.code)
+//                            .font(NxtBuzFonts.body)
+//                    }
+//
+//                    Section(
+//                        header: Text("Bus Arrivals")
+//                            .font(NxtBuzFonts.caption),
+//                        // todo: this is a hack to add space at the bottom of the list, find a better way
+//                        footer: Text("Last updated on \(data.lastUpdatedOnStr)".uppercased())
+//                            .font(NxtBuzFonts.caption)
+//                            .frame(minHeight: bottomContentPadding, alignment: .top)
+//                    ) {
+//                        ForEach(data.busStopArrivalItemDataList) { busStopArrivalItemData in
+//                            BusStopArrivalItemView(
+//                                busStopArrivalItemData: busStopArrivalItemData,
+//                                onStarToggle: { newValue in
+//                                    viewModel.onStarToggle(
+//                                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber,
+//                                        newValue: newValue
+//                                    )
+//                                }
+//                            )
+//                        }
+//                    }
+//                }
+//                .listStyle(InsetGroupedListStyle())
             }
         }
         .navigationBarTitle(
