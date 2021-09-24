@@ -49,51 +49,25 @@ struct BusStopsView: View {
                 }
                 .padding(.bottom, bottomContentPadding)
             case .GoToSettingsLocationPermission:
-                VStack(
-                    spacing: 32
-                ) {
-                    Image(systemName: "location.slash.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 48, height: 48)
-                        .foregroundColor(Color.accentColor)
-                    
-                    Text("We need location permission to get nearby bus stops :)")
-                        .font(NxtBuzFonts.title3)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                        .padding(.horizontal)
-                    
-                    PrimaryButton(
-                        text: "Go to Settings",
-                        action: { UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!) },
-                        iconSystemName: "chevron.forward"
-                    ).padding(.horizontal)
-                }
-                .padding(.bottom, bottomContentPadding)
+                ErrorView(
+                    systemName: "location.slash.fill",
+                    errorMessage: "We need location permission to get nearby bus stops :)",
+                    retryText: "Go to Settings",
+                    onRetry: {
+                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                    },
+                    iconSystemName: "chevron.forward"
+                ).padding(.bottom, bottomContentPadding)
             case .AskLocationPermission:
-                VStack(
-                    spacing: 32
-                ) {
-                    Image(systemName: "location.slash.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 48, height: 48)
-                        .foregroundColor(Color.accentColor)
-                    
-                    Text("We need location permission to get nearby bus stops :)")
-                        .font(NxtBuzFonts.title3)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                        .padding(.horizontal)
-                    
-                    PrimaryButton(
-                        text: "Give Permission",
-                        action: { viewModel.requestPermission() },
-                        iconSystemName: nil
-                    ).padding(.horizontal)
-                }
-                .padding(.bottom, bottomContentPadding)
+                ErrorView(
+                    systemName: "location.slash.fill",
+                    errorMessage: "We need location permission to get nearby bus stops :)",
+                    retryText: "Give Permission",
+                    onRetry: {
+                        viewModel.requestPermission()
+                    },
+                    iconSystemName: nil
+                ).padding(.bottom, bottomContentPadding)
             case .Success(let busStopList):
                 List {
                     Section(

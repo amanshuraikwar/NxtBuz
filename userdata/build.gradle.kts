@@ -23,7 +23,7 @@ kotlin {
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
-        ios.deploymentTarget = "14.1"
+        ios.deploymentTarget = Libs.iosMinDeploymentTarget
         frameworkName = "userdata"
         podfile = project.file("../NxtBuz/Podfile")
     }
@@ -57,10 +57,10 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = Libs.compileSdk
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(23)
-        targetSdkVersion(30)
+        minSdk = Libs.minSdk
+        targetSdk = Libs.targetSdk
     }
 }

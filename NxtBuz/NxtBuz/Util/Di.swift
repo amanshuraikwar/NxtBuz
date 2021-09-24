@@ -51,6 +51,12 @@ class Di {
         dispatcherProvider: coroutineDispatcherProvider
     )
     
+    private static let starredBusArrivalRepository = StarredBusArrivalRepository(
+        localDataSource: localDataSource,
+        preferenceStorage: preferenceStorage,
+        dispatcherProvider: coroutineDispatcherProvider
+    )
+    
     private init() {}
     
     static func get() -> Di {
@@ -79,7 +85,12 @@ class Di {
     
     func getBusArrivalsUseCase() -> GetBusArrivalsUseCase {
         return GetBusArrivalsUseCase(
-            busArrivalRepository: Di.busArrivalRepository
+            busArrivalRepository: Di.busArrivalRepository,
+            starredBusArrivalRepository: Di.starredBusArrivalRepository
         )
+    }
+    
+    func getToggleBusStopStarUseCase() -> ToggleBusStopStarUseCase {
+        return ToggleBusStopStarUseCase(repo: Di.starredBusArrivalRepository)
     }
 }
