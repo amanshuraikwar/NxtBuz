@@ -97,7 +97,6 @@ struct BusStopsView: View {
                         }
                     }
                 }
-                .id(UUID())
                 .listStyle(InsetGroupedListStyle())
             }
         }

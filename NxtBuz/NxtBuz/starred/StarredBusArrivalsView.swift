@@ -6,54 +6,28 @@
 //
 
 import SwiftUI
+import iosUmbrella
 
 struct StarredBusArrivalsView: View {
+    @StateObject private var viewModel = StarredBusArrivalsViewModel()
+    
     var body: some View {
         if #available(iOS 15.0, *) {
-            VStack(
-                alignment: .leading,
-                spacing: 0
-            ) {
-                ScrollView(
-                    .horizontal,
-                    showsIndicators: false
-                ) {
-                    HStack(
-                        spacing: 0
-                    ) {
-                        ForEach(0...50, id: \.self) { index in
-                            if index == 50 {
-                                StarredBusArrivalsItemView(error: index % 2 == 0)
-                                    .padding()
-                                    .shadow(color: Color.black.opacity(0.1), radius: 4)
-                            } else {
-                                StarredBusArrivalsItemView(error: index % 2 == 0)
-                                    .padding(.vertical)
-                                    .padding(.leading)
-                                    .shadow(color: Color.black.opacity(0.1), radius: 4)
-                            }
-                        }
+            ZStack {
+                switch viewModel.screenState {
+                case .Fetching, .Error:
+                    Text("")
+                case .Success(let data):
+                    if !data.starredBusArrivalItemDataList.isEmpty {
+                        StarredBusArrivalsListView(data: data)
                     }
                 }
             }
-            .background(.ultraThinMaterial)
-            .shadow(color: Color(.systemGray5).opacity(0.4), radius: 4)
-            .frame(
-                width: UIScreen.main.bounds.width
-            )
+            .onAppear {
+                viewModel.getArrivals()
+            }
         } else {
-            ScrollView(.horizontal) {
-                LazyHStack {
-                    ForEach(0...50, id: \.self) { index in
-                        StarredBusArrivalsItemView(error: index % 2 == 0)
-                    }
-                }
-            }
-            .padding()
-            .frame(
-                maxWidth: .infinity
-            )
-            .background(Color(.systemGray))
+            Text("#todo")
         }
     }
 }

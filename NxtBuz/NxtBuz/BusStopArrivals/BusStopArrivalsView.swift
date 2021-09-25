@@ -48,51 +48,6 @@ struct BusStopArrivalsView: View {
                         )
                     }
                 )
-//                List {
-//                    if data.outdatedResults {
-//                        HStack {
-//                            Image(systemName: "exclamationmark.icloud.fill")
-//                                //.resizable()
-//                                //.scaledToFit()
-//                                //.frame(width: 48, height: 48)
-//                                .foregroundColor(Color.secondary)
-//
-//                            Text(
-//                                "Bus arrival times might be outdated!"
-//                            )
-//                        }
-//                    }
-//
-//                    Section(
-//                        header: Text("Info")
-//                            .font(NxtBuzFonts.caption)
-//                    ) {
-//                        Text(busStop.roadName + "  •  " + busStop.code)
-//                            .font(NxtBuzFonts.body)
-//                    }
-//
-//                    Section(
-//                        header: Text("Bus Arrivals")
-//                            .font(NxtBuzFonts.caption),
-//                        // todo: this is a hack to add space at the bottom of the list, find a better way
-//                        footer: Text("Last updated on \(data.lastUpdatedOnStr)".uppercased())
-//                            .font(NxtBuzFonts.caption)
-//                            .frame(minHeight: bottomContentPadding, alignment: .top)
-//                    ) {
-//                        ForEach(data.busStopArrivalItemDataList) { busStopArrivalItemData in
-//                            BusStopArrivalItemView(
-//                                busStopArrivalItemData: busStopArrivalItemData,
-//                                onStarToggle: { newValue in
-//                                    viewModel.onStarToggle(
-//                                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber,
-//                                        newValue: newValue
-//                                    )
-//                                }
-//                            )
-//                        }
-//                    }
-//                }
-//                .listStyle(InsetGroupedListStyle())
             }
         }
         .navigationBarTitle(

@@ -93,4 +93,20 @@ class Di {
     func getToggleBusStopStarUseCase() -> ToggleBusStopStarUseCase {
         return ToggleBusStopStarUseCase(repo: Di.starredBusArrivalRepository)
     }
+    
+    func getStarredBusServicesUseCase() -> GetStarredBusServicesUseCase {
+        return GetStarredBusServicesUseCase(repo: Di.starredBusArrivalRepository)
+    }
+    
+    func getBusStopUseCase() -> GetBusStopUseCase {
+        return GetBusStopUseCase(busStopRepository: Di.busStopRepository)
+    }
+    
+    func getStarredBusArrivalsUseCase() -> GetStarredBusArrivalsUseCase {
+        return GetStarredBusArrivalsUseCase(
+            getStarredBusServicesUseCase: getStarredBusServicesUseCase(),
+            getBusArrivalsUseCase: getBusArrivalsUseCase(),
+            getBusStopUseCase: getBusStopUseCase()
+        )
+    }
 }
