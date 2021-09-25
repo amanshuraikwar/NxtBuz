@@ -13,14 +13,22 @@ class BusStopArrivalsViewModel : ObservableObject {
     @Published var screenState: BusStopArrivalsScreenState = .Fetching
     
     private var busStopCode: String? = nil
+    private var uuid: UUID? = nil
     
     func getArrivals(busStopCode: String) {
-        self.screenState = .Fetching
         self.busStopCode = busStopCode
-        getArrivalsAct()
+        let uuid = UUID()
+        self.uuid = uuid
+        getArrivalsAct(uuid: uuid)
     }
     
-    private func getArrivalsAct() {
+    private func getArrivalsAct(uuid: UUID) {
+        debugPrint("yoyo", "\(uuid.uuidString) \(self.uuid?.uuidString ?? "")")
+        if uuid != self.uuid {
+            debugPrint("yoyo", "\(uuid.uuidString) \(self.uuid?.uuidString ?? "") mismatch!")
+            return
+        }
+        
         if let busStopCode = self.busStopCode {
             Di.get()
                 .getBusArrivalsUseCase()
@@ -57,7 +65,7 @@ class BusStopArrivalsViewModel : ObservableObject {
                         }
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                            self.getArrivalsAct()
+                            self.getArrivalsAct(uuid: uuid)
                         }   
                     }
                     
@@ -79,7 +87,7 @@ class BusStopArrivalsViewModel : ObservableObject {
                                 }
                             }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                                self.getArrivalsAct()
+                                self.getArrivalsAct(uuid: uuid)
                             }
                         }
                     }
@@ -87,8 +95,16 @@ class BusStopArrivalsViewModel : ObservableObject {
         }
     }
     
+    func onRetryClick() {
+        if let busStopCode = self.busStopCode {
+            self.screenState = .Fetching
+            getArrivals(busStopCode: busStopCode)
+        }
+    }
+    
     func stopArrivalsLoop() {
         self.busStopCode = nil
+        self.uuid = nil
     }
     
     func onStarToggle(busServiceNumber: String, newValue: Bool) {

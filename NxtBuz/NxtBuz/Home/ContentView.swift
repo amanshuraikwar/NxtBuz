@@ -24,16 +24,11 @@ struct ContentView: View {
                     }
                 )
             case HomeScreenState.BusStops:
-                ZStack(
-                    alignment: Alignment(
-                        horizontal: .center,
-                        vertical: .bottom
-                    )
-                ) {
+                TabView {
                     NavigationView {
                         BusStopsView(bottomContentPadding: $starredBusesLayoutHeight)
                             .navigationTitle("Next Bus SG")
-                            .listStyle(GroupedListStyle())
+                            //.listStyle(GroupedListStyle())
                             .navigationBarItems(
                                 trailing: Button(
                                     action: {
@@ -46,20 +41,42 @@ struct ContentView: View {
                                 }
                             )
                     }
+                    .tabItem {
+                        Label("Home", systemImage: "house.fill")
+                    }
                     
-                    StarredBusArrivalsView()
-                        .background(
-                            GeometryReader { geometry in
-                                Color.clear.preference(
-                                    key: StarredBusesLayoutHeightPreferenceKey.self,
-                                    value: geometry.size.height
-                                )
-                            }
-                        )
-                        // ref: https://www.swiftbysundell.com/questions/syncing-the-width-or-height-of-two-swiftui-views/
-                        .onPreferenceChange(StarredBusesLayoutHeightPreferenceKey.self) {
-                            starredBusesLayoutHeight = $0
-                        }
+                    NavigationView {
+                        StarredBusArrivalsView()
+                            .navigationTitle("Starred Buses")
+                            .navigationBarItems(
+                                trailing: Button(
+                                    action: {
+                                        self.showSettings = true
+                                    }
+                                ) {
+                                    Image(systemName: "gearshape.fill")
+                                        .imageScale(.medium)
+                                        .foregroundColor(Color.primary)
+                                }
+                            )
+                    }
+                    .tabItem {
+                        Label("Starred Buses", systemImage: "list.star")
+                    }
+                    
+//                    StarredBusArrivalsView()
+//                        .background(
+//                            GeometryReader { geometry in
+//                                Color.clear.preference(
+//                                    key: StarredBusesLayoutHeightPreferenceKey.self,
+//                                    value: geometry.size.height
+//                                )
+//                            }
+//                        )
+//                        // ref: https://www.swiftbysundell.com/questions/syncing-the-width-or-height-of-two-swiftui-views/
+//                        .onPreferenceChange(StarredBusesLayoutHeightPreferenceKey.self) {
+//                            starredBusesLayoutHeight = $0
+//                        }
                 }
                 .sheet(isPresented: $showSettings) {
                     SettingsView()

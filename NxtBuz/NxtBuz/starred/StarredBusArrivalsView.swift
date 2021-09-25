@@ -12,20 +12,36 @@ struct StarredBusArrivalsView: View {
     @StateObject private var viewModel = StarredBusArrivalsViewModel()
     
     var body: some View {
-        if #available(iOS 15.0, *) {
-            ZStack {
-                switch viewModel.screenState {
-                case .Success(let data):
-                    StarredBusArrivalsListView(data: data)
-                default:
-                    EmptyView()
+        ZStack {
+            switch viewModel.screenState {
+            case .Success(let data):
+                StarredBusArrivalsListView(data: data)
+            case .Fetching:
+                VStack {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                    
+                    Text("Fetching starred bus arrivals...")
+                        .font(NxtBuzFonts.body)
+                        .padding()
                 }
+            case .Error(_):
+                ErrorView(
+                    systemName: "exclamationmark.icloud.fill",
+                    errorMessage: "Something went wrong. Please try again.",
+                    retryText: "Retry",
+                    onRetry: {
+                        //viewModel.onRetryClick()
+                    },
+                    iconSystemName: nil
+                )
             }
-            .onAppear {
-                viewModel.getArrivals()
-            }
-        } else {
-            Text("#todo")
+        }
+        .onAppear {
+            viewModel.getArrivals()
+        }
+        .onDisappear {
+            //viewModel.stopArrivalsLoop()
         }
     }
 }

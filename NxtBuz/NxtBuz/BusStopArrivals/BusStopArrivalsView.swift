@@ -32,7 +32,7 @@ struct BusStopArrivalsView: View {
                     errorMessage: "Something went wrong. Please try again.",
                     retryText: "Retry",
                     onRetry: {
-                        viewModel.getArrivals(busStopCode: busStop.code)
+                        viewModel.onRetryClick()
                     },
                     iconSystemName: nil
                 ).padding(.bottom, bottomContentPadding)
