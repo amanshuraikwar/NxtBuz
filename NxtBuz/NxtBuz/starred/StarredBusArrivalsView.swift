@@ -15,12 +15,10 @@ struct StarredBusArrivalsView: View {
         if #available(iOS 15.0, *) {
             ZStack {
                 switch viewModel.screenState {
-                case .Fetching, .Error:
-                    Text("")
                 case .Success(let data):
-                    if !data.starredBusArrivalItemDataList.isEmpty {
-                        StarredBusArrivalsListView(data: data)
-                    }
+                    StarredBusArrivalsListView(data: data)
+                default:
+                    EmptyView()
                 }
             }
             .onAppear {

@@ -30,47 +30,36 @@ struct ContentView: View {
                         vertical: .bottom
                     )
                 ) {
-                    TabView {
-                        
-                        NavigationView {
-                            BusStopsView(bottomContentPadding: $starredBusesLayoutHeight)
-                                .navigationTitle("Next Bus SG")
-                                .listStyle(GroupedListStyle())
-                                .navigationBarItems(
-                                    trailing: Button(
-                                        action: {
-                                            self.showSettings = true
-                                        }
-                                    ) {
-                                        Image(systemName: "gearshape.fill")
-                                            .imageScale(.medium)
-                                            .foregroundColor(Color.primary)
+                    NavigationView {
+                        BusStopsView(bottomContentPadding: $starredBusesLayoutHeight)
+                            .navigationTitle("Next Bus SG")
+                            .listStyle(GroupedListStyle())
+                            .navigationBarItems(
+                                trailing: Button(
+                                    action: {
+                                        self.showSettings = true
                                     }
-                                )
-                        }
-                        .tabItem {
-                            Label("Home", systemImage: "house.fill")
-                        }
-                        
-                        Text("helohelo")
-                            .tabItem {
-                                Label("Starred Buses", systemImage: "star.fill")
-                            }
+                                ) {
+                                    Image(systemName: "gearshape.fill")
+                                        .imageScale(.medium)
+                                        .foregroundColor(Color.primary)
+                                }
+                            )
                     }
                     
-//                    StarredBusArrivalsView()
-//                        .background(
-//                            GeometryReader { geometry in
-//                                Color.clear.preference(
-//                                    key: StarredBusesLayoutHeightPreferenceKey.self,
-//                                    value: geometry.size.height
-//                                )
-//                            }
-//                        )
-//                        // ref: https://www.swiftbysundell.com/questions/syncing-the-width-or-height-of-two-swiftui-views/
-//                        .onPreferenceChange(StarredBusesLayoutHeightPreferenceKey.self) {
-//                            starredBusesLayoutHeight = $0
-//                        }
+                    StarredBusArrivalsView()
+                        .background(
+                            GeometryReader { geometry in
+                                Color.clear.preference(
+                                    key: StarredBusesLayoutHeightPreferenceKey.self,
+                                    value: geometry.size.height
+                                )
+                            }
+                        )
+                        // ref: https://www.swiftbysundell.com/questions/syncing-the-width-or-height-of-two-swiftui-views/
+                        .onPreferenceChange(StarredBusesLayoutHeightPreferenceKey.self) {
+                            starredBusesLayoutHeight = $0
+                        }
                 }
                 .sheet(isPresented: $showSettings) {
                     SettingsView()
