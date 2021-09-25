@@ -55,6 +55,7 @@ class BusStopArrivalsViewModel : ObservableObject {
                                 }
                             }
                         }
+                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                             self.getArrivalsAct()
                         }   
