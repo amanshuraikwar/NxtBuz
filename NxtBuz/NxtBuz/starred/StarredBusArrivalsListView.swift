@@ -7,37 +7,55 @@
 
 import SwiftUI
 
-@available(iOS 15.0, *)
 struct StarredBusArrivalsListView: View {
     @StateObject var data: StarredBusArrivalsScreenSuccessData
     
     var body: some View {
         if data.shouldShowList {
-            ScrollView(
-                .horizontal,
-                showsIndicators: false
-            ) {
-                HStack(
-                    spacing: 0
-                ) {
-                    ForEach(data.starredBusArrivalItemDataList) { starredBusArrivalItemData in
-                        StarredBusArrivalsItemView(
-                            starredBusArrivalItemData: starredBusArrivalItemData
+            List {
+                if data.outdatedResults {
+                    HStack {
+                        Image(systemName: "exclamationmark.icloud.fill")
+                            .foregroundColor(Color.secondary)
+                        
+                        Text(
+                            "Bus arrival times might be outdated."
                         )
-                            .padding(.vertical)
-                            .padding(.leading)
-                            .shadow(color: Color.black.opacity(0.1), radius: 4)
                     }
-                    
-                    Spacer()
-                        .padding(.trailing)
+                    .animation(.easeInOut, value: data.outdatedResults)
+                }
+                
+                ForEach(data.starredBusStopList) { starredBusStop in
+                    Section(
+                        header: Text(starredBusStop.busStopDescription)
+                            .font(NxtBuzFonts.body)
+                    ) {
+                        ForEach(starredBusStop.starredBusArrivalItemDataList) { starredBusArrivalItemData in
+                            StarredBusArrivalsItemView(
+                                starredBusArrivalItemData: starredBusArrivalItemData
+                            )
+                        }
+                    }
                 }
             }
-            .background(.ultraThinMaterial)
-            .shadow(color: Color(.systemGray5).opacity(0.4), radius: 4)
-            .frame(
-                width: UIScreen.main.bounds.width
-            )
+            .listStyle(InsetGroupedListStyle())
+        } else {
+            VStack(
+                spacing: 32
+            ) {
+                Image(systemName: "star.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 48, height: 48)
+                    .foregroundColor(Color.secondary)
+                
+                Text("Your starred bus services will show up here :)")
+                    .font(NxtBuzFonts.title)
+                    .foregroundColor(.secondary)
+                    .fontWeight(.bold)
+                    .padding()
+                    .multilineTextAlignment(.center)
+            }
         }
     }
 }

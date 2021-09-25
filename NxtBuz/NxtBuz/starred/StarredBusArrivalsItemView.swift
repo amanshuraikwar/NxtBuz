@@ -12,14 +12,14 @@ struct StarredBusArrivalsItemView: View {
     @StateObject var starredBusArrivalItemData: StarredBusArrivalItemData
     
     var body: some View {
-        VStack(
-            spacing: 6
-        ) {
-            Text(starredBusArrivalItemData.starredBusArrival.busStopDescription)
-                .font(NxtBuzFonts.callout)
-                .foregroundColor(.primary)
+//        VStack(
+//            spacing: 6
+//        ) {
+//            Text(starredBusArrivalItemData.starredBusArrival.busStopDescription)
+//                .font(NxtBuzFonts.callout)
+//                .foregroundColor(.primary)
             
-            HStack(spacing: 4) {
+            HStack {
                 if let arriving = starredBusArrivalItemData.starredBusArrival.busArrivals as? BusArrivals.Arriving {
                     Image(getBusTypeImageName(busType: arriving.nextArrivingBus.type))
                         .renderingMode(.template)
@@ -87,11 +87,11 @@ struct StarredBusArrivalsItemView: View {
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
                 }
-            }
+//            }
         }
-        .padding(8)
-        .background(Color(.systemGray6))
-        .cornerRadius(16)
+//        .padding(8)
+//        .background(Color(.systemGray6))
+//        .cornerRadius(16)
     }
     
     private func getBusTypeImageName(busType: BusType) -> String {
