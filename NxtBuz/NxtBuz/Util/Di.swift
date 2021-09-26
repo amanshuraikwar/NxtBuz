@@ -109,4 +109,10 @@ class Di {
             getBusStopUseCase: getBusStopUseCase()
         )
     }
+    
+    func getToggleStarUpdateUseCase() -> ToggleStarUpdateUseCase {
+        return ToggleStarUpdateUseCase(
+            repo: Di.starredBusArrivalRepository
+        )
+    }
 }

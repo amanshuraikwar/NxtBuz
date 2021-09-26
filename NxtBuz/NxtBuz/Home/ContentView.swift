@@ -13,7 +13,6 @@ import iosUmbrella
 struct ContentView: View {
     @StateObject var viewModel = HomeViewModel()
     @State private var showSettings = false
-    @State private var starredBusesLayoutHeight: CGFloat?
     
     var body: some View {
         switch viewModel.screenState {
@@ -26,9 +25,8 @@ struct ContentView: View {
             case HomeScreenState.BusStops:
                 TabView {
                     NavigationView {
-                        BusStopsView(bottomContentPadding: $starredBusesLayoutHeight)
+                        BusStopsView()
                             .navigationTitle("Next Bus SG")
-                            //.listStyle(GroupedListStyle())
                             .navigationBarItems(
                                 trailing: Button(
                                     action: {
@@ -63,20 +61,6 @@ struct ContentView: View {
                     .tabItem {
                         Label("Starred Buses", systemImage: "list.star")
                     }
-                    
-//                    StarredBusArrivalsView()
-//                        .background(
-//                            GeometryReader { geometry in
-//                                Color.clear.preference(
-//                                    key: StarredBusesLayoutHeightPreferenceKey.self,
-//                                    value: geometry.size.height
-//                                )
-//                            }
-//                        )
-//                        // ref: https://www.swiftbysundell.com/questions/syncing-the-width-or-height-of-two-swiftui-views/
-//                        .onPreferenceChange(StarredBusesLayoutHeightPreferenceKey.self) {
-//                            starredBusesLayoutHeight = $0
-//                        }
                 }
                 .sheet(isPresented: $showSettings) {
                     SettingsView()

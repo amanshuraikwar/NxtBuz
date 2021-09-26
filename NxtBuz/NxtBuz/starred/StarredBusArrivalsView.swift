@@ -15,7 +15,15 @@ struct StarredBusArrivalsView: View {
         ZStack {
             switch viewModel.screenState {
             case .Success(let data):
-                StarredBusArrivalsListView(data: data)
+                StarredBusArrivalsListView(
+                    data: data,
+                    onUnStarClick: { busStopCode, busServiceNumber in
+                        viewModel.onUnStarClick(
+                            busStopCode: busStopCode,
+                            busServiceNumber: busServiceNumber
+                        )
+                    }
+                )
             case .Fetching:
                 VStack {
                     ProgressView()
@@ -31,7 +39,7 @@ struct StarredBusArrivalsView: View {
                     errorMessage: "Something went wrong. Please try again.",
                     retryText: "Retry",
                     onRetry: {
-                        //viewModel.onRetryClick()
+                        viewModel.onRetryClick()
                     },
                     iconSystemName: nil
                 )
@@ -41,7 +49,7 @@ struct StarredBusArrivalsView: View {
             viewModel.getArrivals()
         }
         .onDisappear {
-            //viewModel.stopArrivalsLoop()
+            viewModel.stopArrivalsLoop()
         }
     }
 }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct StarredBusArrivalsListView: View {
     @StateObject var data: StarredBusArrivalsScreenSuccessData
+    let onUnStarClick: (_ busStopCode: String, _ busServiceNumber: String) -> Void
     
     var body: some View {
         if data.shouldShowList {
@@ -26,17 +27,15 @@ struct StarredBusArrivalsListView: View {
                 }
                 
                 ForEach(data.starredBusStopList) { starredBusStop in
-                    Section(
-                        header: Text(starredBusStop.busStopDescription)
-                            .font(NxtBuzFonts.body)
-                    ) {
-                        ForEach(starredBusStop.starredBusArrivalItemDataList) { starredBusArrivalItemData in
-                            StarredBusArrivalsItemView(
-                                starredBusArrivalItemData: starredBusArrivalItemData
-                            )
-                        }
-                    }
+                    StarredBusStopView(
+                        starredBusStop: starredBusStop,
+                        onUnStarClick: onUnStarClick
+                    )
                 }
+                
+                Text("Last updated on \(data.lastUpdatedOnStr)")
+                    .font(NxtBuzFonts.body)
+                    .foregroundColor(.secondary)
             }
             .listStyle(InsetGroupedListStyle())
         } else {

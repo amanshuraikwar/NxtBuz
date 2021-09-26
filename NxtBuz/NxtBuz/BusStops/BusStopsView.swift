@@ -10,7 +10,6 @@ import iosUmbrella
 
 struct BusStopsView: View {
     @StateObject private var viewModel = BusStopsViewModel()
-    @Binding var bottomContentPadding: CGFloat?
     
     var body: some View {
         ZStack {
@@ -24,7 +23,6 @@ struct BusStopsView: View {
                         .font(NxtBuzFonts.body)
                         .padding()
                 }
-                .padding(.bottom, bottomContentPadding)
             case .Error(let errorMessage):
                 VStack(
                     spacing: 32
@@ -47,7 +45,6 @@ struct BusStopsView: View {
                         iconSystemName: nil
                     ).padding(.horizontal)
                 }
-                .padding(.bottom, bottomContentPadding)
             case .GoToSettingsLocationPermission:
                 ErrorView(
                     systemName: "location.slash.fill",
@@ -57,7 +54,7 @@ struct BusStopsView: View {
                         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                     },
                     iconSystemName: "chevron.forward"
-                ).padding(.bottom, bottomContentPadding)
+                )
             case .AskLocationPermission:
                 ErrorView(
                     systemName: "location.slash.fill",
@@ -67,15 +64,12 @@ struct BusStopsView: View {
                         viewModel.requestPermission()
                     },
                     iconSystemName: nil
-                ).padding(.bottom, bottomContentPadding)
+                )
             case .Success(let busStopList):
                 List {
                     Section(
                         header: Text("Nearby Bus Stops")
-                            .font(NxtBuzFonts.caption),
-                        // todo: this is a hack to add space at the bottom of the list, find a better way
-                        footer: Spacer()
-                            .frame(minHeight: bottomContentPadding)
+                            .font(NxtBuzFonts.caption)
                     ) {
                         ForEach(
                             Array(busStopList.enumerated()),
@@ -83,8 +77,7 @@ struct BusStopsView: View {
                         ) { index, busStop in
                             NavigationLink(
                                 destination: BusStopArrivalsView(
-                                    busStop: busStop,
-                                    bottomContentPadding: $bottomContentPadding
+                                    busStop: busStop
                                 )
                             ) {
                                 BusStopItemView(
