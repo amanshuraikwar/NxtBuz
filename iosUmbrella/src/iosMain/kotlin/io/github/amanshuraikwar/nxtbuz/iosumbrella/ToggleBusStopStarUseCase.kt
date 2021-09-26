@@ -30,4 +30,22 @@ class ToggleBusStopStarUseCase constructor(
             )
         }
     }
+
+    operator fun invoke(
+        busStopCode: String,
+        busServiceNumber: String,
+        toggleTo: Boolean,
+        completion: () -> Unit
+    ) {
+        IosDataCoroutineScopeProvider.coroutineScope.launch(
+            CoroutineExceptionHandler { _, th ->
+                // TODO-amanshuraikwar (24 Sep 2021 11:49:55 AM): gracefully handle error
+            }
+        ) {
+            repo.toggleBusStopStar(
+                busStopCode, busServiceNumber, toggleTo
+            )
+            completion()
+        }
+    }
 }

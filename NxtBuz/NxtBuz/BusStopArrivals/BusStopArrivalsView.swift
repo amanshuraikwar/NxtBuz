@@ -11,7 +11,6 @@ import iosUmbrella
 struct BusStopArrivalsView: View {
     let busStop: BusStop
     @StateObject private var viewModel = BusStopArrivalsViewModel()
-    @Binding var bottomContentPadding: CGFloat?
     
     var body: some View {
         ZStack {
@@ -25,7 +24,6 @@ struct BusStopArrivalsView: View {
                         .font(NxtBuzFonts.body)
                         .padding()
                 }
-                .padding(.bottom, bottomContentPadding)
             case .Error(_):
                 ErrorView(
                     systemName: "exclamationmark.icloud.fill",
@@ -35,11 +33,10 @@ struct BusStopArrivalsView: View {
                         viewModel.onRetryClick()
                     },
                     iconSystemName: nil
-                ).padding(.bottom, bottomContentPadding)
+                )
             case .Success(let data):
                 BusStopArrivalsListView(
                     data: data,
-                    bottomContentPadding: $bottomContentPadding,
                     busStop: busStop,
                     onStarToggle: { busServiceNumber, newValue in
                         viewModel.onStarToggle(

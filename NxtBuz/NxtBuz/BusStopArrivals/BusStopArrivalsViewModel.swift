@@ -58,7 +58,9 @@ class BusStopArrivalsViewModel : ObservableObject {
 
                                 DispatchQueue.main.async {
                                     busStopArrivalItemData?.busStopArrival = busStopArrival
-                                    data.lastUpdatedOnStr = BusStopArrivalsViewModel.getTime(date: Date())
+                                    busStopArrivalItemData?.starred = busStopArrival.starred
+                                    data.lastUpdatedOn = Date()
+                                    data.lastUpdatedOnStr = BusStopArrivalsViewModel.getTime(date: data.lastUpdatedOn)
                                     data.outdatedResults = false
                                 }
                             }

@@ -10,7 +10,6 @@ import iosUmbrella
 
 struct BusStopArrivalsListView: View {
     @StateObject var data: BusStopArrivalScreenSuccessData
-    @Binding var bottomContentPadding: CGFloat?
     let busStop: BusStop
     var onStarToggle: (_ busServiceNumber: String, _ newValue: Bool) -> Void
     
@@ -38,11 +37,7 @@ struct BusStopArrivalsListView: View {
             
             Section(
                 header: Text("Bus Arrivals")
-                    .font(NxtBuzFonts.caption),
-                // todo: this is a hack to add space at the bottom of the list, find a better way
-                footer: Text("Last updated on \(data.lastUpdatedOnStr)".uppercased())
                     .font(NxtBuzFonts.caption)
-                    .frame(minHeight: bottomContentPadding, alignment: .top)
             ) {
                 ForEach(data.busStopArrivalItemDataList) { busStopArrivalItemData in
                     BusStopArrivalItemView(
@@ -56,6 +51,10 @@ struct BusStopArrivalsListView: View {
                     )
                 }
             }
+            
+            Text("Last updated on \(data.lastUpdatedOnStr)")
+                .font(NxtBuzFonts.body)
+                .foregroundColor(.secondary)
         }
         .listStyle(InsetGroupedListStyle())
     }
