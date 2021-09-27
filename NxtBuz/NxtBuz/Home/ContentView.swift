@@ -41,7 +41,7 @@ struct ContentView: View {
                     )
                     .ignoresSafeArea()
                     .tabItem {
-                        Label("Home", systemImage: "house.fill")
+                        Label("Home", systemImage: "bus.fill")
                     }
                     
                     NavigationView {
