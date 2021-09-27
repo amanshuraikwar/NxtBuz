@@ -13,118 +13,252 @@ struct BusStopArrivalItemView: View {
     var onStarToggle: (_ newValue: Bool) -> Void
     
     var body: some View {
-        if let busArrivals = busStopArrivalItemData.busStopArrival.busArrivals as? BusArrivals.Arriving {
-            HStack(
-                alignment: .top,
-                spacing: 0
-            ) {
-                BusServiceView(
-                    busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber,
-                    busType: busArrivals.nextArrivingBus.type
-                )
-                .padding(.vertical, 4)
+        VStack(
+            alignment: .leading,
+            spacing: 0
+        ) {
+            if let arriving = busStopArrivalItemData.busStopArrival.busArrivals as? BusArrivals.Arriving {
+                HStack {
+                    BusServiceNumberView(
+                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber,
+                        error: false
+                    )
+                    
+                    DestinationBusStopView(
+                        busStopDescription: arriving.nextArrivingBus.destination.busStopDescription
+                    )
+                    .padding(.leading, 8)
+                    
+                    Spacer()
+                    
+                    Button(
+                        action: {
+                            onStarToggle(!busStopArrivalItemData.starred)
+                        }
+                    ) {
+                        if busStopArrivalItemData.starred {
+                            Image(systemName: "star.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(Color.yellow)
+                                .frame(maxHeight: .infinity, alignment: .center)
+                        } else {
+                            Image(systemName: "star")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(Color.yellow)
+                                .frame(maxHeight: .infinity, alignment: .center)
+                        }
+                    }
+                }
+                .padding(.top, 12)
                 
                 VStack(
-                    alignment: .leading,
                     spacing: 0
                 ) {
-                    BusArrivalView(
-                        busArrivals: busArrivals
-                    ).animation(.easeInOut, value: busArrivals)
+                    HStack {
+                        ZStack(
+                            alignment: .trailing
+                        ) {
+                            BusServiceNumberView(
+                                busServiceNumber: "961M",
+                                error: false
+                            ).opacity(0.0)
+                            
+                            Image(systemName: "arrow.turn.down.right")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 16, height: 16)
+                                .foregroundColor(Color.secondary)
+                                .padding(6)
+                        }
+                        
+                        ArrivingBusView(
+                            arrivingBus: arriving.nextArrivingBus
+                        ).padding(.leading, 8)
+                    }
+                    .padding(.top, 16)
                     
-                    BusDestinationView(destination: busArrivals.nextArrivingBus.destination.busStopDescription)
-                        .padding(.top, 2)
-                }
-                .padding(.leading)
-                .padding(.vertical, 4)
-                
-                Spacer()
-                
-                Button(
-                    action: {
-                        onStarToggle(!busStopArrivalItemData.starred)
-                    }
-                ) {
-                    if busStopArrivalItemData.starred {
-                        Image(systemName: "star.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(Color.yellow)
-                            .frame(maxHeight: .infinity, alignment: .center)
-                    } else {
-                        Image(systemName: "star")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(Color.yellow)
-                            .frame(maxHeight: .infinity, alignment: .center)
+                    ForEach(arriving.followingArrivingBusList, id: \.self) { arrivingBus in
+                        HStack {
+                            ZStack(
+                                alignment: .trailing
+                            ) {
+                                BusServiceNumberView(
+                                    busServiceNumber: "961M",
+                                    error: false
+                                ).opacity(0.0)
+                                
+                                Image(systemName: "arrow.turn.down.right")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 16, height: 16)
+                                    .foregroundColor(Color.secondary)
+                                    .padding(6)
+                            }
+                            
+                            ArrivingBusView(
+                                arrivingBus: arrivingBus
+                            ).padding(.leading, 8)
+                        }
+                        .padding(.top, 12)
                     }
                 }
-            }
-        } else {
-            HStack(
-                alignment: .center,
-                spacing: 0
-            ) {
-                if let busArrivals = busStopArrivalItemData.busStopArrival.busArrivals as? BusArrivals.DataNotAvailable {
-                    BusServiceView(
-                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber
+                .padding(.bottom, 12)
+            } else {
+                HStack {
+                    BusServiceNumberView(
+                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber,
+                        error: true
                     )
-                    .padding(.vertical, 4)
                     
-                    BusArrivalErrorView(busArrivals: busArrivals)
-                        .padding(.horizontal)
-                        .padding(.vertical, 4)
-                }
-                
-                if let busArrivals = busStopArrivalItemData.busStopArrival.busArrivals as? BusArrivals.NotOperating {
-                    BusServiceView(
-                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber
-                    )
-                    .padding(.vertical, 4)
+                    Text("Not Arriving")
+                        .font(NxtBuzFonts.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.secondary)
+                        .padding(.leading, 8)
                     
-                    BusArrivalErrorView(busArrivals: busArrivals)
-                        .padding(.horizontal)
-                        .padding(.vertical, 4)
-                }
-                
-                if let busArrivals = busStopArrivalItemData.busStopArrival.busArrivals as? BusArrivals.Error {
-                    BusServiceView(
-                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber
-                    )
-                    .padding(.vertical, 4)
+                    Spacer()
                     
-                    BusArrivalErrorView(busArrivals: busArrivals)
-                        .padding(.horizontal)
-                        .padding(.vertical, 4)
-                }
-                
-                Spacer()
-                
-                Button(
-                    action: {
-                        onStarToggle(!busStopArrivalItemData.starred)
-                    }
-                ) {
-                    if busStopArrivalItemData.starred {
-                        Image(systemName: "star.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(Color.yellow)
-                            //.frame(maxHeight: .infinity, alignment: .center)
-                    } else {
-                        Image(systemName: "star")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(Color.yellow)
-                            //.frame(maxHeight: .infinity, alignment: .center)
+                    Button(
+                        action: {
+                            onStarToggle(!busStopArrivalItemData.starred)
+                        }
+                    ) {
+                        if busStopArrivalItemData.starred {
+                            Image(systemName: "star.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(Color.yellow)
+                                .frame(maxHeight: .infinity, alignment: .center)
+                        } else {
+                            Image(systemName: "star")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(Color.yellow)
+                                .frame(maxHeight: .infinity, alignment: .center)
+                        }
                     }
                 }
+                .padding(.vertical, 12)
             }
         }
+//        if let busArrivals = busStopArrivalItemData.busStopArrival.busArrivals as? BusArrivals.Arriving {
+//            HStack(
+//                alignment: .top,
+//                spacing: 0
+//            ) {
+//                BusServiceView(
+//                    busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber,
+//                    busType: busArrivals.nextArrivingBus.type
+//                )
+//                .padding(.vertical, 4)
+//
+//                VStack(
+//                    alignment: .leading,
+//                    spacing: 0
+//                ) {
+//                    BusArrivalView(
+//                        busArrivals: busArrivals
+//                    ).animation(.easeInOut, value: busArrivals)
+//
+//                    BusDestinationView(destination: busArrivals.nextArrivingBus.destination.busStopDescription)
+//                        .padding(.top, 2)
+//                }
+//                .padding(.leading)
+//                .padding(.vertical, 4)
+//
+//                Spacer()
+//
+//                Button(
+//                    action: {
+//                        onStarToggle(!busStopArrivalItemData.starred)
+//                    }
+//                ) {
+//                    if busStopArrivalItemData.starred {
+//                        Image(systemName: "star.fill")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 20, height: 20)
+//                            .foregroundColor(Color.yellow)
+//                            .frame(maxHeight: .infinity, alignment: .center)
+//                    } else {
+//                        Image(systemName: "star")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 20, height: 20)
+//                            .foregroundColor(Color.yellow)
+//                            .frame(maxHeight: .infinity, alignment: .center)
+//                    }
+//                }
+//            }
+//        } else {
+//            HStack(
+//                alignment: .center,
+//                spacing: 0
+//            ) {
+//                if let busArrivals = busStopArrivalItemData.busStopArrival.busArrivals as? BusArrivals.DataNotAvailable {
+//                    BusServiceView(
+//                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber
+//                    )
+//                    .padding(.vertical, 4)
+//
+//                    BusArrivalErrorView(busArrivals: busArrivals)
+//                        .padding(.horizontal)
+//                        .padding(.vertical, 4)
+//                }
+//
+//                if let busArrivals = busStopArrivalItemData.busStopArrival.busArrivals as? BusArrivals.NotOperating {
+//                    BusServiceView(
+//                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber
+//                    )
+//                    .padding(.vertical, 4)
+//
+//                    BusArrivalErrorView(busArrivals: busArrivals)
+//                        .padding(.horizontal)
+//                        .padding(.vertical, 4)
+//                }
+//
+//                if let busArrivals = busStopArrivalItemData.busStopArrival.busArrivals as? BusArrivals.Error {
+//                    BusServiceView(
+//                        busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber
+//                    )
+//                    .padding(.vertical, 4)
+//
+//                    BusArrivalErrorView(busArrivals: busArrivals)
+//                        .padding(.horizontal)
+//                        .padding(.vertical, 4)
+//                }
+//
+//                Spacer()
+//
+//                Button(
+//                    action: {
+//                        onStarToggle(!busStopArrivalItemData.starred)
+//                    }
+//                ) {
+//                    if busStopArrivalItemData.starred {
+//                        Image(systemName: "star.fill")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 20, height: 20)
+//                            .foregroundColor(Color.yellow)
+//                            //.frame(maxHeight: .infinity, alignment: .center)
+//                    } else {
+//                        Image(systemName: "star")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 20, height: 20)
+//                            .foregroundColor(Color.yellow)
+//                            //.frame(maxHeight: .infinity, alignment: .center)
+//                    }
+//                }
+//            }
+//        }
     }
 }
 

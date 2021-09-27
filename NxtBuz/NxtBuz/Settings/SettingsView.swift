@@ -8,40 +8,72 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @State private var showGreeting = true
+    
     var body: some View {
-        VStack(alignment: .center) {
-            Image(systemName: "bus.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 48, height: 48)
-                .foregroundColor(.white)
-                .padding(12)
-                .background(Color.accentColor)
-                .cornerRadius(20)
-                //.padding(.top, 128)
-            
-            Text("Next Bus SG")
-                .font(NxtBuzFonts.body)
-                .fontWeight(.bold)
-                //.padding(.top, 72)
-                .padding(.horizontal)
-                //.foregroundColor(.accentColor)
-            
-            if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                Text(version)
+        List {
+            Section(
+                header: Text("App Info")
                     .font(NxtBuzFonts.caption)
-                    .fontWeight(.medium)
-                    //.padding(.top, 72)
-                    .padding(.horizontal)
-                    .foregroundColor(.secondary)
+            ) {
+                HStack {
+                    Text("Next Bus SG")
+                        .font(NxtBuzFonts.body)
+                        .fontWeight(.bold)
+                    
+                    if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                        Text(version)
+                            .font(NxtBuzFonts.bodyMonospaced)
+                            .fontWeight(.bold)
+                            .foregroundColor(.accentColor)
+                            .padding(4)
+                            .background(Color(.systemGray5))
+                            .cornerRadius(8)
+                    }
+                }
+            }
+            
+            Section(
+                header: Text("Starred")
+                    .font(NxtBuzFonts.caption)
+            ) {
+                Toggle(
+                    isOn: $showGreeting,
+                    label: {
+                        Text("Show starred buses that are not arriving")
+                            .font(NxtBuzFonts.body)
+                            .foregroundColor(.primary)
+                            .fontWeight(.bold)
+                    }
+                ).toggleStyle(SwitchToggleStyle(tint: .accentColor))
+                
+            }
+            
+            Section {
+                Button(
+                    action: {
+                        
+                    }
+                ) {
+                    Text("Request a Feature")
+                        .font(NxtBuzFonts.body)
+                        .foregroundColor(.primary)
+                        .fontWeight(.bold)
+                }
+                
+                Button(
+                    action: {
+                        
+                    }
+                ) {
+                    Text("Made by Amanshu Raikwar")
+                        .font(NxtBuzFonts.body)
+                        .foregroundColor(.primary)
+                        .fontWeight(.bold)
+                }
             }
         }
-        .frame(
-            maxWidth: .infinity,
-            maxHeight: .infinity,
-            alignment: .top
-        )
-        .padding()
+        .listStyle(InsetGroupedListStyle())
     }
 }
 

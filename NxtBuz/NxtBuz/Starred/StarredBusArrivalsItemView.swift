@@ -18,64 +18,73 @@ struct StarredBusArrivalsItemView: View {
         ) {
             if let arriving = starredBusArrivalItemData.starredBusArrival.busArrivals as? BusArrivals.Arriving {
                 HStack {
-                    StarredBusServiceView(
+                    BusServiceNumberView(
                         busServiceNumber: starredBusArrivalItemData.starredBusArrival.busServiceNumber,
                         error: false
                     )
                     
-                    HStack(
-                        spacing: 0
-                    ) {
-                        Image(systemName: "arrow.right.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                            .foregroundColor(Color.secondary)
-                            .padding(6)
-                        
-                        Text(arriving.nextArrivingBus.destination.busStopDescription)
-                            .font(NxtBuzFonts.body)
-                            .foregroundColor(.secondary)
-                            .padding(.trailing, 6)
-                    }
-                    .background(Color(.systemGray5))
-                    .cornerRadius(8)
+                    DestinationBusStopView(
+                        busStopDescription: arriving.nextArrivingBus.destination.busStopDescription
+                    )
+                    .padding(.leading, 8)
                 }
-                .padding(.top, 8)
+                .padding(.top, 12)
                 
                 VStack(
                     spacing: 0
                 ) {
                     HStack {
-                        StarredBusServiceView(
-                            busServiceNumber: "961M",
-                            error: false
-                        ).opacity(0.0)
-                        
-                        StarredArrivingBusView(
-                            arrivingBus: arriving.nextArrivingBus
-                        )
-                    }
-                    .padding(.top, 12)
-                    
-                    ForEach(arriving.followingArrivingBusList, id: \.self) { arrivingBus in
-                        HStack {
-                            StarredBusServiceView(
+                        ZStack(
+                            alignment: .trailing
+                        ) {
+                            BusServiceNumberView(
                                 busServiceNumber: "961M",
                                 error: false
                             ).opacity(0.0)
                             
-                            StarredArrivingBusView(
-                                arrivingBus: arrivingBus
-                            )
+                            Image(systemName: "arrow.turn.down.right")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 16, height: 16)
+                                .foregroundColor(Color.secondary)
+                                .padding(6)
                         }
-                        .padding(.top, 8)
+                        
+                        ArrivingBusView(
+                            arrivingBus: arriving.nextArrivingBus
+                        ).padding(.leading, 8)
+                    }
+                    .padding(.top, 16)
+                    
+                    ForEach(arriving.followingArrivingBusList, id: \.self) { arrivingBus in
+                        HStack {
+                            ZStack(
+                                alignment: .trailing
+                            ) {
+                                BusServiceNumberView(
+                                    busServiceNumber: "961M",
+                                    error: false
+                                ).opacity(0.0)
+                                
+                                Image(systemName: "arrow.turn.down.right")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 16, height: 16)
+                                    .foregroundColor(Color.secondary)
+                                    .padding(6)
+                            }
+                            
+                            ArrivingBusView(
+                                arrivingBus: arrivingBus
+                            ).padding(.leading, 8)
+                        }
+                        .padding(.top, 12)
                     }
                 }
-                .padding(.bottom, 8)
+                .padding(.bottom, 12)
             } else {
                 HStack {
-                    StarredBusServiceView(
+                    BusServiceNumberView(
                         busServiceNumber: starredBusArrivalItemData.starredBusArrival.busServiceNumber,
                         error: true
                     )
@@ -84,13 +93,12 @@ struct StarredBusArrivalsItemView: View {
                         .font(NxtBuzFonts.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.secondary)
+                        .padding(.leading, 8)
                 }
-                .padding(.vertical, 8)
+                .padding(.vertical, 12)
             }
         }
     }
-    
-   
 }
 
 //struct StarredBusArrivalsItemView_Previews: PreviewProvider {

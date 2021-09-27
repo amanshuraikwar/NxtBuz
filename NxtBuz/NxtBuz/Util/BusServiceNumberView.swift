@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StarredBusServiceView: View {
+struct BusServiceNumberView: View {
     let busServiceNumber: String
     let error: Bool
     
@@ -18,7 +18,7 @@ struct StarredBusServiceView: View {
                 .fontWeight(.bold)
                 .foregroundColor(error ? Color(.systemGray5) : Color.white)
             
-            Text("961M")
+            Text("961M ")
                 .font(NxtBuzFonts.title3)
                 .fontWeight(.bold)
                 .opacity(0.0)

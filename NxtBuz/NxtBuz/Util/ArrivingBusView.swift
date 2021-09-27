@@ -8,7 +8,7 @@
 import SwiftUI
 import iosUmbrella
 
-struct StarredArrivingBusView: View {
+struct ArrivingBusView: View {
     let arrivingBus: ArrivingBus
     var body: some View {
         HStack(
@@ -26,11 +26,11 @@ struct StarredArrivingBusView: View {
             
             ZStack {   
                 Text(getBusArrivalStr(Int(arrivingBus.arrival)))
-                        .font(NxtBuzFonts.title2)
+                        .font(NxtBuzFonts.title2Monospaced)
                         .fontWeight(.bold)
                 
                 Text("NOW ")
-                        .font(NxtBuzFonts.title2)
+                        .font(NxtBuzFonts.title2Monospaced)
                         .fontWeight(.bold)
                         .opacity(0.0)
             }
