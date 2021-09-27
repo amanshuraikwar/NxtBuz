@@ -10,16 +10,17 @@ import iosUmbrella
 
 struct BusStopsView: View {
     @StateObject private var viewModel = BusStopsViewModel()
+    @Binding var searchString: String
     
     var body: some View {
         ZStack {
             switch viewModel.busStopsScreenState {
-            case .Fetching:
+            case .Fetching(let message):
                 VStack {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
                     
-                    Text("Fetching bus stops...")
+                    Text(message)
                         .font(NxtBuzFonts.body)
                         .padding()
                 }
@@ -65,33 +66,42 @@ struct BusStopsView: View {
                     },
                     iconSystemName: nil
                 )
-            case .Success(let busStopList):
+            case .Success(let header, let busStopList):
                 List {
                     Section(
-                        header: Text("Nearby Bus Stops")
+                        header: Text(header)
                             .font(NxtBuzFonts.caption)
                     ) {
-                        ForEach(
-                            Array(busStopList.enumerated()),
-                            id: \.1
-                        ) { index, busStop in
-                            NavigationLink(
-                                destination: BusStopArrivalsView(
-                                    busStop: busStop
-                                )
-                            ) {
-                                BusStopItemView(
-                                    busStopName: busStop.description_,
-                                    roadName: busStop.roadName,
-                                    busStopCode: busStop.code,
-                                    operatingBusServiceNumbers: getOperatingBusStr(busStop.operatingBusList)
-                                )
+                        if busStopList.isEmpty {
+                            Text("No bus stops found :(")
+                                .font(NxtBuzFonts.body)
+                                .foregroundColor(.secondary)
+                        } else {
+                            ForEach(
+                                Array(busStopList.enumerated()),
+                                id: \.1
+                            ) { index, busStop in
+                                NavigationLink(
+                                    destination: BusStopArrivalsView(
+                                        busStop: busStop
+                                    )
+                                ) {
+                                    BusStopItemView(
+                                        busStopName: busStop.description_,
+                                        roadName: busStop.roadName,
+                                        busStopCode: busStop.code,
+                                        operatingBusServiceNumbers: getOperatingBusStr(busStop.operatingBusList)
+                                    )
+                                }
                             }
                         }
                     }
                 }
                 .listStyle(InsetGroupedListStyle())
             }
+        }
+        .onChange(of: searchString) { searchString in
+            viewModel.onSearch(searchString: searchString)
         }
         .onAppear {
             viewModel.fetchBusStops()

@@ -18,31 +18,13 @@ kotlin {
         else
             ::iosX64
 
-    iosTarget("ios") {
-        binaries.withType<org.jetbrains.kotlin.gradle.plugin.mpp.Framework> {
-            export(project(":commonkmm"))
-            export(project(":ktorremotedatasource"))
-            export(project(":localdatasource"))
-            export(project(":preferencestorage"))
-            export(project(":remotedatasource"))
-            export(project(":sqldelightdb"))
-            export(project(":userdata"))
-            export(project(":busstopdata"))
-            export(project(":busroutedata"))
-            export(project(":busarrivaldata"))
-            export(project(":starreddata"))
-            export(project(":searchdata"))
-            transitiveExport = true
-            isStatic = true
-            linkerOpts.add("-lsqlite3")
-        }
-    }
+    iosTarget("ios") {}
 
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        frameworkName = "iosUmbrella"
+        frameworkName = "searchdata"
         // set path to your ios project podfile, e.g. podfile = project.file("../iosApp/Podfile")
     }
     
@@ -50,17 +32,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":commonkmm"))
-                api(project(":ktorremotedatasource"))
                 api(project(":localdatasource"))
-                api(project(":preferencestorage"))
-                api(project(":remotedatasource"))
-                api(project(":sqldelightdb"))
-                api(project(":userdata"))
-                api(project(":busstopdata"))
-                api(project(":busroutedata"))
-                api(project(":busarrivaldata"))
-                api(project(":starreddata"))
-                api(project(":searchdata"))
+
                 implementation(Libs.Coroutines.core)
             }
         }

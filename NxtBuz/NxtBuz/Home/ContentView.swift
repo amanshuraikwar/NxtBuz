@@ -12,7 +12,8 @@ import iosUmbrella
 // ref: https://betterprogramming.pub/migrating-an-existing-xcode-project-to-a-new-kotlin-multiplatform-mobile-app-b71d07f23b7a
 struct ContentView: View {
     @StateObject var viewModel = HomeViewModel()
-    @State private var showSettings = false
+    @State private var showSearch = false
+    @State private var searchString = ""
     
     var body: some View {
         switch viewModel.screenState {
@@ -24,21 +25,21 @@ struct ContentView: View {
                 )
             case HomeScreenState.BusStops:
                 TabView {
-                    NavigationView {
-                        BusStopsView()
-                            .navigationTitle("Next Bus SG")
-                            .navigationBarItems(
-                                trailing: Button(
-                                    action: {
-                                        self.showSettings = true
-                                    }
-                                ) {
-                                    Image(systemName: "gearshape.fill")
-                                        .imageScale(.medium)
-                                        .foregroundColor(Color.primary)
-                                }
-                            )
-                    }
+                    SearchNavigationView(
+                        AnyView(
+                            BusStopsView(searchString: $searchString)
+                                .navigationTitle("Next Bus SG")
+                        ),
+                        title: "Next Bus SG",
+                        searchPlaceholder: "Search Bus Stops...",
+                        onSearch: { searchString in
+                            self.searchString = searchString
+                        },
+                        onCancel: {
+                            self.searchString = ""
+                        }
+                    )
+                    .ignoresSafeArea()
                     .tabItem {
                         Label("Home", systemImage: "house.fill")
                     }
@@ -46,24 +47,15 @@ struct ContentView: View {
                     NavigationView {
                         StarredBusArrivalsView()
                             .navigationTitle("Starred Buses")
-                            .navigationBarItems(
-                                trailing: Button(
-                                    action: {
-                                        self.showSettings = true
-                                    }
-                                ) {
-                                    Image(systemName: "gearshape.fill")
-                                        .imageScale(.medium)
-                                        .foregroundColor(Color.primary)
-                                }
-                            )
                     }
                     .tabItem {
                         Label("Starred Buses", systemImage: "list.star")
                     }
-                }
-                .sheet(isPresented: $showSettings) {
+                    
                     SettingsView()
+                        .tabItem {
+                            Label("Settings", systemImage: "gearshape.fill")
+                        }
                 }
             case HomeScreenState.Fetching:
                 Text("Fetching...")

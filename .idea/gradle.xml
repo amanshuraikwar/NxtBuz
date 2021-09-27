@@ -34,6 +34,7 @@
             <option value="$PROJECT_DIR$/remotedatasource" />
             <option value="$PROJECT_DIR$/roomdb" />
             <option value="$PROJECT_DIR$/search" />
+            <option value="$PROJECT_DIR$/searchdata" />
             <option value="$PROJECT_DIR$/settings" />
             <option value="$PROJECT_DIR$/sqldelightdb" />
             <option value="$PROJECT_DIR$/starred" />

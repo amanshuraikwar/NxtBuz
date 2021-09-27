@@ -11,6 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
+import io.github.amanshuraikwar.nxtbuz.searchdata.SearchRepository
 import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.userdata.SystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
@@ -87,6 +88,18 @@ class RepositoryProvides {
         return StarredBusArrivalRepository(
             localDataSource = localDataSource,
             preferenceStorage = preferenceStorage,
+            dispatcherProvider = dispatcherProvider,
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideSearchRepository(
+        localDataSource: LocalDataSource,
+        dispatcherProvider: CoroutinesDispatcherProvider
+    ): SearchRepository {
+        return SearchRepository(
+            localDataSource = localDataSource,
             dispatcherProvider = dispatcherProvider,
         )
     }

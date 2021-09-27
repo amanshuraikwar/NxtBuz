@@ -57,6 +57,11 @@ class Di {
         dispatcherProvider: coroutineDispatcherProvider
     )
     
+    private static let searchRepository = SearchRepository(
+        localDataSource: localDataSource,
+        dispatcherProvider: coroutineDispatcherProvider
+    )
+    
     private init() {}
     
     static func get() -> Di {
@@ -113,6 +118,12 @@ class Di {
     func getToggleStarUpdateUseCase() -> ToggleStarUpdateUseCase {
         return ToggleStarUpdateUseCase(
             repo: Di.starredBusArrivalRepository
+        )
+    }
+    
+    func getSearchUseCase() -> SearchUseCase {
+        return SearchUseCase(
+            searchRepository: Di.searchRepository
         )
     }
 }

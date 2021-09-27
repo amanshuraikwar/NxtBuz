@@ -11,6 +11,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "closure #5 in closure #1 in BusStopArrivalsViewModel.getArrivalsAct(uuid:):BusStopArrivalsViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "error.errorMessage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #4 in closure #1 in StarredBusArrivalsViewModel.getArrivalsAct():StarredBusArrivalsViewModel.swift">
          <PersistentStrings>
             <PersistentString

@@ -10,7 +10,7 @@ import iosUmbrella
 import CoreLocation
 
 class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate {
-    @Published var busStopsScreenState: BusStopsScreenState = .Fetching
+    @Published var busStopsScreenState: BusStopsScreenState = .Fetching(message: "Fetching bus stops...")
     private let getBusStopsUseCase = Di.get().getBusStopsUseCase()
     
     private let locationManager: CLLocationManager
@@ -56,9 +56,12 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
                 lon: lng,
                 limit: 50
             ) { busStopList in
-                DispatchQueue.main.async {
+                DispatchQueue.main.sync {
                     self.busStopsScreenState =
-                        .Success(busStopList: busStopList)
+                        .Success(
+                            header: "Nearby Bus Stops",
+                            busStopList: busStopList
+                        )
                 }
             }
         default:
@@ -71,15 +74,42 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        self.busStopsScreenState = .Fetching
+        self.busStopsScreenState = .Fetching(message: "Fetching nearby bus stops...")
         self.fetchBusStops()
+    }
+    
+    func searchBusStops(_ searchString: String) {
+        Di.get()
+            .getSearchUseCase()
+            .invoke(
+                query: searchString,
+                limit: 50
+            ) { searchResult in
+                DispatchQueue.main.sync {
+                    self.busStopsScreenState =
+                        .Success(
+                            header: "Matching Bus Stops",
+                            busStopList: searchResult.busStopList
+                        )
+                }
+            }
+    }
+    
+    func onSearch(searchString: String) {
+        if searchString == "" {
+            self.busStopsScreenState = .Fetching(message: "Fetching nearby bus stops...")
+            fetchBusStops()
+        } else {
+            self.busStopsScreenState = .Fetching(message: "Searching bus stops...")
+            searchBusStops(searchString)
+        }
     }
 }
 
 enum BusStopsScreenState {
-    case Fetching
+    case Fetching(message: String)
     case AskLocationPermission
     case Error(errorMessage: String)
     case GoToSettingsLocationPermission
-    case Success(busStopList: [BusStop])
+    case Success(header: String, busStopList: [BusStop])
 }
