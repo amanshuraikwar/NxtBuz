@@ -43,6 +43,7 @@ dependencies {
     api project(":busroutedata")
     api project(":busarrivaldata")
     api project(":starreddata")
+    api project(":searchdata")
 
     implementation Libs.Kotlin.stdlib
 

@@ -16,6 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.map.di.MapProvides
 import io.github.amanshuraikwar.nxtbuz.onboarding.setup.di.SetupModule
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
+import io.github.amanshuraikwar.nxtbuz.searchdata.SearchRepository
 import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
 import javax.inject.Singleton
@@ -54,6 +55,7 @@ interface AppComponent : AndroidInjector<MainApplication> {
     fun getBusRouteRepository(): BusRouteRepository
     fun getBusArrivalRepository(): BusArrivalRepository
     fun getStarredBusArrivalRepository(): StarredBusArrivalRepository
+    fun getSearchRepository(): SearchRepository
 
     @Component.Factory
     interface Factory {
