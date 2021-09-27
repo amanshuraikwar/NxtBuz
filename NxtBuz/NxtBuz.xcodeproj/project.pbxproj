@@ -43,9 +43,10 @@
 		A57B9A4A26FDE2B40095D96A /* StarredBusArrivalsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A4926FDE2B40095D96A /* StarredBusArrivalsViewModel.swift */; };
 		A59E5B2626FA25CE0032DC88 /* Pods_NxtBuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		A59E5B2A26FA273D0032DC88 /* iosUmbrella.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59E5B2926FA273D0032DC88 /* iosUmbrella.framework */; };
-		A5C12F1C27018FB9000729E9 /* SearchNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1B27018FB9000729E9 /* SearchNavigationView.swift */; };
-		A5C12F1E2701D726000729E9 /* StarredBusServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1D2701D726000729E9 /* StarredBusServiceView.swift */; };
-		A5C12F202701DA38000729E9 /* StarredArrivingBusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1F2701DA38000729E9 /* StarredArrivingBusView.swift */; };
+		A5C12F1C27018FB9000729E9 /* NxtBuzNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1B27018FB9000729E9 /* NxtBuzNavigationView.swift */; };
+		A5C12F1E2701D726000729E9 /* BusServiceNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1D2701D726000729E9 /* BusServiceNumberView.swift */; };
+		A5C12F202701DA38000729E9 /* ArrivingBusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1F2701DA38000729E9 /* ArrivingBusView.swift */; };
+		A5C12F22270219BA000729E9 /* DestinationBusStopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F21270219BA000729E9 /* DestinationBusStopView.swift */; };
 		A5E1E81926F10213007470A4 /* NxtBuzApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E1E81826F10213007470A4 /* NxtBuzApp.swift */; };
 		A5E1E81B26F10213007470A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E1E81A26F10213007470A4 /* ContentView.swift */; };
 		A5E1E81D26F10216007470A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E1E81C26F10216007470A4 /* Assets.xcassets */; };
@@ -127,9 +128,10 @@
 		A57B9A4726FD90900095D96A /* BusStopArrivalsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopArrivalsListView.swift; sourceTree = "<group>"; };
 		A57B9A4926FDE2B40095D96A /* StarredBusArrivalsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredBusArrivalsViewModel.swift; sourceTree = "<group>"; };
 		A59E5B2926FA273D0032DC88 /* iosUmbrella.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iosUmbrella.framework; path = ../iosUmbrella/build/cocoapods/framework/iosUmbrella.framework; sourceTree = "<group>"; };
-		A5C12F1B27018FB9000729E9 /* SearchNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNavigationView.swift; sourceTree = "<group>"; };
-		A5C12F1D2701D726000729E9 /* StarredBusServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredBusServiceView.swift; sourceTree = "<group>"; };
-		A5C12F1F2701DA38000729E9 /* StarredArrivingBusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredArrivingBusView.swift; sourceTree = "<group>"; };
+		A5C12F1B27018FB9000729E9 /* NxtBuzNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NxtBuzNavigationView.swift; sourceTree = "<group>"; };
+		A5C12F1D2701D726000729E9 /* BusServiceNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceNumberView.swift; sourceTree = "<group>"; };
+		A5C12F1F2701DA38000729E9 /* ArrivingBusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrivingBusView.swift; sourceTree = "<group>"; };
+		A5C12F21270219BA000729E9 /* DestinationBusStopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationBusStopView.swift; sourceTree = "<group>"; };
 		A5E1E81526F10213007470A4 /* NxtBuz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NxtBuz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E1E81826F10213007470A4 /* NxtBuzApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NxtBuzApp.swift; sourceTree = "<group>"; };
 		A5E1E81A26F10213007470A4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -234,10 +236,14 @@
 		A52FEBAB26F8AE5100BB79DA /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				A5C12F1F2701DA38000729E9 /* ArrivingBusView.swift */,
+				A5C12F1D2701D726000729E9 /* BusServiceNumberView.swift */,
+				A5C12F1B27018FB9000729E9 /* NxtBuzNavigationView.swift */,
 				A52FEB9926F5B1C800BB79DA /* Font.swift */,
 				A52FEBA126F5C07200BB79DA /* Di.swift */,
 				A57B9A3E26FC492F0095D96A /* PrimaryButton.swift */,
 				A57B9A4526FD85910095D96A /* ErrorView.swift */,
+				A5C12F21270219BA000729E9 /* DestinationBusStopView.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -247,7 +253,6 @@
 			children = (
 				A5E1E81A26F10213007470A4 /* ContentView.swift */,
 				A52FEB9F26F5C04F00BB79DA /* HomeViewModel.swift */,
-				A5C12F1B27018FB9000729E9 /* SearchNavigationView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -301,8 +306,6 @@
 				A5E24A9E26FE2AE600ACF274 /* StarredBusArrivalsListView.swift */,
 				A5E24AA22700209300ACF274 /* StarredBusStopView.swift */,
 				A57B9A4326FC8B020095D96A /* StarredBusArrivalsItemView.swift */,
-				A5C12F1F2701DA38000729E9 /* StarredArrivingBusView.swift */,
-				A5C12F1D2701D726000729E9 /* StarredBusServiceView.swift */,
 				A57B9A4926FDE2B40095D96A /* StarredBusArrivalsViewModel.swift */,
 			);
 			path = Starred;
@@ -597,10 +600,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5C12F1C27018FB9000729E9 /* SearchNavigationView.swift in Sources */,
+				A5C12F1C27018FB9000729E9 /* NxtBuzNavigationView.swift in Sources */,
 				A52FEBA226F5C07200BB79DA /* Di.swift in Sources */,
 				A57B9A2A26FB508B0095D96A /* NxtBuz_Widget.intentdefinition in Sources */,
-				A5C12F1E2701D726000729E9 /* StarredBusServiceView.swift in Sources */,
+				A5C12F1E2701D726000729E9 /* BusServiceNumberView.swift in Sources */,
+				A5C12F22270219BA000729E9 /* DestinationBusStopView.swift in Sources */,
 				A52FEBA426F5C6DB00BB79DA /* SetupViewModel.swift in Sources */,
 				A52FEBBB26F9F3DC00BB79DA /* BusDestinationView.swift in Sources */,
 				A52FEBA926F8A61500BB79DA /* BusStopsViewModel.swift in Sources */,
@@ -626,7 +630,7 @@
 				A52FEB9826F593BC00BB79DA /* BusStopItemView.swift in Sources */,
 				A57B9A3F26FC492F0095D96A /* PrimaryButton.swift in Sources */,
 				A52FEBA626F5CB3F00BB79DA /* SetupProgressView.swift in Sources */,
-				A5C12F202701DA38000729E9 /* StarredArrivingBusView.swift in Sources */,
+				A5C12F202701DA38000729E9 /* ArrivingBusView.swift in Sources */,
 				A57B9A1826FB4BCF0095D96A /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

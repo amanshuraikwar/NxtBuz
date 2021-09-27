@@ -47,6 +47,25 @@ struct BusStopArrivalsView: View {
                 )
             }
         }
+        .navigationBarItems(
+            trailing: Button(
+                action: {
+                    if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
+                        UIApplication.shared.open(
+                            NSURL(string: "comgooglemaps://?saddr=&daddr=\(Float(busStop.latitude)),\(Float(busStop.longitude))&directionsmode=walking")! as URL
+                        )
+                    } else if (UIApplication.shared.canOpenURL(URL(string:"maps://")!)) {
+                        UIApplication.shared.open(
+                            NSURL(string: "maps://?saddr=&daddr=\(Float(busStop.latitude)),\(Float(busStop.longitude))&directionsmode=walking")! as URL
+                        )
+                    }
+                }
+            ) {
+                Image(systemName: "arrow.triangle.turn.up.right.circle.fill")
+                    .imageScale(.medium)
+                    .foregroundColor(.accentColor)
+            }
+        )
         .navigationBarTitle(
             Text(busStop.description_),
             displayMode: .automatic

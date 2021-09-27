@@ -26,7 +26,8 @@ struct StarredBusStopView: View {
                             starredBusArrivalItemData.starredBusArrival.busServiceNumber
                         )
                     } label: {
-                        Label("Un Star", systemImage: "star.slash")
+                        Label("Delete", systemImage: "star.slash")
+                            .font(NxtBuzFonts.body)
                     }
                 }
             }

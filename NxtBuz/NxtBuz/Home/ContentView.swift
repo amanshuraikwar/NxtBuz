@@ -25,7 +25,7 @@ struct ContentView: View {
                 )
             case HomeScreenState.BusStops:
                 TabView {
-                    SearchNavigationView(
+                    NxtBuzNavigationView(
                         AnyView(
                             BusStopsView(searchString: $searchString)
                                 .navigationTitle("Next Bus SG")
@@ -44,18 +44,29 @@ struct ContentView: View {
                         Label("Home", systemImage: "bus.fill")
                     }
                     
-                    NavigationView {
-                        StarredBusArrivalsView()
-                            .navigationTitle("Starred Buses")
-                    }
+                    NxtBuzNavigationView(
+                        AnyView(
+                            StarredBusArrivalsView()
+                                .navigationTitle("Starred Buses")
+                        ),
+                        title: "Starred Buses"
+                    )
+                    .ignoresSafeArea()
                     .tabItem {
                         Label("Starred Buses", systemImage: "list.star")
                     }
                     
-                    SettingsView()
-                        .tabItem {
-                            Label("Settings", systemImage: "gearshape.fill")
-                        }
+                    NxtBuzNavigationView(
+                        AnyView(
+                            SettingsView()
+                                .navigationTitle("Settings")
+                        ),
+                        title: "Settings"
+                    )
+                    .ignoresSafeArea()
+                    .tabItem {
+                        Label("Settings", systemImage: "ellipsis.circle.fill")
+                    }
                 }
             case HomeScreenState.Fetching:
                 Text("Fetching...")

@@ -44,19 +44,10 @@ struct BusServiceView: View {
                     .frame(width: 20, height: 20)
                     .foregroundColor(Color.secondary)
                 
-                ZStack {
-                    Text(busServiceNumber)
-                        .font(NxtBuzFonts.headline)
-                        .foregroundColor(Color(.systemGray6))
-                    
-                    Text("961M")
-                        .font(NxtBuzFonts.headline)
-                        .opacity(0.0)
-                }
-                .padding(.vertical, 4)
-                .padding(.horizontal, 8)
-                .background(Color(.systemGray))
-                .clipShape(Capsule())
+                BusServiceNumberView(
+                    busServiceNumber: busServiceNumber,
+                    error: true
+                )
             } else {
                 Image(busTypeName)
                     .renderingMode(.template)
@@ -65,19 +56,10 @@ struct BusServiceView: View {
                     .frame(width: 20, height: 20)
                     .foregroundColor(Color.primary)
                 
-                ZStack {
-                    Text(busServiceNumber)
-                        .font(NxtBuzFonts.headline)
-                        .foregroundColor(Color(.systemGray6))
-                    
-                    Text("961M")
-                        .font(NxtBuzFonts.headline)
-                        .opacity(0.0)
-                }
-                .padding(.vertical, 4)
-                .padding(.horizontal, 8)
-                .background(Color.accentColor)
-                .clipShape(Capsule())
+                BusServiceNumberView(
+                    busServiceNumber: busServiceNumber,
+                    error: false
+                )
             }
         }
     }
