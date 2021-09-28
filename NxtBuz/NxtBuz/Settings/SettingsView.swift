@@ -33,43 +33,61 @@ struct SettingsView: View {
                 }
             }
             
-            Section(
-                header: Text("Starred")
-                    .font(NxtBuzFonts.caption)
-            ) {
-                Toggle(
-                    isOn: $showGreeting,
-                    label: {
-                        Text("Show starred buses that are not arriving")
-                            .font(NxtBuzFonts.body)
-                            .foregroundColor(.primary)
-                            .fontWeight(.bold)
-                    }
-                ).toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                
-            }
+//            Section(
+//                header: Text("Starred")
+//                    .font(NxtBuzFonts.caption)
+//            ) {
+//                Toggle(
+//                    isOn: $showGreeting,
+//                    label: {
+//                        Text("Show starred buses that are not arriving")
+//                            .font(NxtBuzFonts.body)
+//                            .foregroundColor(.primary)
+//                            .fontWeight(.bold)
+//                    }
+//                ).toggleStyle(SwitchToggleStyle(tint: .accentColor))
+//
+//            }
             
             Section {
                 Button(
                     action: {
-                        
+                        UIApplication.shared.open(
+                            NSURL(string: "mailto:amanshuraikwar.dev@gmail.com")! as URL
+                        )
                     }
                 ) {
-                    Text("Request a Feature")
-                        .font(NxtBuzFonts.body)
-                        .foregroundColor(.primary)
-                        .fontWeight(.bold)
+                    HStack {
+                        Text("Request a Feature")
+                            .font(NxtBuzFonts.body)
+                            .foregroundColor(.primary)
+                            .fontWeight(.bold)
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(.secondary)
+                    }
                 }
                 
                 Button(
                     action: {
-                        
+                        UIApplication.shared.open(
+                            NSURL(string: "https://amanshuraikwar.github.io")! as URL
+                        )
                     }
                 ) {
-                    Text("Made by Amanshu Raikwar")
-                        .font(NxtBuzFonts.body)
-                        .foregroundColor(.primary)
-                        .fontWeight(.bold)
+                    HStack {
+                        Text("Made by Amanshu Raikwar")
+                            .font(NxtBuzFonts.body)
+                            .foregroundColor(.primary)
+                            .fontWeight(.bold)
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
         }
