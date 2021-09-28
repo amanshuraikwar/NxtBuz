@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "BusStopsViewModel.fetchBusStops(showFetching:):BusStopsViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.busStopsScreenState">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #2 in closure #3 in closure #1 in StarredBusArrivalsViewModel.getArrivalsAct():StarredBusArrivalsViewModel.swift">
          <PersistentStrings>
             <PersistentString
@@ -23,6 +31,22 @@
          <PersistentStrings>
             <PersistentString
                value = "data.shouldShowList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BusStopsViewModel.locationManagerDidChangeAuthorization(_:):BusStopsViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "locationManager.location?.coordinate.latitude">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BusStopsViewModel.fetchBusStops():BusStopsViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "locationManager.accuracyAuthorization">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

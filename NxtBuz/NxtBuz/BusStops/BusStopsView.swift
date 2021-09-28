@@ -66,7 +66,7 @@ struct BusStopsView: View {
                     },
                     iconSystemName: nil
                 )
-            case .Success(let header, let busStopList):
+            case .Success(let header, let busStopList, let searchResults, let lowAccuracy):
                 List {
                     Section(
                         header: Text(header)
@@ -93,6 +93,44 @@ struct BusStopsView: View {
                                         operatingBusServiceNumbers: getOperatingBusStr(busStop.operatingBusList)
                                     )
                                 }
+                            }
+                        }
+                    }
+                    
+                    if !searchResults && lowAccuracy {
+                        Section {
+                            VStack {
+                                Text("Results might not be accurate due to location's low accuracy.")
+                                    .multilineTextAlignment(.center)
+                                    .font(NxtBuzFonts.title3)
+                                    .foregroundColor(.primary)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 8)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                
+                                Divider()
+                                
+                                Text("Give Precise Location Permission")
+                                    .foregroundColor(.accentColor)
+                                    .font(NxtBuzFonts.body)
+                                    .fontWeight(.medium)
+                                    .padding(8)
+                                    .frame(maxWidth: .infinity)
+                                    .onTapGesture {
+                                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                                    }
+                                
+                                Divider()
+                                
+                                Text("Reload Bus Stops")
+                                    .foregroundColor(.accentColor)
+                                    .font(NxtBuzFonts.body)
+                                    .fontWeight(.medium)
+                                    .padding(8)
+                                    .frame(maxWidth: .infinity)
+                                    .onTapGesture {
+                                        viewModel.fetchBusStops(showFetching: true)
+                                    }
                             }
                         }
                     }
