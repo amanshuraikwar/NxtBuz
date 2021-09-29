@@ -407,8 +407,8 @@
 				F09E266CC262F56C61E93A20 /* [CP] Check Pods Manifest.lock */,
 				A5E1E81126F10213007470A4 /* Sources */,
 				A5E1E81226F10213007470A4 /* Frameworks */,
-				A5E1E81326F10213007470A4 /* Resources */,
 				A57B9A3126FB508B0095D96A /* Embed App Extensions */,
+				A5E1E81326F10213007470A4 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -735,6 +735,14 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-framework",
+					"\"iosUmbrella\"",
+					"-l\"sqlite3\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "io.github.amanshuraikwar.NxtBuz.NxtBuz-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -875,6 +883,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"NxtBuz/Preview Content\"";
 				DEVELOPMENT_TEAM = 8R42UC58VT;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -915,6 +924,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"NxtBuz/Preview Content\"";
 				DEVELOPMENT_TEAM = 8R42UC58VT;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -923,6 +933,14 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-framework",
+					"\"iosUmbrella\"",
+					"-l\"sqlite3\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz;
 				PRODUCT_NAME = "$(TARGET_NAME)";

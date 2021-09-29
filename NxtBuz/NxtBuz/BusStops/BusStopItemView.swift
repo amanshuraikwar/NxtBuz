@@ -19,16 +19,16 @@ struct BusStopItemView: View {
         ) {
             Text(busStopName)
                 .font(NxtBuzFonts.headline)
-                .fontWeight(.medium)
+                .fontWeight(.regular)
                 .padding(.top, 4)
                 .frame(
                     maxWidth: .infinity,
                     alignment: .leading
                 )
             
-            Text(roadName + "  •  " + busStopCode)
+            Text((roadName + "  •  " + busStopCode).uppercased())
                 .font(NxtBuzFonts.caption)
-                .padding(.top, 2)
+                .padding(.top, 4)
                 .foregroundColor(Color.secondary)
                 .frame(
                     maxWidth: .infinity,
@@ -36,15 +36,16 @@ struct BusStopItemView: View {
                 )
             
             Text(operatingBusServiceNumbers)
-                .font(NxtBuzFonts.body)
+                .font(NxtBuzFonts.title3)
                 .fontWeight(.bold)
                 .foregroundColor(.accentColor)
-                .padding(.top, 4)
-                .padding(.bottom, 4)
+                .padding(.trailing)
                 .frame(
                     maxWidth: .infinity,
                     alignment: .leading
                 )
+                .padding(.vertical, 8)
+                
         }
         .frame(
             maxWidth: .infinity,
