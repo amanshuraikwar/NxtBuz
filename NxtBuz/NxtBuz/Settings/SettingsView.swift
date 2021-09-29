@@ -19,12 +19,12 @@ struct SettingsView: View {
                 HStack {
                     Text("Next Bus SG")
                         .font(NxtBuzFonts.body)
-                        .fontWeight(.bold)
+                        .fontWeight(.medium)
                     
                     if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
                         Text(version)
                             .font(NxtBuzFonts.bodyMonospaced)
-                            .fontWeight(.bold)
+                            .fontWeight(.medium)
                             .foregroundColor(.accentColor)
                             .padding(4)
                             .background(Color(.systemGray5))
@@ -61,11 +61,11 @@ struct SettingsView: View {
                         Text("Request a Feature")
                             .font(NxtBuzFonts.body)
                             .foregroundColor(.primary)
-                            .fontWeight(.bold)
+                            .fontWeight(.medium)
                         
                         Spacer()
                         
-                        Image(systemName: "chevron.right")
+                        Image(systemName: "chevron.forward")
                             .foregroundColor(.secondary)
                     }
                 }
@@ -81,11 +81,11 @@ struct SettingsView: View {
                         Text("Made by Amanshu Raikwar")
                             .font(NxtBuzFonts.body)
                             .foregroundColor(.primary)
-                            .fontWeight(.bold)
+                            .fontWeight(.medium)
                         
                         Spacer()
                         
-                        Image(systemName: "chevron.right")
+                        Image(systemName: "chevron.forward")
                             .foregroundColor(.secondary)
                     }
                 }

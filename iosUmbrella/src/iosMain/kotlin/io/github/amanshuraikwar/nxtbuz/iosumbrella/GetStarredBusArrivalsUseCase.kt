@@ -2,19 +2,13 @@ package io.github.amanshuraikwar.nxtbuz.iosumbrella
 
 import co.touchlab.stately.freeze
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusArrival
-import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusArrivals
-//import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
-//import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.commonkmm.loop.Loop
-import io.github.amanshuraikwar.nxtbuz.iosumbrella.model.IosBusStopArrivalOutput
 import io.github.amanshuraikwar.nxtbuz.iosumbrella.model.IosStarredBusArrivalOutput
 import kotlinx.coroutines.*
 
 class GetStarredBusArrivalsUseCase(
     private val getStarredBusServicesUseCase: GetStarredBusServicesUseCase,
     private val getBusArrivalsUseCase: GetBusArrivalsUseCase,
-    private val getBusStopUseCase: GetBusStopUseCase,
-    //private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
+    private val getBusStopUseCase: GetBusStopUseCase
 ) {
     suspend fun getStarredBusArrivals(): List<StarredBusArrival> {
         return coroutineScope {
@@ -26,7 +20,7 @@ class GetStarredBusArrivalsUseCase(
             busStopCodeBusServiceNumberSetMap
                 .map { (busStopCode, starredBusServiceSet) ->
                     async {
-                        val busStopDescription = getBusStopUseCase(busStopCode).description
+                        val busStop = getBusStopUseCase(busStopCode)
 
                         getBusArrivalsUseCase(busStopCode)
                             .filter {
@@ -36,7 +30,7 @@ class GetStarredBusArrivalsUseCase(
                                 StarredBusArrival(
                                     busStopCode = busStopCode,
                                     busServiceNumber = busStopArrival.busServiceNumber,
-                                    busStopDescription = busStopDescription,
+                                    busStop = busStop,
                                     busArrivals = busStopArrival.busArrivals
                                 )
                             }
@@ -53,6 +47,7 @@ class GetStarredBusArrivalsUseCase(
                 }
                 .awaitAll()
                 .flatten()
+                .reversed()
         }
     }
 

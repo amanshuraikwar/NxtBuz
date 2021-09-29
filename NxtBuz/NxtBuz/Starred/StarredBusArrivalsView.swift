@@ -40,8 +40,7 @@ struct StarredBusArrivalsView: View {
                     retryText: "Retry",
                     onRetry: {
                         viewModel.onRetryClick()
-                    },
-                    iconSystemName: nil
+                    }
                 )
             }
         }

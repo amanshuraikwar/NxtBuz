@@ -12,29 +12,44 @@ struct ErrorView: View {
     let errorMessage: String
     let retryText: String
     let onRetry: () -> Void
-    let iconSystemName: String?
     
     var body: some View {
         VStack(
-            spacing: 32
+            spacing: 0
         ) {
             Image(systemName: systemName)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 48, height: 48)
-                .foregroundColor(Color.accentColor)
+                .frame(width: 32, height: 32)
+                .padding(8)
+                .foregroundColor(Color.secondary)
+                .background(Color(.systemGray4))
+                .cornerRadius(8)
+                .padding(.top)
             
             Text(errorMessage)
-                .font(NxtBuzFonts.title3)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal)
-                .padding(.horizontal)
+                .font(NxtBuzFonts.title3)
+                .foregroundColor(.primary)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .fixedSize(horizontal: false, vertical: true)
             
-            PrimaryButton(
-                text: retryText,
-                action: onRetry,
-                iconSystemName: iconSystemName
-            ).padding(.horizontal)
+            Divider()
+            
+            Text(retryText)
+                .foregroundColor(.accentColor)
+                .font(NxtBuzFonts.body)
+                .fontWeight(.medium)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .onTapGesture {
+                    onRetry()
+                }
         }
+        .background(Color(.systemGray6))
+        .cornerRadius(8)
+        .frame(maxWidth: .infinity)
+        .padding()
     }
 }

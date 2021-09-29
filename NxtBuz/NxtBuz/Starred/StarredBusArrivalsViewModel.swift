@@ -20,9 +20,7 @@ class StarredBusArrivalsViewModel : ObservableObject {
     }
     
     private func getArrivalsAct(uuid: UUID) {
-        debugPrint("yoyo1", "\(uuid.uuidString) \(self.uuid?.uuidString ?? "")")
         if uuid != self.uuid {
-            debugPrint("yoyo1", "\(uuid.uuidString) \(self.uuid?.uuidString ?? "") mismatch!")
             return
         }
         
@@ -30,7 +28,6 @@ class StarredBusArrivalsViewModel : ObservableObject {
             .getStarredBusArrivalsUseCase()
             .getStarredBusArrivals { starredBusArrivalOutput in
                 if let starredBusArrivalList = (starredBusArrivalOutput as? IosStarredBusArrivalOutput.Success)?.starredBusArrivalList {
-                    
                     switch self.screenState {
                     case .Fetching, .Error:
                         self.setSucessScreenState(starredBusArrivalList: starredBusArrivalList)
@@ -40,8 +37,6 @@ class StarredBusArrivalsViewModel : ObservableObject {
                             starredBusArrivalList: starredBusArrivalList
                         )
                     }
-                    
-                    debugPrint("\(self.screenState)")
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                         self.getArrivalsAct(uuid: uuid)
@@ -89,7 +84,7 @@ class StarredBusArrivalsViewModel : ObservableObject {
             starredBusStopList.append(
                 StarredBusStop(
                     busStopCode: busStopCode,
-                    busStopDescription: starredBusArrivalItemDataList[0].starredBusArrival.busStopDescription,
+                    busStop: starredBusArrivalItemDataList[0].starredBusArrival.busStop,
                     starredBusArrivalItemDataList: starredBusArrivalItemDataList
                 )
             )
@@ -109,14 +104,6 @@ class StarredBusArrivalsViewModel : ObservableObject {
         data: StarredBusArrivalsScreenSuccessData,
         starredBusArrivalList incomingStarredBusArrivalList: [StarredBusArrival]
     ) {
-        // todo: remove
-        data.starredBusStopList.forEach { starredBusStop in
-            print("yoyo1 before \(starredBusStop.busStopDescription)")
-            starredBusStop.starredBusArrivalItemDataList.forEach { starredBusArrivalItemData in
-                print("yoyo1 before \(starredBusArrivalItemData.starredBusArrival.busServiceNumber)")
-            }
-        }
-        
         let busStopCodeArrivalDict = Dictionary(
             grouping: incomingStarredBusArrivalList,
             by: { $0.busStopCode }
@@ -159,7 +146,7 @@ class StarredBusArrivalsViewModel : ObservableObject {
                 starredBusStopListToAdd.append(
                     StarredBusStop(
                         busStopCode: busStopCode,
-                        busStopDescription: newStarredBusArrivalList[0].busStopDescription,
+                        busStop: newStarredBusArrivalList[0].busStop,
                         starredBusArrivalItemDataList: newStarredBusArrivalList.map { starredBusArrival in
                             StarredBusArrivalItemData(starredBusArrival: starredBusArrival)
                         }
@@ -206,14 +193,6 @@ class StarredBusArrivalsViewModel : ObservableObject {
             data.lastUpdatedOn = Date()
             data.lastUpdatedOnStr = BusStopArrivalsViewModel.getTime(date: data.lastUpdatedOn)
             data.shouldShowList = !data.starredBusStopList.isEmpty
-            
-            print("yoyo1 \(data.starredBusStopList.count)")
-            data.starredBusStopList.forEach { starredBusStop in
-                print("yoyo1 after \(starredBusStop.busStopDescription)")
-                starredBusStop.starredBusArrivalItemDataList.forEach { starredBusArrivalItemData in
-                    print("yoyo1 after \(starredBusArrivalItemData.starredBusArrival.busServiceNumber)")
-                }
-            }
         }
     }
     
@@ -267,16 +246,16 @@ class StarredBusArrivalsScreenSuccessData : ObservableObject {
 class StarredBusStop : ObservableObject, Identifiable {
     var id: UUID = UUID()
     let busStopCode: String
-    let busStopDescription: String
+    let busStop: BusStop
     @Published var starredBusArrivalItemDataList: [StarredBusArrivalItemData]
     
     init(
         busStopCode: String,
-        busStopDescription: String,
+        busStop: BusStop,
         starredBusArrivalItemDataList: [StarredBusArrivalItemData]
     ) {
         self.busStopCode = busStopCode
-        self.busStopDescription = busStopDescription
+        self.busStop = busStop
         self.starredBusArrivalItemDataList = starredBusArrivalItemDataList
     }
 }
