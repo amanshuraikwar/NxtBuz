@@ -13,8 +13,10 @@ struct StarredBusStopView: View {
     
     var body: some View {
         Section(
-            header: Text(starredBusStop.busStopDescription)
-                .font(NxtBuzFonts.body)
+            header: NavigationLink (destination: Text("gello")) {
+                Text(starredBusStop.busStopDescription)
+                    .font(NxtBuzFonts.body)
+            }
         ) {
             ForEach(starredBusStop.starredBusArrivalItemDataList) { starredBusArrivalItemData in
                 StarredBusArrivalsItemView(
