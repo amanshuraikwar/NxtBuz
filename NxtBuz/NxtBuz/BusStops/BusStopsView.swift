@@ -53,8 +53,7 @@ struct BusStopsView: View {
                     retryText: "Go to Settings",
                     onRetry: {
                         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                    },
-                    iconSystemName: "chevron.forward"
+                    }
                 )
             case .AskLocationPermission:
                 ErrorView(
@@ -63,8 +62,7 @@ struct BusStopsView: View {
                     retryText: "Give Permission",
                     onRetry: {
                         viewModel.requestPermission()
-                    },
-                    iconSystemName: nil
+                    }
                 )
             case .Success(let header, let busStopList, let searchResults, let lowAccuracy):
                 List {

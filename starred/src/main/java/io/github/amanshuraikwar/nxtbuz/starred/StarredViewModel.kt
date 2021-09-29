@@ -117,7 +117,7 @@ class StarredViewModel @Inject constructor(
                     listItems.add(
                         StarredBusArrivalData(
                             busServiceNumber = starredBusArrival.busServiceNumber,
-                            busStopDescription = starredBusArrival.busStopDescription,
+                            busStopDescription = starredBusArrival.busStop.description,
                             busArrivals = starredBusArrival.busArrivals,
                             busStopCode = starredBusArrival.busStopCode,
                         )

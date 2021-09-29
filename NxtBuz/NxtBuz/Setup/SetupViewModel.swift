@@ -14,19 +14,24 @@ class SetupViewModel : ObservableObject {
     private let doSetupUseCase = Di.get().getDoSetupUserStateUserCase()
     
     func startSetup() {
-        doSetupUseCase.invoke { setupState in
-            if let inProgress  = setupState as? SetupState.InProgress {
-                DispatchQueue.main.async {
-                    self.setupScreenState =
-                        .InProgress(progress: Float(inProgress.progress))
+        switch setupScreenState {
+        case .NotStarted, .Failed:
+            doSetupUseCase.invoke { setupState in
+                if let inProgress  = setupState as? SetupState.InProgress {
+                    DispatchQueue.main.async {
+                        self.setupScreenState =
+                            .InProgress(progress: Float(inProgress.progress))
+                    }
+                }
+                
+                if let _  = setupState as? SetupState.Complete {
+                    DispatchQueue.main.async {
+                        self.setupScreenState = .Complete
+                    }
                 }
             }
-            
-            if let _  = setupState as? SetupState.Complete {
-                DispatchQueue.main.async {
-                    self.setupScreenState = .Complete
-                }
-            }
+        default:
+            break
         }
     }
 }

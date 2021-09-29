@@ -41,7 +41,7 @@ struct ContentView: View {
                     )
                     .ignoresSafeArea()
                     .tabItem {
-                        Label("Home", systemImage: "bus.fill")
+                        Label(  "Home", systemImage: "house.circle.fill")
                     }
                     
                     NxtBuzNavigationView(
@@ -53,7 +53,7 @@ struct ContentView: View {
                     )
                     .ignoresSafeArea()
                     .tabItem {
-                        Label("Starred Buses", systemImage: "list.star")
+                        Label("Starred Buses", systemImage: "star.circle.fill")
                     }
                     
                     NxtBuzNavigationView(

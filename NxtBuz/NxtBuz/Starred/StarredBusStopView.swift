@@ -13,9 +13,16 @@ struct StarredBusStopView: View {
     
     var body: some View {
         Section(
-            header: NavigationLink (destination: Text("gello")) {
-                Text(starredBusStop.busStopDescription)
-                    .font(NxtBuzFonts.body)
+            header: NavigationLink (destination: BusStopArrivalsView(busStop: starredBusStop.busStop)) {
+                HStack {
+                    Text(starredBusStop.busStop.description_)
+                        .font(NxtBuzFonts.body)
+                        .fontWeight(.medium)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.forward")
+                }
             }
         ) {
             ForEach(starredBusStop.starredBusArrivalItemDataList) { starredBusArrivalItemData in

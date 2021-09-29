@@ -230,9 +230,9 @@ struct NxtBuz_Widget: Widget {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             NxtBuz_WidgetEntryView(entry: entry)
         }
-        //.supportedFamilies([.systemSmall])
-        //.configurationDisplayName("My Widget")
-        //.description("This is an example widget.")
+        .supportedFamilies([.systemSmall])
+        .configurationDisplayName("Next Bus SG")
+        .description("Widget coming soon!")
     }
 }
 

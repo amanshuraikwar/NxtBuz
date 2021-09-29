@@ -203,7 +203,8 @@ class SqlDelightLocalDataSource internal constructor(
                     busServiceNumber = busServiceNumber,
                     busStopCode = busStopCode
                 )
-                .executeAsOneOrNull()
+                .executeAsList()
+                .getOrNull(0)
                 ?.let { busRouteEntity ->
                     BusRouteEntity(
                         busServiceNumber = busRouteEntity.busServiceNumber,

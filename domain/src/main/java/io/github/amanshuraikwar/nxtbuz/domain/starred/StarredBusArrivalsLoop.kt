@@ -28,7 +28,7 @@ class StarredBusArrivalsLoop(
             busStopCodeBusServiceNumberSetMap
                 .map { (busStopCode, starredBusServiceSet) ->
                     async {
-                        val busStopDescription = getBusStopUseCase(busStopCode).description
+                        val busStop = getBusStopUseCase(busStopCode)
 
                         getBusArrivalsUseCase(busStopCode)
                             .filter {
@@ -38,7 +38,7 @@ class StarredBusArrivalsLoop(
                                 StarredBusArrival(
                                     busStopCode = busStopCode,
                                     busServiceNumber = busStopArrival.busServiceNumber,
-                                    busStopDescription = busStopDescription,
+                                    busStop = busStop,
                                     busArrivals = busStopArrival.busArrivals
                                 )
                             }.let { starredBusArrivalList ->

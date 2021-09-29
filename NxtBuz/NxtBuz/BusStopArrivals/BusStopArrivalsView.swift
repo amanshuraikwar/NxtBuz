@@ -31,8 +31,7 @@ struct BusStopArrivalsView: View {
                     retryText: "Retry",
                     onRetry: {
                         viewModel.onRetryClick()
-                    },
-                    iconSystemName: nil
+                    }
                 )
             case .Success(let data):
                 BusStopArrivalsListView(

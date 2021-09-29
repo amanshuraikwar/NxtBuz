@@ -14,26 +14,23 @@ struct SetupView: View {
     
     var body: some View {
         VStack {
-            Image(systemName: "bus.fill")
+            Image("Bus60")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 72, height: 72)
-                .foregroundColor(.white)
-                .padding(16)
-                .background(Color.accentColor)
+                .frame(width: 60, height: 60)
                 .cornerRadius(16)
                 .padding(.top, 128)
             
             Text("Next Bus SG")
-                .font(NxtBuzFonts.largeTitle)
+                .font(NxtBuzFonts.title)
                 .fontWeight(.bold)
-                .padding(.top, 72)
+                .padding(.top, 32)
                 .padding(.horizontal)
                 .foregroundColor(.accentColor)
             
             Text("Easily find bus arrival timings anywhere in Singapore")
                 .font(NxtBuzFonts.headline)
-                .fontWeight(.medium)
+                .fontWeight(.regular)
                 .foregroundColor(Color(.systemGray))
                 .padding(.top, 2)
                 .padding(.horizontal)
