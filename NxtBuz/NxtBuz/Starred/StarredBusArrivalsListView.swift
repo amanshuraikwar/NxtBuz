@@ -11,19 +11,20 @@ struct StarredBusArrivalsListView: View {
     @StateObject var data: StarredBusArrivalsScreenSuccessData
     let onUnStarClick: (_ busStopCode: String, _ busServiceNumber: String) -> Void
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         if data.shouldShowList {
             List {
                 if data.outdatedResults {
                     HStack {
-                        Image(systemName: "exclamationmark.icloud.fill")
-                            .foregroundColor(Color.secondary)
+                        Text("Bus arrival times might be outdated.")
+                            .font(NxtBuzFonts.body)
+                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
                         
-                        Text(
-                            "Bus arrival times might be outdated."
-                        )
+                        Image(systemName: "exclamationmark.icloud.fill")
+                            .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                     }
-                    .animation(.easeInOut, value: data.outdatedResults)
                 }
                 
                 ForEach(data.starredBusStopList) { starredBusStop in
@@ -35,22 +36,20 @@ struct StarredBusArrivalsListView: View {
                 
                 Text("Last updated on \(data.lastUpdatedOnStr)")
                     .font(NxtBuzFonts.body)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
             }
             .listStyle(InsetGroupedListStyle())
         } else {
-            VStack(
-                spacing: 32
-            ) {
+            VStack {
                 Image(systemName: "star.fill")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 48, height: 48)
-                    .foregroundColor(Color.secondary)
+                    .frame(width: 32, height: 32)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                 
                 Text("Your starred bus services will show up here :)")
-                    .font(NxtBuzFonts.title)
-                    .foregroundColor(.secondary)
+                    .font(NxtBuzFonts.title3)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                     .fontWeight(.bold)
                     .padding()
                     .multilineTextAlignment(.center)

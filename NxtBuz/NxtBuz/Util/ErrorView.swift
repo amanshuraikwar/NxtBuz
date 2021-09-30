@@ -13,6 +13,8 @@ struct ErrorView: View {
     let retryText: String
     let onRetry: () -> Void
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         VStack(
             spacing: 0
@@ -22,15 +24,15 @@ struct ErrorView: View {
                 .scaledToFit()
                 .frame(width: 32, height: 32)
                 .padding(8)
-                .foregroundColor(Color.secondary)
-                .background(Color(.systemGray4))
+                .foregroundColor(Color(nxtBuzTheme.accentColor))
+                .background(Color(nxtBuzTheme.accentColor).opacity(0.1))
                 .cornerRadius(8)
                 .padding(.top)
             
             Text(errorMessage)
                 .multilineTextAlignment(.center)
                 .font(NxtBuzFonts.title3)
-                .foregroundColor(.primary)
+                .foregroundColor(Color(nxtBuzTheme.primaryColor))
                 .frame(maxWidth: .infinity)
                 .padding()
                 .fixedSize(horizontal: false, vertical: true)
@@ -38,7 +40,7 @@ struct ErrorView: View {
             Divider()
             
             Text(retryText)
-                .foregroundColor(.accentColor)
+                .foregroundColor(Color(nxtBuzTheme.accentColor))
                 .font(NxtBuzFonts.body)
                 .fontWeight(.medium)
                 .padding()

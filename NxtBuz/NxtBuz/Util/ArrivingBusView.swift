@@ -10,6 +10,9 @@ import iosUmbrella
 
 struct ArrivingBusView: View {
     let arrivingBus: ArrivingBus
+    
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         HStack(
             spacing: 16
@@ -19,7 +22,7 @@ struct ArrivingBusView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
-                .foregroundColor(Color.primary)
+                .foregroundColor(Color(nxtBuzTheme.primaryColor))
                 .padding(4)
                 .background(Color(.systemGray5))
                 .cornerRadius(8)
@@ -27,6 +30,7 @@ struct ArrivingBusView: View {
             ZStack {   
                 Text(getBusArrivalStr(Int(arrivingBus.arrival)))
                         .font(NxtBuzFonts.title2Monospaced)
+                        .foregroundColor(Color(nxtBuzTheme.primaryColor))
                         .fontWeight(.bold)
                 
                 Text("NOW ")
@@ -40,14 +44,14 @@ struct ArrivingBusView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
-                .foregroundColor(Color.secondary)
+                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
             
             Image(getWheelCharAccessImageName(arrivingBus.wheelchairAccess))
                 .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
-                .foregroundColor(Color.secondary)
+                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
         }
     }
     

@@ -12,6 +12,8 @@ struct SetupView: View {
     @StateObject private var viewModel = SetupViewModel()
     let onSetupComplete: () -> Void
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         VStack {
             Image("Bus60")
@@ -26,12 +28,12 @@ struct SetupView: View {
                 .fontWeight(.bold)
                 .padding(.top, 32)
                 .padding(.horizontal)
-                .foregroundColor(.accentColor)
+                .foregroundColor(Color(nxtBuzTheme.accentColor))
             
             Text("Easily find bus arrival timings anywhere in Singapore")
                 .font(NxtBuzFonts.headline)
                 .fontWeight(.regular)
-                .foregroundColor(Color(.systemGray))
+                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                 .padding(.top, 2)
                 .padding(.horizontal)
                 .multilineTextAlignment(.center)

@@ -12,16 +12,19 @@ struct BusStopArrivalsView: View {
     let busStop: BusStop
     @StateObject private var viewModel = BusStopArrivalsViewModel()
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         ZStack {
             switch viewModel.screenState {
             case .Fetching:
                 VStack {
                     ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
                     
                     Text("Fetching arrivals...")
                         .font(NxtBuzFonts.body)
+                        .foregroundColor(Color(nxtBuzTheme.primaryColor))
                         .padding()
                 }
             case .Error(_):
@@ -62,7 +65,7 @@ struct BusStopArrivalsView: View {
             ) {
                 Image(systemName: "arrow.triangle.turn.up.right.circle.fill")
                     .imageScale(.medium)
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(Color(nxtBuzTheme.accentColor))
             }
         )
         .navigationBarTitle(

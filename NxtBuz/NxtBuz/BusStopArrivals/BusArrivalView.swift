@@ -13,6 +13,8 @@ struct BusArrivalView: View {
     let busLoadImage: String
     let accessibleImage: String
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     init(busArrivals: BusArrivals.Arriving) {
         self.busArrivalStr = BusArrivalView.getBusArrivalStr(arrival: Int(busArrivals.nextArrivingBus.arrival))
         
@@ -38,21 +40,21 @@ struct BusArrivalView: View {
             Text(busArrivalStr)
                 .font(NxtBuzFonts.title2)
                 .fontWeight(.bold)
-                .foregroundColor(Color.primary)
+                .foregroundColor(Color(nxtBuzTheme.primaryColor))
             
             Image(busLoadImage)
                 .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
-                .foregroundColor(Color.primary)
+                .foregroundColor(Color(nxtBuzTheme.primaryColor))
             
             Image(accessibleImage)
                 .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
-                .foregroundColor(Color.primary)
+                .foregroundColor(Color(nxtBuzTheme.primaryColor))
         }
     }
     

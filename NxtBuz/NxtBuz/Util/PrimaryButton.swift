@@ -12,6 +12,8 @@ struct PrimaryButton: View {
     let action: () -> Void
     let iconSystemName: String?
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         Button(action: action) {
             HStack {
@@ -23,13 +25,13 @@ struct PrimaryButton: View {
                     Image(systemName: iconSystemName)
                 }
             }
-            .foregroundColor(Color.white)
+            .foregroundColor(Color(nxtBuzTheme.primaryColor))
             .padding(14)
             .frame(
                 maxWidth: .infinity,
                 alignment: .center
             )
-            .background(Color.accentColor)
+            .background(Color(nxtBuzTheme.accentColor))
             .cornerRadius(16)
         }
     }

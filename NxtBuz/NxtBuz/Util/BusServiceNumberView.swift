@@ -11,12 +11,14 @@ struct BusServiceNumberView: View {
     let busServiceNumber: String
     let error: Bool
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         ZStack {
             Text(busServiceNumber)
                 .font(NxtBuzFonts.title3)
                 .fontWeight(.bold)
-                .foregroundColor(error ? Color(.systemGray5) : Color.white)
+                .foregroundColor(error ? Color(.systemGray5) : nxtBuzTheme.isDark ? Color(.systemGray6) : .white)
             
             Text("961M ")
                 .font(NxtBuzFonts.title3)
@@ -25,7 +27,7 @@ struct BusServiceNumberView: View {
         }
         .padding(.vertical, 2)
         .padding(.horizontal, 4)
-        .background(error ? Color(.systemGray) : Color.accentColor)
+        .background(error ? Color(.systemGray) : Color(nxtBuzTheme.accentColor))
         .clipShape(Capsule())
     }
 }
