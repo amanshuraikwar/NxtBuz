@@ -14,6 +14,8 @@ struct BusServiceView: View {
     let busTypeName: String
     let error: Bool
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     init(busServiceNumber: String, busType: BusType) {
         self.busServiceNumber = busServiceNumber
         self.busType = busType
@@ -42,7 +44,7 @@ struct BusServiceView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 20, height: 20)
-                    .foregroundColor(Color.secondary)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                 
                 BusServiceNumberView(
                     busServiceNumber: busServiceNumber,
@@ -54,7 +56,7 @@ struct BusServiceView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 20, height: 20)
-                    .foregroundColor(Color.primary)
+                    .foregroundColor(Color(nxtBuzTheme.primaryColor))
                 
                 BusServiceNumberView(
                     busServiceNumber: busServiceNumber,

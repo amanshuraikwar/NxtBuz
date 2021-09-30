@@ -13,24 +13,27 @@ struct BusStopArrivalsListView: View {
     let busStop: BusStop
     var onStarToggle: (_ busServiceNumber: String, _ newValue: Bool) -> Void
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         List {
             Section(
                 header: Text("Info")
                     .font(NxtBuzFonts.caption)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
             ) {
                 Text(busStop.roadName + "  •  " + busStop.code)
                     .font(NxtBuzFonts.body)
+                    .foregroundColor(Color(nxtBuzTheme.primaryColor))
             }
             
             if data.outdatedResults {
                 HStack {
-                    Image(systemName: "exclamationmark.icloud.fill")
-                        .foregroundColor(Color.secondary)
+                    Text("Bus arrival times might be outdated.")
+                        .foregroundColor(Color(nxtBuzTheme.primaryColor))
                     
-                    Text(
-                        "Bus arrival times might be outdated."
-                    )
+                    Image(systemName: "exclamationmark.icloud.fill")
+                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                 }
                 .animation(.easeInOut, value: data.outdatedResults)
             }
@@ -38,6 +41,7 @@ struct BusStopArrivalsListView: View {
             Section(
                 header: Text("Bus Arrivals")
                     .font(NxtBuzFonts.caption)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
             ) {
                 ForEach(data.busStopArrivalItemDataList) { busStopArrivalItemData in
                     BusStopArrivalItemView(
@@ -54,7 +58,7 @@ struct BusStopArrivalsListView: View {
             
             Text("Last updated on \(data.lastUpdatedOnStr)")
                 .font(NxtBuzFonts.body)
-                .foregroundColor(.secondary)
+                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
         }
         .listStyle(InsetGroupedListStyle())
     }

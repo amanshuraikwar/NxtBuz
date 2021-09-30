@@ -11,6 +11,8 @@ import iosUmbrella
 struct StarredBusArrivalsView: View {
     @StateObject private var viewModel = StarredBusArrivalsViewModel()
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         ZStack {
             switch viewModel.screenState {
@@ -27,10 +29,11 @@ struct StarredBusArrivalsView: View {
             case .Fetching:
                 VStack {
                     ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
                     
                     Text("Fetching starred bus arrivals...")
                         .font(NxtBuzFonts.body)
+                        .foregroundColor(Color(nxtBuzTheme.primaryColor))
                         .padding()
                 }
             case .Error(_):

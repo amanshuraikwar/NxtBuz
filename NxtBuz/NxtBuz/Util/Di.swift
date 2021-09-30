@@ -7,6 +7,7 @@
 
 import Foundation
 import iosUmbrella
+import SwiftUI
 
 class Di {
     private static let instance = Di()
@@ -60,6 +61,23 @@ class Di {
     private static let searchRepository = SearchRepository(
         localDataSource: localDataSource,
         dispatcherProvider: coroutineDispatcherProvider
+    )
+    
+    private static let dynamoThemeRepository = DynamoThemeProvider().createDynamoThemeRepository(
+        defaultTheme: DynamoTheme(
+            darkThemeColors: DynamoThemeColors(
+                primary: UIColor(.white),
+                secondary: UIColor(.gray),
+                accent: UIColor(.blue)
+            ),
+            lightThemeColors: DynamoThemeColors(
+                primary: UIColor(.black),
+                secondary: UIColor(.gray),
+                accent: UIColor(.green)
+            )
+        ),
+        enableThemeApiLogging: true,
+        themeApiUrl: "https://amanshuraikwar.github.io/api/nxtBuzTheme.json"
     )
     
     private init() {}
@@ -125,5 +143,9 @@ class Di {
         return SearchUseCase(
             searchRepository: Di.searchRepository
         )
+    }
+    
+    func getThemeUseCase() -> GetThemeUseCase {
+        return GetThemeUseCase(dynamoThemeRepository: Di.dynamoThemeRepository)
     }
 }

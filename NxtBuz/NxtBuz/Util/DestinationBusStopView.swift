@@ -10,6 +10,8 @@ import SwiftUI
 struct DestinationBusStopView: View {
     let busStopDescription: String
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         HStack(
             spacing: 0
@@ -18,12 +20,12 @@ struct DestinationBusStopView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 16, height: 16)
-                .foregroundColor(Color.secondary)
+                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                 .padding(6)
             
             Text(busStopDescription)
                 .font(NxtBuzFonts.body)
-                .foregroundColor(.secondary)
+                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                 .padding(.trailing, 6)
         }
         .background(Color(.systemGray5))

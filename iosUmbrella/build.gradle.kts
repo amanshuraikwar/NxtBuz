@@ -32,6 +32,7 @@ kotlin {
             export(project(":busarrivaldata"))
             export(project(":starreddata"))
             export(project(":searchdata"))
+            export(project(":dynamo"))
             transitiveExport = true
             isStatic = true
             linkerOpts.add("-lsqlite3")
@@ -61,6 +62,7 @@ kotlin {
                 api(project(":busarrivaldata"))
                 api(project(":starreddata"))
                 api(project(":searchdata"))
+                api(project(":dynamo"))
                 implementation(Libs.Coroutines.core)
             }
         }

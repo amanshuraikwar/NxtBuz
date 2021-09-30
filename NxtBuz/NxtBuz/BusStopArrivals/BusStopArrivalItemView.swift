@@ -12,6 +12,8 @@ struct BusStopArrivalItemView: View {
     @StateObject var busStopArrivalItemData: BusStopArrivalItemData
     var onStarToggle: (_ newValue: Bool) -> Void
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         VStack(
             alignment: .leading,
@@ -71,7 +73,7 @@ struct BusStopArrivalItemView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 16, height: 16)
-                                .foregroundColor(Color.secondary)
+                                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                                 .padding(6)
                         }
                         
@@ -95,7 +97,7 @@ struct BusStopArrivalItemView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 16, height: 16)
-                                    .foregroundColor(Color.secondary)
+                                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                                     .padding(6)
                             }
                             
@@ -117,7 +119,7 @@ struct BusStopArrivalItemView: View {
                     Text("Not Arriving")
                         .font(NxtBuzFonts.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                         .padding(.leading, 8)
                     
                     Spacer()

@@ -11,6 +11,8 @@ struct StarredBusStopView: View {
     @StateObject var starredBusStop: StarredBusStop
     let onUnStarClick: (_ busStopCode: String, _ busServiceNumber: String) -> Void
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         Section(
             header: NavigationLink (destination: BusStopArrivalsView(busStop: starredBusStop.busStop)) {
@@ -35,8 +37,9 @@ struct StarredBusStopView: View {
                             starredBusArrivalItemData.starredBusArrival.busServiceNumber
                         )
                     } label: {
-                        Label("Delete", systemImage: "star.slash")
+                        Label("Remove", systemImage: "star.slash")
                             .font(NxtBuzFonts.body)
+                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
                     }
                 }
             }

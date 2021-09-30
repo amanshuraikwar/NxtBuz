@@ -11,6 +11,8 @@ import iosUmbrella
 struct BusArrivalErrorView: View {
     let errorStr: String
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     init(busArrivals: BusArrivals.DataNotAvailable) {
         self.errorStr = "No Data"
     }
@@ -26,6 +28,7 @@ struct BusArrivalErrorView: View {
     var body: some View {
         Text(errorStr)
             .font(NxtBuzFonts.title2)
+            .foregroundColor(Color(nxtBuzTheme.primaryColor))
             .fontWeight(.bold)
     }
 }

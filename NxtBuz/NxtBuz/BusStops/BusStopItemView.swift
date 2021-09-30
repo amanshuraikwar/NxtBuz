@@ -13,12 +13,15 @@ struct BusStopItemView: View {
     let busStopCode: String
     let operatingBusServiceNumbers: String
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         VStack(
             spacing: 0
         ) {
             Text(busStopName)
                 .font(NxtBuzFonts.headline)
+                .foregroundColor(Color(nxtBuzTheme.primaryColor))
                 .fontWeight(.regular)
                 .padding(.top, 4)
                 .frame(
@@ -29,7 +32,7 @@ struct BusStopItemView: View {
             Text((roadName + "  •  " + busStopCode).uppercased())
                 .font(NxtBuzFonts.caption)
                 .padding(.top, 4)
-                .foregroundColor(Color.secondary)
+                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                 .frame(
                     maxWidth: .infinity,
                     alignment: .leading
@@ -38,7 +41,7 @@ struct BusStopItemView: View {
             Text(operatingBusServiceNumbers)
                 .font(NxtBuzFonts.title3)
                 .fontWeight(.bold)
-                .foregroundColor(.accentColor)
+                .foregroundColor(Color(nxtBuzTheme.accentColor))
                 .padding(.trailing)
                 .frame(
                     maxWidth: .infinity,

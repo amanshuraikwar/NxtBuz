@@ -12,16 +12,19 @@ struct BusStopsView: View {
     @StateObject private var viewModel = BusStopsViewModel()
     @Binding var searchString: String
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         ZStack {
             switch viewModel.busStopsScreenState {
             case .Fetching(let message):
                 VStack {
                     ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
                     
                     Text(message)
                         .font(NxtBuzFonts.body)
+                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                         .padding()
                 }
             case .Error(let errorMessage):
@@ -68,12 +71,13 @@ struct BusStopsView: View {
                 List {
                     Section(
                         header: Text(header)
+                            .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                             .font(NxtBuzFonts.caption)
                     ) {
                         if busStopList.isEmpty {
                             Text("No bus stops found :(")
                                 .font(NxtBuzFonts.body)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                         } else {
                             ForEach(
                                 Array(busStopList.enumerated()),
@@ -101,7 +105,7 @@ struct BusStopsView: View {
                                 Text("Results might not be accurate due to location's low accuracy.")
                                     .multilineTextAlignment(.center)
                                     .font(NxtBuzFonts.title3)
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(Color(nxtBuzTheme.primaryColor))
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, 8)
                                     .fixedSize(horizontal: false, vertical: true)
@@ -109,7 +113,7 @@ struct BusStopsView: View {
                                 Divider()
                                 
                                 Text("Give Precise Location Permission")
-                                    .foregroundColor(.accentColor)
+                                    .foregroundColor(Color(nxtBuzTheme.accentColor))
                                     .font(NxtBuzFonts.body)
                                     .fontWeight(.medium)
                                     .padding(8)
@@ -121,7 +125,7 @@ struct BusStopsView: View {
                                 Divider()
                                 
                                 Text("Reload Bus Stops")
-                                    .foregroundColor(.accentColor)
+                                    .foregroundColor(Color(nxtBuzTheme.accentColor))
                                     .font(NxtBuzFonts.body)
                                     .fontWeight(.medium)
                                     .padding(8)

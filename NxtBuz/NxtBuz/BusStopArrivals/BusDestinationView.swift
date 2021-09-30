@@ -10,6 +10,8 @@ import SwiftUI
 struct BusDestinationView: View {
     let destination: String
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         HStack {
             Image(systemName: "arrow.forward.circle.fill")
@@ -20,6 +22,6 @@ struct BusDestinationView: View {
             Text(destination)
                 .font(NxtBuzFonts.footnote)
         }
-        .foregroundColor(Color(.systemGray))
+        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
     }
 }

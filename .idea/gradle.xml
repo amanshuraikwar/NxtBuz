@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/commonkmm" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/dynamo" />
             <option value="$PROJECT_DIR$/iosUmbrella" />
             <option value="$PROJECT_DIR$/ktorremotedatasource" />
             <option value="$PROJECT_DIR$/localdatasource" />

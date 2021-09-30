@@ -11,6 +11,8 @@ import iosUmbrella
 struct StarredBusArrivalsItemView: View {
     @StateObject var starredBusArrivalItemData: StarredBusArrivalItemData
     
+    @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
+    
     var body: some View {
         VStack(
             alignment: .leading,
@@ -46,7 +48,7 @@ struct StarredBusArrivalsItemView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 16, height: 16)
-                                .foregroundColor(Color.secondary)
+                                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                                 .padding(6)
                         }
                         
@@ -70,7 +72,7 @@ struct StarredBusArrivalsItemView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 16, height: 16)
-                                    .foregroundColor(Color.secondary)
+                                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                                     .padding(6)
                             }
                             
@@ -92,7 +94,7 @@ struct StarredBusArrivalsItemView: View {
                     Text("Not Arriving")
                         .font(NxtBuzFonts.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                         .padding(.leading, 8)
                 }
                 .padding(.vertical, 12)
