@@ -2,6 +2,7 @@ CREATE TABLE BusStopEntity (
     code TEXT NOT NULL PRIMARY KEY,
     roadName TEXT NOT NULL,
     description TEXT NOT NULL,
+    descriptionSearchKey TEXT NOT NULL,
     latitude REAL NOT NULL,
     longitude REAL NOT NULL
 );
@@ -26,7 +27,7 @@ findCloseDistance:
 SELECT * FROM BusStopEntity WHERE (((latitude-:latitude)*(latitude-:latitude))+((longitude-:longitude)*(longitude-:longitude))) < :distance;
 
 searchLikeDescription:
-SELECT * FROM BusStopEntity WHERE description LIKE '%' || :description || '%' LIMIT :limit;
+SELECT * FROM BusStopEntity WHERE descriptionSearchKey LIKE '%' || :descriptionHint || '%' LIMIT :limit;
 
 
 

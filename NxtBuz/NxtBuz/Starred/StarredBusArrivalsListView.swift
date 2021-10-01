@@ -17,14 +17,10 @@ struct StarredBusArrivalsListView: View {
         if data.shouldShowList {
             List {
                 if data.outdatedResults {
-                    HStack {
-                        Text("Bus arrival times might be outdated.")
-                            .font(NxtBuzFonts.body)
-                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
-                        
-                        Image(systemName: "exclamationmark.icloud.fill")
-                            .foregroundColor(Color(nxtBuzTheme.secondaryColor))
-                    }
+                    WarningBannerView(
+                        message: "Bus arrival times might be outdated.",
+                        iconSystemName: "exclamationmark.icloud.fill"
+                    )
                 }
                 
                 ForEach(data.starredBusStopList) { starredBusStop in

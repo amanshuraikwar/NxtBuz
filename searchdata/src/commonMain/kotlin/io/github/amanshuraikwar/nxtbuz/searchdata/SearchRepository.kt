@@ -14,7 +14,13 @@ class SearchRepository constructor(
         withContext(dispatcherProvider.computation) {
 
             val busStopList =
-                localDataSource.findBusStopsByDescription(query, limit)
+                localDataSource.findBusStopsByDescription(
+                    query
+                        .lowercase()
+                        .trim()
+                        .replace(Regex("[^a-z0-9]"), ""),
+                    limit
+                )
                     .map { busStopEntity ->
                         async(dispatcherProvider.pool8) {
                             BusStop(
