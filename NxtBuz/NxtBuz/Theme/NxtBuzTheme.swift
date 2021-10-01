@@ -14,24 +14,25 @@ class NxtBuzTheme : ObservableObject {
     @Published var primaryColor = NxtBuzTheme.defaultTheme.darkThemeColors.primary
     @Published var secondaryColor = NxtBuzTheme.defaultTheme.darkThemeColors.primary
     @Published var accentColor = NxtBuzTheme.defaultTheme.darkThemeColors.primary
+    @Published var theme = defaultTheme
+    @Published var themeInit = false
     
-    private var theme = defaultTheme
-    
-    func updateTheme(isDark: Bool) {
-        print("Theme: \(isDark)")
-        self.isDark = isDark
-        self.primaryColor = isDark ? theme.darkThemeColors.primary : theme.lightThemeColors.primary
-        self.secondaryColor = isDark ? theme.darkThemeColors.secondary : theme.lightThemeColors.secondary
-        self.accentColor = isDark ? theme.darkThemeColors.accent : theme.lightThemeColors.accent
-    }
-    
-    func fetchTheme() {
+    func initTheme(isSystemInDarkMode: Bool) {
+        isDark = isSystemInDarkMode
         updateTheme(Di.get().getThemeUseCase().getThemeSync())
+        themeInit = true
         Di.get().getThemeUseCase().getThemeUpdates { theme in
             DispatchQueue.main.sync {
                 self.updateTheme(theme)
             }
         }
+    }
+    
+    func onSystemThemeChanged(isDark: Bool) {
+        self.isDark = isDark
+        self.primaryColor = isDark ? theme.darkThemeColors.primary : theme.lightThemeColors.primary
+        self.secondaryColor = isDark ? theme.darkThemeColors.secondary : theme.lightThemeColors.secondary
+        self.accentColor = isDark ? theme.darkThemeColors.accent : theme.lightThemeColors.accent
     }
     
     private func updateTheme(_ theme: DynamoTheme) {

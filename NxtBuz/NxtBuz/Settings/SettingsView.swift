@@ -25,43 +25,45 @@ struct SettingsView: View {
                         .fontWeight(.medium)
                         .foregroundColor(Color(nxtBuzTheme.primaryColor))
                     
+                    Spacer()
+                    
                     if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
                         Text(version)
                             .font(NxtBuzFonts.bodyMonospaced)
-                            .fontWeight(.medium)
+                            .fontWeight(.black)
                             .foregroundColor(Color(nxtBuzTheme.accentColor))
                             .padding(4)
-                            .background(Color(.systemGray5))
+                            .background(Color(nxtBuzTheme.accentColor).opacity(0.1))
                             .cornerRadius(8)
                     }
                 }
             }
             
-            Section(
-                header: Text("Dark Mode")
-                    .font(NxtBuzFonts.caption)
-                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
-            ) {
-                Toggle(
-                    isOn: $showGreeting,
-                    label: {
-                        Text("Dark mode")
-                            .font(NxtBuzFonts.body)
-                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
-                            .fontWeight(.medium)
-                    }
-                ).toggleStyle(SwitchToggleStyle(tint: Color(nxtBuzTheme.accentColor)))
-
-                Toggle(
-                    isOn: $showGreeting,
-                    label: {
-                        Text("Use device settings")
-                            .font(NxtBuzFonts.body)
-                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
-                            .fontWeight(.medium)
-                    }
-                ).toggleStyle(SwitchToggleStyle(tint: Color(nxtBuzTheme.accentColor)))
-            }
+//            Section(
+//                header: Text("Dark Mode")
+//                    .font(NxtBuzFonts.caption)
+//                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+//            ) {
+//                Toggle(
+//                    isOn: $showGreeting,
+//                    label: {
+//                        Text("Dark mode")
+//                            .font(NxtBuzFonts.body)
+//                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
+//                            .fontWeight(.medium)
+//                    }
+//                ).toggleStyle(SwitchToggleStyle(tint: Color(nxtBuzTheme.accentColor)))
+//
+//                Toggle(
+//                    isOn: $showGreeting,
+//                    label: {
+//                        Text("Use device settings")
+//                            .font(NxtBuzFonts.body)
+//                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
+//                            .fontWeight(.medium)
+//                    }
+//                ).toggleStyle(SwitchToggleStyle(tint: Color(nxtBuzTheme.accentColor)))
+//            }
             
 //            Section(
 //                header: Text("Starred")

@@ -24,7 +24,7 @@ struct BusStopsView: View {
                     
                     Text(message)
                         .font(NxtBuzFonts.body)
-                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+                        .foregroundColor(Color(nxtBuzTheme.primaryColor))
                         .padding()
                 }
             case .Error(let errorMessage):
@@ -101,38 +101,28 @@ struct BusStopsView: View {
                     
                     if !searchResults && lowAccuracy {
                         Section {
-                            VStack {
+                            VStack(
+                                spacing: 0
+                            ) {
                                 Text("Results might not be accurate due to location's low accuracy.")
                                     .multilineTextAlignment(.center)
                                     .font(NxtBuzFonts.title3)
                                     .foregroundColor(Color(nxtBuzTheme.primaryColor))
                                     .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 8)
+                                    .padding()
                                     .fixedSize(horizontal: false, vertical: true)
                                 
                                 Divider()
                                 
-                                Text("Give Precise Location Permission")
-                                    .foregroundColor(Color(nxtBuzTheme.accentColor))
-                                    .font(NxtBuzFonts.body)
-                                    .fontWeight(.medium)
-                                    .padding(8)
-                                    .frame(maxWidth: .infinity)
-                                    .onTapGesture {
-                                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                                    }
+                                SecondaryButton(text: "Give Precise Location Permission") {
+                                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                                }
                                 
                                 Divider()
                                 
-                                Text("Reload Bus Stops")
-                                    .foregroundColor(Color(nxtBuzTheme.accentColor))
-                                    .font(NxtBuzFonts.body)
-                                    .fontWeight(.medium)
-                                    .padding(8)
-                                    .frame(maxWidth: .infinity)
-                                    .onTapGesture {
-                                        viewModel.fetchBusStops(showFetching: true)
-                                    }
+                                SecondaryButton(text: "Reload Bus Stops") {
+                                    viewModel.fetchBusStops(showFetching: true)
+                                }
                             }
                         }
                     }
