@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		40EDB6F4742347C6392D1E94 /* Pods_NxtBuz_WidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED98D923D3F52B3BD3CA7123 /* Pods_NxtBuz_WidgetExtension.framework */; };
 		A5144DEE2706C959002274C8 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DED2706C959002274C8 /* SecondaryButton.swift */; };
+		A5144DF02706DE66002274C8 /* BusStopArrivalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */; };
 		A52FEB9826F593BC00BB79DA /* BusStopItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */; };
 		A52FEB9A26F5B1C800BB79DA /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9926F5B1C800BB79DA /* Font.swift */; };
 		A52FEB9C26F5B66E00BB79DA /* BusStopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */; };
@@ -102,6 +103,7 @@
 /* Begin PBXFileReference section */
 		1745AD13085AFEA1CA1DD517 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz-WidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
 		A5144DED2706C959002274C8 /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
+		A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopArrivalView.swift; sourceTree = "<group>"; };
 		A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopItemView.swift; sourceTree = "<group>"; };
 		A52FEB9926F5B1C800BB79DA /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopsView.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				A5C12F21270219BA000729E9 /* DestinationBusStopView.swift */,
 				A55AACFA27060EB80035A7E5 /* AppearanceModifier.swift */,
 				A5144DED2706C959002274C8 /* SecondaryButton.swift */,
+				A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -628,6 +631,7 @@
 				A5C12F22270219BA000729E9 /* DestinationBusStopView.swift in Sources */,
 				A55AACF92704BEB90035A7E5 /* HomeView.swift in Sources */,
 				A52FEBA426F5C6DB00BB79DA /* SetupViewModel.swift in Sources */,
+				A5144DF02706DE66002274C8 /* BusStopArrivalView.swift in Sources */,
 				A52FEBBB26F9F3DC00BB79DA /* BusDestinationView.swift in Sources */,
 				A52FEBA926F8A61500BB79DA /* BusStopsViewModel.swift in Sources */,
 				A52FEB9A26F5B1C800BB79DA /* Font.swift in Sources */,
