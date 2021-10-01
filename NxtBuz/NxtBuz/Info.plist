@@ -37,6 +37,10 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Next Bus SG need your location to show bus stops near you</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>SelectBusArrivalIntent</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

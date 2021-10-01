@@ -20,11 +20,11 @@ struct Provider: IntentTimelineProvider {
             arriving: true,
             busType: BusType.sd,
             nextArrivalInMins: 4,
-            configuration: ConfigurationIntent()
+            configuration: SelectBusArrivalIntent()
         )
     }
 
-    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
+    func getSnapshot(for configuration: SelectBusArrivalIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
         let date = Date()
         let entry: SimpleEntry
         
@@ -55,54 +55,80 @@ struct Provider: IntentTimelineProvider {
         completion(entry)
     }
 
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    func getTimeline(for configuration: SelectBusArrivalIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         
-        Di.get().getBusArrivalsUseCase().invoke(
-            busStopCode: "42071",
-            busServiceNumber: "61"
-        ) { busStopArrival in
-            let date = Date()
-            let entry: SimpleEntry
-            
-            if let busArrivals = busStopArrival.busArrivals as? BusArrivals.Arriving {
-                entry = SimpleEntry(
-                    date: date,
-                    busStopCode: busStopArrival.busStopCode,
-                    busStopDescription: "Pei Hwa Presby Pr Sch",
-                    busServiceNumber: busStopArrival.busServiceNumber,
-                    arriving: true,
-                    busType: busArrivals.nextArrivingBus.type,
-                    nextArrivalInMins: Int(busArrivals.nextArrivingBus.arrival),
-                    configuration: configuration
-                )
-            } else {
-                entry = SimpleEntry(
-                    date: date,
-                    busStopCode: "42071",//busStopArrival.busStopCode,
-                    busStopDescription: "Pei Hwa Presby Pr Sch",
-                    busServiceNumber: "61",//busStopArrival.busServiceNumber,
-                    arriving: true,//false,
-                    busType: BusType.sd,
-                    nextArrivalInMins: 5,
-                    configuration: configuration
-                )
-            }
-            
-            // Create a date that's 15 minutes in the future.
-            let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 5, to: date)!
+        Di.get().getUserStateUserCase().invoke { userState in
+            Di.get().getBusArrivalsUseCase().invoke(
+                busStopCode: "42071",
+                busServiceNumber: "61"
+            ) { busStopArrival in
+                let date = Date()
+                let entry: SimpleEntry
+                
+                var x = -1
+                
+                if let _ = userState as? UserState.New {
+                    x = 0
+                }
+                
+                if let _ = userState as? UserState.SetupComplete {
+                    x = 1
+                }
+                
+                let y = UserDefaults(suiteName: "group.io.github.amanshuraikwar.NxtBuz")!.bool(forKey: "helohelo")
+                
+                let z = UserDefaults(suiteName: "group.io.github.amanshuraikwar.NxtBuz")!.bool(forKey: "delodelo")
+                
+                if let busArrivals = busStopArrival.busArrivals as? BusArrivals.Arriving {
+                    entry = SimpleEntry(
+                        date: date,
+                        busStopCode: busStopArrival.busStopCode,
+                        busStopDescription: "\(x) \(y) \(z)",
+                        busServiceNumber: busStopArrival.busServiceNumber,
+                        arriving: true,
+                        busType: busArrivals.nextArrivingBus.type,
+                        nextArrivalInMins: Int(busArrivals.nextArrivingBus.arrival),
+                        configuration: configuration
+                    )
+                } else {
+                    entry = SimpleEntry(
+                        date: date,
+                        busStopCode: "42071",//busStopArrival.busStopCode,
+                        busStopDescription: "\(userState)",
+                        busServiceNumber: "61",//busStopArrival.busServiceNumber,
+                        arriving: true,//false,
+                        busType: BusType.sd,
+                        nextArrivalInMins: 5,
+                        configuration: configuration
+                    )
+                }
+                
+                // Create a date that's 15 minutes in the future.
+                let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 5, to: date)!
 
-            // Create the timeline with the entry and a reload policy with the date
-            // for the next update.
-            let timeline = Timeline(
-                entries: [entry],
-                policy: .after(nextUpdateDate)
-            )
-            
-            completion(timeline)
+                // Create the timeline with the entry and a reload policy with the date
+                // for the next update.
+                let timeline = Timeline(
+                    entries: [entry],
+                    policy: .after(nextUpdateDate)
+                )
+                
+                completion(timeline)
+            }
         }
     }
 }
 
+enum WidgetState {
+    case SetupNotComplete
+    case Arriving(
+        busStopCode: String,
+        busStopDescription: String,
+        busServiceNumber: String,
+        busType: BusType,
+        nextArrivalTime: Date
+    )
+}
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let busStopCode: String
@@ -111,7 +137,7 @@ struct SimpleEntry: TimelineEntry {
     let arriving: Bool
     let busType: BusType
     let nextArrivalInMins: Int
-    let configuration: ConfigurationIntent
+    let configuration: SelectBusArrivalIntent
 }
 
 struct NxtBuz_WidgetEntryView : View {
@@ -224,15 +250,21 @@ struct NxtBuz_WidgetEntryView : View {
 
 @main
 struct NxtBuz_Widget: Widget {
-    let kind: String = "NxtBuz_Widget"
+    let kind: String = "io.github.amanshuraikwar.NxtBuz.busArrivalWidget"
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
+        IntentConfiguration(
+            kind: kind,
+            intent: SelectBusArrivalIntent.self,
+            provider: Provider()
+        ) { entry in
             NxtBuz_WidgetEntryView(entry: entry)
         }
         .supportedFamilies([.systemSmall])
-        .configurationDisplayName("Next Bus SG")
-        .description("Widget coming soon!")
+        .configurationDisplayName("Bus Arrival Timing")
+        .description(
+            "See approximate bus arrival timing of a bus service at a bus stop"
+        )
     }
 }
 

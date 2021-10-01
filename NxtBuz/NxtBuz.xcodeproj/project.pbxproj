@@ -27,6 +27,14 @@
 		A52FEBB726F9EC4300BB79DA /* BusArrivalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBB626F9EC4200BB79DA /* BusArrivalView.swift */; };
 		A52FEBB926F9F18300BB79DA /* BusArrivalErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBB826F9F18300BB79DA /* BusArrivalErrorView.swift */; };
 		A52FEBBB26F9F3DC00BB79DA /* BusDestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBBA26F9F3DC00BB79DA /* BusDestinationView.swift */; };
+		A534608D2707495400A1C990 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A534608C2707495400A1C990 /* Intents.framework */; };
+		A53460902707495400A1C990 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A534608F2707495400A1C990 /* IntentHandler.swift */; };
+		A53460982707495400A1C990 /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53460972707495400A1C990 /* IntentsUI.framework */; };
+		A534609B2707495400A1C990 /* IntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A534609A2707495400A1C990 /* IntentViewController.swift */; };
+		A534609E2707495400A1C990 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A534609C2707495400A1C990 /* MainInterface.storyboard */; };
+		A53460A22707495400A1C990 /* SelectBusArrivalUI.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A53460962707495400A1C990 /* SelectBusArrivalUI.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A53460A52707495400A1C990 /* SelectBusArrival.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A534608B2707495400A1C990 /* SelectBusArrival.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A53460AC27074A0500A1C990 /* NxtBuz_Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A2526FB50870095D96A /* NxtBuz_Widget.intentdefinition */; };
 		A55AACF72704B9F40035A7E5 /* NxtBuzTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF62704B9F40035A7E5 /* NxtBuzTheme.swift */; };
 		A55AACF92704BEB90035A7E5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF82704BEB90035A7E5 /* HomeView.swift */; };
 		A55AACFB27060EB80035A7E5 /* AppearanceModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACFA27060EB80035A7E5 /* AppearanceModifier.swift */; };
@@ -64,6 +72,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A53460A02707495400A1C990 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5E1E80D26F10213007470A4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A53460952707495400A1C990;
+			remoteInfo = SelectBusArrivalUI;
+		};
+		A53460A32707495400A1C990 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5E1E80D26F10213007470A4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A534608A2707495400A1C990;
+			remoteInfo = SelectBusArrival;
+		};
 		A57B9A3926FB874F0095D96A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A5E1E80D26F10213007470A4 /* Project object */;
@@ -94,7 +116,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				A53460A52707495400A1C990 /* SelectBusArrival.appex in Embed App Extensions */,
 				A57B9A2D26FB508B0095D96A /* NxtBuz-WidgetExtension.appex in Embed App Extensions */,
+				A53460A22707495400A1C990 /* SelectBusArrivalUI.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -122,6 +146,17 @@
 		A52FEBB626F9EC4200BB79DA /* BusArrivalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrivalView.swift; sourceTree = "<group>"; };
 		A52FEBB826F9F18300BB79DA /* BusArrivalErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrivalErrorView.swift; sourceTree = "<group>"; };
 		A52FEBBA26F9F3DC00BB79DA /* BusDestinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusDestinationView.swift; sourceTree = "<group>"; };
+		A53460832707363600A1C990 /* NxtBuz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NxtBuz.entitlements; sourceTree = "<group>"; };
+		A53460842707365000A1C990 /* NxtBuz-WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "NxtBuz-WidgetExtension.entitlements"; sourceTree = "<group>"; };
+		A534608B2707495400A1C990 /* SelectBusArrival.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SelectBusArrival.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A534608C2707495400A1C990 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		A534608F2707495400A1C990 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		A53460912707495400A1C990 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A53460962707495400A1C990 /* SelectBusArrivalUI.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SelectBusArrivalUI.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A53460972707495400A1C990 /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
+		A534609A2707495400A1C990 /* IntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentViewController.swift; sourceTree = "<group>"; };
+		A534609D2707495400A1C990 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		A534609F2707495400A1C990 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A55AACF62704B9F40035A7E5 /* NxtBuzTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NxtBuzTheme.swift; sourceTree = "<group>"; };
 		A55AACF82704BEB90035A7E5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A55AACFA27060EB80035A7E5 /* AppearanceModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceModifier.swift; sourceTree = "<group>"; };
@@ -166,6 +201,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A53460882707495400A1C990 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A534608D2707495400A1C990 /* Intents.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A53460932707495400A1C990 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A53460982707495400A1C990 /* IntentsUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A57B9A1A26FB50870095D96A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -210,6 +261,8 @@
 				A57B9A1E26FB50870095D96A /* WidgetKit.framework */,
 				A57B9A2026FB50870095D96A /* SwiftUI.framework */,
 				ED98D923D3F52B3BD3CA7123 /* Pods_NxtBuz_WidgetExtension.framework */,
+				A534608C2707495400A1C990 /* Intents.framework */,
+				A53460972707495400A1C990 /* IntentsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -289,6 +342,25 @@
 			path = BusStopArrivals;
 			sourceTree = "<group>";
 		};
+		A534608E2707495400A1C990 /* SelectBusArrival */ = {
+			isa = PBXGroup;
+			children = (
+				A534608F2707495400A1C990 /* IntentHandler.swift */,
+				A53460912707495400A1C990 /* Info.plist */,
+			);
+			path = SelectBusArrival;
+			sourceTree = "<group>";
+		};
+		A53460992707495400A1C990 /* SelectBusArrivalUI */ = {
+			isa = PBXGroup;
+			children = (
+				A534609A2707495400A1C990 /* IntentViewController.swift */,
+				A534609C2707495400A1C990 /* MainInterface.storyboard */,
+				A534609F2707495400A1C990 /* Info.plist */,
+			);
+			path = SelectBusArrivalUI;
+			sourceTree = "<group>";
+		};
 		A55AACF52704B7C90035A7E5 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
@@ -339,10 +411,13 @@
 		A5E1E80C26F10213007470A4 = {
 			isa = PBXGroup;
 			children = (
+				A53460842707365000A1C990 /* NxtBuz-WidgetExtension.entitlements */,
 				A5E1E81726F10213007470A4 /* NxtBuz */,
 				A5E1E82926F10217007470A4 /* NxtBuzTests */,
 				A5E1E83426F10217007470A4 /* NxtBuzUITests */,
 				A57B9A2226FB50870095D96A /* NxtBuz-Widget */,
+				A534608E2707495400A1C990 /* SelectBusArrival */,
+				A53460992707495400A1C990 /* SelectBusArrivalUI */,
 				A5E1E81626F10213007470A4 /* Products */,
 				9F8567213E5A41566A3F5DBF /* Pods */,
 				85E5C2E06476F8CE84A24F24 /* Frameworks */,
@@ -356,6 +431,8 @@
 				A5E1E82626F10216007470A4 /* NxtBuzTests.xctest */,
 				A5E1E83126F10217007470A4 /* NxtBuzUITests.xctest */,
 				A57B9A1D26FB50870095D96A /* NxtBuz-WidgetExtension.appex */,
+				A534608B2707495400A1C990 /* SelectBusArrival.appex */,
+				A53460962707495400A1C990 /* SelectBusArrivalUI.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -363,6 +440,7 @@
 		A5E1E81726F10213007470A4 /* NxtBuz */ = {
 			isa = PBXGroup;
 			children = (
+				A53460832707363600A1C990 /* NxtBuz.entitlements */,
 				A55AACF52704B7C90035A7E5 /* Theme */,
 				A57B9A4026FC8A5F0095D96A /* Starred */,
 				A57B9A1626FB4BBE0095D96A /* Settings */,
@@ -408,6 +486,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A534608A2707495400A1C990 /* SelectBusArrival */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A53460A92707495400A1C990 /* Build configuration list for PBXNativeTarget "SelectBusArrival" */;
+			buildPhases = (
+				A53460872707495400A1C990 /* Sources */,
+				A53460882707495400A1C990 /* Frameworks */,
+				A53460892707495400A1C990 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SelectBusArrival;
+			productName = SelectBusArrival;
+			productReference = A534608B2707495400A1C990 /* SelectBusArrival.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		A53460952707495400A1C990 /* SelectBusArrivalUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A53460A62707495400A1C990 /* Build configuration list for PBXNativeTarget "SelectBusArrivalUI" */;
+			buildPhases = (
+				A53460922707495400A1C990 /* Sources */,
+				A53460932707495400A1C990 /* Frameworks */,
+				A53460942707495400A1C990 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SelectBusArrivalUI;
+			productName = SelectBusArrivalUI;
+			productReference = A53460962707495400A1C990 /* SelectBusArrivalUI.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		A57B9A1C26FB50870095D96A /* NxtBuz-WidgetExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A57B9A2E26FB508B0095D96A /* Build configuration list for PBXNativeTarget "NxtBuz-WidgetExtension" */;
@@ -440,6 +552,8 @@
 			);
 			dependencies = (
 				A57B9A3A26FB874F0095D96A /* PBXTargetDependency */,
+				A53460A12707495400A1C990 /* PBXTargetDependency */,
+				A53460A42707495400A1C990 /* PBXTargetDependency */,
 			);
 			name = NxtBuz;
 			productName = NxtBuz;
@@ -491,6 +605,12 @@
 				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
+					A534608A2707495400A1C990 = {
+						CreatedOnToolsVersion = 13.0;
+					};
+					A53460952707495400A1C990 = {
+						CreatedOnToolsVersion = 13.0;
+					};
 					A57B9A1C26FB50870095D96A = {
 						CreatedOnToolsVersion = 13.0;
 					};
@@ -524,11 +644,28 @@
 				A5E1E82526F10216007470A4 /* NxtBuzTests */,
 				A5E1E83026F10217007470A4 /* NxtBuzUITests */,
 				A57B9A1C26FB50870095D96A /* NxtBuz-WidgetExtension */,
+				A534608A2707495400A1C990 /* SelectBusArrival */,
+				A53460952707495400A1C990 /* SelectBusArrivalUI */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A53460892707495400A1C990 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A53460942707495400A1C990 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A534609E2707495400A1C990 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A57B9A1B26FB50870095D96A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -611,6 +748,23 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A53460872707495400A1C990 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A53460902707495400A1C990 /* IntentHandler.swift in Sources */,
+				A53460AC27074A0500A1C990 /* NxtBuz_Widget.intentdefinition in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A53460922707495400A1C990 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A534609B2707495400A1C990 /* IntentViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A57B9A1926FB50870095D96A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -686,6 +840,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A53460A12707495400A1C990 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A53460952707495400A1C990 /* SelectBusArrivalUI */;
+			targetProxy = A53460A02707495400A1C990 /* PBXContainerItemProxy */;
+		};
+		A53460A42707495400A1C990 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A534608A2707495400A1C990 /* SelectBusArrival */;
+			targetProxy = A53460A32707495400A1C990 /* PBXContainerItemProxy */;
+		};
 		A57B9A3A26FB874F0095D96A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A57B9A1C26FB50870095D96A /* NxtBuz-WidgetExtension */;
@@ -703,7 +867,126 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		A534609C2707495400A1C990 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A534609D2707495400A1C990 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		A53460A72707495400A1C990 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SelectBusArrivalUI/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SelectBusArrivalUI;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.SelectBusArrivalUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A53460A82707495400A1C990 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SelectBusArrivalUI/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SelectBusArrivalUI;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.SelectBusArrivalUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A53460AA2707495400A1C990 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SelectBusArrival/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SelectBusArrival;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.SelectBusArrival;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A53460AB2707495400A1C990 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SelectBusArrival/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SelectBusArrival;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.SelectBusArrival;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		A57B9A2F26FB508B0095D96A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B637FC6A4A02166145A04DF7 /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */;
@@ -711,6 +994,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = "NxtBuz-WidgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8R42UC58VT;
@@ -751,6 +1035,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = "NxtBuz-WidgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8R42UC58VT;
@@ -912,6 +1197,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = NxtBuz/NxtBuz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"NxtBuz/Preview Content\"";
@@ -955,6 +1241,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = NxtBuz/NxtBuz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"NxtBuz/Preview Content\"";
@@ -1073,6 +1360,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A53460A62707495400A1C990 /* Build configuration list for PBXNativeTarget "SelectBusArrivalUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A53460A72707495400A1C990 /* Debug */,
+				A53460A82707495400A1C990 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A53460A92707495400A1C990 /* Build configuration list for PBXNativeTarget "SelectBusArrival" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A53460AA2707495400A1C990 /* Debug */,
+				A53460AB2707495400A1C990 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A57B9A2E26FB508B0095D96A /* Build configuration list for PBXNativeTarget "NxtBuz-WidgetExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
