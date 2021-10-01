@@ -148,4 +148,8 @@ class Di {
     func getThemeUseCase() -> GetThemeUseCase {
         return GetThemeUseCase(dynamoThemeRepository: Di.dynamoThemeRepository)
     }
+    
+    func getUseSystemThemeUseCase() -> GetUseSystemThemeUseCase {
+        GetUseSystemThemeUseCase(userRepository: Di.userRepository)
+    }
 }

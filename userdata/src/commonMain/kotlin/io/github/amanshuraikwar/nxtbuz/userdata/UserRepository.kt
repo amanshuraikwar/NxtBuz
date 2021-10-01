@@ -4,6 +4,10 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.UserState
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 
@@ -24,6 +28,16 @@ class UserRepository constructor(
         } else {
             preferenceStorage.theme
         }
+    }
+
+    private val useSystemTheme = MutableStateFlow(preferenceStorage.useSystemTheme)
+
+    fun getUseSystemThemeSync(): Boolean {
+        return useSystemTheme.value
+    }
+
+    fun getUseSystemThemeUpdates(): Flow<Boolean> {
+        return useSystemTheme
     }
 
     suspend fun getUserState(): UserState = withContext(dispatcherProvider.io) {
@@ -88,6 +102,7 @@ class UserRepository constructor(
                 this@UserRepository.theme = preferenceStorage.theme
             }
             preferenceStorage.useSystemTheme = useSystemTheme
+            this@UserRepository.useSystemTheme.emit(useSystemTheme)
         }
     }
 

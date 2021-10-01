@@ -39,15 +39,10 @@ struct ErrorView: View {
             
             Divider()
             
-            Text(retryText)
-                .foregroundColor(Color(nxtBuzTheme.accentColor))
-                .font(NxtBuzFonts.body)
-                .fontWeight(.medium)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .onTapGesture {
-                    onRetry()
-                }
+            SecondaryButton(
+                text: retryText,
+                onClick: onRetry
+            )
         }
         .background(Color(.systemGray6))
         .cornerRadius(8)

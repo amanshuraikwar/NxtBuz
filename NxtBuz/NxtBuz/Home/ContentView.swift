@@ -13,16 +13,22 @@ struct ContentView: View {
     @ObservedObject var nxtBuzTheme = NxtBuzTheme()
     
     var body: some View {
-        HomeView()
-            .environmentObject(nxtBuzTheme)
-            .onAppear {
-                nxtBuzTheme.updateTheme(isDark: colorScheme == .dark)
-                nxtBuzTheme.fetchTheme()
+        ZStack {
+            if nxtBuzTheme.themeInit {
+                HomeView()
+                    .accentColor(Color(nxtBuzTheme.accentColor))
+            } else {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
             }
-            .onChange(of: colorScheme) { colorScheme in
-                nxtBuzTheme.updateTheme(isDark: colorScheme == .dark)
-            }
-            .accentColor(Color(nxtBuzTheme.accentColor))
+        }
+        .environmentObject(nxtBuzTheme)
+        .onAppear {
+            nxtBuzTheme.initTheme(isSystemInDarkMode: colorScheme == .dark)
+        }
+        .onChange(of: colorScheme) { colorScheme in
+            nxtBuzTheme.onSystemThemeChanged(isDark: colorScheme == .dark)
+        }
     }
 }
 
