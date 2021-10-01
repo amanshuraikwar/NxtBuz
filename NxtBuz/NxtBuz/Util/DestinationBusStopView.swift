@@ -24,7 +24,7 @@ struct DestinationBusStopView: View {
                 .padding(6)
             
             Text(busStopDescription)
-                .font(NxtBuzFonts.body)
+                .font(NxtBuzFonts.callout)
                 .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                 .padding(.trailing, 6)
         }

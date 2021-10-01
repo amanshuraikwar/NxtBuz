@@ -15,7 +15,7 @@ struct BusStopsView: View {
     @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
     
     var body: some View {
-        ZStack {
+        let view = ZStack {
             switch viewModel.busStopsScreenState {
             case .Fetching(let message):
                 VStack {
@@ -130,11 +130,30 @@ struct BusStopsView: View {
                 .listStyle(InsetGroupedListStyle())
             }
         }
+        .toolbar {
+            Button(
+                action: {
+                    viewModel.fetchBusStops(showFetching: true)
+                }
+            ) {
+                Image(systemName: "arrow.counterclockwise.circle.fill")
+                    .imageScale(.medium)
+                    .foregroundColor(Color(nxtBuzTheme.accentColor))
+            }
+        }
         .onChange(of: searchString) { searchString in
             viewModel.onSearch(searchString: searchString)
         }
         .onAppear {
             viewModel.fetchBusStops()
+        }
+        
+        if #available(iOS 15.0, *) {
+            view.refreshable {
+                viewModel.fetchBusStops(showFetching: true)
+            }
+        } else {
+            view
         }
     }
     

@@ -21,12 +21,12 @@ struct SecondaryButton: View {
             .fontWeight(.medium)
             .padding()
             .frame(maxWidth: .infinity)
-            .background(pressed ? Color(nxtBuzTheme.accentColor).opacity(0.1)  : Color(.systemGray6))
+            .background(pressed ? Color(nxtBuzTheme.accentColor).opacity(0.1)  : Color(.systemGray6).opacity(0.0))
             .onLongPressGesture(
                 minimumDuration: .infinity,
                 maximumDistance: .infinity,
                 pressing: { pressing in
-                    withAnimation(.easeInOut(duration: 0.1)) {
+                    withAnimation(.easeInOut(duration: 0.3)) {
                         self.pressed = pressing
                     }
                     if !pressing {
