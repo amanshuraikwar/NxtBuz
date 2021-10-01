@@ -75,9 +75,10 @@ struct BusStopsView: View {
                             .font(NxtBuzFonts.caption)
                     ) {
                         if busStopList.isEmpty {
-                            Text("No bus stops found :(")
-                                .font(NxtBuzFonts.body)
-                                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+                            WarningBannerView(
+                                message: "No bus stops found :(",
+                                iconSystemName: "sun.haze.fill"
+                            )
                         } else {
                             ForEach(
                                 Array(busStopList.enumerated()),

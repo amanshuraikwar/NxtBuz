@@ -10,6 +10,7 @@
 		40EDB6F4742347C6392D1E94 /* Pods_NxtBuz_WidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED98D923D3F52B3BD3CA7123 /* Pods_NxtBuz_WidgetExtension.framework */; };
 		A5144DEE2706C959002274C8 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DED2706C959002274C8 /* SecondaryButton.swift */; };
 		A5144DF02706DE66002274C8 /* BusStopArrivalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */; };
+		A5144DF227070030002274C8 /* WarningBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DF127070030002274C8 /* WarningBannerView.swift */; };
 		A52FEB9826F593BC00BB79DA /* BusStopItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */; };
 		A52FEB9A26F5B1C800BB79DA /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9926F5B1C800BB79DA /* Font.swift */; };
 		A52FEB9C26F5B66E00BB79DA /* BusStopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */; };
@@ -104,6 +105,7 @@
 		1745AD13085AFEA1CA1DD517 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz-WidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
 		A5144DED2706C959002274C8 /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
 		A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopArrivalView.swift; sourceTree = "<group>"; };
+		A5144DF127070030002274C8 /* WarningBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningBannerView.swift; sourceTree = "<group>"; };
 		A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopItemView.swift; sourceTree = "<group>"; };
 		A52FEB9926F5B1C800BB79DA /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopsView.swift; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 				A55AACFA27060EB80035A7E5 /* AppearanceModifier.swift */,
 				A5144DED2706C959002274C8 /* SecondaryButton.swift */,
 				A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */,
+				A5144DF127070030002274C8 /* WarningBannerView.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -642,6 +645,7 @@
 				A57B9A4826FD90900095D96A /* BusStopArrivalsListView.swift in Sources */,
 				A52FEBA026F5C04F00BB79DA /* HomeViewModel.swift in Sources */,
 				A52FEBB126F8AED400BB79DA /* BusStopArrivalsViewModel.swift in Sources */,
+				A5144DF227070030002274C8 /* WarningBannerView.swift in Sources */,
 				A5E1E81926F10213007470A4 /* NxtBuzApp.swift in Sources */,
 				A52FEBB326F9E6AE00BB79DA /* BusStopArrivalItemView.swift in Sources */,
 				A57B9A4A26FDE2B40095D96A /* StarredBusArrivalsViewModel.swift in Sources */,
@@ -909,7 +913,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"NxtBuz/Preview Content\"";
 				DEVELOPMENT_TEAM = 8R42UC58VT;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
@@ -922,7 +926,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -952,7 +956,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"NxtBuz/Preview Content\"";
 				DEVELOPMENT_TEAM = 8R42UC58VT;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
@@ -965,7 +969,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

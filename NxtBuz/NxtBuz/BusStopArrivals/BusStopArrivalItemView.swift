@@ -65,7 +65,9 @@ struct BusStopArrivalItemView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 16, height: 16)
-                                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+                                .foregroundColor(
+                                    Color(nxtBuzTheme.secondaryColor)
+                                )
                                 .padding(6)
                         }
                         
@@ -81,7 +83,7 @@ struct BusStopArrivalItemView: View {
                                 .scaledToFit()
                                 .frame(width: 20, height: 20)
                                 .foregroundColor(Color(nxtBuzTheme.accentColor))
-                                .rotationEffect(.degrees(expanded ? 90 : 0))
+                                .rotationEffect(.degrees(expanded ? -90 : +90))
                                 .padding(4)
                                 .background(Color(nxtBuzTheme.accentColor).opacity(0.1))
                                 .cornerRadius(4)

@@ -28,14 +28,10 @@ struct BusStopArrivalsListView: View {
             }
             
             if data.outdatedResults {
-                HStack {
-                    Text("Bus arrival times might be outdated.")
-                        .foregroundColor(Color(nxtBuzTheme.primaryColor))
-                    
-                    Image(systemName: "exclamationmark.icloud.fill")
-                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
-                }
-                .animation(.easeInOut, value: data.outdatedResults)
+                WarningBannerView(
+                    message: "Bus arrival times might be outdated.",
+                    iconSystemName: "exclamationmark.icloud.fill"
+                )
             }
             
             Section(

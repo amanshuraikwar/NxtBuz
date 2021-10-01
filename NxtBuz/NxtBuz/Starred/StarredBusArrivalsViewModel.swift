@@ -54,7 +54,7 @@ class StarredBusArrivalsViewModel : ObservableObject {
                         // mark the outdated
                         let diffs = Calendar.current.dateComponents([.minute], from: data.lastUpdatedOn, to: Date())
                         if let minutes = diffs.minute {
-                            if minutes >= 5 {
+                            if minutes >= 2 {
                                 DispatchQueue.main.async {
                                     data.outdatedResults = true
                                 }
@@ -193,6 +193,7 @@ class StarredBusArrivalsViewModel : ObservableObject {
             data.lastUpdatedOn = Date()
             data.lastUpdatedOnStr = BusStopArrivalsViewModel.getTime(date: data.lastUpdatedOn)
             data.shouldShowList = !data.starredBusStopList.isEmpty
+            data.outdatedResults = false
         }
     }
     

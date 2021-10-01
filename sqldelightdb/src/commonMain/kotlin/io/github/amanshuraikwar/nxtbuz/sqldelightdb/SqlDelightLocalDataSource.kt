@@ -23,6 +23,10 @@ class SqlDelightLocalDataSource internal constructor(
                                 it.code,
                                 it.roadName,
                                 it.description,
+                                it.description
+                                    .lowercase()
+                                    .trim()
+                                    .replace(Regex("[^a-z0-9]"), ""),
                                 it.latitude,
                                 it.longitude
                             )
@@ -63,14 +67,20 @@ class SqlDelightLocalDataSource internal constructor(
         }
     }
 
+    private data class SearchBusStopEntity(
+        val descriptionSearchKey: String,
+        val busStopEntity: BusStopEntity
+    )
+    private var allSearchBusStops: List<SearchBusStopEntity>? = null
+
     override suspend fun findBusStopsByDescription(
         descriptionHint: String,
         limit: Int
     ): List<BusStopEntity> {
         return withContext(ioDispatcher) {
-            nxtBuzDb.busStopEntityQueries
+            return@withContext nxtBuzDb.busStopEntityQueries
                 .searchLikeDescription(
-                    description = descriptionHint,
+                    descriptionHint = descriptionHint,
                     limit = limit.toLong()
                 )
                 .executeAsList()
@@ -82,6 +92,40 @@ class SqlDelightLocalDataSource internal constructor(
                         busStopEntity.latitude,
                         busStopEntity.longitude,
                     )
+                }
+
+                val allSearchBusStops = allSearchBusStops ?: run {
+                val allSearchBusStops = nxtBuzDb
+                    .busStopEntityQueries
+                    .findAll()
+                    .executeAsList()
+                    .map { busStopEntity ->
+                        SearchBusStopEntity(
+                            busStopEntity
+                                .description
+                                .lowercase()
+                                .trim()
+                                .replace(" ", "")
+                                .replace(Regex("[^a-z0-9]"), ""),
+                            BusStopEntity(
+                                busStopEntity.code,
+                                busStopEntity.roadName,
+                                busStopEntity.description,
+                                busStopEntity.latitude,
+                                busStopEntity.longitude,
+                            )
+                        )
+                    }
+                this@SqlDelightLocalDataSource.allSearchBusStops = allSearchBusStops
+                allSearchBusStops
+            }
+
+            allSearchBusStops
+                .filter {
+                    it.descriptionSearchKey.contains(descriptionHint)
+                }
+                .map { searchBusStopEntity ->
+                    searchBusStopEntity.busStopEntity
                 }
         }
     }

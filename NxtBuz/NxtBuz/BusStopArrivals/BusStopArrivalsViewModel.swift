@@ -82,7 +82,7 @@ class BusStopArrivalsViewModel : ObservableObject {
                             // mark the outdated
                             let diffs = Calendar.current.dateComponents([.minute], from: data.lastUpdatedOn, to: Date())
                             if let minutes = diffs.minute {
-                                if minutes >= 5 {
+                                if minutes >= 2 {
                                     DispatchQueue.main.async {
                                         data.outdatedResults = true
                                     }
