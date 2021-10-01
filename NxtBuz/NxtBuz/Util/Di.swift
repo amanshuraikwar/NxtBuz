@@ -21,11 +21,11 @@ class Di {
     )
     
     private static let localDataSource = SqlDelightLocalDataSource.Companion().createInstance(
-        dbFactory: DbFactory(),
+        dbFactory: DbFactory(dbBasePath: FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.io.github.amanshuraikwar.NxtBuz")!.path),
         ioDispatcher: coroutineDispatcherProvider.io
     )
     
-    private static let preferenceStorage = SettingsFactory().createPreferenceStorage()
+    private static let preferenceStorage = SettingsFactory(settingsSuiteName: "group.io.github.amanshuraikwar.NxtBuz").createPreferenceStorage()
     
     private static let userRepository = UserRepository(
         preferenceStorage: preferenceStorage,

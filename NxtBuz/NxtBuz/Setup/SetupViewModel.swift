@@ -19,6 +19,12 @@ class SetupViewModel : ObservableObject {
             doSetupUseCase.invoke { setupState in
                 if let inProgress  = setupState as? SetupState.InProgress {
                     DispatchQueue.main.async {
+                        UserDefaults(
+                            suiteName: "group.io.github.amanshuraikwar.NxtBuz"
+                        )!.set(
+                            false,
+                            forKey: "setupComplete"
+                        )
                         self.setupScreenState =
                             .InProgress(progress: Float(inProgress.progress))
                     }
@@ -26,6 +32,12 @@ class SetupViewModel : ObservableObject {
                 
                 if let _  = setupState as? SetupState.Complete {
                     DispatchQueue.main.async {
+                        UserDefaults(
+                            suiteName: "group.io.github.amanshuraikwar.NxtBuz"
+                        )!.set(
+                            true,
+                            forKey: "setupComplete"
+                        )
                         self.setupScreenState = .Complete
                     }
                 }
