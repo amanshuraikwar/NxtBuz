@@ -6,6 +6,7 @@
 //
 
 import Intents
+import iosUmbrella
 
 // As an example, this class is set up to handle Message intents.
 // You will want to replace this or add other intents as appropriate.
@@ -29,13 +30,45 @@ class IntentHandler: INExtension, SelectBusArrivalIntentHandling {
     
     
     func provideBusStopCodeOptionsCollection(for intent: SelectBusArrivalIntent, searchTerm: String?, with completion: @escaping (INObjectCollection<NSString>?, Error?) -> Void) {
+//        var characters: [NSString] = []
+//
+//        for i in 0...10 {
+//            characters.append(NSString(string: "\(searchTerm)\(i)"))
+//        }
+//
+//        let collection = INObjectCollection<NSString>(items: characters)
+//        completion(collection, nil)
         
-        var characters: [NSString] = []
-        characters.append(NSString(string: "\(searchTerm)1"))
-        characters.append(NSString(string: "\(searchTerm)2"))
-        characters.append(NSString(string: "\(searchTerm)3"))
-        let collection = INObjectCollection<NSString>(items: characters)
-        completion(collection, nil)
+//        if searchTerm == nil {
+//            var characters: [NSString] = []
+//            completion(INObjectCollection<NSString>(items: characters), nil)
+//        } else {
+           DispatchQueue.main.sync {
+                Di.get().getSearchUseCase().invoke(
+                    query: searchTerm ?? "",
+                    limit: 10
+                ) { searchOutput in
+                    var characters: [NSString] = []
+                    
+                    if let success = searchOutput as? IosSearchOutput.Success {
+                        success.searchResult.busStopList.forEach { busStop in
+                            characters.append(NSString(string: busStop.description_))
+                        }
+                    }
+                    
+                    if let error = searchOutput as? IosSearchOutput.Error {
+                        print(error.message)
+                        characters.append(NSString(string: error.message))
+                    }
+                    
+                    
+                    print(searchOutput)
+                    
+                    let collection = INObjectCollection<NSString>(items: characters)
+                    completion(collection, nil)
+                }
+            }
+//        }
     }
     
     

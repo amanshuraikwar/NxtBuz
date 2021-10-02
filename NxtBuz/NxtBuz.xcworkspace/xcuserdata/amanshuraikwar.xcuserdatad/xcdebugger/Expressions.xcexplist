@@ -11,26 +11,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #2 in closure #3 in closure #1 in StarredBusArrivalsViewModel.getArrivalsAct():StarredBusArrivalsViewModel.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "data.starredBusArrivalItemDataList.count">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #5 in closure #1 in BusStopArrivalsViewModel.getArrivalsAct(uuid:):BusStopArrivalsViewModel.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "error.errorMessage">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "closure #4 in closure #1 in StarredBusArrivalsViewModel.getArrivalsAct():StarredBusArrivalsViewModel.swift">
          <PersistentStrings>
             <PersistentString
                value = "data.shouldShowList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GLOBAL">
+         <PersistentStrings>
+            <PersistentString
+               value = "error.message">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -47,6 +39,22 @@
          <PersistentStrings>
             <PersistentString
                value = "locationManager.accuracyAuthorization">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in closure #3 in closure #1 in StarredBusArrivalsViewModel.getArrivalsAct():StarredBusArrivalsViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "data.starredBusArrivalItemDataList.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #5 in closure #1 in BusStopArrivalsViewModel.getArrivalsAct(uuid:):BusStopArrivalsViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "error.errorMessage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

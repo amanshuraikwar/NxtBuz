@@ -98,15 +98,24 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
             .invoke(
                 query: searchString,
                 limit: 50
-            ) { searchResult in
-                DispatchQueue.main.sync {
-                    self.busStopsScreenState =
-                        .Success(
-                            header: "Matching Bus Stops",
-                            busStopList: searchResult.busStopList,
-                            searchResults: true,
-                            locationLowAccuracy: false
-                        )
+            ) { searchOutput in
+                if let success = searchOutput as? IosSearchOutput.Success {
+                    DispatchQueue.main.sync {
+                        self.busStopsScreenState =
+                            .Success(
+                                header: "Matching Bus Stops",
+                                busStopList: success.searchResult.busStopList,
+                                searchResults: true,
+                                locationLowAccuracy: false
+                            )
+                    }
+                }
+                
+                if let error = searchOutput as? IosSearchOutput.Error {
+                    print(error.message)
+                    DispatchQueue.main.sync {
+                        self.busStopsScreenState = .Error(errorMessage: error.message)
+                    }
                 }
             }
     }
