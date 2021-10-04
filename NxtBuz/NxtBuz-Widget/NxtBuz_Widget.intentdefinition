@@ -26,7 +26,7 @@
 			<key>INIntentIneligibleForSuggestions</key>
 			<true/>
 			<key>INIntentLastParameterTag</key>
-			<integer>4</integer>
+			<integer>5</integer>
 			<key>INIntentName</key>
 			<string>SelectBusArrival</string>
 			<key>INIntentParameters</key>
@@ -37,20 +37,17 @@
 					<key>INIntentParameterCustomDisambiguation</key>
 					<true/>
 					<key>INIntentParameterDisplayName</key>
-					<string>Bus Stop Code</string>
+					<string>Bus Stop</string>
 					<key>INIntentParameterDisplayNameID</key>
 					<string>dsdGUc</string>
 					<key>INIntentParameterDisplayPriority</key>
 					<integer>1</integer>
-					<key>INIntentParameterMetadata</key>
-					<dict>
-						<key>INIntentParameterMetadataCapitalization</key>
-						<string>Sentences</string>
-						<key>INIntentParameterMetadataDefaultValueID</key>
-						<string>XlRa5e</string>
-					</dict>
 					<key>INIntentParameterName</key>
-					<string>BusStopCode</string>
+					<string>BusStop</string>
+					<key>INIntentParameterObjectType</key>
+					<string>BusArrivalWidgetBusStop</string>
+					<key>INIntentParameterObjectTypeNamespace</key>
+					<string>88xZPY</string>
 					<key>INIntentParameterPromptDialogs</key>
 					<array>
 						<dict>
@@ -73,7 +70,7 @@
 							<key>INIntentParameterPromptDialogCustom</key>
 							<true/>
 							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>There are ${count} options matching ‘${BusStopCode}’.</string>
+							<string>There are ${count} options matching ‘${BusStop}’.</string>
 							<key>INIntentParameterPromptDialogFormatStringID</key>
 							<string>Nm1Fc8</string>
 							<key>INIntentParameterPromptDialogType</key>
@@ -83,7 +80,7 @@
 							<key>INIntentParameterPromptDialogCustom</key>
 							<true/>
 							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>Just to confirm, you wanted ‘${BusStopCode}’?</string>
+							<string>Just to confirm, you wanted ‘${BusStop}’?</string>
 							<key>INIntentParameterPromptDialogFormatStringID</key>
 							<string>OxhfRD</string>
 							<key>INIntentParameterPromptDialogType</key>
@@ -97,9 +94,9 @@
 					<key>INIntentParameterSupportsSearch</key>
 					<true/>
 					<key>INIntentParameterTag</key>
-					<integer>3</integer>
+					<integer>5</integer>
 					<key>INIntentParameterType</key>
-					<string>String</string>
+					<string>Object</string>
 				</dict>
 				<dict>
 					<key>INIntentParameterConfigurable</key>
@@ -160,11 +157,16 @@
 							<string>Confirmation</string>
 						</dict>
 					</array>
+					<key>INIntentParameterRelationship</key>
+					<dict>
+						<key>INIntentParameterRelationshipParentName</key>
+						<string>BusStop</string>
+						<key>INIntentParameterRelationshipPredicateName</key>
+						<string>HasAnyValue</string>
+					</dict>
 					<key>INIntentParameterSupportsDynamicEnumeration</key>
 					<true/>
 					<key>INIntentParameterSupportsResolution</key>
-					<true/>
-					<key>INIntentParameterSupportsSearch</key>
 					<true/>
 					<key>INIntentParameterTag</key>
 					<integer>4</integer>
@@ -187,6 +189,8 @@
 						<string>failure</string>
 					</dict>
 				</array>
+				<key>INIntentResponseLastParameterTag</key>
+				<integer>1</integer>
 			</dict>
 			<key>INIntentTitle</key>
 			<string>Select Bus Arrival</string>
@@ -199,6 +203,98 @@
 		</dict>
 	</array>
 	<key>INTypes</key>
-	<array/>
+	<array>
+		<dict>
+			<key>INTypeDisplayName</key>
+			<string>Bus Arrival Widget Bus Stop</string>
+			<key>INTypeDisplayNameID</key>
+			<string>Mm1Wq6</string>
+			<key>INTypeLastPropertyTag</key>
+			<integer>101</integer>
+			<key>INTypeName</key>
+			<string>BusArrivalWidgetBusStop</string>
+			<key>INTypeProperties</key>
+			<array>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>1</integer>
+					<key>INTypePropertyName</key>
+					<string>identifier</string>
+					<key>INTypePropertyTag</key>
+					<integer>1</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>2</integer>
+					<key>INTypePropertyName</key>
+					<string>displayString</string>
+					<key>INTypePropertyTag</key>
+					<integer>2</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>3</integer>
+					<key>INTypePropertyName</key>
+					<string>pronunciationHint</string>
+					<key>INTypePropertyTag</key>
+					<integer>3</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>4</integer>
+					<key>INTypePropertyName</key>
+					<string>alternativeSpeakableMatches</string>
+					<key>INTypePropertySupportsMultipleValues</key>
+					<true/>
+					<key>INTypePropertyTag</key>
+					<integer>4</integer>
+					<key>INTypePropertyType</key>
+					<string>SpeakableString</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDisplayName</key>
+					<string>Bus Stop Code</string>
+					<key>INTypePropertyDisplayNameID</key>
+					<string>YfN0Sa</string>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>5</integer>
+					<key>INTypePropertyName</key>
+					<string>busStopCode</string>
+					<key>INTypePropertyTag</key>
+					<integer>100</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDisplayName</key>
+					<string>Bus Stop Description</string>
+					<key>INTypePropertyDisplayNameID</key>
+					<string>tesj6p</string>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>6</integer>
+					<key>INTypePropertyName</key>
+					<string>busStopDescription</string>
+					<key>INTypePropertyTag</key>
+					<integer>101</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

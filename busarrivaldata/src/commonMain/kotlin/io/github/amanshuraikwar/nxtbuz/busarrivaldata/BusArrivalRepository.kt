@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busarrivaldata
 
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusService
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.exception.IllegalDbStateException
@@ -16,6 +17,16 @@ class BusArrivalRepository constructor(
     private val remoteDataSource: RemoteDataSource,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) {
+    suspend fun getOperatingBusServices(busStopCode: String): List<String> {
+        return withContext(dispatcherProvider.io) {
+            localDataSource
+                .findOperatingBuses(busStopCode)
+                .map { operatingBusEntity ->
+                    operatingBusEntity.busServiceNumber
+                }
+        }
+    }
+
     suspend fun getBusArrivals(busStopCode: String): List<BusStopArrival> {
         return withContext(dispatcherProvider.io) {
             // map of busServiceNumber -> OperatingBusEntity
@@ -103,8 +114,18 @@ class BusArrivalRepository constructor(
 
         val arrivals = toArrivals(busStopCode)
 
+        val busStopDescription: String =
+            localDataSource
+                .findBusStopByCode(busStopCode = busStopCode)
+                ?.description
+                ?: throw IllegalDbStateException(
+                    "No bus stop row found for stop code " +
+                            "$busStopCode in local DB."
+                )
+
         return BusStopArrival(
             busStopCode = busStopCode,
+            busStopDescription = busStopDescription,
             busServiceNumber = serviceNumber,
             operator = operator,
             direction = direction,
@@ -239,8 +260,18 @@ class BusArrivalRepository constructor(
             }
         }
 
+        val busStopDescription: String =
+            localDataSource
+                .findBusStopByCode(busStopCode = busStopCode)
+                ?.description
+                ?: throw IllegalDbStateException(
+                    "No bus stop row found for stop code " +
+                            "$busStopCode in local DB."
+                )
+
         return BusStopArrival(
             busStopCode = busStopCode,
+            busStopDescription = busStopDescription,
             busServiceNumber = busServiceNumber,
             operator = "N/A",
             direction = direction,
