@@ -152,4 +152,8 @@ class Di {
     func getUseSystemThemeUseCase() -> GetUseSystemThemeUseCase {
         GetUseSystemThemeUseCase(userRepository: Di.userRepository)
     }
+    
+    func getOperatingBusServicesUseCase() -> GetOperatingBusServicesUseCase {
+        GetOperatingBusServicesUseCase(busArrivalRepository: Di.busArrivalRepository)
+    }
 }

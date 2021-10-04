@@ -3,10 +3,10 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "BusStopsViewModel.fetchBusStops(showFetching:):BusStopsViewModel.swift">
+         contextName = "GLOBAL">
          <PersistentStrings>
             <PersistentString
-               value = "self.busStopsScreenState">
+               value = "error.message">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -19,10 +19,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "GLOBAL">
+         contextName = "objc2kotlin.11059:&lt;compiler-generated&gt;">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #1 in BusStopsViewModel.searchBusStops(_:):BusStopsViewModel.swift">
          <PersistentStrings>
             <PersistentString
-               value = "error.message">
+               value = "success.searchResult.busStopList">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -55,6 +58,14 @@
          <PersistentStrings>
             <PersistentString
                value = "error.errorMessage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BusStopsViewModel.fetchBusStops(showFetching:):BusStopsViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.busStopsScreenState">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

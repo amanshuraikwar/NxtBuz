@@ -7,6 +7,7 @@
 
 import Foundation
 import iosUmbrella
+import WidgetKit
 
 class SetupViewModel : ObservableObject {
     @Published var setupScreenState: SetupScreenState = .NotStarted
@@ -39,6 +40,7 @@ class SetupViewModel : ObservableObject {
                             forKey: "setupComplete"
                         )
                         self.setupScreenState = .Complete
+                        WidgetCenter.shared.reloadTimelines(ofKind: "io.github.amanshuraikwar.NxtBuz.busArrivalWidget")
                     }
                 }
             }

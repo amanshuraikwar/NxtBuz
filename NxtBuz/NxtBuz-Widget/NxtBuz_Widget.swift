@@ -14,237 +14,365 @@ struct Provider: IntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(
             date: Date(),
-            busStopCode: "00000",
-            busStopDescription: "Opp Jln Jurong Kechil",
-            busServiceNumber: "961M",
-            arriving: true,
-            busType: BusType.sd,
-            nextArrivalInMins: 4,
+            widgetState: .Arriving(
+                busStopCode: "123456",
+                busStopDescription: "Opp Jln Jurong Kechil",
+                busServiceNumber: "961M",
+                busType: BusType.dd,
+                busLoad: BusLoad.sda,
+                wheelChairAccess: false,
+                nextArrivalTime: Date()
+            ),
             configuration: SelectBusArrivalIntent()
         )
     }
 
-    func getSnapshot(for configuration: SelectBusArrivalIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let date = Date()
+    func getSnapshot(
+        for configuration: SelectBusArrivalIntent,
+        in context: Context,
+        completion: @escaping (SimpleEntry) -> ()
+    ) {
         let entry: SimpleEntry
         
         if context.isPreview {
             entry = SimpleEntry(
-                date: date,
-                busStopCode: "00000",
-                busStopDescription: "Opp Jln Jurong Kechil",
-                busServiceNumber: "961M",
-                arriving: true,
-                busType: BusType.sd,
-                nextArrivalInMins: 4,
-                configuration: configuration
+                date: Date(),
+                widgetState: .Arriving(
+                    busStopCode: "123456",
+                    busStopDescription: "Opp Jln Jurong Kechil",
+                    busServiceNumber: "961M",
+                    busType: BusType.dd,
+                    busLoad: BusLoad.sda,
+                    wheelChairAccess: false,
+                    nextArrivalTime: Date()
+                ),
+                configuration: SelectBusArrivalIntent()
             )
         } else {
             entry = SimpleEntry(
-                date: date,
-                busStopCode: "00000",
-                busStopDescription: "Opp Jln Jurong Kechil",
-                busServiceNumber: "961M",
-                arriving: true,
-                busType: BusType.sd,
-                nextArrivalInMins: 4,
-                configuration: configuration
+                date: Date(),
+                widgetState: .Arriving(
+                    busStopCode: "123456",
+                    busStopDescription: "Opp Jln Jurong Kechil",
+                    busServiceNumber: "961M",
+                    busType: BusType.dd,
+                    busLoad: BusLoad.sda,
+                    wheelChairAccess: false,
+                    nextArrivalTime: Date()
+                ),
+                configuration: SelectBusArrivalIntent()
             )
         }
         
         completion(entry)
     }
 
-    func getTimeline(for configuration: SelectBusArrivalIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        
-        Di.get().getUserStateUserCase().invoke { userState in
-            Di.get().getBusArrivalsUseCase().invoke(
-                busStopCode: "42071",
-                busServiceNumber: "61"
-            ) { busStopArrival in
-                let date = Date()
-                let entry: SimpleEntry
-                
-                var x = -1
-                
-                if let _ = userState as? UserState.New {
-                    x = 0
-                }
-                
-                if let _ = userState as? UserState.SetupComplete {
-                    x = 1
-                }
-                
-                let y = UserDefaults(suiteName: "group.io.github.amanshuraikwar.NxtBuz")!.bool(forKey: "helohelo")
-                
-                let z = UserDefaults(suiteName: "group.io.github.amanshuraikwar.NxtBuz")!.bool(forKey: "delodelo")
-                
-                if let busArrivals = busStopArrival.busArrivals as? BusArrivals.Arriving {
-                    entry = SimpleEntry(
-                        date: date,
-                        busStopCode: busStopArrival.busStopCode,
-                        busStopDescription: "\(x) \(y) \(z)",
-                        busServiceNumber: busStopArrival.busServiceNumber,
-                        arriving: true,
-                        busType: busArrivals.nextArrivingBus.type,
-                        nextArrivalInMins: Int(busArrivals.nextArrivingBus.arrival),
-                        configuration: configuration
-                    )
-                } else {
-                    entry = SimpleEntry(
-                        date: date,
-                        busStopCode: "42071",//busStopArrival.busStopCode,
-                        busStopDescription: "\(userState)",
-                        busServiceNumber: "61",//busStopArrival.busServiceNumber,
-                        arriving: true,//false,
-                        busType: BusType.sd,
-                        nextArrivalInMins: 5,
-                        configuration: configuration
-                    )
-                }
-                
-                // Create a date that's 15 minutes in the future.
-                let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 5, to: date)!
+    func getTimeline(
+        for configuration: SelectBusArrivalIntent,
+        in context: Context,
+        completion: @escaping (Timeline<Entry>) -> ()
+    ) {
+        if !UserDefaults(suiteName: "group.io.github.amanshuraikwar.NxtBuz")!.bool(forKey: "setupComplete") {
+            let date = Date()
+            let entry = SimpleEntry(
+                date: date,
+                widgetState: WidgetState.Error(message: "Please complete seting up the app."),
+                configuration: configuration
+            )
+            
+            let timeline = Timeline(
+                entries: [entry],
+                policy: .after(Calendar.current.date(byAdding: .minute, value: 10, to: date)!)
+            )
+            
+            completion(timeline)
+        } else if let busStopCode = configuration.BusStop?.busStopCode,
+            let busServiceNumber = configuration.BusServiceNumber {
+            
+            Di.get()
+                .getBusArrivalsUseCase()
+                .invoke(
+                    busStopCode: busStopCode,
+                    busServiceNumber: busServiceNumber
+                ) { busStopArrival in
+                    let date = Date()
+                    let entry: SimpleEntry
+                    
+                    if let busArrivals = busStopArrival.busArrivals as? BusArrivals.Arriving {
+                        entry = SimpleEntry(
+                            date: date,
+                            widgetState: .Arriving(
+                                busStopCode: busStopArrival.busStopCode,
+                                busStopDescription: busStopArrival.busStopDescription,
+                                busServiceNumber: busStopArrival.busServiceNumber,
+                                busType: busArrivals.nextArrivingBus.type,
+                                busLoad: busArrivals.nextArrivingBus.load,
+                                wheelChairAccess: busArrivals.nextArrivingBus.wheelchairAccess,
+                                nextArrivalTime: Calendar.current.date(
+                                    byAdding: .minute,
+                                    value: Int(busArrivals.nextArrivingBus.arrival),
+                                    to: date
+                                )!
+                            ),
+                            configuration: configuration
+                        )
+                    } else {
+                        let errorMessage: String
+                        if busStopArrival.busArrivals is BusArrivals.NotOperating {
+                            errorMessage = "Not Operating"
+                        } else {
+                            errorMessage = "No Data"
+                        }
+                        
+                        entry = SimpleEntry(
+                            date: date,
+                            widgetState: WidgetState.NotArriving(
+                                busStopCode: busStopArrival.busStopCode,
+                                busStopDescription: busStopArrival.busStopDescription,
+                                busServiceNumber: busStopArrival.busServiceNumber,
+                                errorMessage: errorMessage
+                            ),
+                            configuration: configuration
+                        )
+                    }
+                    
+                    let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 10, to: date)!
 
-                // Create the timeline with the entry and a reload policy with the date
-                // for the next update.
-                let timeline = Timeline(
-                    entries: [entry],
-                    policy: .after(nextUpdateDate)
-                )
-                
-                completion(timeline)
-            }
+                    let timeline = Timeline(
+                        entries: [entry],
+                        policy: .after(nextUpdateDate)
+                    )
+                    
+                    completion(timeline)
+                }
+        } else {
+            let entry = SimpleEntry(
+                date: Date(),
+                widgetState: WidgetState.Error(message: "Please configure the widget."),
+                configuration: configuration
+            )
+            
+            let timeline = Timeline(
+                entries: [entry],
+                policy: .never
+            )
+            
+            completion(timeline)
         }
     }
 }
 
 enum WidgetState {
-    case SetupNotComplete
+    case Error(message: String)
     case Arriving(
         busStopCode: String,
         busStopDescription: String,
         busServiceNumber: String,
         busType: BusType,
+        busLoad: BusLoad,
+        wheelChairAccess: Bool,
         nextArrivalTime: Date
+    )
+    case NotArriving(
+        busStopCode: String,
+        busStopDescription: String,
+        busServiceNumber: String,
+        errorMessage: String
     )
 }
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let busStopCode: String
-    let busStopDescription: String
-    let busServiceNumber: String
-    let arriving: Bool
-    let busType: BusType
-    let nextArrivalInMins: Int
+    let widgetState: WidgetState
     let configuration: SelectBusArrivalIntent
 }
 
 struct NxtBuz_WidgetEntryView : View {
     var entry: Provider.Entry
-    let busTypeName: String
-    let lastUpdated: String
-    let arrivalStr: String
     
-    init(entry: Provider.Entry) {
-        self.entry = entry
-        
-        if (entry.busType == BusType.dd) {
-            self.busTypeName = "BusTypeDd"
-        } else if (entry.busType == BusType.bd) {
-            self.busTypeName = "BusTypeFeeder"
+    private func getBusTypeImageName(_ busType: BusType) -> String {
+        if (busType == BusType.dd) {
+            return "BusTypeDd"
+        } else if (busType == BusType.bd) {
+            return "BusTypeFeeder"
         } else {
-            self.busTypeName = "BusTypeNormal"
-        }
-        
-        let date = Date()
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "hh:mm a"
-        let stringDate = timeFormatter.string(from: date)
-        self.lastUpdated = stringDate
-        
-        if self.entry.nextArrivalInMins > 60 {
-            self.arrivalStr = "60+"
-        } else if self.entry.nextArrivalInMins > 0 {
-            self.arrivalStr = String(format: "%02d", self.entry.nextArrivalInMins)
-        } else {
-            self.arrivalStr = "ARR"
+            return "BusTypeNormal"
         }
     }
     
-    var body: some View {
-        VStack {
-            Text(entry.busStopDescription)
-                .font(NxtBuzFonts.body)
-                .fontWeight(.bold)
-                .multilineTextAlignment(.leading)
-            
-            Spacer()
-            
-            HStack {
-                ZStack {
-                    Text(entry.busServiceNumber)
-                        .font(NxtBuzFonts.headline)
-                        .foregroundColor(Color(.systemGray6))
-                    
-                    Text("961M")
-                        .font(NxtBuzFonts.headline)
-                        .opacity(0.0)
-                }
-                .padding(.vertical, 4)
-                .padding(.horizontal, 8)
-                .background(Color.accentColor)
-                .clipShape(Capsule())
-                
-                Spacer()
-                
-                Image(systemName: "arrow.right.square.fill")
-                    .renderingMode(.template)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 16, height: 16)
-                    .foregroundColor(Color.primary)
-
-                Spacer()
-                
-                if (entry.arriving) {
-                    Text(arrivalStr)
-                        .font(NxtBuzFonts.headline)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                } else {
-                    Text("N/A")
-                        .font(NxtBuzFonts.headline)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                }
-            }
-            
-            Spacer()
-            
-            HStack {
-                Image(busTypeName)
-                    .renderingMode(.template)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 16, height: 16)
-                    .foregroundColor(Color.primary)
-                
-                Image("BusLoad2")
-                    .renderingMode(.template)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 16, height: 16)
-                    .foregroundColor(Color.primary)
-                
-                Spacer()
-
-                Text(lastUpdated)
-                    .font(NxtBuzFonts.caption)
-                    .foregroundColor(Color.secondary)
-            }
+    private func getBusLoadImageName(_ busLoad: BusLoad) -> String {
+        if busLoad == BusLoad.sea {
+            return "BusLoad1"
+        } else if busLoad == BusLoad.sda {
+            return "BusLoad2"
+        } else if busLoad == BusLoad.lsd {
+            return "BusLoad3"
+        } else {
+            return "BusLoad0"
         }
-        .padding()
+    }
+    
+    private func getWheelCharAccessImageName(_ wheelchairAccess: Bool) -> String {
+        if wheelchairAccess {
+            return "Accessible"
+        } else {
+            return "NotAccessible"
+        }
+    }
+    
+    public func getTime(date time: Date) -> String {
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "h:mm a"
+        let stringDate = timeFormatter.string(from: time)
+        return stringDate
+    }
+    
+    var body: some View {
+        switch(entry.widgetState) {
+        case .Arriving(
+            _,
+            let busStopDescription,
+            let busServiceNumber,
+            let busType,
+            let busLoad,
+            _,
+            let nextArrivalTime
+        ):
+            VStack(
+                spacing: 0
+            ) {
+                HStack {
+                    ZStack {
+                        Text(busServiceNumber)
+                            .font(NxtBuzFonts.title3)
+                            .fontWeight(.medium)
+                            .foregroundColor(Color(.white))
+                        
+                        Text("961M")
+                            .font(NxtBuzFonts.title3)
+                            .fontWeight(.medium)
+                            .opacity(0.0)
+                    }
+                    .padding(.vertical, 2)
+                    .padding(.horizontal, 4)
+                    .background(Color.accentColor)
+                    .clipShape(Capsule())
+                    
+                    Spacer()
+
+                    Image(getBusTypeImageName(busType))
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
+                        .foregroundColor(Color.primary)
+
+                    Image(getBusLoadImageName(busLoad))
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
+                        .foregroundColor(Color.primary)
+                }
+
+                Text(busStopDescription)
+                    .font(NxtBuzFonts.caption)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 8)
+                    .foregroundColor(Color.primary)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Spacer()
+                
+                Text(getTime(date: nextArrivalTime))
+                    .font(NxtBuzFonts.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.primary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding()
+        case .NotArriving(
+            let busStopCode,
+            let busStopDescription,
+            let busServiceNumber, let errorMessage
+        ):
+            VStack(
+                spacing: 0
+            ) {
+                HStack {
+                    ZStack {
+                        Text(busServiceNumber)
+                            .font(NxtBuzFonts.title3)
+                            .fontWeight(.medium)
+                            .foregroundColor(Color(.systemGray5))
+                        
+                        Text("961M")
+                            .font(NxtBuzFonts.title3)
+                            .fontWeight(.medium)
+                            .opacity(0.0)
+                    }
+                    .padding(.vertical, 2)
+                    .padding(.horizontal, 4)
+                    .background(Color(.systemGray))
+                    .clipShape(Capsule())
+                    
+                    Spacer()
+
+                    Image(getBusTypeImageName(BusType.sd))
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
+                        .foregroundColor(Color.secondary)
+
+                    Image("BusLoad0")
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
+                        .foregroundColor(Color.secondary)
+                }
+
+                Text(busStopDescription)
+                    .font(NxtBuzFonts.caption)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 8)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(Color.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Spacer()
+                
+                Text(errorMessage)
+                    .font(NxtBuzFonts.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.secondary)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding()
+        case .Error(let message):
+            VStack(
+                alignment: .leading
+            ) {
+                Image(systemName: "gearshape.2.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
+                    .padding(8)
+                    .foregroundColor(Color.accentColor)
+                    .background(Color.accentColor.opacity(0.1))
+                    .cornerRadius(8)
+                
+                Spacer()
+                
+                Text(message)
+                    .font(NxtBuzFonts.footnote)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.leading)
+            }
+            .padding()
+        }
     }
 }
 

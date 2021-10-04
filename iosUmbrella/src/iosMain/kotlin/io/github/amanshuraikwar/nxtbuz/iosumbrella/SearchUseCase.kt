@@ -26,7 +26,7 @@ class SearchUseCase constructor(
             }
         ) {
             callback(
-                IosSearchOutput.Success(searchRepository.search(query, limit).freeze())
+                IosSearchOutput.Success(searchRepository.search(query, limit)).freeze()
             )
         }
     }
