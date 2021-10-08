@@ -10,7 +10,8 @@ import iosUmbrella
 
 struct BusStopArrivalsListView: View {
     @StateObject var data: BusStopArrivalScreenSuccessData
-    let busStop: BusStop
+    let busStopCode: String
+    @Binding var busStopRoadName: String
     var onStarToggle: (_ busServiceNumber: String, _ newValue: Bool) -> Void
     
     @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
@@ -22,7 +23,7 @@ struct BusStopArrivalsListView: View {
                     .font(NxtBuzFonts.caption)
                     .foregroundColor(Color(nxtBuzTheme.secondaryColor))
             ) {
-                Text(busStop.roadName + "  •  " + busStop.code)
+                Text(busStopRoadName + "  •  " + busStopCode)
                     .font(NxtBuzFonts.body)
                     .foregroundColor(Color(nxtBuzTheme.primaryColor))
             }

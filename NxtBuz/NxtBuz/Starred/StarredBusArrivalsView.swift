@@ -29,7 +29,7 @@ struct StarredBusArrivalsView: View {
             case .Fetching:
                 VStack {
                     ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
+                        //.progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
                     
                     Text("Fetching starred bus arrivals...")
                         .font(NxtBuzFonts.body)

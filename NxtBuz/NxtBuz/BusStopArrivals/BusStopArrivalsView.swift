@@ -9,7 +9,7 @@ import SwiftUI
 import iosUmbrella
 
 struct BusStopArrivalsView: View {
-    let busStop: BusStop
+    let busStopCode: String
     @StateObject private var viewModel = BusStopArrivalsViewModel()
     
     @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
@@ -36,10 +36,11 @@ struct BusStopArrivalsView: View {
                         viewModel.onRetryClick()
                     }
                 )
-            case .Success(let data):
+            case .Success(let busStopCode, let data):
                 BusStopArrivalsListView(
                     data: data,
-                    busStop: busStop,
+                    busStopCode: busStopCode,
+                    busStopRoadName: $viewModel.busStopRoadName,
                     onStarToggle: { busServiceNumber, newValue in
                         viewModel.onStarToggle(
                             busServiceNumber: busServiceNumber,
@@ -52,15 +53,7 @@ struct BusStopArrivalsView: View {
         .navigationBarItems(
             trailing: Button(
                 action: {
-                    if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
-                        UIApplication.shared.open(
-                            NSURL(string: "comgooglemaps://?saddr=&daddr=\(Float(busStop.latitude)),\(Float(busStop.longitude))&directionsmode=walking")! as URL
-                        )
-                    } else if (UIApplication.shared.canOpenURL(URL(string:"maps://")!)) {
-                        UIApplication.shared.open(
-                            NSURL(string: "maps://?saddr=&daddr=\(Float(busStop.latitude)),\(Float(busStop.longitude))&directionsmode=walking")! as URL
-                        )
-                    }
+                    viewModel.onNavigateClick()
                 }
             ) {
                 Image(systemName: "arrow.triangle.turn.up.right.circle.fill")
@@ -69,11 +62,11 @@ struct BusStopArrivalsView: View {
             }
         )
         .navigationBarTitle(
-            Text(busStop.description_),
+            Text(viewModel.busStopDescription),
             displayMode: .automatic
         )
         .onAppear {
-            viewModel.getArrivals(busStopCode: busStop.code)
+            viewModel.getArrivals(busStopCode: busStopCode)
         }
         .onDisappear {
             viewModel.stopArrivalsLoop()

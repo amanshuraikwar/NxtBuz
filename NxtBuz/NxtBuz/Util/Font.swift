@@ -13,6 +13,8 @@ struct NxtBuzFonts {
 
     public static var title = Font.system(.title, design: .rounded)
     
+    public static var titleMonospaced = Font.system(.title, design: .monospaced)
+    
     public static var title2 = Font.system(.title2, design: .rounded)
     
     public static var title2Monospaced = Font.system(.title2, design: .monospaced)
