@@ -86,7 +86,7 @@ struct BusStopsView: View {
                             ) { index, busStop in
                                 NavigationLink(
                                     destination: BusStopArrivalsView(
-                                        busStop: busStop
+                                        busStopCode: busStop.code
                                     )
                                 ) {
                                     BusStopItemView(

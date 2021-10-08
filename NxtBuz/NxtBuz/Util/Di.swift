@@ -86,6 +86,16 @@ class Di {
         return instance
     }
     
+    private var navigatedBusStopCode: String? = nil
+    
+    func getNavigatedBusStopCode() -> String? {
+        return navigatedBusStopCode
+    }
+    
+    func setNavigatedBusStopCode(busStopCode: String) {
+        navigatedBusStopCode = busStopCode
+    }
+    
     func getUserStateUserCase() -> GetUserStateUseCase {
         return GetUserStateUseCase(
             userRepository: Di.userRepository

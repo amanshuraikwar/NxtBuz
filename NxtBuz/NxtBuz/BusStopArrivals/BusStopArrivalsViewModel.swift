@@ -14,18 +14,41 @@ class BusStopArrivalsViewModel : ObservableObject {
     
     private var busStopCode: String? = nil
     private var uuid: UUID? = nil
+    private var busStop: BusStop? = nil
+    
+    @Published var busStopDescription = ""
+    @Published var busStopRoadName = ""
     
     func getArrivals(busStopCode: String) {
-        self.busStopCode = busStopCode
-        let uuid = UUID()
-        self.uuid = uuid
-        getArrivalsAct(uuid: uuid)
+        if self.busStopCode == busStopCode {
+            if case BusStopArrivalsScreenState.Success = screenState {
+                self.busStopCode = busStopCode
+                let uuid = UUID()
+                self.uuid = uuid
+                getArrivalsAct(uuid: uuid)
+                return
+            }
+        }
+        
+        Di.get()
+            .getBusStopUseCase()
+            .invoke(busStopCode: busStopCode) { busStop, error in
+                if let busStop = busStop {
+                    self.busStop = busStop
+                    self.busStopCode = busStop.code
+                    let uuid = UUID()
+                    self.uuid = uuid
+                    self.busStopDescription = busStop.description_
+                    self.busStopRoadName = busStop.roadName
+                    self.getArrivalsAct(uuid: uuid)
+                } else {
+                    self.screenState = .Error(message: "Count not fetch bus stop details, please try again.")
+                }
+            }
     }
     
     private func getArrivalsAct(uuid: UUID) {
-        debugPrint("yoyo", "\(uuid.uuidString) \(self.uuid?.uuidString ?? "")")
         if uuid != self.uuid {
-            debugPrint("yoyo", "\(uuid.uuidString) \(self.uuid?.uuidString ?? "") mismatch!")
             return
         }
         
@@ -44,13 +67,14 @@ class BusStopArrivalsViewModel : ObservableObject {
                             }
                             DispatchQueue.main.async {
                                 self.screenState = .Success(
+                                    busStopCode: busStopCode,
                                     data: BusStopArrivalScreenSuccessData(
                                         busStopArrivalItemDataList: busStopArrivalItemDataList,
                                         lastUpdatedOn: Date()
                                     )
                                 )
                             }
-                        case .Success(let data):
+                        case .Success(_, let data):
                             busStopArrivalList.forEach { busStopArrival in
                                 let busStopArrivalItemData = data.busStopArrivalItemDataList.first { busStopArrivalItemData in
                                     busStopArrivalItemData.busStopArrival.busServiceNumber == busStopArrival.busServiceNumber
@@ -77,7 +101,7 @@ class BusStopArrivalsViewModel : ObservableObject {
                             DispatchQueue.main.async {
                                 self.screenState = .Error(message: error.errorMessage)
                             }
-                        case .Success(let data):
+                        case .Success(_, let data):
                             // if arrivals were last updated 5 mins ago
                             // mark the outdated
                             let diffs = Calendar.current.dateComponents([.minute], from: data.lastUpdatedOn, to: Date())
@@ -111,7 +135,7 @@ class BusStopArrivalsViewModel : ObservableObject {
     
     func onStarToggle(busServiceNumber: String, newValue: Bool) {
         switch self.screenState {
-        case .Success(let data):
+        case .Success(_, let data):
             let busStopArrivalItemData = data.busStopArrivalItemDataList.first { busStopArrivalItemData in
                 busStopArrivalItemData.busStopArrival.busServiceNumber == busServiceNumber
             }
@@ -128,6 +152,20 @@ class BusStopArrivalsViewModel : ObservableObject {
         }
     }
     
+    func onNavigateClick() {
+        if let busStop = busStop {
+            if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
+                UIApplication.shared.open(
+                    NSURL(string: "comgooglemaps://?saddr=&daddr=\(Float(busStop.latitude)),\(Float(busStop.longitude))&directionsmode=walking")! as URL
+                )
+            } else if (UIApplication.shared.canOpenURL(URL(string:"maps://")!)) {
+                UIApplication.shared.open(
+                    NSURL(string: "maps://?saddr=&daddr=\(Float(busStop.latitude)),\(Float(busStop.longitude))&directionsmode=walking")! as URL
+                )
+            }
+        }
+    }
+    
     public static func getTime(date time: Date) -> String {
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "h:mm a"
@@ -139,7 +177,10 @@ class BusStopArrivalsViewModel : ObservableObject {
 enum BusStopArrivalsScreenState {
     case Fetching
     case Error(message: String)
-    case Success(data: BusStopArrivalScreenSuccessData)
+    case Success(
+        busStopCode: String,
+        data: BusStopArrivalScreenSuccessData
+    )
 }
 
 class BusStopArrivalScreenSuccessData : ObservableObject {

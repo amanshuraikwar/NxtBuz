@@ -11,15 +11,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "objc2kotlin.11059:&lt;compiler-generated&gt;">
+      </ContextState>
+      <ContextState
          contextName = "closure #4 in closure #1 in StarredBusArrivalsViewModel.getArrivalsAct():StarredBusArrivalsViewModel.swift">
          <PersistentStrings>
             <PersistentString
                value = "data.shouldShowList">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "objc2kotlin.11059:&lt;compiler-generated&gt;">
       </ContextState>
       <ContextState
          contextName = "closure #1 in closure #1 in BusStopsViewModel.searchBusStops(_:):BusStopsViewModel.swift">
@@ -38,6 +38,20 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "URL.valueOf(_:):HomeViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.host">
+            </PersistentString>
+            <PersistentString
+               value = "url.path">
+            </PersistentString>
+            <PersistentString
+               value = "self.path">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "BusStopsViewModel.fetchBusStops():BusStopsViewModel.swift">
          <PersistentStrings>
             <PersistentString
@@ -50,6 +64,14 @@
          <PersistentStrings>
             <PersistentString
                value = "data.starredBusArrivalItemDataList.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #4 in BusStopArrivalsView.body.getter:BusStopArrivalsView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "busStopCode">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

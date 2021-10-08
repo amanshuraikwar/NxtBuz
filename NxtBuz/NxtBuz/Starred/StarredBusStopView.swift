@@ -15,7 +15,7 @@ struct StarredBusStopView: View {
     
     var body: some View {
         Section(
-            header: NavigationLink (destination: BusStopArrivalsView(busStop: starredBusStop.busStop)) {
+            header: NavigationLink (destination: BusStopArrivalsView(busStopCode: starredBusStop.busStop.code)) {
                 HStack {
                     Text(starredBusStop.busStop.description_)
                         .font(NxtBuzFonts.body)
