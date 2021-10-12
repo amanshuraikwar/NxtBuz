@@ -41,8 +41,8 @@ struct BusStopArrivalItemView: View {
                         .frame(width: 20, height: 20)
                         .foregroundColor(Color.yellow)
                         .padding(4)
-                        .background(Color.yellow.opacity(0.1))
-                        .cornerRadius(4)
+                        //.background(Color.yellow.opacity(0.1))
+                        //.cornerRadius(4)
                         .onTapGesture {
                             onStarToggle(!busStopArrivalItemData.starred)
                         }
@@ -78,15 +78,15 @@ struct BusStopArrivalItemView: View {
                         Spacer()
                         
                         if !arriving.followingArrivingBusList.isEmpty {
-                            Image(systemName: "chevron.right.circle.fill")
+                            Image(systemName: "chevron.right")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(Color(nxtBuzTheme.accentColor))
+                                .frame(width: 16, height: 16)
+                                .foregroundColor(Color(nxtBuzTheme.primaryColor))
                                 .rotationEffect(.degrees(expanded ? -90 : +90))
                                 .padding(4)
-                                .background(Color(nxtBuzTheme.accentColor).opacity(0.1))
-                                .cornerRadius(4)
+                                //.background(Color(nxtBuzTheme.accentColor).opacity(0.1))
+                                //.cornerRadius(4)
                                 .onTapGesture {
                                     expanded.toggle()
                                 }
