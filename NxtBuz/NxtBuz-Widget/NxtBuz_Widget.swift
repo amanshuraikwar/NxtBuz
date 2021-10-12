@@ -161,75 +161,92 @@ struct Provider: IntentTimelineProvider {
                     .invoke(
                         busStopCode: busStopCode,
                         busServiceNumber: busServiceNumber
-                    ) { busStopArrival in
+                    ) { result in
                         let date = Date()
                         let entry: SimpleEntry
                         
-                        if let busArrivals = busStopArrival.busArrivals as? BusArrivals.Arriving {
-                            var followingArrivingBusDataList: [ArrivingBusData] = []
-                            followingArrivingBusDataList.append(
-                                ArrivingBusData(
-                                    busType: busArrivals.nextArrivingBus.type,
-                                    busLoad: busArrivals.nextArrivingBus.load,
-                                    wheelChairAccess: busArrivals.nextArrivingBus.wheelchairAccess,
-                                    nextArrivalTime: Calendar.current.date(
-                                        byAdding: .minute,
-                                        value: Int(busArrivals.nextArrivingBus.arrival),
-                                        to: date
-                                    )!
-                                )
-                            )
+                        if let success = result as? IosResultSuccess {
+                            let busStopArrival = success.data!
                             
-                            busArrivals.followingArrivingBusList.forEach { arrivingBus in
+                            if let busArrivals = busStopArrival.busArrivals as? BusArrivals.Arriving {
+                                var followingArrivingBusDataList: [ArrivingBusData] = []
                                 followingArrivingBusDataList.append(
                                     ArrivingBusData(
-                                        busType: arrivingBus.type,
-                                        busLoad: arrivingBus.load,
-                                        wheelChairAccess: arrivingBus.wheelchairAccess,
-                                        nextArrivalTime: Calendar.current.date(
-                                            byAdding: .minute,
-                                            value: Int(arrivingBus.arrival),
-                                            to: date
-                                        )!
-                                    )
-                                )
-                            }
-                            
-                            entry = SimpleEntry(
-                                date: date,
-                                widgetState: .Arriving(
-                                    busStopCode: busStopArrival.busStopCode,
-                                    busStopDescription: busStopArrival.busStopDescription,
-                                    busServiceNumber: busStopArrival.busServiceNumber,
-                                    nextArrivingBusData: ArrivingBusData(
                                         busType: busArrivals.nextArrivingBus.type,
                                         busLoad: busArrivals.nextArrivingBus.load,
                                         wheelChairAccess: busArrivals.nextArrivingBus.wheelchairAccess,
-                                        nextArrivalTime: Calendar.current.date(
-                                            byAdding: .minute,
-                                            value: Int(busArrivals.nextArrivingBus.arrival),
-                                            to: date
-                                        )!
+                                        nextArrivalTime: busArrivals.nextArrivingBus.arrivalInstant.toNSDate()
+                                    )
+                                )
+                                
+                                busArrivals.followingArrivingBusList.forEach { arrivingBus in
+                                    followingArrivingBusDataList.append(
+                                        ArrivingBusData(
+                                            busType: arrivingBus.type,
+                                            busLoad: arrivingBus.load,
+                                            wheelChairAccess: arrivingBus.wheelchairAccess,
+                                            nextArrivalTime: arrivingBus.arrivalInstant.toNSDate()
+                                        )
+                                    )
+                                }
+                                
+                                entry = SimpleEntry(
+                                    date: date,
+                                    widgetState: .Arriving(
+                                        busStopCode: busStopArrival.busStopCode,
+                                        busStopDescription: busStopArrival.busStopDescription,
+                                        busServiceNumber: busStopArrival.busServiceNumber,
+                                        nextArrivingBusData: ArrivingBusData(
+                                            busType: busArrivals.nextArrivingBus.type,
+                                            busLoad: busArrivals.nextArrivingBus.load,
+                                            wheelChairAccess: busArrivals.nextArrivingBus.wheelchairAccess,
+                                            nextArrivalTime: Calendar.current.date(
+                                                byAdding: .minute,
+                                                value: Int(busArrivals.nextArrivingBus.arrival),
+                                                to: date
+                                            )!
+                                        ),
+                                        followingArrivingBusDataList: followingArrivingBusDataList
                                     ),
-                                    followingArrivingBusDataList: followingArrivingBusDataList
-                                ),
-                                configuration: configuration
-                            )
+                                    configuration: configuration
+                                )
+                            } else {
+                                let errorMessage: String
+                                if busStopArrival.busArrivals is BusArrivals.NotOperating {
+                                    errorMessage = "Not Operating"
+                                } else {
+                                    errorMessage = "No Data"
+                                }
+                                
+                                entry = SimpleEntry(
+                                    date: date,
+                                    widgetState: WidgetState.NotArriving(
+                                        busStopCode: busStopArrival.busStopCode,
+                                        busStopDescription: busStopArrival.busStopDescription,
+                                        busServiceNumber: busStopArrival.busServiceNumber,
+                                        errorMessage: errorMessage
+                                    ),
+                                    configuration: configuration
+                                )
+                            }
                         } else {
                             let errorMessage: String
-                            if busStopArrival.busArrivals is BusArrivals.NotOperating {
-                                errorMessage = "Not Operating"
+                            if let error = result as? IosResultError {
+                                if error.errorMessage == "IllegalDbStateException" {
+                                    errorMessage = "Invalid bus service."
+                                } else if error.errorMessage == "IOException" {
+                                    errorMessage = "Please check internet connection."
+                                } else {
+                                    errorMessage = "Something went wrong."
+                                }
                             } else {
-                                errorMessage = "No Data"
+                                errorMessage = "Something went wrong."
                             }
                             
                             entry = SimpleEntry(
                                 date: date,
-                                widgetState: WidgetState.NotArriving(
-                                    busStopCode: busStopArrival.busStopCode,
-                                    busStopDescription: busStopArrival.busStopDescription,
-                                    busServiceNumber: busStopArrival.busServiceNumber,
-                                    errorMessage: errorMessage
+                                widgetState: WidgetState.Error(
+                                    message: errorMessage
                                 ),
                                 configuration: configuration
                             )

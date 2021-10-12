@@ -2,11 +2,14 @@ package io.github.amanshuraikwar.nxtbuz.iosumbrella
 
 import co.touchlab.stately.freeze
 import io.github.amanshuraikwar.nxtbuz.busarrivaldata.BusArrivalRepository
-import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusStopArrival
+import io.github.amanshuraikwar.nxtbuz.commonkmm.exception.IllegalDbStateException
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusService
 import io.github.amanshuraikwar.nxtbuz.iosumbrella.model.IosBusStopArrival
 import io.github.amanshuraikwar.nxtbuz.iosumbrella.model.IosBusStopArrivalOutput
+import io.github.amanshuraikwar.nxtbuz.iosumbrella.model.IosResult
+import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
+import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
@@ -39,7 +42,7 @@ class GetBusArrivalsUseCase constructor(
                     .toSet()
 
             callback(
-                IosBusStopArrivalOutput.Success (
+                IosBusStopArrivalOutput.Success(
                     invoke(busStopCode).map { busStopArrival ->
                         IosBusStopArrival(
                             busStopCode = busStopArrival.busStopCode,
@@ -65,18 +68,35 @@ class GetBusArrivalsUseCase constructor(
     operator fun invoke(
         busStopCode: String,
         busServiceNumber: String,
-        callback: (BusStopArrival) -> Unit
+        callback: (IosResult<BusStopArrival>) -> Unit
     ) {
         IosDataCoroutineScopeProvider.coroutineScope.launch(
-//            CoroutineExceptionHandler { th, _ ->
-//                println(th)
-//                // TODO-amanshuraikwar (22 Sep 2021 11:06:33 PM): send error state
-//            }
+            CoroutineExceptionHandler { _, th ->
+                println(th)
+                callback(
+                    IosResult.Error(
+                        // TODO-amanshuraikwar (12 Oct 2021 11:24:30 PM): handle gracefully
+                        when (th) {
+                            is IllegalDbStateException -> {
+                                "IllegalDbStateException"
+                            }
+                            is IOException -> {
+                                "IOException"
+                            }
+                            else -> {
+                                "Something went wrong."
+                            }
+                        }
+                    )
+                )
+            }
         ) {
             callback(
-                busArrivalRepository.getBusArrivals(
-                    busStopCode = busStopCode,
-                    busServiceNumber = busServiceNumber
+                IosResult.Success(
+                    busArrivalRepository.getBusArrivals(
+                        busStopCode = busStopCode,
+                        busServiceNumber = busServiceNumber
+                    )
                 )
             )
         }
