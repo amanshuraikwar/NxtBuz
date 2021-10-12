@@ -210,6 +210,7 @@ class BusArrivalRepository constructor(
             origin,
             destination,
             time.coerceAtLeast(0),
+            estimatedArrival.toInstant(),
             lat.toDouble(),
             lng.toDouble(),
             visitNumber.toInt(),
