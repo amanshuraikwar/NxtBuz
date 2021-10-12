@@ -138,69 +138,37 @@ struct Provider: IntentTimelineProvider {
         in context: Context,
         completion: @escaping (Timeline<Entry>) -> ()
     ) {
-        if !UserDefaults(suiteName: "group.io.github.amanshuraikwar.NxtBuz")!.bool(forKey: "setupComplete") {
-            let date = Date()
-            let entry = SimpleEntry(
-                date: date,
-                widgetState: WidgetState.Error(message: "Please complete seting up the app"),
-                configuration: configuration
-            )
-            
-            let timeline = Timeline(
-                entries: [entry],
-                policy: .after(Calendar.current.date(byAdding: .minute, value: 10, to: date)!)
-            )
-            
-            completion(timeline)
-        } else if let busStopCode = configuration.BusStop?.busStopCode,
-            let busServiceNumber = configuration.BusServiceNumber {
-            
-            Di.get()
-                .getBusArrivalsUseCase()
-                .invoke(
-                    busStopCode: busStopCode,
-                    busServiceNumber: busServiceNumber
-                ) { busStopArrival in
-                    let date = Date()
-                    let entry: SimpleEntry
-                    
-                    if let busArrivals = busStopArrival.busArrivals as? BusArrivals.Arriving {
-                        var followingArrivingBusDataList: [ArrivingBusData] = []
-                        followingArrivingBusDataList.append(
-                            ArrivingBusData(
-                                busType: busArrivals.nextArrivingBus.type,
-                                busLoad: busArrivals.nextArrivingBus.load,
-                                wheelChairAccess: busArrivals.nextArrivingBus.wheelchairAccess,
-                                nextArrivalTime: Calendar.current.date(
-                                    byAdding: .minute,
-                                    value: Int(busArrivals.nextArrivingBus.arrival),
-                                    to: date
-                                )!
-                            )
-                        )
+        Di.get().getUserStateUserCase().invoke { userState in
+            if (userState is UserState.New) {
+                let date = Date()
+                let entry = SimpleEntry(
+                    date: date,
+                    widgetState: WidgetState.Error(message: "Please complete seting up the app"),
+                    configuration: configuration
+                )
+                
+                let timeline = Timeline(
+                    entries: [entry],
+                    policy: .after(Calendar.current.date(byAdding: .minute, value: 10, to: date)!)
+                )
+                
+                completion(timeline)
+            } else if let busStopCode = configuration.BusStop?.busStopCode,
+                let busServiceNumber = configuration.BusServiceNumber {
+                
+                Di.get()
+                    .getBusArrivalsUseCase()
+                    .invoke(
+                        busStopCode: busStopCode,
+                        busServiceNumber: busServiceNumber
+                    ) { busStopArrival in
+                        let date = Date()
+                        let entry: SimpleEntry
                         
-                        busArrivals.followingArrivingBusList.forEach { arrivingBus in
+                        if let busArrivals = busStopArrival.busArrivals as? BusArrivals.Arriving {
+                            var followingArrivingBusDataList: [ArrivingBusData] = []
                             followingArrivingBusDataList.append(
                                 ArrivingBusData(
-                                    busType: arrivingBus.type,
-                                    busLoad: arrivingBus.load,
-                                    wheelChairAccess: arrivingBus.wheelchairAccess,
-                                    nextArrivalTime: Calendar.current.date(
-                                        byAdding: .minute,
-                                        value: Int(arrivingBus.arrival),
-                                        to: date
-                                    )!
-                                )
-                            )
-                        }
-                        
-                        entry = SimpleEntry(
-                            date: date,
-                            widgetState: .Arriving(
-                                busStopCode: busStopArrival.busStopCode,
-                                busStopDescription: busStopArrival.busStopDescription,
-                                busServiceNumber: busStopArrival.busServiceNumber,
-                                nextArrivingBusData: ArrivingBusData(
                                     busType: busArrivals.nextArrivingBus.type,
                                     busLoad: busArrivals.nextArrivingBus.load,
                                     wheelChairAccess: busArrivals.nextArrivingBus.wheelchairAccess,
@@ -209,53 +177,87 @@ struct Provider: IntentTimelineProvider {
                                         value: Int(busArrivals.nextArrivingBus.arrival),
                                         to: date
                                     )!
+                                )
+                            )
+                            
+                            busArrivals.followingArrivingBusList.forEach { arrivingBus in
+                                followingArrivingBusDataList.append(
+                                    ArrivingBusData(
+                                        busType: arrivingBus.type,
+                                        busLoad: arrivingBus.load,
+                                        wheelChairAccess: arrivingBus.wheelchairAccess,
+                                        nextArrivalTime: Calendar.current.date(
+                                            byAdding: .minute,
+                                            value: Int(arrivingBus.arrival),
+                                            to: date
+                                        )!
+                                    )
+                                )
+                            }
+                            
+                            entry = SimpleEntry(
+                                date: date,
+                                widgetState: .Arriving(
+                                    busStopCode: busStopArrival.busStopCode,
+                                    busStopDescription: busStopArrival.busStopDescription,
+                                    busServiceNumber: busStopArrival.busServiceNumber,
+                                    nextArrivingBusData: ArrivingBusData(
+                                        busType: busArrivals.nextArrivingBus.type,
+                                        busLoad: busArrivals.nextArrivingBus.load,
+                                        wheelChairAccess: busArrivals.nextArrivingBus.wheelchairAccess,
+                                        nextArrivalTime: Calendar.current.date(
+                                            byAdding: .minute,
+                                            value: Int(busArrivals.nextArrivingBus.arrival),
+                                            to: date
+                                        )!
+                                    ),
+                                    followingArrivingBusDataList: followingArrivingBusDataList
                                 ),
-                                followingArrivingBusDataList: followingArrivingBusDataList
-                            ),
-                            configuration: configuration
-                        )
-                    } else {
-                        let errorMessage: String
-                        if busStopArrival.busArrivals is BusArrivals.NotOperating {
-                            errorMessage = "Not Operating"
+                                configuration: configuration
+                            )
                         } else {
-                            errorMessage = "No Data"
+                            let errorMessage: String
+                            if busStopArrival.busArrivals is BusArrivals.NotOperating {
+                                errorMessage = "Not Operating"
+                            } else {
+                                errorMessage = "No Data"
+                            }
+                            
+                            entry = SimpleEntry(
+                                date: date,
+                                widgetState: WidgetState.NotArriving(
+                                    busStopCode: busStopArrival.busStopCode,
+                                    busStopDescription: busStopArrival.busStopDescription,
+                                    busServiceNumber: busStopArrival.busServiceNumber,
+                                    errorMessage: errorMessage
+                                ),
+                                configuration: configuration
+                            )
                         }
                         
-                        entry = SimpleEntry(
-                            date: date,
-                            widgetState: WidgetState.NotArriving(
-                                busStopCode: busStopArrival.busStopCode,
-                                busStopDescription: busStopArrival.busStopDescription,
-                                busServiceNumber: busStopArrival.busServiceNumber,
-                                errorMessage: errorMessage
-                            ),
-                            configuration: configuration
-                        )
-                    }
-                    
-                    let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 10, to: date)!
+                        let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 10, to: date)!
 
-                    let timeline = Timeline(
-                        entries: [entry],
-                        policy: .after(nextUpdateDate)
-                    )
-                    
-                    completion(timeline)
-                }
-        } else {
-            let entry = SimpleEntry(
-                date: Date(),
-                widgetState: WidgetState.Error(message: "Please configure the widget"),
-                configuration: configuration
-            )
-            
-            let timeline = Timeline(
-                entries: [entry],
-                policy: .never
-            )
-            
-            completion(timeline)
+                        let timeline = Timeline(
+                            entries: [entry],
+                            policy: .after(nextUpdateDate)
+                        )
+                        
+                        completion(timeline)
+                    }
+            } else {
+                let entry = SimpleEntry(
+                    date: Date(),
+                    widgetState: WidgetState.Error(message: "Please configure the widget"),
+                    configuration: configuration
+                )
+                
+                let timeline = Timeline(
+                    entries: [entry],
+                    policy: .never
+                )
+                
+                completion(timeline)
+            }
         }
     }
 }
