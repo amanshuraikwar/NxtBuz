@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7F6B3F543D9E5E5A3AD60CD923C9A4E0"
-               BuildableName = "Pods_NxtBuz_WidgetExtension.framework"
+               BuildableName = "Pods-NxtBuz-WidgetExtension.framework"
                BlueprintName = "Pods-NxtBuz-WidgetExtension"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
