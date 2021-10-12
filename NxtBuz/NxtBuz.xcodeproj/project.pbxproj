@@ -938,7 +938,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.SelectBusArrivalUI;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.debug.SelectBusArrivalUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1002,7 +1002,7 @@
 					"\"iosUmbrella\"",
 					"-l\"sqlite3\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.SelectBusArrival;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.debug.SelectBusArrival;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1080,7 +1080,7 @@
 					"\"iosUmbrella\"",
 					"-l\"sqlite3\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.github.amanshuraikwar.NxtBuz.NxtBuz-Widget";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.amanshuraikwar.NxtBuz.debug.NxtBuz-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1251,10 +1251,12 @@
 			baseConfigurationReference = AACB50D4905E209E0EFD01A1 /* Pods-NxtBuz.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APP_DISPLAY_NAME = "Next Bus SG Debug";
 				ARCHS = (
 					"$(ARCHS_STANDARD)",
 					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
 				);
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconDebug;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -1282,7 +1284,7 @@
 					"\"iosUmbrella\"",
 					"-l\"sqlite3\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1295,10 +1297,12 @@
 			baseConfigurationReference = B3D756E3D85E99C0D6B8FF34 /* Pods-NxtBuz.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APP_DISPLAY_NAME = "Next Bus SG";
 				ARCHS = (
 					"$(ARCHS_STANDARD)",
 					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
 				);
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIcon;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
