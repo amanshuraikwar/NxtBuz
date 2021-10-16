@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/blueLighter</color>
+    <color name="colorPrimaryVariant">@color/blue</color>
+
+    <color name="colorSecondary">@color/blueLighter</color>
+    <color name="colorSecondaryVariant">@color/blue</color>
+
+    <color name="colorBackground">@color/black</color>
+    <color name="colorSurface">@color/black</color>
+    <color name="colorError">@color/redLighter</color>
+
+    <color name="colorOnPrimary">@color/gray900</color>
+    <color name="colorOnSecondary">@color/gray900</color>
+    <color name="colorOnBackground">@color/blueGrey50</color>
+    <color name="colorOnSurface">@color/blueGrey50</color>
+    <color name="colorOnError">@color/gray900</color>
+
+    <color name="colorOnSurfaceMedium">#bceef0f2</color>
+    <color name="colorOnSurfaceDisabled">#60eef0f2</color>
+
+    <color name="colorOutline">#1eeef0f2</color>
+</resources>

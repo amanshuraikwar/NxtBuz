@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.NxtBuz.ActionBar"
+        parent="@style/Widget.MaterialComponents.ActionBar.Surface">
+        <item name="titleTextStyle">@style/TextAppearance.AppTheme.Headline6.Bold</item>
+        <item name="android:titleTextStyle">@style/TextAppearance.AppTheme.Headline6.Bold</item>
+    </style>
+</resources>

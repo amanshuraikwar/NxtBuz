@@ -6,15 +6,9 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.github.amanshuraikwar.nxtbuz.di.DaggerAppComponent
-import io.github.amanshuraikwar.nxtbuz.util.flipper.FlipperHelper
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import androidx.work.Configuration
 
-/**
- * Initialization of libraries.
- */
-class MainApplication : DaggerApplication() {
-
+class MainApplication : DaggerApplication(), Configuration.Provider {
     override fun onCreate() {
 
         // ThreeTenBP for times and dates, called before super to be available for objects
@@ -24,19 +18,10 @@ class MainApplication : DaggerApplication() {
         enableStrictMode()
 
         super.onCreate()
-
-        // init flipper after Dagger creates graph
-        initFlipper()
     }
 
-    @ExperimentalCoroutinesApi
-    @FlowPreview
     override fun applicationInjector(): AndroidInjector<out MainApplication> {
         return DaggerAppComponent.factory().create(this)
-    }
-
-    private fun initFlipper() {
-        FlipperHelper.init(this)
     }
 
     private fun enableStrictMode() {
@@ -49,4 +34,13 @@ class MainApplication : DaggerApplication() {
                 .build()
         )
     }
+
+    override fun getWorkManagerConfiguration() =
+        Configuration.Builder()
+            .apply {
+                if (BuildConfig.DEBUG) {
+                    setMinimumLoggingLevel(android.util.Log.DEBUG)
+                }
+            }
+            .build()
 }

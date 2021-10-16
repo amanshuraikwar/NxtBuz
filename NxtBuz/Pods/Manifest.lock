@@ -1,0 +1,16 @@
+PODS:
+  - iosUmbrella (1.0)
+
+DEPENDENCIES:
+  - iosUmbrella (from `../iosUmbrella`)
+
+EXTERNAL SOURCES:
+  iosUmbrella:
+    :path: "../iosUmbrella"
+
+SPEC CHECKSUMS:
+  iosUmbrella: 2fbdf386675f78c1e8ad29248a7e5ac0d7159b91
+
+PODFILE CHECKSUM: f6f1bbeae4418bcded42e5353d0990e2828665dc
+
+COCOAPODS: 1.10.1
