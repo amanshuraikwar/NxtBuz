@@ -1,0 +1,33 @@
+CREATE TABLE BusStopEntity (
+    code TEXT NOT NULL PRIMARY KEY,
+    roadName TEXT NOT NULL,
+    description TEXT NOT NULL,
+    descriptionSearchKey TEXT NOT NULL,
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL
+);
+
+insert:
+INSERT INTO BusStopEntity
+VALUES ?;
+
+deleteAll:
+DELETE FROM BusStopEntity;
+
+findAll:
+SELECT * FROM BusStopEntity;
+
+findByCode:
+SELECT * FROM BusStopEntity WHERE code = :code;
+
+findClose:
+SELECT * FROM BusStopEntity ORDER BY (((latitude-:latitude)*(latitude-:latitude))+((longitude-:longitude)*(longitude-:longitude))) ASC LIMIT :limit;
+
+findCloseDistance:
+SELECT * FROM BusStopEntity WHERE (((latitude-:latitude)*(latitude-:latitude))+((longitude-:longitude)*(longitude-:longitude))) < :distance;
+
+searchLikeDescription:
+SELECT * FROM BusStopEntity WHERE descriptionSearchKey LIKE '%' || :descriptionHint || '%' LIMIT :limit;
+
+
+

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Next Bus SG</string>
+    <string name="app_name_internal">Next Bus SG INTERNAL</string>
+    <string name="app_name_debug">Next Bus SG DEBUG</string>
+    <string name="btn_txt_retry">RETRY</string>
+
+    <string name="bus_direction_1">\u2192</string>
+    <string name="bus_direction_2">\u21ab</string>
+    <string name="origin_destination">\u21cb</string>
+
+    <string name="star">\u2605</string>
+
+    <string name="channel_name_bus_arrival">Bus Arrivals</string>
+    <string name="channel_description_bus_arrival">Displays buses arriving at the current bus stop.</string>
+
+    <string name="channel_name_starred_bus_arrival">Starred Bus Arrivals</string>
+    <string name="channel_description_starred_bus_arrival">Alerts if starred buses are arriving now at the current bus stop.</string>
+
+    <string name="error_title_default">Something went wrong</string>
+    <string name="error_description_default">Please restart the app and try again.</string>
+</resources>

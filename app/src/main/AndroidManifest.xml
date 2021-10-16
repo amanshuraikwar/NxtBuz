@@ -5,6 +5,15 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+    </queries>
 
     <application
         android:name="io.github.amanshuraikwar.nxtbuz.MainApplication"
@@ -13,44 +22,32 @@
         android:label="${appName}"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.DayNight"
+        android:theme="@style/AppTheme.NxtBuz"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
+
+        <!--suppress AndroidDomInspection -->
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            tools:ignore="MissingClass"
+            tools:node="remove" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.launcher.LauncherActivity"
-            android:theme="@style/AppTheme.Launcher">
-
+            android:name="io.github.amanshuraikwar.nxtbuz.ui.MainActivity"
+            android:theme="@style/AppTheme.NxtBuz.Main"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
-        <activity
-            android:theme="@style/AppTheme.Onboarding"
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.onboarding.OnboardingActivity" />
-
-        <activity
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.main.MainActivity"
-            android:windowSoftInputMode="adjustNothing" />
-
-        <activity android:name="io.github.amanshuraikwar.nxtbuz.ui.busstop.BusStopActivity" />
-
-        <activity
-            android:name="io.github.amanshuraikwar.nxtbuz.ui.search.SearchActivity"
-            android:windowSoftInputMode="stateAlwaysVisible"/>
-        <activity android:name="io.github.amanshuraikwar.nxtbuz.ui.settings.SettingsActivity" />
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
+        <activity android:name="io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity" />
     </application>
-
 </manifest>

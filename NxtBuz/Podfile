@@ -1,0 +1,16 @@
+target 'NxtBuz' do
+  use_frameworks!
+  platform :ios, '14.1'
+  pod 'iosUmbrella', :path => '../iosUmbrella'
+end
+target 'NxtBuz-WidgetExtension' do
+  use_frameworks!
+  platform :ios, '14.1'
+  pod 'iosUmbrella', :path => '../iosUmbrella'
+end
+
+target 'SelectBusArrival' do
+  use_frameworks!
+  platform :ios, '14.1'
+  pod 'iosUmbrella', :path => '../iosUmbrella'
+end
