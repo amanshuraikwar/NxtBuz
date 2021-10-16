@@ -6,8 +6,6 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.user.UserState
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 
@@ -123,6 +121,18 @@ class UserRepository constructor(
     suspend fun getForcedTheme(): NxtBuzTheme {
         return withContext(dispatcherProvider.io) {
             return@withContext preferenceStorage.theme
+        }
+    }
+
+    suspend fun setHomeBusStopCode(busStopCode: String) {
+        withContext(dispatcherProvider.io) {
+            preferenceStorage.homeBusStopCode = busStopCode
+        }
+    }
+
+    suspend fun getHomeBusStopCode(): String? {
+        return withContext(dispatcherProvider.io) {
+            preferenceStorage.homeBusStopCode.takeIf { it != "" }
         }
     }
 }

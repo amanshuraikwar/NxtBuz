@@ -166,4 +166,25 @@ class Di {
     func getOperatingBusServicesUseCase() -> GetOperatingBusServicesUseCase {
         GetOperatingBusServicesUseCase(busArrivalRepository: Di.busArrivalRepository)
     }
+    
+    func setHomeBusStopUseCase() -> SetHomeBusStopUseCase {
+        return SetHomeBusStopUseCase(
+            repo: Di.userRepository
+        )
+    }
+    
+    func getHomeBusStopUseCase() -> GetHomeBusStopUseCase {
+        return GetHomeBusStopUseCase(
+            userRepository: Di.userRepository,
+            busStopRepository: Di.busStopRepository
+        )
+    }
+    
+    func getNearbyGoingHomeBusesUseCase() -> GetNearbyGoingHomeBusesUseCase {
+        return GetNearbyGoingHomeBusesUseCase(
+            userRepository: Di.userRepository,
+            busStopRepository: Di.busStopRepository,
+            busRouteRepository: Di.busRouteRepository
+        )
+    }
 }

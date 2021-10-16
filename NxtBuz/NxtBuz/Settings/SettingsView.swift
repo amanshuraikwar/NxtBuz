@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var showGreeting = true
+    @StateObject private var viewModel = SettingsViewModel()
     
     @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
     
@@ -35,6 +35,42 @@ struct SettingsView: View {
                             .padding(4)
                             .background(Color(nxtBuzTheme.accentColor).opacity(0.1))
                             .cornerRadius(8)
+                    }
+                }
+            }
+            
+            Section(
+                header: Text("Home Bus Stop")
+                    .font(NxtBuzFonts.caption)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+            ) {
+                switch viewModel.homeStopState {
+                case .Fetching:
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
+                case .NoBusStop:
+                    Text("No home bus stop set.")
+                        .font(NxtBuzFonts.body)
+                        .fontWeight(.medium)
+                        .foregroundColor(Color(nxtBuzTheme.primaryColor))
+                case .Success(let desc, let roadName, let busStopCode):
+                    VStack(
+                        alignment: .leading,
+                        spacing: 0
+                    ) {
+                        Text(desc)
+                            .font(NxtBuzFonts.body)
+                            .fontWeight(.medium)
+                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
+                        
+                        Text(
+                            "\(roadName)  •  \(busStopCode)".uppercased()
+                        )
+                        .font(NxtBuzFonts.caption)
+                        .padding(.top, 4)
+                        .foregroundColor(
+                            Color(nxtBuzTheme.secondaryColor)
+                        )
                     }
                 }
             }
@@ -90,10 +126,10 @@ struct SettingsView: View {
                     }
                 ) {
                     HStack {
-                        Text("Request a Feature")
+                        Text("Next Bus SG")
                             .font(NxtBuzFonts.body)
-                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
                             .fontWeight(.medium)
+                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
                         
                         Spacer()
                         
@@ -124,6 +160,9 @@ struct SettingsView: View {
             }
         }
         .listStyle(InsetGroupedListStyle())
+        .onAppear {
+            viewModel.fetchHomeBusStop()
+        }
     }
 }
 
