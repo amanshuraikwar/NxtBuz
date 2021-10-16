@@ -85,6 +85,10 @@ internal class PreferenceStorageImpl(
         settings, PREF_SETUP_COMPLETE_TIME_MILLIS, -1
     )
 
+    override var homeBusStopCode: String by StringPreference(
+        settings, PREF_HOME_BUS_STOP_CODE, ""
+    )
+
     companion object {
         const val PREF_ONBOARDING = "pref_onboarding"
         const val PREF_BUS_STOPS_QUERY_LIMIT = "pref_bus_stops_query_limit"
@@ -99,5 +103,6 @@ internal class PreferenceStorageImpl(
         const val PREF_THEME = "pref_theme"
         const val PREF_USE_SYSTEM_THEME = "pref_use_system_theme"
         const val PREF_SETUP_COMPLETE_TIME_MILLIS = "pref_setup_complete_time_millis"
+        const val PREF_HOME_BUS_STOP_CODE = "pref_home_bus_stop_code"
     }
 }

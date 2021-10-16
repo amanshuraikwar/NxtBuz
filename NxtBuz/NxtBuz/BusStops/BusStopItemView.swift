@@ -13,6 +13,8 @@ struct BusStopItemView: View {
     let busStopCode: String
     let operatingBusServiceNumbers: String
     
+    let onSetHomeClick: (String) -> ()
+    
     @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
     
     var body: some View {
@@ -54,30 +56,39 @@ struct BusStopItemView: View {
             maxWidth: .infinity,
             alignment: .leading
         )
-    }
-}
-
-struct BusStopItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            BusStopItemView(
-                busStopName: "Opp Blk 19",
-                roadName: "Jln Jurong Kechil",
-                busStopCode: "123456",
-                operatingBusServiceNumbers: "961M  961 174 61 970 147"
-            )
-            .previewLayout(.sizeThatFits)
-            .preferredColorScheme(.light)
-            .padding()
-            BusStopItemView(
-                busStopName: "Opp Blk 19",
-                roadName: "Jln Jurong Kechil",
-                busStopCode: "123456",
-                operatingBusServiceNumbers: "961M  961  174  61  970  147  157  170  170A  184  41  52 66 67"
-            )
-            .previewLayout(.sizeThatFits)
-            .preferredColorScheme(.dark)
-            .padding()
+        .contextMenu {
+            Button {
+                onSetHomeClick(busStopCode)
+            } label: {
+                Label("Set as Home", systemImage: "house.fill")
+                    .font(NxtBuzFonts.body)
+                    .foregroundColor(Color(nxtBuzTheme.primaryColor))
+            }
         }
     }
 }
+
+//struct BusStopItemView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            BusStopItemView(
+//                busStopName: "Opp Blk 19",
+//                roadName: "Jln Jurong Kechil",
+//                busStopCode: "123456",
+//                operatingBusServiceNumbers: "961M  961 174 61 970 147"
+//            )
+//            .previewLayout(.sizeThatFits)
+//            .preferredColorScheme(.light)
+//            .padding()
+//            BusStopItemView(
+//                busStopName: "Opp Blk 19",
+//                roadName: "Jln Jurong Kechil",
+//                busStopCode: "123456",
+//                operatingBusServiceNumbers: "961M  961  174  61  970  147  157  170  170A  184  41  52 66 67"
+//            )
+//            .previewLayout(.sizeThatFits)
+//            .preferredColorScheme(.dark)
+//            .padding()
+//        }
+//    }
+//}

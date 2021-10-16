@@ -14,6 +14,8 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
     private let getBusStopsUseCase = Di.get().getBusStopsUseCase()
     
     private let locationManager: CLLocationManager
+    
+    @Published var busesGoingHomeState: BusesGoingHomeState = .Fetching
 
     override init() {
         locationManager = CLLocationManager()
@@ -26,6 +28,7 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
     func fetchBusStops(showFetching: Bool = false) {
         if showFetching {
             self.busStopsScreenState = .Fetching(message: "Fetching bus stops...")
+            self.busesGoingHomeState = .Fetching
         }
         
         switch busStopsScreenState {
@@ -81,6 +84,27 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
                     )
             }
         }
+        
+        Di.get()
+            .getNearbyGoingHomeBusesUseCase()
+            .invoke(
+                lat: lat,
+                lng: lng
+            ) { result in
+                if let result = result as? IosResultSuccess {
+                    if let goingHomeBusList = result.data as? [GoingHomeBus] {
+                        DispatchQueue.main.sync {
+                            if goingHomeBusList.isEmpty {
+                                self.busesGoingHomeState = .NoBusesGoingHome
+                            } else {
+                                self.busesGoingHomeState = .Success(goingHomeBusList: goingHomeBusList)
+                            }
+                        }
+                    } else {
+                        self.busesGoingHomeState = .NoBusesGoingHome
+                    }
+                }
+            }
     }
     
     func requestPermission() {
@@ -129,6 +153,24 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
             searchBusStops(searchString)
         }
     }
+    
+    func onSetHomeClick(busStopCode: String) {
+        Di.get()
+            .setHomeBusStopUseCase()
+            .invoke(
+                busStopCode: busStopCode
+            ) { result in
+                // do nothing
+            }
+    }
+}
+
+enum BusesGoingHomeState {
+    case Fetching
+    case Success(
+        goingHomeBusList: [GoingHomeBus]
+    )
+    case NoBusesGoingHome
 }
 
 enum BusStopsScreenState {
@@ -136,5 +178,10 @@ enum BusStopsScreenState {
     case AskLocationPermission
     case Error(errorMessage: String)
     case GoToSettingsLocationPermission
-    case Success(header: String, busStopList: [BusStop], searchResults: Bool, locationLowAccuracy: Bool)
+    case Success(
+        header: String,
+        busStopList: [BusStop],
+        searchResults: Bool,
+        locationLowAccuracy: Bool
+    )
 }
