@@ -30,8 +30,8 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.onStar
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.outline
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusArrivals
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 import kotlin.math.roundToInt
 
 @Composable

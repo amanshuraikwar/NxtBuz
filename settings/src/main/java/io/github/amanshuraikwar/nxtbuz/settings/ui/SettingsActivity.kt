@@ -15,7 +15,7 @@ import com.google.accompanist.insets.ExperimentalAnimatedInsets
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzApp
-import io.github.amanshuraikwar.nxtbuz.common.model.NxtBuzTheme
+import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.util.setupSystemBars
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
 import kotlinx.coroutines.launch

@@ -14,7 +14,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsViewModel
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
 
 @ExperimentalAnimationApi

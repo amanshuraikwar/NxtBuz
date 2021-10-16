@@ -15,7 +15,7 @@ import com.google.accompanist.insets.ExperimentalAnimatedInsets
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchResult
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchScreenState
 

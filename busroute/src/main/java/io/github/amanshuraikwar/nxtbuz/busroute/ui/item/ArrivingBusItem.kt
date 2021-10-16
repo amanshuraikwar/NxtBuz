@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busroute.R
 import io.github.amanshuraikwar.nxtbuz.common.compose.VerticalInOutAnimatedContent
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.ArrivingBus
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusLoad
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusType
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.ArrivingBus
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusLoad
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 
 @ExperimentalAnimationApi
 @Composable

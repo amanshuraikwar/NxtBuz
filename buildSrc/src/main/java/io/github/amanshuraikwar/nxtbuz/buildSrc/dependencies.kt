@@ -3,8 +3,17 @@
 package io.github.amanshuraikwar.nxtbuz.buildSrc
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta04"
+    const val compileSdk = 30
+    const val minSdk = 23
+    const val targetSdk = 30
+
+    const val iosMinDeploymentTarget = "14.1"
+
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.2"
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
+
+    const val multiplatformSettings = "com.russhwolf:multiplatform-settings:0.8.1"
+    const val multiplatformSettingsNoArg = "com.russhwolf:multiplatform-settings-no-arg:0.8.1"
 
     object Google {
         const val material = "com.google.android.material:material:1.4.0-rc01"
@@ -21,14 +30,21 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.5.10"
+        private const val version = "1.5.21"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
     }
 
+    object KotlinX {
+        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.1"
+        const val serializationCore = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1"
+        const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1"
+        const val serializationGradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.10"
+    }
+
     object Coroutines {
-        private const val version = "1.4.2"
+        private const val version = "1.5.2-native-mt"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
     }
@@ -56,14 +72,14 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.2.5"
+            private const val version = "2.3.0"
             const val runtime = "androidx.room:room-runtime:$version"
             const val compiler = "androidx.room:room-compiler:$version"
             const val ktx = "androidx.room:room-ktx:$version"
         }
 
         object Compose {
-            const val version = "1.0.0-beta09"
+            const val version = "1.0.1"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -105,6 +121,25 @@ object Libs {
     }
 
     object Accompanist {
-        const val insets = "com.google.accompanist:accompanist-insets:0.12.0"
+        const val insets = "com.google.accompanist:accompanist-insets:0.15.0"
+    }
+
+    object SqlDelight {
+        const val gradlePlugin = "com.squareup.sqldelight:gradle-plugin:1.5.0"
+        const val androidDriver = "com.squareup.sqldelight:android-driver:1.5.0"
+        const val nativeDriver = "com.squareup.sqldelight:native-driver:1.5.0"
+    }
+
+    object Ktor {
+        private const val version = "1.6.3"
+        const val clientCore = "io.ktor:ktor-client-core:$version"
+        const val clientJson = "io.ktor:ktor-client-json:$version"
+        const val clientLogging = "io.ktor:ktor-client-logging:$version"
+        const val clientSerialization = "io.ktor:ktor-client-serialization:$version"
+        const val clientAndroid = "io.ktor:ktor-client-android:$version"
+        const val clientApache = "io.ktor:ktor-client-apache:$version}"
+        const val clientIos = "io.ktor:ktor-client-ios:$version"
+        const val clientCio = "io.ktor:ktor-client-cio:$version"
+        const val clientJs = "io.ktor:ktor-client-js:$version"
     }
 }

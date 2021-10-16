@@ -1,10 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.domain.starred
 
-import io.github.amanshuraikwar.nxtbuz.common.model.starred.StarredBusArrival
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
+import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusArrival
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusArrivals
 import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.loop.Loop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.loop.Loop
 import kotlinx.coroutines.*
 
 class StarredBusArrivalsLoop(
@@ -28,7 +28,7 @@ class StarredBusArrivalsLoop(
             busStopCodeBusServiceNumberSetMap
                 .map { (busStopCode, starredBusServiceSet) ->
                     async {
-                        val busStopDescription = getBusStopUseCase(busStopCode).description
+                        val busStop = getBusStopUseCase(busStopCode)
 
                         getBusArrivalsUseCase(busStopCode)
                             .filter {
@@ -38,7 +38,7 @@ class StarredBusArrivalsLoop(
                                 StarredBusArrival(
                                     busStopCode = busStopCode,
                                     busServiceNumber = busStopArrival.busServiceNumber,
-                                    busStopDescription = busStopDescription,
+                                    busStop = busStop,
                                     busArrivals = busStopArrival.busArrivals
                                 )
                             }.let { starredBusArrivalList ->

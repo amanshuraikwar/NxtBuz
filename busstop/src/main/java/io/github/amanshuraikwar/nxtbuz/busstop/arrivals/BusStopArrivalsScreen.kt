@@ -21,7 +21,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalList
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalsScreenState
 import io.github.amanshuraikwar.nxtbuz.common.compose.*
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi

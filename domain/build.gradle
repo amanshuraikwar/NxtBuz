@@ -2,7 +2,7 @@ import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -26,7 +26,11 @@ android {
 
 dependencies {
     api project(":common")
+    api project(":commonkmm")
     implementation project(":data")
+    implementation project(":busstopdata")
+    implementation project(":userdata")
+    implementation project(":busroutedata")
 
     implementation Libs.Kotlin.stdlib
 

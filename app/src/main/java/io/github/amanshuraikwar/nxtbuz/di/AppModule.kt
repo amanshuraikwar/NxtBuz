@@ -18,7 +18,6 @@ import javax.inject.Singleton
  */
 @Module
 class AppModule {
-
     @Provides
     @Singleton
     @ApplicationContext
@@ -40,5 +39,12 @@ class AppModule {
         } else {
             "${BuildConfig.VERSION_NAME}"
         }
+    }
+
+    @Provides
+    @Singleton
+    @Named("ltaAccountKey")
+    fun provideLtaAccountKey(): String {
+        return BuildConfig.ltaAccountKey
     }
 }

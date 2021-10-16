@@ -2,7 +2,7 @@ import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -32,7 +32,18 @@ android {
 
 dependencies {
     api project(":common")
-    implementation project(":ltaapi")
+    api project(":commonkmm")
+    implementation project(":ktorremotedatasource")
+    implementation project(":sqldelightdb")
+    api project(':localdatasource')
+    api project(':remotedatasource')
+    api project(":preferencestorage")
+    api project(":busstopdata")
+    api project(":userdata")
+    api project(":busroutedata")
+    api project(":busarrivaldata")
+    api project(":starreddata")
+    api project(":searchdata")
 
     implementation Libs.Kotlin.stdlib
 
@@ -45,14 +56,10 @@ dependencies {
 
     implementation Libs.Coroutines.core
 
-    api Libs.AndroidX.Room.runtime
-    kapt Libs.AndroidX.Room.compiler
-    implementation Libs.AndroidX.Room.ktx
-
-    implementation Libs.threeTenAbp
-
     implementation Libs.Google.playServicesMap
     api Libs.Google.playServicesLocation
 
     implementation Libs.Google.crashlytics
+
+    implementation Libs.KotlinX.datetime
 }
