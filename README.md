@@ -1,4 +1,4 @@
-# NxtBuz
+# Next Bus SG
 
 The easiest way to get to know the next arriving bus in Singapore.
 

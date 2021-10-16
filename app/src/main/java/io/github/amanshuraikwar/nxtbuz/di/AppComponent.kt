@@ -5,16 +5,20 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import io.github.amanshuraikwar.nxtbuz.MainApplication
-import io.github.amanshuraikwar.nxtbuz.data.busapi.di.BusApiProvides
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.di.BusArrivalModule
-import io.github.amanshuraikwar.nxtbuz.data.busarrival.di.BusArrivalProvides
+import io.github.amanshuraikwar.nxtbuz.busarrivaldata.BusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepository
+import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.data.di.*
 import io.github.amanshuraikwar.nxtbuz.data.location.di.LocationModuleProvides
-import io.github.amanshuraikwar.nxtbuz.data.prefs.di.PrefsModuleBinds
-import io.github.amanshuraikwar.nxtbuz.data.room.di.RoomProvides
-import io.github.amanshuraikwar.nxtbuz.data.starred.di.StarredBusArrivalModule
-import io.github.amanshuraikwar.nxtbuz.data.starred.di.StarredBusArrivalProvides
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
+import io.github.amanshuraikwar.nxtbuz.map.di.MapProvides
+import io.github.amanshuraikwar.nxtbuz.onboarding.setup.di.SetupModule
+import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
+import io.github.amanshuraikwar.nxtbuz.searchdata.SearchRepository
+import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
 import javax.inject.Singleton
 
 /**
@@ -24,27 +28,35 @@ import javax.inject.Singleton
  * [AndroidSupportInjectionModule] is the module from Dagger.Android that helps with the
  * generation and location of subcomponents.
  */
-@FlowPreview
-@ExperimentalCoroutinesApi
 @Singleton
 @Component(
     modules = [
         AndroidSupportInjectionModule::class,
         AppModule::class,
         ActivityBindingModule::class,
-        ServiceBindingModule::class,
         ViewModelModule::class,
-        BusApiProvides::class,
+        RemoteDataSourceProvides::class,
         LocationModuleProvides::class,
-        PrefsModuleBinds::class,
-        RoomProvides::class,
-        BusArrivalProvides::class,
-        BusArrivalModule::class,
-        StarredBusArrivalModule::class,
-        StarredBusArrivalProvides::class,
+        PreferenceProvides::class,
+        LocalDataSourceProvides::class,
+        CoroutineProvides::class,
+        RepositoryProvides::class,
+        MapProvides::class,
+        SetupModule::class,
     ]
 )
 interface AppComponent : AndroidInjector<MainApplication> {
+    fun getLocalDataSource(): LocalDataSource
+    fun getRemoteDataSource(): RemoteDataSource
+    fun getPreferenceStorage(): PreferenceStorage
+    fun getDispatcherProvider(): CoroutinesDispatcherProvider
+    fun getBusStopRepository(): BusStopRepository
+    fun getUserRepository(): UserRepository
+    fun getBusRouteRepository(): BusRouteRepository
+    fun getBusArrivalRepository(): BusArrivalRepository
+    fun getStarredBusArrivalRepository(): StarredBusArrivalRepository
+    fun getSearchRepository(): SearchRepository
+
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance application: MainApplication): AppComponent
