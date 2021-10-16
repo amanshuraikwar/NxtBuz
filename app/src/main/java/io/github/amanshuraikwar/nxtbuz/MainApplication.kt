@@ -6,26 +6,21 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.github.amanshuraikwar.nxtbuz.di.DaggerAppComponent
+import androidx.work.Configuration
 
-/**
- * Initialization of libraries.
- */
-class MainApplication : DaggerApplication() {
-
+class MainApplication : DaggerApplication(), Configuration.Provider {
     override fun onCreate() {
 
         // ThreeTenBP for times and dates, called before super to be available for objects
         AndroidThreeTen.init(this)
 
         // Enable strict mode before Dagger creates graph
-        if (BuildConfig.DEBUG) {
-            enableStrictMode()
-        }
+        enableStrictMode()
 
         super.onCreate()
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+    override fun applicationInjector(): AndroidInjector<out MainApplication> {
         return DaggerAppComponent.factory().create(this)
     }
 
@@ -39,4 +34,13 @@ class MainApplication : DaggerApplication() {
                 .build()
         )
     }
+
+    override fun getWorkManagerConfiguration() =
+        Configuration.Builder()
+            .apply {
+                if (BuildConfig.DEBUG) {
+                    setMinimumLoggingLevel(android.util.Log.DEBUG)
+                }
+            }
+            .build()
 }

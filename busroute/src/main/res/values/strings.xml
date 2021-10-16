@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bus_route_message_loading_info">Gathering bus route info…</string>
+</resources>
