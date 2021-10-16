@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.ExperimentalAnimatedInsets
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchState
 
 @ExperimentalAnimatedInsets

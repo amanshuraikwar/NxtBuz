@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui.model
 
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusArrivals
 
 sealed class BusRouteListItemData {
     data class Header(

@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.starred
 
-import io.github.amanshuraikwar.nxtbuz.data.starred.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
 import kotlinx.coroutines.flow.SharedFlow
 import javax.inject.Inject
 

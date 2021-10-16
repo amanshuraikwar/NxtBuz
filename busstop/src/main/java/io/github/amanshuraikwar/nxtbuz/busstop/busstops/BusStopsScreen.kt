@@ -20,7 +20,7 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.Header
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
 import io.github.amanshuraikwar.nxtbuz.common.compose.rememberNxtBuzBottomSheetState
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
-import io.github.amanshuraikwar.nxtbuz.common.model.BusStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi

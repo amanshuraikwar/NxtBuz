@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.busstop
 
-import io.github.amanshuraikwar.nxtbuz.data.busstop.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
 import javax.inject.Inject
 
 class MaxDistanceOfClosesBusStopUseCase @Inject constructor(

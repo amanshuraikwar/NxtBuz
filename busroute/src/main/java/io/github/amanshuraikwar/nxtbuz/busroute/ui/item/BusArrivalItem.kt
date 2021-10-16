@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
-import io.github.amanshuraikwar.nxtbuz.common.model.arrival.BusArrivals
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusArrivals
 
 @ExperimentalAnimationApi
 @Composable

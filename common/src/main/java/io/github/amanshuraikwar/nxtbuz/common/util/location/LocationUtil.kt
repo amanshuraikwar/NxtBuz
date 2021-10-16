@@ -7,7 +7,7 @@ import android.util.Log
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
-import io.github.amanshuraikwar.nxtbuz.common.model.SettingsState
+import io.github.amanshuraikwar.nxtbuz.commonkmm.SettingsState
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.suspendCoroutine
 
