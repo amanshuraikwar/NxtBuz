@@ -10,9 +10,7 @@ class SetHomeBusStopUseCase(
         busStopCode: String,
         completion: (IosResult<Unit>) -> Unit
     ) {
-        returnIosResult(
-            completion
-        ) {
+        completion.returnIosResult {
             repo.setHomeBusStopCode(busStopCode = busStopCode)
         }
     }

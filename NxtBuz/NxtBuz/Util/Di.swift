@@ -180,8 +180,8 @@ class Di {
         )
     }
     
-    func getNearbyGoingHomeBusesUseCase() -> GetNearbyGoingHomeBusesUseCase {
-        return GetNearbyGoingHomeBusesUseCase(
+    func getNearbyGoingHomeBusesUseCase() -> IosGetNearbyGoingHomeBusesUseCase {
+        return IosGetNearbyGoingHomeBusesUseCase(
             userRepository: Di.userRepository,
             busStopRepository: Di.busStopRepository,
             busRouteRepository: Di.busRouteRepository

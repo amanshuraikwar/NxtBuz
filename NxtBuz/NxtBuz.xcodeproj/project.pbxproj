@@ -64,6 +64,8 @@
 		A5C12F1E2701D726000729E9 /* BusServiceNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1D2701D726000729E9 /* BusServiceNumberView.swift */; };
 		A5C12F202701DA38000729E9 /* ArrivingBusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1F2701DA38000729E9 /* ArrivingBusView.swift */; };
 		A5C12F22270219BA000729E9 /* DestinationBusStopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F21270219BA000729E9 /* DestinationBusStopView.swift */; };
+		A5D21834271EC6350091569E /* GoingHomeBusesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D21833271EC6340091569E /* GoingHomeBusesView.swift */; };
+		A5D21836271ED1680091569E /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D21835271ED1680091569E /* ProgressBar.swift */; };
 		A5D71BD9270F35A400761329 /* NxtBuzTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF62704B9F40035A7E5 /* NxtBuzTheme.swift */; };
 		A5D71BDC270F3C2500761329 /* ArrivingBusWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D71BDA270F3B0B00761329 /* ArrivingBusWidgetView.swift */; };
 		A5D71BDF271070D100761329 /* NotArrivingBusWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D71BDD27106FE700761329 /* NotArrivingBusWidgetView.swift */; };
@@ -191,6 +193,8 @@
 		A5C12F1D2701D726000729E9 /* BusServiceNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceNumberView.swift; sourceTree = "<group>"; };
 		A5C12F1F2701DA38000729E9 /* ArrivingBusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrivingBusView.swift; sourceTree = "<group>"; };
 		A5C12F21270219BA000729E9 /* DestinationBusStopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationBusStopView.swift; sourceTree = "<group>"; };
+		A5D21833271EC6340091569E /* GoingHomeBusesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoingHomeBusesView.swift; sourceTree = "<group>"; };
+		A5D21835271ED1680091569E /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		A5D71BDA270F3B0B00761329 /* ArrivingBusWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrivingBusWidgetView.swift; sourceTree = "<group>"; };
 		A5D71BDD27106FE700761329 /* NotArrivingBusWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotArrivingBusWidgetView.swift; sourceTree = "<group>"; };
 		A5E1E81526F10213007470A4 /* NxtBuz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NxtBuz.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -303,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */,
+				A5D21833271EC6340091569E /* GoingHomeBusesView.swift */,
 				A5F0FB1A271AD1680028F7DB /* GoingHomeBusView.swift */,
 				A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */,
 				A52FEBA826F8A61500BB79DA /* BusStopsViewModel.swift */,
@@ -335,6 +340,7 @@
 				A5144DED2706C959002274C8 /* SecondaryButton.swift */,
 				A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */,
 				A5144DF127070030002274C8 /* WarningBannerView.swift */,
+				A5D21835271ED1680091569E /* ProgressBar.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -852,11 +858,13 @@
 				A52FEBB326F9E6AE00BB79DA /* BusStopArrivalItemView.swift in Sources */,
 				A57B9A4A26FDE2B40095D96A /* StarredBusArrivalsViewModel.swift in Sources */,
 				A57B9A4426FC8B020095D96A /* StarredBusArrivalsItemView.swift in Sources */,
+				A5D21836271ED1680091569E /* ProgressBar.swift in Sources */,
 				A5E24A9F26FE2AE600ACF274 /* StarredBusArrivalsListView.swift in Sources */,
 				A52FEBB926F9F18300BB79DA /* BusArrivalErrorView.swift in Sources */,
 				A52FEBAF26F8AEA500BB79DA /* BusStopArrivalsView.swift in Sources */,
 				A57B9A4226FC8A700095D96A /* StarredBusArrivalsView.swift in Sources */,
 				A52FEB9C26F5B66E00BB79DA /* BusStopsView.swift in Sources */,
+				A5D21834271EC6350091569E /* GoingHomeBusesView.swift in Sources */,
 				A5F0FB1B271AD1680028F7DB /* GoingHomeBusView.swift in Sources */,
 				A52FEB9E26F5BB4D00BB79DA /* SetupView.swift in Sources */,
 				A5E24AA32700209300ACF274 /* StarredBusStopView.swift in Sources */,
