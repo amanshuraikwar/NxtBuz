@@ -69,50 +69,13 @@ struct BusStopsView: View {
                 )
             case .Success(let header, let busStopList, let searchResults, let lowAccuracy):
                 List {
-                    
                     if !searchResults {
                         Section(
                             header: Text("Buses going home")
                                 .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                                 .font(NxtBuzFonts.caption)
                         ) {
-                            switch viewModel.busesGoingHomeState {
-                            case .Fetching:
-                                HStack {
-                                    Text("Computing...")
-                                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
-                                        .font(NxtBuzFonts.body)
-                                    
-                                    Spacer()
-                                    
-                                    ProgressView()
-                                        .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
-                                }
-                                
-                            case .NoBusesGoingHome:
-                                Text("No direct buses found.")
-                                    .foregroundColor(Color(nxtBuzTheme.primaryColor))
-                                    .font(NxtBuzFonts.body)
-                            case .Success(let goingHomeBusList):
-                                ForEach(
-                                    Array(goingHomeBusList.enumerated()),
-                                    id: \.1
-                                ) { index, goingHomeBus in
-                                    NavigationLink(
-                                        destination: BusStopArrivalsView(
-                                            busStopCode: goingHomeBus.sourceBusStopCode
-                                        )
-                                    ) {
-                                        GoingHomeBusView(
-                                            busServiceNumber: goingHomeBus.busServiceNumber,
-                                            sourceBusStopDescription: goingHomeBus.sourceBusStopDescription,
-                                            destinationBusStopDescription: goingHomeBus.destinationBusStopDescription,
-                                            distance: goingHomeBus.distance,
-                                            stops: Int(goingHomeBus.stops)
-                                        )
-                                    }
-                                }
-                            }
+                            GoingHomeBusesView(state: $viewModel.busesGoingHomeState)
                         }
                     }
                     

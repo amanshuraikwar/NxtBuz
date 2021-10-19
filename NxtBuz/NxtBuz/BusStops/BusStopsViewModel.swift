@@ -92,16 +92,8 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
                 lng: lng
             ) { result in
                 if let result = result as? IosResultSuccess {
-                    if let goingHomeBusList = result.data as? [GoingHomeBus] {
-                        DispatchQueue.main.sync {
-                            if goingHomeBusList.isEmpty {
-                                self.busesGoingHomeState = .NoBusesGoingHome
-                            } else {
-                                self.busesGoingHomeState = .Success(goingHomeBusList: goingHomeBusList)
-                            }
-                        }
-                    } else {
-                        self.busesGoingHomeState = .NoBusesGoingHome
+                    DispatchQueue.main.sync {
+                        self.busesGoingHomeState = .Success(result: result.data!)
                     }
                 }
             }
@@ -168,9 +160,8 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
 enum BusesGoingHomeState {
     case Fetching
     case Success(
-        goingHomeBusList: [GoingHomeBus]
+        result: GoingHomeBusResult
     )
-    case NoBusesGoingHome
 }
 
 enum BusStopsScreenState {

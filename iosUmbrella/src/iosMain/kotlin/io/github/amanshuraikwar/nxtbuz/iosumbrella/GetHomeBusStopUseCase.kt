@@ -12,9 +12,7 @@ class GetHomeBusStopUseCase(
     operator fun invoke(
         completion: (IosResult<BusStop?>) -> Unit
     ) {
-        returnIosResult(
-            completion
-        ) {
+        completion.returnIosResult {
             busStopRepository.getBusStop(
                 userRepository.getHomeBusStopCode()
                     ?: return@returnIosResult null
