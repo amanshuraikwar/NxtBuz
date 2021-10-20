@@ -32,7 +32,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":commonkmm"))
-                api(project(":preferencestorage"))
+
+                implementation(project(":repository"))
+                implementation(project(":preferencestorage"))
                 implementation(Libs.Kotlin.stdlib)
                 implementation(Libs.Coroutines.core)
                 implementation(Libs.KotlinX.datetime)

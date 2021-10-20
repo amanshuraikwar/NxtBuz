@@ -1,9 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.iosumbrella
 
-import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.iosumbrella.model.IosResult
-import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
+import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 
 class GetHomeBusStopUseCase(
     private val userRepository: UserRepository,
@@ -12,10 +12,10 @@ class GetHomeBusStopUseCase(
     operator fun invoke(
         completion: (IosResult<BusStop?>) -> Unit
     ) {
-        completion.returnIosResult {
+        completion from {
             busStopRepository.getBusStop(
                 userRepository.getHomeBusStopCode()
-                    ?: return@returnIosResult null
+                    ?: return@from null
             )
         }
     }

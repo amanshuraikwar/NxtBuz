@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.domain.starred
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleStarUpdate
-import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
 import kotlinx.coroutines.flow.SharedFlow
 import javax.inject.Inject
 

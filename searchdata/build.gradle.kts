@@ -32,8 +32,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":commonkmm"))
-                api(project(":localdatasource"))
 
+                implementation(project(":localdatasource"))
+                implementation(project(":repository"))
                 implementation(Libs.Coroutines.core)
             }
         }

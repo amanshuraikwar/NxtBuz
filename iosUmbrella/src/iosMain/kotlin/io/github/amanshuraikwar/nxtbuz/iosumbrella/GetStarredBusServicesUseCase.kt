@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.iosumbrella
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusService
-import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
 
 class GetStarredBusServicesUseCase constructor(
     private val repo: StarredBusArrivalRepository

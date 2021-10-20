@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.iosumbrella
 
 import co.touchlab.stately.freeze
-import io.github.amanshuraikwar.nxtbuz.busarrivaldata.BusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 

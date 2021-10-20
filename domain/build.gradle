@@ -32,6 +32,11 @@ dependencies {
     implementation project(":userdata")
     implementation project(":busroutedata")
 
+    api project(":repository")
+    api(project(":localdatasource"))
+    api(project(":preferencestorage"))
+    api(project(":remotedatasource"))
+
     implementation Libs.Kotlin.stdlib
 
     implementation Libs.AndroidX.coreKtx

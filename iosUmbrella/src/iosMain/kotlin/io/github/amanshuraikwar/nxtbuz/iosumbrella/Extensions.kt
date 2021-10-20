@@ -72,3 +72,67 @@ inline fun <T> ((IosResult<T>) -> Unit).returnIosResultFromFlow(
         }
     }
 }
+
+inline infix fun <T> ((IosResult<T>) -> Unit).fromFlow(
+    crossinline predicate: suspend () -> Flow<T>
+) {
+    IosDataCoroutineScopeProvider.coroutineScope.launch(
+        CoroutineExceptionHandler { _, th ->
+            println(th)
+            this@fromFlow(
+                IosResult.Error<T>(
+                    // TODO-amanshuraikwar (12 Oct 2021 11:24:30 PM): handle gracefully
+                    when (th) {
+                        is IllegalDbStateException -> {
+                            "IllegalDbStateException"
+                        }
+                        is IOException -> {
+                            "IOException"
+                        }
+                        else -> {
+                            "Something went wrong."
+                        }
+                    }
+                ).freeze()
+            )
+        }
+    ) {
+        predicate().collect {
+            this@fromFlow(
+                IosResult.Success(it).freeze()
+            )
+        }
+    }
+}
+
+inline infix fun <T> ((IosResult<T>) -> Unit).from(
+    crossinline predicate: suspend () -> T
+) {
+    IosDataCoroutineScopeProvider.coroutineScope.launch(
+        CoroutineExceptionHandler { _, th ->
+            println(th)
+            this@from(
+                IosResult.Error<T>(
+                    // TODO-amanshuraikwar (12 Oct 2021 11:24:30 PM): handle gracefully
+                    when (th) {
+                        is IllegalDbStateException -> {
+                            "IllegalDbStateException"
+                        }
+                        is IOException -> {
+                            "IOException"
+                        }
+                        else -> {
+                            "Something went wrong."
+                        }
+                    }
+                ).freeze()
+            )
+        }
+    ) {
+        this@from(
+            IosResult.Success(
+                predicate()
+            ).freeze()
+        )
+    }
+}

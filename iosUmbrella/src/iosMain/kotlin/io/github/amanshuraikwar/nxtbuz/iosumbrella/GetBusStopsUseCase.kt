@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.iosumbrella
 
-import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

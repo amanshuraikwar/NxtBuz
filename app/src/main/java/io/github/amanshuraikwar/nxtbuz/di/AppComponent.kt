@@ -5,9 +5,9 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import io.github.amanshuraikwar.nxtbuz.MainApplication
-import io.github.amanshuraikwar.nxtbuz.busarrivaldata.BusArrivalRepository
-import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepository
-import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.data.di.*
 import io.github.amanshuraikwar.nxtbuz.data.location.di.LocationModuleProvides
@@ -16,9 +16,9 @@ import io.github.amanshuraikwar.nxtbuz.map.di.MapProvides
 import io.github.amanshuraikwar.nxtbuz.onboarding.setup.di.SetupModule
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
-import io.github.amanshuraikwar.nxtbuz.searchdata.SearchRepository
-import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
-import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
+import io.github.amanshuraikwar.nxtbuz.repository.SearchRepository
+import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import javax.inject.Singleton
 
 /**
