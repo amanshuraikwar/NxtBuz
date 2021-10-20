@@ -25,10 +25,6 @@ struct GoingHomeBusesView: View {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
             }
-//        case .NoBusesGoingHome:
-//            Text("No direct buses found.")
-//                .foregroundColor(Color(nxtBuzTheme.primaryColor))
-//                .font(NxtBuzFonts.body)
         case .Success(let result):
             if result is GoingHomeBusResult.NoBusStopsNearby {
                 WarningBannerView(

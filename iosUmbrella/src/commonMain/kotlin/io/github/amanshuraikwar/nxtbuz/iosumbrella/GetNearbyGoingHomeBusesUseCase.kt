@@ -1,10 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.iosumbrella
 
-import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepository
-import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.GoingHomeBus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.GoingHomeBusResult
-import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
+import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -89,7 +89,7 @@ open class GetNearbyGoingHomeBusesUseCase(
                 GoingHomeBusResult.Processing(
                     progress = 10,
                     """
-                        Analysing bus stops (0/${totalComparisons.toInt()})..."
+                        Analysing bus stops (0/${totalComparisons.toInt()})...
                     """.trimIndent()
                 )
             )

@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.busstop
 
-import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import javax.inject.Inject
 
 class BusStopsQueryLimitUseCase @Inject constructor(

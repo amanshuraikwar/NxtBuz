@@ -33,17 +33,22 @@ android {
 dependencies {
     api project(":common")
     api project(":commonkmm")
-    implementation project(":ktorremotedatasource")
-    implementation project(":sqldelightdb")
+
     api project(':localdatasource')
+    implementation project(":roomdb")
+
     api project(':remotedatasource')
+    implementation project(":ktorremotedatasource")
+
     api project(":preferencestorage")
-    api project(":busstopdata")
-    api project(":userdata")
-    api project(":busroutedata")
-    api project(":busarrivaldata")
-    api project(":starreddata")
-    api project(":searchdata")
+
+    implementation project(":repository")
+    implementation project(":searchdata")
+    implementation project(":busstopdata")
+    implementation project(":userdata")
+    implementation project(":busroutedata")
+    implementation project(":busarrivaldata")
+    implementation project(":starreddata")
 
     implementation Libs.Kotlin.stdlib
 

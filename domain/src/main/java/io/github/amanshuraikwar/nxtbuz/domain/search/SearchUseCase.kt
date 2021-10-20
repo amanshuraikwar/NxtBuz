@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.domain.search
 
-import io.github.amanshuraikwar.nxtbuz.searchdata.SearchRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.SearchResult
+import io.github.amanshuraikwar.nxtbuz.repository.SearchRepository
 import javax.inject.Inject
 
 class SearchUseCase @Inject constructor(

@@ -1,9 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.iosumbrella
 
-import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepository
-import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.SetupState
-import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
+import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlin.native.concurrent.freeze

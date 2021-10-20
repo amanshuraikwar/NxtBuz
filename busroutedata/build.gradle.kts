@@ -32,9 +32,10 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":commonkmm"))
-                api(project(":localdatasource"))
-                api(project(":remotedatasource"))
 
+                implementation(project(":repository"))
+                implementation(project(":localdatasource"))
+                implementation(project(":remotedatasource"))
                 implementation(Libs.Coroutines.core)
                 implementation(Libs.KotlinX.datetime)
             }

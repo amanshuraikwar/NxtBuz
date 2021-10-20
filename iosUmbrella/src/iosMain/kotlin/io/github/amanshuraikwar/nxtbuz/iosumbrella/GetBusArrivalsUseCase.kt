@@ -1,14 +1,14 @@
 package io.github.amanshuraikwar.nxtbuz.iosumbrella
 
 import co.touchlab.stately.freeze
-import io.github.amanshuraikwar.nxtbuz.busarrivaldata.BusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusStopArrival
 import io.github.amanshuraikwar.nxtbuz.commonkmm.exception.IllegalDbStateException
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusService
 import io.github.amanshuraikwar.nxtbuz.iosumbrella.model.IosBusStopArrival
 import io.github.amanshuraikwar.nxtbuz.iosumbrella.model.IosBusStopArrivalOutput
 import io.github.amanshuraikwar.nxtbuz.iosumbrella.model.IosResult
-import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
 import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch

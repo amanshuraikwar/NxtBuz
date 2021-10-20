@@ -6,8 +6,7 @@ import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
-import io.github.amanshuraikwar.nxtbuz.sqldelightdb.DbFactory
-import io.github.amanshuraikwar.nxtbuz.sqldelightdb.SqlDelightLocalDataSource
+import io.github.amanshuraikwar.nxtbuz.roomdb.RoomDbLocalDataSource
 import javax.inject.Singleton
 
 @Module
@@ -18,8 +17,8 @@ class LocalDataSourceProvides {
         @ApplicationContext context: Context,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): LocalDataSource {
-        return SqlDelightLocalDataSource.createInstance(
-            dbFactory = DbFactory(context),
+        return RoomDbLocalDataSource.createInstance(
+            context = context,
             ioDispatcher = dispatcherProvider.io
         )
     }

@@ -79,7 +79,7 @@ object Libs {
         }
 
         object Compose {
-            const val version = "1.0.1"
+            const val version = "1.0.4"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -87,7 +87,7 @@ object Libs {
             const val materialIcons = "androidx.compose.material:material-icons-core:$version"
             const val materialIconsExtended =
                 "androidx.compose.material:material-icons-extended:$version"
-            const val activity = "androidx.activity:activity-compose:1.3.0-alpha03"
+            const val activity = "androidx.activity:activity-compose:1.3.1"
 
             val all = listOf(
                 ui,

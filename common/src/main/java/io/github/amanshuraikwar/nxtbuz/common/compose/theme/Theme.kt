@@ -78,8 +78,6 @@ fun NxtBuzTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable
         LightColorPalette
     }
 
-    android.graphics.Color.parseColor("color").toULong() shl 32
-
     MaterialTheme(
         colors = colors,
         typography = NxtBuzTypography,

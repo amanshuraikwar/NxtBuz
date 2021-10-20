@@ -3,18 +3,24 @@ package io.github.amanshuraikwar.nxtbuz.data.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import io.github.amanshuraikwar.nxtbuz.busarrivaldata.BusArrivalRepository
-import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepository
-import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.busarrivaldata.BusArrivalRepositoryImpl
+import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepositoryImpl
+import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepositoryImpl
+import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
-import io.github.amanshuraikwar.nxtbuz.searchdata.SearchRepository
-import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.SearchRepository
+import io.github.amanshuraikwar.nxtbuz.searchdata.SearchRepositoryImpl
+import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.userdata.SystemThemeHelper
-import io.github.amanshuraikwar.nxtbuz.userdata.UserRepository
+import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
+import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepositoryImpl
+import io.github.amanshuraikwar.nxtbuz.userdata.UserRepositoryImpl
 import javax.inject.Singleton
 
 @Module
@@ -27,7 +33,7 @@ class RepositoryProvides {
         preferenceStorage: PreferenceStorage,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): BusStopRepository {
-        return BusStopRepository(
+        return BusStopRepositoryImpl(
             localDataSource = localDataSource,
             remoteDataSource = remoteDataSource,
             preferenceStorage = preferenceStorage,
@@ -42,7 +48,7 @@ class RepositoryProvides {
         preferenceStorage: PreferenceStorage,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): UserRepository {
-        return UserRepository(
+        return UserRepositoryImpl(
             preferenceStorage = preferenceStorage,
             dispatcherProvider = dispatcherProvider,
             systemThemeHelper = SystemThemeHelper(context)
@@ -56,7 +62,7 @@ class RepositoryProvides {
         remoteDataSource: RemoteDataSource,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): BusRouteRepository {
-        return BusRouteRepository(
+        return BusRouteRepositoryImpl(
             localDataSource = localDataSource,
             remoteDataSource = remoteDataSource,
             dispatcherProvider = dispatcherProvider,
@@ -70,7 +76,7 @@ class RepositoryProvides {
         remoteDataSource: RemoteDataSource,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): BusArrivalRepository {
-        return BusArrivalRepository(
+        return BusArrivalRepositoryImpl(
             localDataSource = localDataSource,
             remoteDataSource = remoteDataSource,
             dispatcherProvider = dispatcherProvider,
@@ -81,11 +87,10 @@ class RepositoryProvides {
     @Provides
     fun provideStarredBusArrivalRepository(
         localDataSource: LocalDataSource,
-        remoteDataSource: RemoteDataSource,
         preferenceStorage: PreferenceStorage,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): StarredBusArrivalRepository {
-        return StarredBusArrivalRepository(
+        return StarredBusArrivalRepositoryImpl(
             localDataSource = localDataSource,
             preferenceStorage = preferenceStorage,
             dispatcherProvider = dispatcherProvider,
@@ -98,7 +103,7 @@ class RepositoryProvides {
         localDataSource: LocalDataSource,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): SearchRepository {
-        return SearchRepository(
+        return SearchRepositoryImpl(
             localDataSource = localDataSource,
             dispatcherProvider = dispatcherProvider,
         )
