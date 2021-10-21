@@ -65,9 +65,7 @@ kotlin {
                 implementation(project(":roomdb"))
 
                 implementation(Libs.Dagger.library)
-                //implementation(Libs.Dagger.androidSupport)
                 configurations.get("kapt").dependencies.add(implementation(Libs.Dagger.compiler))
-                //configurations.get("kapt").dependencies.add(implementation(Libs.Dagger.androidProcessor))
             }
         }
         val androidTest by getting {
