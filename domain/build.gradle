@@ -27,7 +27,6 @@ android {
 dependencies {
     api project(":common")
     api project(":commonkmm")
-    implementation project(":data")
     implementation project(":busstopdata")
     implementation project(":userdata")
     implementation project(":busroutedata")
