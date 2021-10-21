@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.location
 
-import io.github.amanshuraikwar.nxtbuz.data.location.LocationEmitter
+import io.github.amanshuraikwar.nxtbuz.locationdata.LocationEmitter
 import javax.inject.Inject
 
 class CleanupLocationUpdatesUseCase @Inject constructor(

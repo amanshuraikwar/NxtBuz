@@ -8,13 +8,13 @@ import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
 import javax.inject.Singleton
 
-@Module
-class LocationModuleProvides {
-    @Provides
-    @Singleton
-    fun getFusedLocationProviderClient(
-        @ApplicationContext context: Context
-    ): FusedLocationProviderClient {
-        return LocationServices.getFusedLocationProviderClient(context)
-    }
-}
+//@Module
+//class LocationModuleProvides {
+//    @Provides
+//    @Singleton
+//    fun getFusedLocationProviderClient(
+//        @ApplicationContext context: Context
+//    ): FusedLocationProviderClient {
+//        return LocationServices.getFusedLocationProviderClient(context)
+//    }
+//}

@@ -20,10 +20,13 @@ import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.concurrent.ExecutionException
+import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val TAG = "LocationRepository"
 
-class LocationRepository constructor(
+@Singleton
+class LocationRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val fusedLocationProviderClient: FusedLocationProviderClient,
     private val preferenceStorage: PreferenceStorage,

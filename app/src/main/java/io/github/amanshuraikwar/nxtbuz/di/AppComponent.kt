@@ -9,9 +9,13 @@ import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
 import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.data.di.*
-import io.github.amanshuraikwar.nxtbuz.data.location.di.LocationModuleProvides
+import io.github.amanshuraikwar.nxtbuz.di.dagger.CoroutineProvides
+import io.github.amanshuraikwar.nxtbuz.di.dagger.LocalDataSourceProvides
+import io.github.amanshuraikwar.nxtbuz.di.dagger.PreferenceProvides
+import io.github.amanshuraikwar.nxtbuz.di.dagger.RemoteDataSourceProvides
+import io.github.amanshuraikwar.nxtbuz.di.dagger.RepositoryProvides
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
+import io.github.amanshuraikwar.nxtbuz.locationdata.di.LocationModuleProvides
 import io.github.amanshuraikwar.nxtbuz.map.di.MapProvides
 import io.github.amanshuraikwar.nxtbuz.onboarding.setup.di.SetupModule
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage

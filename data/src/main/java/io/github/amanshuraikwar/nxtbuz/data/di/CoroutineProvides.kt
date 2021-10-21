@@ -6,11 +6,11 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.DispatcherProviderFactory
 import javax.inject.Singleton
 
-@Module
-class CoroutineProvides {
-    @Singleton
-    @Provides
-    fun provideDispatcherProvider(): CoroutinesDispatcherProvider {
-        return DispatcherProviderFactory.getDispatcherProvider()
-    }
-}
+//@Module
+//class CoroutineProvides {
+//    @Singleton
+//    @Provides
+//    fun provideDispatcherProvider(): CoroutinesDispatcherProvider {
+//        return DispatcherProviderFactory.getDispatcherProvider()
+//    }
+//}

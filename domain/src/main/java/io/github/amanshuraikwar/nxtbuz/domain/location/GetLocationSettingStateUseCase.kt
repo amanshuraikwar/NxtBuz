@@ -2,7 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.domain.location
 
 import android.app.Activity
 import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationSettingsState
-import io.github.amanshuraikwar.nxtbuz.data.location.LocationRepository
+import io.github.amanshuraikwar.nxtbuz.locationdata.LocationRepository
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 

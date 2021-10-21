@@ -37,7 +37,7 @@ class AppModule {
                     BuildConfig.BUILD_TYPE.uppercase(Locale.getDefault()) +
                     ")"
         } else {
-            "${BuildConfig.VERSION_NAME}"
+            BuildConfig.VERSION_NAME
         }
     }
 
@@ -46,5 +46,12 @@ class AppModule {
     @Named("ltaAccountKey")
     fun provideLtaAccountKey(): String {
         return BuildConfig.ltaAccountKey
+    }
+
+    @Provides
+    @Singleton
+    @Named("isReleaseBuild")
+    fun provideIsReleaseBuild(): Boolean {
+        return BuildConfig.BUILD_TYPE == "release"
     }
 }

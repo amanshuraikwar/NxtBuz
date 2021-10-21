@@ -29,6 +29,11 @@ dependencies {
     api project(":commonkmm")
     implementation project(":preferencestorage")
 
+    implementation(Libs.Dagger.library)
+    implementation(Libs.Dagger.androidSupport)
+    kapt Libs.Dagger.compiler
+    kapt Libs.Dagger.androidProcessor
+
     implementation Libs.Kotlin.stdlib
     implementation Libs.Coroutines.core
 
