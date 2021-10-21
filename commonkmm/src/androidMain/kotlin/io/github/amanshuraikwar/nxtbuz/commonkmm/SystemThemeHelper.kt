@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.userdata
+package io.github.amanshuraikwar.nxtbuz.commonkmm
 
 import android.content.Context
 import android.content.res.Configuration

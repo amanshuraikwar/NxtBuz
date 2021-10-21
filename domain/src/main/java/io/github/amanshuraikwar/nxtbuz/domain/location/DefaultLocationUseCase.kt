@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.location
 
-import io.github.amanshuraikwar.nxtbuz.data.location.LocationRepository
+import io.github.amanshuraikwar.nxtbuz.locationdata.LocationRepository
 import javax.inject.Inject
 
 class DefaultLocationUseCase @Inject constructor(

@@ -12,10 +12,13 @@ import io.github.amanshuraikwar.nxtbuz.common.model.location.PermissionStatus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val TAG = "LocationEmitter"
 
-class LocationEmitter constructor(
+@Singleton
+class LocationEmitter @Inject constructor(
     private val fusedLocationProviderClient: FusedLocationProviderClient,
     private val locationRepository: LocationRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider,

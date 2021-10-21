@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.userdata
+package io.github.amanshuraikwar.nxtbuz.commonkmm
 
 actual class SystemThemeHelper {
     actual fun isSystemInDarkTheme(): Boolean {

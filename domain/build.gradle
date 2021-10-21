@@ -32,6 +32,8 @@ dependencies {
     implementation project(":userdata")
     implementation project(":busroutedata")
 
+    implementation project(":location-data-android")
+
     api project(":repository")
     api(project(":localdatasource"))
     api(project(":preferencestorage"))

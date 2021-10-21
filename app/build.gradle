@@ -131,12 +131,14 @@ android {
 }
 
 dependencies {
-    // TODO-amanshuraikwar (20 Oct 2021 11:51:24 AM): name module appropriately
     // needed for DI modules
-    implementation project(':data')
+    implementation project(':di')
 
     // entry point into lower layers
     implementation project(':domain')
+
+    // for location data
+    implementation project(":location-data-android")
 
     // UI modules
     implementation project(':onboarding')

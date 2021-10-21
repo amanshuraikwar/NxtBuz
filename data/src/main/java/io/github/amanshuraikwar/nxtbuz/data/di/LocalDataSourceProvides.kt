@@ -9,17 +9,17 @@ import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.roomdb.RoomDbLocalDataSource
 import javax.inject.Singleton
 
-@Module
-class LocalDataSourceProvides {
-    @Singleton
-    @Provides
-    fun provideRoomDbLocalDataSource(
-        @ApplicationContext context: Context,
-        dispatcherProvider: CoroutinesDispatcherProvider
-    ): LocalDataSource {
-        return RoomDbLocalDataSource.createInstance(
-            context = context,
-            ioDispatcher = dispatcherProvider.io
-        )
-    }
-}
+//@Module
+//class LocalDataSourceProvides {
+//    @Singleton
+//    @Provides
+//    fun provideRoomDbLocalDataSource(
+//        @ApplicationContext context: Context,
+//        dispatcherProvider: CoroutinesDispatcherProvider
+//    ): LocalDataSource {
+//        return RoomDbLocalDataSource.createInstance(
+//            context = context,
+//            ioDispatcher = dispatcherProvider.io
+//        )
+//    }
+//}

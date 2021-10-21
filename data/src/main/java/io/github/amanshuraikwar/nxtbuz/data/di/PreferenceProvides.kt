@@ -8,13 +8,13 @@ import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.SettingsFactory
 import javax.inject.Singleton
 
-@Module
-class PreferenceProvides {
-    @Singleton
-    @Provides
-    fun providePreferenceStorage(
-        @ApplicationContext context: Context
-    ): PreferenceStorage {
-        return SettingsFactory(context).createPreferenceStorage()
-    }
-}
+//@Module
+//class PreferenceProvides {
+//    @Singleton
+//    @Provides
+//    fun providePreferenceStorage(
+//        @ApplicationContext context: Context
+//    ): PreferenceStorage {
+//        return SettingsFactory(context).createPreferenceStorage()
+//    }
+//}

@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.location
 
-import io.github.amanshuraikwar.nxtbuz.data.location.LocationEmitter
+import io.github.amanshuraikwar.nxtbuz.locationdata.LocationEmitter
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
