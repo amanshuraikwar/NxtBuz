@@ -29,7 +29,7 @@ import javax.inject.Named
 private const val TAG = "NxtBuzMapViewModel"
 
 class NxtBuzMapViewModel @Inject constructor(
-    private val defaultLocationUseCase: DefaultLocationUseCase,
+    private val defaultLocationUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase,
     private val defaultMapZoomUseCase: DefaultMapZoomUseCase,
     @Named("mapEventFlow") private val mapEventFlow: MutableSharedFlow<MapEvent>,
     @Named("mapCenter") private val mapCenter: MutableStateFlow<LatLng?>,

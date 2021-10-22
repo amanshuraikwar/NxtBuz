@@ -166,8 +166,8 @@ class Di {
         )
     }
     
-    func getThemeUseCase() -> GetThemeUseCase {
-        return GetThemeUseCase(dynamoThemeRepository: Di.dynamoThemeRepository)
+    func getThemeUseCase() -> GetDynamoThemeUseCase {
+        return GetDynamoThemeUseCase(dynamoThemeRepository: Di.dynamoThemeRepository)
     }
     
     func getOperatingBusServicesUseCase() -> IosGetOperatingBusServicesUseCase {

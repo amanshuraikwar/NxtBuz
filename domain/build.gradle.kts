@@ -5,6 +5,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
+    kotlin("kapt")
 }
 
 version = "1.0"
@@ -50,14 +51,26 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                api(project(":common"))
+                implementation(project(":location-data-android"))
+
+                implementation(Libs.Dagger.library)
+                configurations.get("kapt").dependencies.add(implementation(Libs.Dagger.compiler))
+            }
+        }
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosMain by getting
+        val iosMain by getting {
+            dependencies {
+                implementation(project(":dynamo"))
+            }
+        }
         val iosTest by getting
     }
 }

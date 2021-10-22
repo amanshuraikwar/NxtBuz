@@ -13,15 +13,14 @@ import io.github.amanshuraikwar.nxtbuz.domain.map.PushMapEventUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "LocationVMDelegate"
 
 class LocationViewModelDelegate @Inject constructor(
-    private val getLocationUpdatesUseCase: GetLocationUpdatesUseCase,
-    private val getLastKnownLocationUseCase: GetLastKnownLocationUseCase,
+    private val getLocationUpdatesUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUpdatesUseCase,
+    private val getLastKnownLocationUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
     dispatcherProvider: CoroutinesDispatcherProvider,
 ) {

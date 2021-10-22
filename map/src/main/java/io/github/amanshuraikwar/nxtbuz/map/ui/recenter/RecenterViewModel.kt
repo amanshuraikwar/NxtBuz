@@ -15,17 +15,16 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "RecenterViewModel"
 
 class RecenterViewModel @Inject constructor(
-    private val getLastKnownLocationUseCase: GetLastKnownLocationUseCase,
+    private val getLastKnownLocationUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
-    private val locationPermissionStatusUseCase: LocationPermissionStatusUseCase,
-    private val getLocationUpdatesUseCase: GetLocationUpdatesUseCase,
+    private val locationPermissionStatusUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionStatusUseCase,
+    private val getLocationUpdatesUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUpdatesUseCase,
     dispatcherProvider: CoroutinesDispatcherProvider,
 ) : ViewModel() {
     private val _recenterButtonState =
