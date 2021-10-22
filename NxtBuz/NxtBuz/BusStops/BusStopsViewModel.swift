@@ -73,15 +73,22 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
             lat: lat,
             lon: lng,
             limit: 50
-        ) { busStopList in
-            DispatchQueue.main.sync {
-                self.busStopsScreenState =
-                    .Success(
-                        header: "Nearby Bus Stops",
-                        busStopList: busStopList,
-                        searchResults: false,
-                        locationLowAccuracy: lowAccuracy
-                    )
+        ) { result in
+            let useCaseResult = Util.toUseCaseResult(result)
+            switch useCaseResult {
+            case .Error(let message):
+                print(message)
+            case .Success(let data):
+                let busStopList = data.compactMap({ $0 as? BusStop })
+                Util.onMain {
+                    self.busStopsScreenState =
+                        .Success(
+                            header: "Nearby Bus Stops",
+                            busStopList: busStopList,
+                            searchResults: false,
+                            locationLowAccuracy: lowAccuracy
+                        )
+                }
             }
         }
         
@@ -91,9 +98,13 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
                 lat: lat,
                 lng: lng
             ) { result in
-                if let result = result as? IosResultSuccess {
-                    DispatchQueue.main.sync {
-                        self.busesGoingHomeState = .Success(result: result.data!)
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Error(let message):
+                    print(message)
+                case .Success(let data):
+                    Util.onMain {
+                        self.busesGoingHomeState = .Success(result: data)
                     }
                 }
             }
@@ -114,23 +125,23 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
             .invoke(
                 query: searchString,
                 limit: 50
-            ) { searchOutput in
-                if let success = searchOutput as? IosSearchOutput.Success {
-                    DispatchQueue.main.sync {
+            ) { result in
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Error(let message):
+                    print(message)
+                    Util.onMain {
+                        self.busStopsScreenState = .Error(errorMessage: message)
+                    }
+                case .Success(let searchResult):
+                    Util.onMain {
                         self.busStopsScreenState =
                             .Success(
                                 header: "Matching Bus Stops",
-                                busStopList: success.searchResult.busStopList,
+                                busStopList: searchResult.busStopList,
                                 searchResults: true,
                                 locationLowAccuracy: false
                             )
-                    }
-                }
-                
-                if let error = searchOutput as? IosSearchOutput.Error {
-                    print(error.message)
-                    DispatchQueue.main.sync {
-                        self.busStopsScreenState = .Error(errorMessage: error.message)
                     }
                 }
             }
@@ -152,7 +163,13 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
             .invoke(
                 busStopCode: busStopCode
             ) { result in
-                // do nothing
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Error(let message):
+                    print(message)
+                case .Success(_):
+                    print("set home bus stop \(busStopCode) success")
+                }
             }
     }
 }

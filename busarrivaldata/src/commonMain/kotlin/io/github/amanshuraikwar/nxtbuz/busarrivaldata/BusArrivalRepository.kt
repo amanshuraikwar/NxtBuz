@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busarrivaldata
 
+import io.github.amanshuraikwar.nxtbuz.commonkmm.Bus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.*
@@ -17,12 +18,14 @@ class BusArrivalRepositoryImpl constructor(
     private val remoteDataSource: RemoteDataSource,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : BusArrivalRepository {
-    override suspend fun getOperatingBusServices(busStopCode: String): List<String> {
+    override suspend fun getOperatingBusServices(busStopCode: String): List<Bus> {
         return withContext(dispatcherProvider.io) {
             localDataSource
                 .findOperatingBuses(busStopCode)
                 .map { operatingBusEntity ->
-                    operatingBusEntity.busServiceNumber
+                    Bus(
+                        serviceNumber = operatingBusEntity.busServiceNumber
+                    )
                 }
         }
     }

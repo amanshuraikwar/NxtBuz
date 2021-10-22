@@ -16,27 +16,22 @@ class SettingsViewModel : ObservableObject {
         Di.get()
             .getHomeBusStopUseCase()
             .invoke { result in
-                if let result = result as? IosResultSuccess {
-                    if let busStop = result.data {
-                        DispatchQueue.main.sync {
-                            self.homeStopState = .Success(
-                                desc: busStop.description_,
-                                roadName: busStop.roadName,
-                                busStopCode: busStop.code
-                            )
-                        }
-                    } else {
-                        DispatchQueue.main.sync {
-                            self.homeStopState = .NoBusStop
-                        }
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Error(_):
+                    Util.onMain {
+                        self.homeStopState = .NoBusStop
+                    }
+                case .Success(let data):
+                    let busStop = data
+                    Util.onMain {
+                        self.homeStopState = .Success(
+                            desc: busStop.description_,
+                            roadName: busStop.roadName,
+                            busStopCode: busStop.code
+                        )
                     }
                 }
-                
-//                if let result = result as? IosResultError {
-//                    DispatchQueue.main.sync {
-//                        homeStopState = .NoBusStop
-//                    }
-//                }
             }
     }
 }

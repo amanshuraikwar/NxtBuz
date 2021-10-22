@@ -6,7 +6,7 @@ import io.github.amanshuraikwar.nxtbuz.sqldelightdb.DbFactory
 import io.github.amanshuraikwar.nxtbuz.sqldelightdb.SqlDelightLocalDataSource
 
 actual object LocalDataSourceProvides {
-    actual fun provideRoomDbLocalDataSource(
+    actual fun provideLocalDataSource(
         localDataSourceParams: LocalDataSourceParams,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): LocalDataSource {
