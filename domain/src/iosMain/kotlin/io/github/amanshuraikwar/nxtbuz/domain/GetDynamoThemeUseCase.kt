@@ -1,11 +1,11 @@
-package io.github.amanshuraikwar.nxtbuz.iosumbrella
+package io.github.amanshuraikwar.nxtbuz.domain
 
 import io.github.amanshuraikwar.dynamo.DynamoTheme
 import io.github.amanshuraikwar.dynamo.DynamoThemeRepository
 import io.github.amanshuraikwar.nxtbuz.domain.fromFlow
 import io.github.amanshuraikwar.nxtbuz.domain.model.IosResult
 
-class GetThemeUseCase(
+class GetDynamoThemeUseCase(
     private val dynamoThemeRepository: DynamoThemeRepository
 ) {
     fun getThemeSync(): DynamoTheme {
