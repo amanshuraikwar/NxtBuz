@@ -5,7 +5,7 @@ import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.roomdb.RoomDbLocalDataSource
 
 actual object LocalDataSourceProvides {
-    actual fun provideRoomDbLocalDataSource(
+    actual fun provideLocalDataSource(
         localDataSourceParams: LocalDataSourceParams,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): LocalDataSource {

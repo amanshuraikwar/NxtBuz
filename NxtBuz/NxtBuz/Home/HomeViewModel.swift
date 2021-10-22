@@ -13,24 +13,28 @@ import SwiftUI
 class HomeViewModel : ObservableObject {
     @Published var screenState: HomeScreenState = HomeScreenState.Fetching
     @Published var tabSelection = 1
-    
-    private let getUserStateUseCase = Di.get().getUserStateUserCase()
-    
+        
     @Published var busStopArrivalsSheetData: BusStopArrivalsSheetData? = nil
     
     @Published var showingAlert: Bool = false
     
     func getUserState() {
-        getUserStateUseCase.invoke { userState in
-            if (userState is UserState.New) {
-                DispatchQueue.main.async {
-                    self.screenState = HomeScreenState.Setup
+        Di.get().getUserStateUserCase().invoke { result in
+            let useCaseResult = Util.toUseCaseResult(result)
+            switch useCaseResult {
+            case .Error(let message):
+                print(message)
+            case .Success(let userState):
+                if (userState is UserState.New) {
+                    DispatchQueue.main.async {
+                        self.screenState = HomeScreenState.Setup
+                    }
                 }
-            }
-            
-            if (userState is UserState.SetupComplete) {
-                DispatchQueue.main.async {
-                    self.screenState = HomeScreenState.BusStops
+                
+                if (userState is UserState.SetupComplete) {
+                    DispatchQueue.main.async {
+                        self.screenState = HomeScreenState.BusStops
+                    }
                 }
             }
         }

@@ -14,7 +14,7 @@ import javax.inject.Singleton
 class LocalDataSourceProvides {
     @Singleton
     @Provides
-    fun provideRoomDbLocalDataSource(
+    fun provideLocalDataSource(
         @ApplicationContext context: Context,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): LocalDataSource {
