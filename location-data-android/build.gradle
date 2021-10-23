@@ -26,7 +26,7 @@ android {
 
 dependencies {
     api project(':common-android')
-    api project(":commonkmm")
+    api project(':common')
     implementation project(":preferencestorage")
 
     implementation(Libs.Dagger.library)
