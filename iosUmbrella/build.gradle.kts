@@ -20,7 +20,7 @@ kotlin {
 
     iosTarget("ios") {
         binaries.withType<org.jetbrains.kotlin.gradle.plugin.mpp.Framework> {
-            export(project(":commonkmm"))
+            export(project(":common"))
             export(project(":domain"))
             export(project(":di"))
             export(project(":localdatasource"))
@@ -45,7 +45,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":commonkmm"))
+                api(project(":common"))
                 api(project(":domain"))
                 api(project(":di"))
                 api(project(":localdatasource"))
