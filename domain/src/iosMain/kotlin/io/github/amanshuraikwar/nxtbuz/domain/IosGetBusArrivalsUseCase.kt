@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.domain
 
 import io.github.amanshuraikwar.nxtbuz.domain.arrivals.GetBusArrivalsUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.arrivals.BusStopArrivalResult
+import io.github.amanshuraikwar.nxtbuz.domain.arrivals.model.BusStopArrivalResult
 import io.github.amanshuraikwar.nxtbuz.domain.model.IosResult
 import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository

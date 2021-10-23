@@ -23,13 +23,21 @@ class SettingsViewModel : ObservableObject {
                         self.homeStopState = .NoBusStop
                     }
                 case .Success(let data):
-                    let busStop = data
-                    Util.onMain {
-                        self.homeStopState = .Success(
-                            desc: busStop.description_,
-                            roadName: busStop.roadName,
-                            busStopCode: busStop.code
-                        )
+                    if let success = data as? HomeBusStopResult.Success {
+                        let busStop = success.busStop
+                        Util.onMain {
+                            self.homeStopState = .Success(
+                                desc: busStop.description_,
+                                roadName: busStop.roadName,
+                                busStopCode: busStop.code
+                            )
+                        }
+                    }
+                    
+                    if let success = data as? HomeBusStopResult.NotSet {
+                        Util.onMain {
+                            self.homeStopState = .NoBusStop
+                        }
                     }
                 }
             }
