@@ -53,7 +53,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api(project(":common"))
+                api(project(":common-android"))
                 implementation(project(":location-data-android"))
 
                 implementation(Libs.Dagger.library)
