@@ -35,6 +35,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":commonkmm"))
+                api(project(":domain"))
 
                 api(project(":localdatasource"))
 
@@ -63,6 +64,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(project(":roomdb"))
+                implementation(project(":location-data-android"))
 
                 implementation(Libs.Dagger.library)
                 configurations.get("kapt").dependencies.add(implementation(Libs.Dagger.compiler))

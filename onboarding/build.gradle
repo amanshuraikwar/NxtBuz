@@ -42,9 +42,11 @@ android {
 }
 
 dependencies {
-    implementation project(':domain-android')
+    implementation project(':di')
 
     Libs.Kotlin.stdlib
+
+    implementation Libs.AndroidX.coreKtx
 
     implementation Libs.Coroutines.core
     implementation Libs.Coroutines.android
@@ -59,6 +61,8 @@ dependencies {
 
     api Libs.AndroidX.Work.runtime
     api Libs.AndroidX.Work.ktx
+
+    implementation "com.google.guava:guava:27.1-jre"
 
     for (dependency in Libs.AndroidX.Compose.all) {
         implementation dependency

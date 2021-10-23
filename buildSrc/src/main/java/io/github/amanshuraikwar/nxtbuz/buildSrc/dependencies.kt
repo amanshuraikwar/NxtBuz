@@ -3,9 +3,9 @@
 package io.github.amanshuraikwar.nxtbuz.buildSrc
 
 object Libs {
-    const val compileSdk = 30
+    const val compileSdk = 31
     const val minSdk = 23
-    const val targetSdk = 30
+    const val targetSdk = 31
 
     const val iosMinDeploymentTarget = "14.1"
 
@@ -51,7 +51,7 @@ object Libs {
 
     object AndroidX {
         object Work {
-            private const val version = "2.7.0-alpha04"
+            private const val version = "2.7.0"
             const val runtime = "androidx.work:work-runtime:$version"
             const val ktx = "androidx.work:work-runtime-ktx:$version"
         }

@@ -31,13 +31,13 @@ private const val TAG = "BusStopsViewModel"
 class BusStopsViewModel @Inject constructor(
     private val getBusStopsUseCase: GetBusStopsUseCase,
     private val busStopsQueryLimitUseCase: BusStopsQueryLimitUseCase,
-    private val getDefaultLocationUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase,
-    private val getLocationSettingStateUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationSettingStateUseCase,
-    private val locationPermissionStatusUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionStatusUseCase,
+    private val getDefaultLocationUseCase: DefaultLocationUseCase,
+    private val getLocationSettingStateUseCase: GetLocationSettingStateUseCase,
+    private val locationPermissionStatusUseCase: LocationPermissionStatusUseCase,
     private val permissionUtil: PermissionUtil,
     private val navigationUtil: NavigationUtil,
-    private val getLastKnownLocationUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCase,
-    private val locationPermissionDeniedPermanentlyUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionDeniedPermanentlyUseCase,
+    private val getLastKnownLocationUseCase: GetLastKnownLocationUseCase,
+    private val locationPermissionDeniedPermanentlyUseCase: LocationPermissionDeniedPermanentlyUseCase,
     dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, th ->
