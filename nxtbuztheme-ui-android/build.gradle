@@ -24,6 +24,6 @@ android {
 }
 
 dependencies {
-    implementation project(':basetheme')
+    implementation project(':basetheme-ui-android')
     implementation Libs.Google.material
 }

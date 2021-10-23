@@ -135,18 +135,18 @@ dependencies {
     implementation project(':di')
 
     // UI modules
-    implementation project(':onboarding')
-    implementation project(':search')
-    implementation project(':starred')
-    implementation project(':settings')
-    implementation project(':map')
-    implementation project(':busstop')
-    implementation project(':busroute')
+    implementation project(':onboarding-ui-android')
+    implementation project(':search-ui-android')
+    implementation project(':starred-ui-android')
+    implementation project(':settings-ui-android')
+    implementation project(':map-ui-android')
+    implementation project(':busstop-ui-android')
+    implementation project(':busroute-ui-android')
 
     // theme modules
-    debugImplementation project(':basetheme')
-    internalImplementation project(':basetheme')
-    implementation project(':nxtbuztheme')
+    debugImplementation project(':basetheme-ui-android')
+    internalImplementation project(':basetheme-ui-android')
+    implementation project(':nxtbuztheme-ui-android')
 
     implementation Libs.Kotlin.stdlib
 
