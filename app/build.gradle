@@ -134,9 +134,6 @@ dependencies {
     // needed for DI modules
     implementation project(':di')
 
-    // for location data
-    implementation project(":location-data-android")
-
     // UI modules
     implementation project(':onboarding')
     implementation project(':search')

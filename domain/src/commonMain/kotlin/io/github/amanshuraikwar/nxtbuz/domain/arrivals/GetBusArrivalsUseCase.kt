@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.arrivals
 
+import io.github.amanshuraikwar.nxtbuz.domain.arrivals.model.BusStopArrivalResult
 import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
 import kotlinx.coroutines.CoroutineStart
