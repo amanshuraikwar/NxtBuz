@@ -19,8 +19,8 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
-import io.github.amanshuraikwar.nxtbuz.domain.busarrival.BusServiceArrivalsLoop
-import io.github.amanshuraikwar.nxtbuz.domain.busarrival.GetBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.arrivals.BusServiceArrivalsLoop
+import io.github.amanshuraikwar.nxtbuz.domain.arrivals.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.PushMapEventUseCase

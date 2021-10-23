@@ -134,9 +134,6 @@ dependencies {
     // needed for DI modules
     implementation project(':di')
 
-    // entry point into lower layers
-    implementation project(':domain-android')
-
     // for location data
     implementation project(":location-data-android")
 

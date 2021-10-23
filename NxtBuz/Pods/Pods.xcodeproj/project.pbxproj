@@ -462,6 +462,60 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		1D5236C10F7FE7F4C4B310661D7B006C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6693223BFDD9FAFD65C96547A934123B /* iosUmbrella.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2AF71B568F5CD7E08A43143420796E5A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4AB480418557329A9A956ED06F48458F /* Pods-NxtBuz.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		515C733D0ABF010850DE20B74FB26708 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0F95307BB61514F166FA7A477FCFB97C /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */;
@@ -599,27 +653,6 @@
 			};
 			name = Release;
 		};
-		79A0ECC72E1D264E0E3FC45D7A97A803 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6693223BFDD9FAFD65C96547A934123B /* iosUmbrella.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
-				);
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 		829A55AB91632711F0A88A61E05B2E58 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 08E09B42A58EFF68A0C9F756A2D05A60 /* Pods-SelectBusArrival.debug.xcconfig */;
@@ -656,28 +689,6 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
-		};
-		86D271E97CDF997873B10D0AC15A903B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA87808EA057395999F67DDF5F8494AB /* iosUmbrella.release.xcconfig */;
-			buildSettings = {
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
-				);
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
 		};
 		99A9EBFED439E2D317CE7060E2370136 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -783,56 +794,29 @@
 			};
 			name = Debug;
 		};
-		E9AF46DF6B7AE281F6572A23EE47CE0A /* Debug */ = {
+		A4BF56C96BA30F8E021B9F0C882BCEE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4AB480418557329A9A956ED06F48458F /* Pods-NxtBuz.debug.xcconfig */;
+			baseConfigurationReference = AA87808EA057395999F67DDF5F8494AB /* iosUmbrella.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
-				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
 				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
+				VALIDATE_PRODUCT = YES;
 			};
-			name = Debug;
+			name = Release;
 		};
-		FBD737DE0D466C24264091CADFD0B4E9 /* Release */ = {
+		D4F908718A6E84E9C1DDB2D5866D88B4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8D4CC87A17BD2C53E45D75005115C52D /* Pods-NxtBuz.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
-				);
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -881,8 +865,8 @@
 		657C51589D61F9D0CAC0707DEC40F059 /* Build configuration list for PBXNativeTarget "Pods-NxtBuz" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E9AF46DF6B7AE281F6572A23EE47CE0A /* Debug */,
-				FBD737DE0D466C24264091CADFD0B4E9 /* Release */,
+				2AF71B568F5CD7E08A43143420796E5A /* Debug */,
+				D4F908718A6E84E9C1DDB2D5866D88B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -908,8 +892,8 @@
 		F249AAB42C5FE2B45F6605FCC30BADB1 /* Build configuration list for PBXAggregateTarget "iosUmbrella" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				79A0ECC72E1D264E0E3FC45D7A97A803 /* Debug */,
-				86D271E97CDF997873B10D0AC15A903B /* Release */,
+				1D5236C10F7FE7F4C4B310661D7B006C /* Debug */,
+				A4BF56C96BA30F8E021B9F0C882BCEE1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

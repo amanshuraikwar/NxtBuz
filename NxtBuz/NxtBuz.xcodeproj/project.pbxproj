@@ -41,6 +41,7 @@
 		A55AACF72704B9F40035A7E5 /* NxtBuzTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF62704B9F40035A7E5 /* NxtBuzTheme.swift */; };
 		A55AACF92704BEB90035A7E5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF82704BEB90035A7E5 /* HomeView.swift */; };
 		A55AACFB27060EB80035A7E5 /* AppearanceModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACFA27060EB80035A7E5 /* AppearanceModifier.swift */; };
+		A5782DF527243CD200B6FE47 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9926F5B1C800BB79DA /* Font.swift */; };
 		A57B9A1826FB4BCF0095D96A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A1726FB4BCE0095D96A /* SettingsView.swift */; };
 		A57B9A1F26FB50870095D96A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A57B9A1E26FB50870095D96A /* WidgetKit.framework */; };
 		A57B9A2126FB50870095D96A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A57B9A2026FB50870095D96A /* SwiftUI.framework */; };
@@ -639,7 +640,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1300;
 				TargetAttributes = {
 					A534608A2707495400A1C990 = {
 						CreatedOnToolsVersion = 13.0;
@@ -812,6 +813,7 @@
 			files = (
 				A53460902707495400A1C990 /* IntentHandler.swift in Sources */,
 				A53460AC27074A0500A1C990 /* NxtBuz_Widget.intentdefinition in Sources */,
+				A5782DF527243CD200B6FE47 /* Font.swift in Sources */,
 				A53460AE270750E000A1C990 /* Di.swift in Sources */,
 				A5E15D59272299B5005A67FB /* Util.swift in Sources */,
 				A5E15D5C272299E0005A67FB /* UseCaseResult.swift in Sources */,
@@ -1284,10 +1286,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = "Next Bus SG Debug";
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
-				);
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconDebug;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1330,10 +1328,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = "Next Bus SG";
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
-				);
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIcon;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

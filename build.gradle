@@ -2,7 +2,7 @@ import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
 
 buildscript {
     ext.buildConfig = [
-            'compileSdk': 30,
+            'compileSdk': 31,
             'minSdk'    : 23,
             'targetSdk' : 31,
     ]
@@ -41,6 +41,11 @@ buildscript {
 }
 
 allprojects {
+    configurations.all {
+        resolutionStrategy {
+            force("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
+        }
+    }
     repositories {
         google()
         mavenCentral()

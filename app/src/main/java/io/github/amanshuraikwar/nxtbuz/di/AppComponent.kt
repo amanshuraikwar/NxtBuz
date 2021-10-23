@@ -9,6 +9,7 @@ import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
 import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.di.dagger.*
 import io.github.amanshuraikwar.nxtbuz.di.dagger.CoroutineProvides
 import io.github.amanshuraikwar.nxtbuz.di.dagger.LocalDataSourceProvides
 import io.github.amanshuraikwar.nxtbuz.di.dagger.PreferenceProvides

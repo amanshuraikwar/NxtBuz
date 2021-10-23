@@ -18,7 +18,7 @@ class LocalDataSourceProvides {
         @ApplicationContext context: Context,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): LocalDataSource {
-        return LocalDataSourceProvides.provideRoomDbLocalDataSource(
+        return LocalDataSourceProvides.provideLocalDataSource(
             localDataSourceParams = LocalDataSourceParams(context = context),
             dispatcherProvider = dispatcherProvider
         )
