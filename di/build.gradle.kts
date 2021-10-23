@@ -63,7 +63,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api(project(":location-data-android"))
+                api(project(":locationdata-android"))
 
                 implementation(project(":roomdb"))
 

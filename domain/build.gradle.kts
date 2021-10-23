@@ -54,7 +54,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 api(project(":common-android"))
-                implementation(project(":location-data-android"))
+                implementation(project(":locationdata-android"))
 
                 implementation(Libs.Dagger.library)
                 configurations.get("kapt").dependencies.add(implementation(Libs.Dagger.compiler))
