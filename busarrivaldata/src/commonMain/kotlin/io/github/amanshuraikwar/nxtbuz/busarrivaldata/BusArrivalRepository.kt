@@ -124,39 +124,43 @@ class BusArrivalRepositoryImpl constructor(
             // this bus does not arrive at the bus stop
             ?: return false
 
-        var operating = true
-
-        when {
+        return when {
             TimeUtil.isWeekday() -> {
-                if (wdFirstBus != null) {
-                    operating = operating && wdFirstBus.isBefore(Clock.System.now())
-                }
-
-                if (wdLastBus != null) {
-                    operating = operating && wdLastBus.isAfter(Clock.System.now())
+                if (wdFirstBus != null && wdLastBus != null) {
+                    Clock.System.now().isInBetween(wdFirstBus, wdLastBus)
+                } else {
+                    true
                 }
             }
             TimeUtil.isSaturday() -> {
-                if (satFirstBus != null) {
-                    operating = operating && satFirstBus.isBefore(Clock.System.now())
-                }
-
-                if (satLastBus != null) {
-                    operating = operating && satLastBus.isAfter(Clock.System.now())
+                if (satFirstBus != null && satLastBus != null) {
+                    Clock.System.now().isInBetween(satFirstBus, satLastBus)
+                } else {
+                    true
                 }
             }
             TimeUtil.isSunday() -> {
-                if (sunFirstBus != null) {
-                    operating = operating && sunFirstBus.isBefore(Clock.System.now())
-                }
-
-                if (sunLastBus != null) {
-                    operating = operating && sunLastBus.isAfter(Clock.System.now())
+                if (sunFirstBus != null && sunLastBus != null) {
+                    Clock.System.now().isInBetween(sunFirstBus, sunLastBus)
+                } else {
+                    true
                 }
             }
+            else -> {
+                true
+            }
         }
+    }
 
-        return operating
+    fun Instant.isInBetween(first: LocalHourMinute, last: LocalHourMinute): Boolean {
+        return when {
+            first.hour < last.hour -> {
+                isAfter(first) && isBefore(last)
+            }
+            else -> {
+                !(isBefore(first) && isAfter(last))
+            }
+        }
     }
 
     private suspend inline fun BusArrivalItemDto.toBusArrival(

@@ -22,6 +22,6 @@ sealed class GoingHomeBusResult {
     ) : GoingHomeBusResult()
 
     data class Success(
-        val goingHomeBuses: List<GoingHomeBus>
+        val directBuses: List<DirectBus>
     ) : GoingHomeBusResult()
 }

@@ -1,14 +1,14 @@
 package io.github.amanshuraikwar.nxtbuz.domain.busstop
 
-import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
-import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
-import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.GoingHomeBus
+import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.DirectBus
+import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.DirectBusesResult
 import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.GoingHomeBusResult
 import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 open class GetNearbyGoingHomeBusesUseCase(
     private val userRepository: UserRepository,
@@ -97,71 +97,139 @@ open class GetNearbyGoingHomeBusesUseCase(
                 )
             )
 
-            val goingHomeBusList = mutableListOf<GoingHomeBus>()
+            val goingHomeBusList = mutableListOf<DirectBus>()
             val busServiceNumberSet = mutableSetOf<String>()
 
             var comparisonCount = 0F
 
             homeBusStopList.forEach { homeBusStop ->
                 sourceBusStopList.forEach busStop@{ busStop ->
-                    busStop.operatingBusList.forEach operatingBus@{ bus ->
-                        if (busServiceNumberSet.contains(bus.serviceNumber)) {
-                            return@operatingBus
-                        }
-
-                        val busRoute = busRouteRepository.getBusRoute(
-                            busServiceNumber = bus.serviceNumber,
-                            busStopCode = busStop.code
+                    when (
+                        val directBusesResult = busStopRepository.getDirectBuses(
+                            sourceBusStopCode = busStop.code,
+                            destinationBusStopCode = homeBusStop.code
                         )
-
-                        val homeBusStopNode =
-                            busRoute.busRouteNodeList
-                                .find {
-                                    it.busStopCode == homeBusStop.code
-                                }
-                                ?: return@operatingBus
-
-                        val busStopNode =
-                            busRoute.busRouteNodeList
-                                .find { busRouteNode ->
-                                    busRouteNode.busStopCode == busStop.code
-                                }
-                                ?: return@operatingBus
-
-                        if (homeBusStopNode.direction != busStopNode.direction) {
-                            return@operatingBus
+                    ) {
+                        DirectBusesResult.NoDirectBuses -> {
+                            // do nothing
                         }
+                        DirectBusesResult.NotCachedYet -> {
+                            val directBusList = mutableListOf<DirectBus>()
 
-                        if (homeBusStopNode.stopSequence < busStopNode.stopSequence) {
-                            return@operatingBus
-                        }
-
-                        val diffBusStopNumber =
-                            homeBusStopNode.stopSequence - busStopNode.stopSequence
-                        val distance = homeBusStopNode.distance - busStopNode.distance
-
-                        busServiceNumberSet.add(bus.serviceNumber)
-
-                        val busOperating =
-                            busArrivalRepository
-                                .isBusOperating(
-                                    busStopCode = busStop.code,
-                                    busServiceNumber = bus.serviceNumber
-                                )
-
-                        // only add bus if its operating
-                        if (busOperating) {
-                            goingHomeBusList.add(
-                                GoingHomeBus(
-                                    sourceBusStopDescription = busStop.description,
-                                    sourceBusStopCode = busStop.code,
-                                    destinationBusStopDescription = homeBusStop.description,
-                                    destinationBusStopCode = homeBusStop.code,
+                            busStop.operatingBusList.forEach operatingBus@{ bus ->
+                                val busRoute = busRouteRepository.getBusRoute(
                                     busServiceNumber = bus.serviceNumber,
-                                    stops = diffBusStopNumber,
-                                    distance = distance
+                                    busStopCode = busStop.code
                                 )
-                            )
+
+                                val homeBusStopNode =
+                                    busRoute.busRouteNodeList
+                                        .find {
+                                            it.busStopCode == homeBusStop.code
+                                        }
+                                        ?: return@operatingBus
+
+                                val busStopNode =
+                                    busRoute.busRouteNodeList
+                                        .find { busRouteNode ->
+                                            busRouteNode.busStopCode == busStop.code
+                                        }
+                                        ?: return@operatingBus
+
+                                if (homeBusStopNode.direction != busStopNode.direction) {
+                                    return@operatingBus
+                                }
+
+                                if (homeBusStopNode.stopSequence < busStopNode.stopSequence) {
+                                    return@operatingBus
+                                }
+
+                                val diffBusStopNumber =
+                                    homeBusStopNode.stopSequence - busStopNode.stopSequence
+                                val distance = homeBusStopNode.distance - busStopNode.distance
+
+                                directBusList.add(
+                                    DirectBus(
+                                        sourceBusStopDescription = busStop.description,
+                                        sourceBusStopCode = busStop.code,
+                                        destinationBusStopDescription = homeBusStop.description,
+                                        destinationBusStopCode = homeBusStop.code,
+                                        busServiceNumber = bus.serviceNumber,
+                                        stops = diffBusStopNumber,
+                                        distance = distance
+                                    )
+                                )
+
+                                if (busServiceNumberSet.contains(bus.serviceNumber)) {
+                                    return@operatingBus
+                                }
+
+                                busServiceNumberSet.add(bus.serviceNumber)
+
+                                val busOperating =
+                                    busArrivalRepository
+                                        .isBusOperating(
+                                            busStopCode = busStop.code,
+                                            busServiceNumber = bus.serviceNumber
+                                        )
+
+                                // only add bus if its operating
+                                if (busOperating) {
+                                    goingHomeBusList.add(
+                                        DirectBus(
+                                            sourceBusStopDescription = busStop.description,
+                                            sourceBusStopCode = busStop.code,
+                                            destinationBusStopDescription = homeBusStop.description,
+                                            destinationBusStopCode = homeBusStop.code,
+                                            busServiceNumber = bus.serviceNumber,
+                                            stops = diffBusStopNumber,
+                                            distance = distance
+                                        )
+                                    )
+                                }
+                            }
+
+                            if (directBusList.isEmpty()) {
+                                busStopRepository.setNoDirectBusesFor(
+                                    sourceBusStopCode = busStop.code,
+                                    destinationBusStopCode = homeBusStop.code
+                                )
+                            } else {
+                                busStopRepository.setDirectBuses(
+                                    directBusList
+                                )
+                            }
+                        }
+                        is DirectBusesResult.Success -> {
+                            directBusesResult.directBusList.forEach directBus@{ directBus ->
+                                if (busServiceNumberSet.contains(directBus.busServiceNumber)) {
+                                    return@directBus
+                                }
+
+                                busServiceNumberSet.add(directBus.busServiceNumber)
+
+                                val busOperating =
+                                    busArrivalRepository
+                                        .isBusOperating(
+                                            busStopCode = directBus.sourceBusStopCode,
+                                            busServiceNumber = directBus.busServiceNumber
+                                        )
+
+                                // only add bus if its operating
+                                if (busOperating) {
+                                    goingHomeBusList.add(
+                                        DirectBus(
+                                            sourceBusStopDescription = directBus.sourceBusStopDescription,
+                                            sourceBusStopCode = directBus.sourceBusStopCode,
+                                            destinationBusStopDescription = directBus.destinationBusStopDescription,
+                                            destinationBusStopCode = directBus.destinationBusStopCode,
+                                            busServiceNumber = directBus.busServiceNumber,
+                                            stops = directBus.stops,
+                                            distance = directBus.distance
+                                        )
+                                    )
+                                }
+                            }
                         }
                     }
 
@@ -180,7 +248,7 @@ open class GetNearbyGoingHomeBusesUseCase(
                 if (goingHomeBusList.isNotEmpty()) {
                     GoingHomeBusResult
                         .Success(
-                            goingHomeBuses = goingHomeBusList
+                            directBuses = goingHomeBusList
                         )
                 } else {
                     GoingHomeBusResult.NoBusesGoingHome(

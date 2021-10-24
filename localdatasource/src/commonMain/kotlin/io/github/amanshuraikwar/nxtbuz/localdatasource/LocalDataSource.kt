@@ -44,4 +44,11 @@ interface LocalDataSource {
     suspend fun deleteStarredBus(busStopCode: String, busServiceNumber: String)
 
     suspend fun findAllStarredBuses(): List<StarredBusStopEntity>
+
+    suspend fun findDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String
+    ): List<DirectBusEntity>
+
+    suspend fun insertDirectBuses(directBusList: List<DirectBusEntity>)
 }

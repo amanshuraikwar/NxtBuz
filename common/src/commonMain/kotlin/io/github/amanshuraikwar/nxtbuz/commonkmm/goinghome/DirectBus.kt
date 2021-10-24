@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome
 
-data class GoingHomeBus(
+data class DirectBus(
     val sourceBusStopDescription: String,
     val sourceBusStopCode: String,
     val destinationBusStopDescription: String,

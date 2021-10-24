@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'sqldelightdb'
-    spec.version                  = '1.0'
+    spec.version                  = '2'
     spec.homepage                 = 'Link to the Shared Module homepage'
     spec.source                   = { :git => "Not Published", :tag => "Cocoapods/#{spec.name}/#{spec.version}" }
     spec.authors                  = ''
