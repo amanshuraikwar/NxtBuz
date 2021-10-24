@@ -41,6 +41,7 @@
 		A55AACF72704B9F40035A7E5 /* NxtBuzTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF62704B9F40035A7E5 /* NxtBuzTheme.swift */; };
 		A55AACF92704BEB90035A7E5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF82704BEB90035A7E5 /* HomeView.swift */; };
 		A55AACFB27060EB80035A7E5 /* AppearanceModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACFA27060EB80035A7E5 /* AppearanceModifier.swift */; };
+		A5782DF527243CD200B6FE47 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9926F5B1C800BB79DA /* Font.swift */; };
 		A57B9A1826FB4BCF0095D96A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A1726FB4BCE0095D96A /* SettingsView.swift */; };
 		A57B9A1F26FB50870095D96A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A57B9A1E26FB50870095D96A /* WidgetKit.framework */; };
 		A57B9A2126FB50870095D96A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A57B9A2026FB50870095D96A /* SwiftUI.framework */; };
@@ -69,6 +70,12 @@
 		A5D71BD9270F35A400761329 /* NxtBuzTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF62704B9F40035A7E5 /* NxtBuzTheme.swift */; };
 		A5D71BDC270F3C2500761329 /* ArrivingBusWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D71BDA270F3B0B00761329 /* ArrivingBusWidgetView.swift */; };
 		A5D71BDF271070D100761329 /* NotArrivingBusWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D71BDD27106FE700761329 /* NotArrivingBusWidgetView.swift */; };
+		A5E15D5527228808005A67FB /* UseCaseResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5427228808005A67FB /* UseCaseResult.swift */; };
+		A5E15D5727228E02005A67FB /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5627228E02005A67FB /* Util.swift */; };
+		A5E15D58272299B4005A67FB /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5627228E02005A67FB /* Util.swift */; };
+		A5E15D59272299B5005A67FB /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5627228E02005A67FB /* Util.swift */; };
+		A5E15D5B272299DF005A67FB /* UseCaseResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5427228808005A67FB /* UseCaseResult.swift */; };
+		A5E15D5C272299E0005A67FB /* UseCaseResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5427228808005A67FB /* UseCaseResult.swift */; };
 		A5E1E81926F10213007470A4 /* NxtBuzApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E1E81826F10213007470A4 /* NxtBuzApp.swift */; };
 		A5E1E81B26F10213007470A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E1E81A26F10213007470A4 /* ContentView.swift */; };
 		A5E1E81D26F10216007470A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E1E81C26F10216007470A4 /* Assets.xcassets */; };
@@ -197,6 +204,8 @@
 		A5D21835271ED1680091569E /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		A5D71BDA270F3B0B00761329 /* ArrivingBusWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrivingBusWidgetView.swift; sourceTree = "<group>"; };
 		A5D71BDD27106FE700761329 /* NotArrivingBusWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotArrivingBusWidgetView.swift; sourceTree = "<group>"; };
+		A5E15D5427228808005A67FB /* UseCaseResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseCaseResult.swift; sourceTree = "<group>"; };
+		A5E15D5627228E02005A67FB /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		A5E1E81526F10213007470A4 /* NxtBuz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NxtBuz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E1E81826F10213007470A4 /* NxtBuzApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NxtBuzApp.swift; sourceTree = "<group>"; };
 		A5E1E81A26F10213007470A4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -341,6 +350,8 @@
 				A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */,
 				A5144DF127070030002274C8 /* WarningBannerView.swift */,
 				A5D21835271ED1680091569E /* ProgressBar.swift */,
+				A5E15D5427228808005A67FB /* UseCaseResult.swift */,
+				A5E15D5627228E02005A67FB /* Util.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -629,7 +640,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1300;
 				TargetAttributes = {
 					A534608A2707495400A1C990 = {
 						CreatedOnToolsVersion = 13.0;
@@ -802,7 +813,10 @@
 			files = (
 				A53460902707495400A1C990 /* IntentHandler.swift in Sources */,
 				A53460AC27074A0500A1C990 /* NxtBuz_Widget.intentdefinition in Sources */,
+				A5782DF527243CD200B6FE47 /* Font.swift in Sources */,
 				A53460AE270750E000A1C990 /* Di.swift in Sources */,
+				A5E15D59272299B5005A67FB /* Util.swift in Sources */,
+				A5E15D5C272299E0005A67FB /* UseCaseResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -819,8 +833,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A57B9A3B26FB87F10095D96A /* Di.swift in Sources */,
+				A5E15D5B272299DF005A67FB /* UseCaseResult.swift in Sources */,
 				A5D71BDC270F3C2500761329 /* ArrivingBusWidgetView.swift in Sources */,
 				A57B9A2426FB50870095D96A /* NxtBuz_Widget.swift in Sources */,
+				A5E15D58272299B4005A67FB /* Util.swift in Sources */,
 				A57B9A2926FB508B0095D96A /* NxtBuz_Widget.intentdefinition in Sources */,
 				A5D71BDF271070D100761329 /* NotArrivingBusWidgetView.swift in Sources */,
 				A57B9A3526FB58E70095D96A /* Font.swift in Sources */,
@@ -869,7 +885,9 @@
 				A52FEB9E26F5BB4D00BB79DA /* SetupView.swift in Sources */,
 				A5E24AA32700209300ACF274 /* StarredBusStopView.swift in Sources */,
 				A52FEB9826F593BC00BB79DA /* BusStopItemView.swift in Sources */,
+				A5E15D5727228E02005A67FB /* Util.swift in Sources */,
 				A55AACF72704B9F40035A7E5 /* NxtBuzTheme.swift in Sources */,
+				A5E15D5527228808005A67FB /* UseCaseResult.swift in Sources */,
 				A57B9A3F26FC492F0095D96A /* PrimaryButton.swift in Sources */,
 				A52FEBA626F5CB3F00BB79DA /* SetupProgressView.swift in Sources */,
 				A5C12F202701DA38000729E9 /* ArrivingBusView.swift in Sources */,
@@ -1268,10 +1286,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = "Next Bus SG Debug";
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
-				);
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconDebug;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1314,10 +1328,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = "Next Bus SG";
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					"$(ARCHS_STANDARD_INCLUDING_64_BIT)",
-				);
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIcon;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

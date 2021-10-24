@@ -26,8 +26,8 @@ android {
 
 dependencies {
     implementation(Libs.Kotlin.stdlib)
+    api(project(":common-android"))
     api(project(":common"))
-    api(project(":commonkmm"))
     api(project(":localdatasource"))
     api(Libs.AndroidX.Room.runtime)
     kapt(Libs.AndroidX.Room.compiler)

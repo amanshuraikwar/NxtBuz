@@ -8,6 +8,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.di.BusStopsModule
 import io.github.amanshuraikwar.nxtbuz.common.di.ActivityScoped
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtilProvides
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtilProvides
+import io.github.amanshuraikwar.nxtbuz.di.dagger.UseCaseProvides
 import io.github.amanshuraikwar.nxtbuz.map.di.MapModule
 import io.github.amanshuraikwar.nxtbuz.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
@@ -40,12 +41,13 @@ abstract class ActivityBindingModule {
             SearchModule::class,
             StarredModule::class,
             CoroutineModule::class,
+            UseCaseProvides::class
         ]
     )
     internal abstract fun c(): MainActivity
 
     @ExperimentalAnimationApi
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [SettingsModule::class])
+    @ContributesAndroidInjector(modules = [SettingsModule::class, UseCaseProvides::class])
     internal abstract fun e(): SettingsActivity
 }

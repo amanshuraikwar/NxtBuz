@@ -2,18 +2,20 @@ package io.github.amanshuraikwar.nxtbuz.userdata
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
+import io.github.amanshuraikwar.nxtbuz.commonkmm.SystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.UserState
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
+import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 
-class UserRepository constructor(
+class UserRepositoryImpl constructor(
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider,
     private val systemThemeHelper: SystemThemeHelper
-) {
+) : UserRepository {
     private var theme: NxtBuzTheme
 
     init {
@@ -30,15 +32,15 @@ class UserRepository constructor(
 
     private val useSystemTheme = MutableStateFlow(preferenceStorage.useSystemTheme)
 
-    fun getUseSystemThemeSync(): Boolean {
+    override fun getUseSystemThemeSync(): Boolean {
         return useSystemTheme.value
     }
 
-    fun getUseSystemThemeUpdates(): Flow<Boolean> {
+    override fun getUseSystemThemeUpdates(): Flow<Boolean> {
         return useSystemTheme
     }
 
-    suspend fun getUserState(): UserState = withContext(dispatcherProvider.io) {
+    override suspend fun getUserState(): UserState = withContext(dispatcherProvider.io) {
         return@withContext if (preferenceStorage.onboardingCompleted) {
             UserState.SetupComplete
         } else {
@@ -46,17 +48,17 @@ class UserRepository constructor(
         }
     }
 
-    suspend fun markSetupComplete() = withContext(dispatcherProvider.io) {
+    override suspend fun markSetupComplete() = withContext(dispatcherProvider.io) {
         updatePlayStoreReviewTime()
         preferenceStorage.onboardingCompleted = true
     }
 
-    suspend fun markSetupIncomplete() = withContext(dispatcherProvider.io) {
+    override suspend fun markSetupIncomplete() = withContext(dispatcherProvider.io) {
         preferenceStorage.playStoreReviewTimeMillis = -1L
         preferenceStorage.onboardingCompleted = false
     }
 
-    suspend fun shouldStartPlayStoreReview(): Boolean {
+    override suspend fun shouldStartPlayStoreReview(): Boolean {
         return withContext(dispatcherProvider.io) {
             preferenceStorage.playStoreReviewTimeMillis != -1L &&
                     ((Clock.System.now().toEpochMilliseconds() -
@@ -65,46 +67,46 @@ class UserRepository constructor(
         }
     }
 
-    suspend fun updatePlayStoreReviewTime() {
+    override suspend fun updatePlayStoreReviewTime() {
         withContext(dispatcherProvider.io) {
             preferenceStorage.playStoreReviewTimeMillis = Clock.System.now().toEpochMilliseconds()
         }
     }
 
-    fun getTheme(): NxtBuzTheme {
+    override fun getTheme(): NxtBuzTheme {
         return theme
     }
 
-    suspend fun setForcedTheme(theme: NxtBuzTheme) = withContext(dispatcherProvider.io) {
+    override suspend fun setForcedTheme(theme: NxtBuzTheme) = withContext(dispatcherProvider.io) {
         if (!preferenceStorage.useSystemTheme) {
-            this@UserRepository.theme = theme
+            this@UserRepositoryImpl.theme = theme
         }
         preferenceStorage.theme = theme
     }
 
-    suspend fun getUseSystemTheme(): Boolean {
+    override suspend fun getUseSystemTheme(): Boolean {
         return withContext(dispatcherProvider.io) {
             return@withContext preferenceStorage.useSystemTheme
         }
     }
 
-    suspend fun setUseSystemTheme(useSystemTheme: Boolean) {
+    override suspend fun setUseSystemTheme(useSystemTheme: Boolean) {
         withContext(dispatcherProvider.io) {
             if (useSystemTheme) {
-                this@UserRepository.theme = if (systemThemeHelper.isSystemInDarkTheme()) {
+                this@UserRepositoryImpl.theme = if (systemThemeHelper.isSystemInDarkTheme()) {
                     NxtBuzTheme.DARK
                 } else {
                     NxtBuzTheme.LIGHT
                 }
             } else {
-                this@UserRepository.theme = preferenceStorage.theme
+                this@UserRepositoryImpl.theme = preferenceStorage.theme
             }
             preferenceStorage.useSystemTheme = useSystemTheme
-            this@UserRepository.useSystemTheme.emit(useSystemTheme)
+            this@UserRepositoryImpl.useSystemTheme.emit(useSystemTheme)
         }
     }
 
-    suspend fun refreshTheme() {
+    override suspend fun refreshTheme() {
         withContext(dispatcherProvider.io) {
             theme = if (preferenceStorage.useSystemTheme) {
                 if (systemThemeHelper.isSystemInDarkTheme()) {
@@ -118,19 +120,19 @@ class UserRepository constructor(
         }
     }
 
-    suspend fun getForcedTheme(): NxtBuzTheme {
+    override suspend fun getForcedTheme(): NxtBuzTheme {
         return withContext(dispatcherProvider.io) {
             return@withContext preferenceStorage.theme
         }
     }
 
-    suspend fun setHomeBusStopCode(busStopCode: String) {
+    override suspend fun setHomeBusStopCode(busStopCode: String) {
         withContext(dispatcherProvider.io) {
             preferenceStorage.homeBusStopCode = busStopCode
         }
     }
 
-    suspend fun getHomeBusStopCode(): String? {
+    override suspend fun getHomeBusStopCode(): String? {
         return withContext(dispatcherProvider.io) {
             preferenceStorage.homeBusStopCode.takeIf { it != "" }
         }

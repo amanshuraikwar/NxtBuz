@@ -35,11 +35,13 @@ class IntentHandler: INExtension, SelectBusArrivalIntentHandling {
             Di.get().getSearchUseCase().invoke(
                 query: searchTerm ?? "",
                 limit: 100
-            ) { searchOutput in
+            ) { result in
                 var characters: [BusArrivalWidgetBusStop] = []
-
-                if let success = searchOutput as? IosSearchOutput.Success {
-                    success.searchResult.busStopList.forEach { busStop in
+                
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Success(let searchResult):
+                    searchResult.busStopList.forEach { busStop in
                         let widgetBusStop = BusArrivalWidgetBusStop(
                             identifier: busStop.code,
                             display: "\(busStop.description_)  •  \(busStop.roadName)"
@@ -52,12 +54,11 @@ class IntentHandler: INExtension, SelectBusArrivalIntentHandling {
                     
                     let collection = INObjectCollection<BusArrivalWidgetBusStop>(items: characters)
                     completion(collection, nil)
-                } else if searchOutput is IosSearchOutput.Error {
-                    // do nothing
+                case .Error(let message):
+                    print(message)
+                    let collection = INObjectCollection<BusArrivalWidgetBusStop>(items: characters)
+                    completion(collection, nil)
                 }
-                
-                let collection = INObjectCollection<BusArrivalWidgetBusStop>(items: characters)
-                completion(collection, nil)
             }
         }
     }
@@ -70,11 +71,18 @@ class IntentHandler: INExtension, SelectBusArrivalIntentHandling {
             DispatchQueue.main.sync {
                 Di.get()
                     .getOperatingBusServicesUseCase()
-                    .invoke(busStopCode: busStopCode) { busServicesList in
+                    .invoke(busStopCode: busStopCode) { result in
                         var characters: [NSString] = []
                         
-                        busServicesList.forEach { busService in
-                            characters.append(NSString(string: busService))
+                        let useCaseResult = Util.toUseCaseResult(result)
+                        switch useCaseResult {
+                        case .Success(let data):
+                            let busServicesList = data.compactMap({ $0 as? Bus })
+                            for i in 0...busServicesList.count-1 {
+                                characters.append(NSString(string: busServicesList[i].serviceNumber))
+                            }
+                        case .Error(let message):
+                            print(message)
                         }
                         
                         let collection = INObjectCollection<NSString>(items: characters)

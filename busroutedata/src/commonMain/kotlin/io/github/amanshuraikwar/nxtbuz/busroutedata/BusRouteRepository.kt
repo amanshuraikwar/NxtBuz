@@ -9,6 +9,7 @@ import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalHourMinute
 import io.github.amanshuraikwar.nxtbuz.localdatasource.OperatingBusEntity
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusRouteItemDto
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
+import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -16,12 +17,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.datetime.Clock
 
-class BusRouteRepository constructor(
+class BusRouteRepositoryImpl constructor(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource,
     private val dispatcherProvider: CoroutinesDispatcherProvider
-) {
-    fun setup(): Flow<Double> = flow {
+) : BusRouteRepository {
+    override fun setup(): Flow<Double> = flow {
         emit(0.0)
 
         localDataSource.deleteAllBusRoutes()
@@ -166,10 +167,10 @@ class BusRouteRepository constructor(
     }
 
     @Suppress("NAME_SHADOWING")
-    suspend fun getBusRoute(
+    override suspend fun getBusRoute(
         busServiceNumber: String,
-        direction: Int? = null,
-        busStopCode: String? = null
+        direction: Int?,
+        busStopCode: String?
     ): BusRoute = withContext(dispatcherProvider.io) {
         val busRouteEntityList = localDataSource.findBusRoute(busServiceNumber = busServiceNumber)
 

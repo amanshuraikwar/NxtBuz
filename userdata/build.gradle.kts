@@ -31,8 +31,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":commonkmm"))
-                api(project(":preferencestorage"))
+                api(project(":common"))
+
+                implementation(project(":repository"))
+                implementation(project(":preferencestorage"))
                 implementation(Libs.Kotlin.stdlib)
                 implementation(Libs.Coroutines.core)
                 implementation(Libs.KotlinX.datetime)

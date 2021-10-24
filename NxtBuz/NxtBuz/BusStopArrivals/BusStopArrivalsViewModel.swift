@@ -32,17 +32,24 @@ class BusStopArrivalsViewModel : ObservableObject {
         
         Di.get()
             .getBusStopUseCase()
-            .invoke(busStopCode: busStopCode) { busStop, error in
-                if let busStop = busStop {
-                    self.busStop = busStop
-                    self.busStopCode = busStop.code
-                    let uuid = UUID()
-                    self.uuid = uuid
-                    self.busStopDescription = busStop.description_
-                    self.busStopRoadName = busStop.roadName
-                    self.getArrivalsAct(uuid: uuid)
-                } else {
-                    self.screenState = .Error(message: "Count not fetch bus stop details, please try again.")
+            .invoke(busStopCode: busStopCode) { result in
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Error(_):
+                    Util.onMain {
+                        self.screenState = .Error(message: "Count not fetch bus stop details, please try again.")
+                    }
+                case .Success(let data):
+                    let busStop = data
+                    Util.onMain {
+                        self.busStop = busStop
+                        self.busStopCode = busStop.code
+                        let uuid = UUID()
+                        self.uuid = uuid
+                        self.busStopDescription = busStop.description_
+                        self.busStopRoadName = busStop.roadName
+                        self.getArrivalsAct(uuid: uuid)
+                    }
                 }
             }
     }
@@ -55,51 +62,14 @@ class BusStopArrivalsViewModel : ObservableObject {
         if let busStopCode = self.busStopCode {
             Di.get()
                 .getBusArrivalsUseCase()
-                .invoke(busStopCode: busStopCode) { busStopArrivalOutput in
-                    if let busStopArrivalList = (busStopArrivalOutput as? IosBusStopArrivalOutput.Success)?.busStopArrivalList {
+                .invoke(busStopCode: busStopCode) {  result in
+                    let useCaseResult = Util.toUseCaseResult(result)
+                    switch useCaseResult {
+                    case .Error(let message):
                         switch self.screenState {
                         case .Fetching, .Error:
-                            let busStopArrivalItemDataList = busStopArrivalList.map { busStopArrival in
-                                BusStopArrivalItemData(
-                                    busStopArrival: busStopArrival,
-                                    starred: busStopArrival.starred
-                                )
-                            }
-                            DispatchQueue.main.async {
-                                self.screenState = .Success(
-                                    busStopCode: busStopCode,
-                                    data: BusStopArrivalScreenSuccessData(
-                                        busStopArrivalItemDataList: busStopArrivalItemDataList,
-                                        lastUpdatedOn: Date()
-                                    )
-                                )
-                            }
-                        case .Success(_, let data):
-                            busStopArrivalList.forEach { busStopArrival in
-                                let busStopArrivalItemData = data.busStopArrivalItemDataList.first { busStopArrivalItemData in
-                                    busStopArrivalItemData.busStopArrival.busServiceNumber == busStopArrival.busServiceNumber
-                                }
-
-                                DispatchQueue.main.async {
-                                    busStopArrivalItemData?.busStopArrival = busStopArrival
-                                    busStopArrivalItemData?.starred = busStopArrival.starred
-                                    data.lastUpdatedOn = Date()
-                                    data.lastUpdatedOnStr = BusStopArrivalsViewModel.getTime(date: data.lastUpdatedOn)
-                                    data.outdatedResults = false
-                                }
-                            }
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                            self.getArrivalsAct(uuid: uuid)
-                        }   
-                    }
-                    
-                    if let error = (busStopArrivalOutput as? IosBusStopArrivalOutput.Error) {
-                        switch self.screenState {
-                        case .Fetching, .Error:
-                            DispatchQueue.main.async {
-                                self.screenState = .Error(message: error.errorMessage)
+                            Util.onMain {
+                                self.screenState = .Error(message: message)
                             }
                         case .Success(_, let data):
                             // if arrivals were last updated 5 mins ago
@@ -115,6 +85,44 @@ class BusStopArrivalsViewModel : ObservableObject {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                                 self.getArrivalsAct(uuid: uuid)
                             }
+                        }
+                    case .Success(let data):
+                        let busStopArrivalResultList = data.compactMap({ $0 as? BusStopArrivalResult })
+                        switch self.screenState {
+                        case .Fetching, .Error:
+                            let busStopArrivalItemDataList = busStopArrivalResultList.map { busStopArrivalResult in
+                                BusStopArrivalItemData(
+                                    busStopArrival: busStopArrivalResult.busStopArrival,
+                                    starred: busStopArrivalResult.isStarred
+                                )
+                            }
+                            Util.onMain {
+                                self.screenState = .Success(
+                                    busStopCode: busStopCode,
+                                    data: BusStopArrivalScreenSuccessData(
+                                        busStopArrivalItemDataList: busStopArrivalItemDataList,
+                                        lastUpdatedOn: Date()
+                                    )
+                                )
+                            }
+                        case .Success(_, let data):
+                            busStopArrivalResultList.forEach { busStopArrivalResult in
+                                let busStopArrivalItemData = data.busStopArrivalItemDataList.first { busStopArrivalItemData in
+                                    busStopArrivalItemData.busStopArrival.busServiceNumber == busStopArrivalResult.busStopArrival.busServiceNumber
+                                }
+
+                                Util.onMain {
+                                    busStopArrivalItemData?.busStopArrival = busStopArrivalResult.busStopArrival
+                                    busStopArrivalItemData?.starred = busStopArrivalResult.isStarred
+                                    data.lastUpdatedOn = Date()
+                                    data.lastUpdatedOnStr = BusStopArrivalsViewModel.getTime(date: data.lastUpdatedOn)
+                                    data.outdatedResults = false
+                                }
+                            }
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                            self.getArrivalsAct(uuid: uuid)
                         }
                     }
                 }
@@ -145,7 +153,15 @@ class BusStopArrivalsViewModel : ObservableObject {
                     busStopCode: busStopCode,
                     busServiceNumber: busServiceNumber,
                     toggleTo: newValue
-                )
+                ) { result in
+                    let useCaseResult = Util.toUseCaseResult(result)
+                    switch useCaseResult {
+                    case .Success(_):
+                        print("Star toggle success.")
+                    case .Error(let message):
+                        print("Star toggle failed \(message).")
+                    }
+                }
             }
         default:
             break
@@ -199,10 +215,10 @@ class BusStopArrivalScreenSuccessData : ObservableObject {
 
 class BusStopArrivalItemData : ObservableObject, Identifiable {
     var id: UUID?
-    @Published var busStopArrival: IosBusStopArrival
+    @Published var busStopArrival: BusStopArrival
     @Published var starred: Bool
     
-    init(busStopArrival: IosBusStopArrival, starred: Bool) {
+    init(busStopArrival: BusStopArrival, starred: Bool) {
         id = UUID()
         self.busStopArrival = busStopArrival
         self.starred = starred

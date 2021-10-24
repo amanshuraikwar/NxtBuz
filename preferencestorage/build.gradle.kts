@@ -33,7 +33,7 @@ kotlin {
             dependencies {
                 implementation(Libs.multiplatformSettings)
                 implementation(Libs.multiplatformSettingsNoArg)
-                implementation(project(":commonkmm"))
+                implementation(project(":common"))
             }
         }
         val commonTest by getting {
