@@ -31,7 +31,7 @@ struct ArrivingBusWidgetView: View {
                             Text(busServiceNumber)
                                 .font(NxtBuzFonts.title3)
                                 .fontWeight(.medium)
-                                .foregroundColor(Color(.white))
+                                .foregroundColor(nxtBuzTheme.isDark ? Color(.systemGray6) : .white)
                             
                             Text("961M")
                                 .font(NxtBuzFonts.title3)
