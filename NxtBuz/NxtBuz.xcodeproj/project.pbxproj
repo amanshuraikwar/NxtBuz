@@ -38,6 +38,7 @@
 		A53460A52707495400A1C990 /* SelectBusArrival.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A534608B2707495400A1C990 /* SelectBusArrival.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A53460AC27074A0500A1C990 /* NxtBuz_Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A2526FB50870095D96A /* NxtBuz_Widget.intentdefinition */; };
 		A53460AE270750E000A1C990 /* Di.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBA126F5C07200BB79DA /* Di.swift */; };
+		A559FC85272532E3002B8DE6 /* BusServiceNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1D2701D726000729E9 /* BusServiceNumberView.swift */; };
 		A55AACF72704B9F40035A7E5 /* NxtBuzTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF62704B9F40035A7E5 /* NxtBuzTheme.swift */; };
 		A55AACF92704BEB90035A7E5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF82704BEB90035A7E5 /* HomeView.swift */; };
 		A55AACFB27060EB80035A7E5 /* AppearanceModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACFA27060EB80035A7E5 /* AppearanceModifier.swift */; };
@@ -840,6 +841,7 @@
 				A57B9A2926FB508B0095D96A /* NxtBuz_Widget.intentdefinition in Sources */,
 				A5D71BDF271070D100761329 /* NotArrivingBusWidgetView.swift in Sources */,
 				A57B9A3526FB58E70095D96A /* Font.swift in Sources */,
+				A559FC85272532E3002B8DE6 /* BusServiceNumberView.swift in Sources */,
 				A5D71BD9270F35A400761329 /* NxtBuzTheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

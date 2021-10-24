@@ -128,11 +128,13 @@ class UseCaseProvides {
         userRepository: UserRepository,
         busStopRepository: BusStopRepository,
         busRouteRepository: BusRouteRepository,
+        busArrivalRepository: BusArrivalRepository
     ): GetNearbyGoingHomeBusesUseCase {
         return GetNearbyGoingHomeBusesUseCase(
             userRepository = userRepository,
             busStopRepository = busStopRepository,
             busRouteRepository = busRouteRepository,
+            busArrivalRepository = busArrivalRepository
         )
     }
 

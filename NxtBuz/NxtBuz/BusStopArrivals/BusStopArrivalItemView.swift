@@ -22,18 +22,67 @@ struct BusStopArrivalItemView: View {
             spacing: 0
         ) {
             if let arriving = busStopArrivalItemData.busStopArrival.busArrivals as? BusArrivals.Arriving {
-                HStack {
+                HStack(
+                    alignment: .top,
+                    spacing: 0
+                ) {
                     BusServiceNumberView(
                         busServiceNumber: busStopArrivalItemData.busStopArrival.busServiceNumber,
                         error: false
                     )
-                    
-                    DestinationBusStopView(
-                        busStopDescription: arriving.nextArrivingBus.destination.busStopDescription
+
+                    VStack(
+                        alignment: .leading,
+                        spacing: 0
+                    ) {
+                        ArrivingBusView(
+                            arrivingBus: arriving.nextArrivingBus
+                        ).padding(.top, 2)
+                        
+                        if expanded {
+                            ForEach(arriving.followingArrivingBusList, id: \.self) { arrivingBus in
+                                ArrivingBusView(
+                                    arrivingBus: arrivingBus
+                                )
+                                .padding(.top, 8)
+                            }
+                        }
+                        
+                        DestinationBusStopView(
+                            busStopDescription: arriving.nextArrivingBus.destination.busStopDescription
+                        )
+                        .padding(.top, 8)
+                        
+                        if !arriving.followingArrivingBusList.isEmpty {
+                            HStack {
+                                Spacer()
+                                
+                                HStack {
+                                    Text(expanded ? "Less" : "More")
+                                        .font(NxtBuzFonts.footnote)
+                                    
+                                    Image(systemName: "chevron.right")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 12, height: 12)
+                                        .rotationEffect(.degrees(expanded ? -90 : +90))
+                                        .padding(.leading, 2)
+                                        
+                                }
+                                .foregroundColor(Color(nxtBuzTheme.accentColor))
+                                .padding(.vertical, 2)
+                                .padding(.horizontal, 4)
+                                .cornerRadius(8)
+                                .onTapGesture {
+                                    expanded.toggle()
+                                }
+                                .padding(.top, 8)
+                            }
+                        }
+                    }
+                    .padding(
+                        .horizontal
                     )
-                    .padding(.leading, 8)
-                    
-                    Spacer()
                     
                     Image(systemName: busStopArrivalItemData.starred ? "star.fill" : "star")
                         .resizable()
@@ -41,89 +90,88 @@ struct BusStopArrivalItemView: View {
                         .frame(width: 20, height: 20)
                         .foregroundColor(Color.yellow)
                         .padding(4)
-                        //.background(Color.yellow.opacity(0.1))
-                        //.cornerRadius(4)
                         .onTapGesture {
                             onStarToggle(!busStopArrivalItemData.starred)
                         }
                 }
-                .padding(.top, 12)
+                .padding(.vertical, 12)
                 
-                VStack(
-                    spacing: 0
-                ) {
-                    HStack {
-                        ZStack(
-                            alignment: .trailing
-                        ) {
-                            BusServiceNumberView(
-                                busServiceNumber: "961M",
-                                error: false
-                            ).opacity(0.0)
-                            
-                            Image(systemName: "arrow.turn.down.right")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 16, height: 16)
-                                .foregroundColor(
-                                    Color(nxtBuzTheme.secondaryColor)
-                                )
-                                .padding(6)
-                        }
-                        
-                        ArrivingBusView(
-                            arrivingBus: arriving.nextArrivingBus
-                        ).padding(.leading, 8)
-                        
-                        Spacer()
-                        
-                        if !arriving.followingArrivingBusList.isEmpty {
-                            Image(systemName: "chevron.right")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 16, height: 16)
-                                .foregroundColor(Color(nxtBuzTheme.primaryColor))
-                                .rotationEffect(.degrees(expanded ? -90 : +90))
-                                .padding(4)
-                                //.background(Color(nxtBuzTheme.accentColor).opacity(0.1))
-                                //.cornerRadius(4)
-                                .onTapGesture {
-                                    expanded.toggle()
-                                }
-                        }
-                    }
-                    .padding(.top, 16)
-                    
-                    if expanded {
-                        ForEach(arriving.followingArrivingBusList, id: \.self) { arrivingBus in
-                            HStack {
-                                ZStack(
-                                    alignment: .trailing
-                                ) {
-                                    BusServiceNumberView(
-                                        busServiceNumber: "961M",
-                                        error: false
-                                    ).opacity(0.0)
-                                    
-                                    Image(systemName: "arrow.turn.down.right")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 16, height: 16)
-                                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
-                                        .padding(6)
-                                }
-                                
-                                ArrivingBusView(
-                                    arrivingBus: arrivingBus
-                                ).padding(.leading, 8)
-                                
-                                Spacer()
-                            }
-                            .padding(.top, 12)
-                        }
-                    }
-                }
-                .padding(.bottom, 12)
+                
+//                VStack(
+//                    spacing: 0
+//                ) {
+//                    HStack {
+//                        ZStack(
+//                            alignment: .trailing
+//                        ) {
+//                            BusServiceNumberView(
+//                                busServiceNumber: "961M",
+//                                error: false
+//                            ).opacity(0.0)
+//
+//                            Image(systemName: "arrow.turn.down.right")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 16, height: 16)
+//                                .foregroundColor(
+//                                    Color(nxtBuzTheme.secondaryColor)
+//                                )
+//                                .padding(6)
+//                        }
+//
+//                        ArrivingBusView(
+//                            arrivingBus: arriving.nextArrivingBus
+//                        ).padding(.leading, 8)
+//
+//                        Spacer()
+//
+//                        if !arriving.followingArrivingBusList.isEmpty {
+//                            Image(systemName: "chevron.right")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 16, height: 16)
+//                                .foregroundColor(Color(nxtBuzTheme.primaryColor))
+//                                .rotationEffect(.degrees(expanded ? -90 : +90))
+//                                .padding(4)
+//                                //.background(Color(nxtBuzTheme.accentColor).opacity(0.1))
+//                                //.cornerRadius(4)
+//                                .onTapGesture {
+//                                    expanded.toggle()
+//                                }
+//                        }
+//                    }
+//                    .padding(.top, 16)
+//
+//                    if expanded {
+//                        ForEach(arriving.followingArrivingBusList, id: \.self) { arrivingBus in
+//                            HStack {
+//                                ZStack(
+//                                    alignment: .trailing
+//                                ) {
+//                                    BusServiceNumberView(
+//                                        busServiceNumber: "961M",
+//                                        error: false
+//                                    ).opacity(0.0)
+//
+//                                    Image(systemName: "arrow.turn.down.right")
+//                                        .resizable()
+//                                        .scaledToFit()
+//                                        .frame(width: 16, height: 16)
+//                                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+//                                        .padding(6)
+//                                }
+//
+//                                ArrivingBusView(
+//                                    arrivingBus: arrivingBus
+//                                ).padding(.leading, 8)
+//
+//                                Spacer()
+//                            }
+//                            .padding(.top, 12)
+//                        }
+//                    }
+//                }
+//                .padding(.bottom, 12)
             } else {
                 HStack {
                     BusServiceNumberView(

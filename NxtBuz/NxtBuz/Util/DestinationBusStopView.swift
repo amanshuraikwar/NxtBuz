@@ -16,20 +16,20 @@ struct DestinationBusStopView: View {
         HStack(
             spacing: 0
         ) {
-            Image(systemName: "arrow.right.circle.fill")
+            Image(systemName: "arrow.turn.down.right")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 16, height: 16)
+                .frame(width: 12, height: 12)
                 .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                 .padding(6)
             
             Text(busStopDescription)
-                .font(NxtBuzFonts.callout)
+                .font(NxtBuzFonts.caption)
                 .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                 .padding(.trailing, 6)
         }
-        .background(Color(.systemGray5))
-        .cornerRadius(8)
+//        .background(Color(.systemGray5))
+//        .cornerRadius(8)
     }
 }
 

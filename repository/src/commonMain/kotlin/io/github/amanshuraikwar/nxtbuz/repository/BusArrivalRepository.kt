@@ -9,4 +9,6 @@ interface BusArrivalRepository {
     suspend fun getBusArrivals(busStopCode: String): List<BusStopArrival>
 
     suspend fun getBusArrivals(busStopCode: String, busServiceNumber: String): BusStopArrival
+
+    suspend fun isBusOperating(busStopCode: String, busServiceNumber: String): Boolean
 }

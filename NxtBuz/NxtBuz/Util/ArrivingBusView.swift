@@ -14,45 +14,38 @@ struct ArrivingBusView: View {
     @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
     
     var body: some View {
-        HStack(
-            spacing: 16
-        ) {
+        HStack {
             Image(getBusTypeImageName(arrivingBus.type))
                 .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 20, height: 20)
-                .foregroundColor(Color(nxtBuzTheme.primaryColor))
-                .padding(4)
-                .background(Color(.systemGray5))
-                .cornerRadius(8)
+                .frame(width: 16, height: 16)
             
-            ZStack {   
-                Text(getBusArrivalStr(Int(arrivingBus.arrival)))
-                        .font(NxtBuzFonts.title2Monospaced)
-                        .foregroundColor(Color(nxtBuzTheme.primaryColor))
-                        .fontWeight(.bold)
+            Spacer()
+            
+            Text(getBusArrivalStr(Int(arrivingBus.arrival)))
+                .font(NxtBuzFonts.bodyMonospaced)
+                .fontWeight(.bold)
                 
-                Text("NOW ")
-                        .font(NxtBuzFonts.title2Monospaced)
-                        .fontWeight(.bold)
-                        .opacity(0.0)
-            }
-
+            Spacer()
+            
             Image(getBusLoadImageName(arrivingBus.load))
                 .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 20, height: 20)
-                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+                .frame(width: 16, height: 16)
             
             Image(getWheelCharAccessImageName(arrivingBus.wheelchairAccess))
                 .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 20, height: 20)
-                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+                .frame(width: 16, height: 16)
         }
+        .padding(.vertical, 2)
+        .padding(.horizontal, 4)
+        .background(Color(.white).opacity(0.2))
+        .cornerRadius(8)
+        .padding(.bottom, 4)
     }
     
     private func getBusTypeImageName(_ busType: BusType) -> String {
@@ -79,9 +72,11 @@ struct ArrivingBusView: View {
     
     private func getBusArrivalStr(_ arrival: Int) -> String {
         if (arrival >= 60) {
-            return "60+"
-        } else if (arrival > 0) {
-            return String(format: "%02d", arrival)
+            return "60+ Mins"
+        } else if (arrival > 1) {
+            return String(format: "%02d Mins", arrival)
+        } else if (arrival == 1) {
+            return String(format: "%02d Min", arrival)
         } else {
             return "NOW"
         }

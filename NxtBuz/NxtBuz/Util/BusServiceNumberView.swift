@@ -26,7 +26,7 @@ struct BusServiceNumberView: View {
                 .opacity(0.0)
         }
         .padding(.vertical, 2)
-        .padding(.horizontal, 6)
+        .padding(.horizontal, 8)
         .background(error ? Color(.systemGray) : Color(nxtBuzTheme.accentColor))
         .clipShape(Capsule())
     }

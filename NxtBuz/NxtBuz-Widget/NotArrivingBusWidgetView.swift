@@ -25,21 +25,7 @@ struct NotArrivingBusWidgetView: View {
                     spacing: 0
                 ) {
                     HStack {
-                        ZStack {
-                            Text(busServiceNumber)
-                                .font(NxtBuzFonts.title3)
-                                .fontWeight(.medium)
-                                .foregroundColor(Color(.white))
-                            
-                            Text("961M")
-                                .font(NxtBuzFonts.title3)
-                                .fontWeight(.medium)
-                                .opacity(0.0)
-                        }
-                        .padding(.vertical, 2)
-                        .padding(.horizontal, 4)
-                        .background(Color(nxtBuzTheme.accentColor))
-                        .clipShape(Capsule())
+                        BusServiceNumberView(busServiceNumber: busServiceNumber, error: true)
                         
                         Spacer()
                     }
@@ -49,7 +35,7 @@ struct NotArrivingBusWidgetView: View {
                         .fontWeight(.medium)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.top, 8)
-                        .foregroundColor(Color(nxtBuzTheme.primaryColor))
+                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
 
@@ -72,7 +58,6 @@ struct NotArrivingBusWidgetView: View {
                     Text(errorMessage)
                         .font(NxtBuzFonts.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
@@ -88,18 +73,18 @@ struct NotArrivingBusWidgetView: View {
                                 .scaledToFit()
                                 .frame(width: 18, height: 18)
                                 .padding(6)
-                                .foregroundColor(Color(nxtBuzTheme.accentColor))
+                                //.foregroundColor(Color(nxtBuzTheme.accentColor))
                                 .background(.white)
                                 .cornerRadius(12)
                         }
                     }
                 }
-                .foregroundColor(.white)
+                .foregroundColor(Color(.systemGray5))
                 .padding(.vertical)
                 .padding(.trailing)
                 .padding(.leading)
                 .frame(width: geometry.size.width * 3 / 5)
-                .background(Color(nxtBuzTheme.accentColor))
+                .background(Color(.systemGray))
             }
         }
         .frame(maxWidth: .infinity)
