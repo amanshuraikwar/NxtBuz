@@ -327,6 +327,17 @@ class RoomDbLocalDataSource internal constructor(
         }
     }
 
+    override suspend fun findDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String
+    ): List<DirectBusEntity> {
+        return emptyList()
+    }
+
+    override suspend fun insertDirectBuses(directBusList: List<DirectBusEntity>) {
+        // do nothing
+    }
+
     companion object {
         fun createInstance(
             context: Context,

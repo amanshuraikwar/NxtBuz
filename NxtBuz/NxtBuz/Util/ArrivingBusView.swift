@@ -43,7 +43,7 @@ struct ArrivingBusView: View {
         }
         .padding(.vertical, 2)
         .padding(.horizontal, 4)
-        .background(Color(.white).opacity(0.2))
+        .background(Color(.systemGray5).opacity(0.4))
         .cornerRadius(8)
         .padding(.bottom, 4)
     }

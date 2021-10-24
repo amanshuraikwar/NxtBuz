@@ -4,7 +4,10 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.Bus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.MapUtil
+import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.DirectBus
+import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.DirectBusesResult
 import io.github.amanshuraikwar.nxtbuz.localdatasource.BusStopEntity
+import io.github.amanshuraikwar.nxtbuz.localdatasource.DirectBusEntity
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusStopItemDto
@@ -145,6 +148,83 @@ class BusStopRepositoryImpl constructor(
                     )
                 }
         }
+
+    override suspend fun getDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String
+    ): DirectBusesResult {
+        return withContext(dispatcherProvider.io) {
+            val directBusEntityList = localDataSource
+                .findDirectBuses(
+                    sourceBusStopCode = sourceBusStopCode,
+                    destinationBusStopCode = destinationBusStopCode
+                )
+
+            when {
+                directBusEntityList.isEmpty() -> {
+                    DirectBusesResult.NotCachedYet
+                }
+                directBusEntityList.size == 1 && !directBusEntityList[0].hasDirectBus -> {
+                    DirectBusesResult.NoDirectBuses
+                }
+                else -> {
+                    val sourceBusStop = getBusStop(busStopCode = sourceBusStopCode)
+                    val destinationBusStop = getBusStop(busStopCode = destinationBusStopCode)
+
+                    DirectBusesResult.Success(
+                        directBusList = directBusEntityList.map {
+                            DirectBus(
+                                sourceBusStopDescription = sourceBusStop.description,
+                                sourceBusStopCode = sourceBusStopCode,
+                                destinationBusStopDescription = destinationBusStop.description,
+                                destinationBusStopCode = destinationBusStopCode,
+                                busServiceNumber = it.busServiceNumber,
+                                stops = it.stops,
+                                distance = it.distance
+                            )
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    override suspend fun setDirectBuses(directBusList: List<DirectBus>) {
+        withContext(dispatcherProvider.io) {
+            localDataSource.insertDirectBuses(
+                directBusList = directBusList.map {
+                    DirectBusEntity(
+                        sourceBusStopCode = it.sourceBusStopCode,
+                        destinationBusStopCode = it.destinationBusStopCode,
+                        hasDirectBus = true,
+                        busServiceNumber = it.busServiceNumber,
+                        stops = it.stops,
+                        distance = it.distance
+                    )
+                }
+            )
+        }
+    }
+
+    override suspend fun setNoDirectBusesFor(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String
+    ) {
+        withContext(dispatcherProvider.io) {
+            localDataSource.insertDirectBuses(
+                listOf(
+                    DirectBusEntity(
+                        sourceBusStopCode = sourceBusStopCode,
+                        destinationBusStopCode = destinationBusStopCode,
+                        hasDirectBus = false,
+                        busServiceNumber = "no-service",
+                        stops = -1,
+                        distance = -1.0
+                    )
+                )
+            )
+        }
+    }
 
     override suspend fun getCloseBusStops(
         lat: Double,

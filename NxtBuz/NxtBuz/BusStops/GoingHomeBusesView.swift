@@ -68,20 +68,20 @@ struct GoingHomeBusesView: View {
             
             if let result = result as? GoingHomeBusResult.Success {
                 ForEach(
-                    Array(result.goingHomeBuses.enumerated()),
+                    Array(result.directBuses.enumerated()),
                     id: \.1
-                ) { index, goingHomeBus in
+                ) { index, directBus in
                     NavigationLink(
                         destination: BusStopArrivalsView(
-                            busStopCode: goingHomeBus.sourceBusStopCode
+                            busStopCode: directBus.sourceBusStopCode
                         )
                     ) {
                         GoingHomeBusView(
-                            busServiceNumber: goingHomeBus.busServiceNumber,
-                            sourceBusStopDescription: goingHomeBus.sourceBusStopDescription,
-                            destinationBusStopDescription: goingHomeBus.destinationBusStopDescription,
-                            distance: goingHomeBus.distance,
-                            stops: Int(goingHomeBus.stops)
+                            busServiceNumber: directBus.busServiceNumber,
+                            sourceBusStopDescription: directBus.sourceBusStopDescription,
+                            destinationBusStopDescription: directBus.destinationBusStopDescription,
+                            distance: directBus.distance,
+                            stops: Int(directBus.stops)
                         )
                     }
                 }

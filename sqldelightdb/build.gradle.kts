@@ -14,6 +14,7 @@ sqldelight {
     database("NxtBuzDb") {
         packageName = "io.github.amanshuraikwar.nxtbuz.db"
         sourceFolders = listOf("sqldelight")
+        version = 2
     }
 }
 

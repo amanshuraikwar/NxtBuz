@@ -7,6 +7,7 @@ import kotlinx.coroutines.withContext
 import kotlin.math.max
 import io.github.amanshuraikwar.nxtbuz.db.BusStopEntity as BusStopSqlDelightEntity
 import io.github.amanshuraikwar.nxtbuz.db.StarredBusServiceEntity as StarredBusServiceSqlDelightEntity
+import io.github.amanshuraikwar.nxtbuz.db.DirectBusEntity as DirectBusSqlDelightEntity
 
 class SqlDelightLocalDataSource internal constructor(
     private val ioDispatcher: CoroutineDispatcher,
@@ -67,12 +68,6 @@ class SqlDelightLocalDataSource internal constructor(
         }
     }
 
-    private data class SearchBusStopEntity(
-        val descriptionSearchKey: String,
-        val busStopEntity: BusStopEntity
-    )
-    private var allSearchBusStops: List<SearchBusStopEntity>? = null
-
     override suspend fun findBusStopsByDescription(
         descriptionHint: String,
         limit: Int
@@ -92,40 +87,6 @@ class SqlDelightLocalDataSource internal constructor(
                         busStopEntity.latitude,
                         busStopEntity.longitude,
                     )
-                }
-
-                val allSearchBusStops = allSearchBusStops ?: run {
-                val allSearchBusStops = nxtBuzDb
-                    .busStopEntityQueries
-                    .findAll()
-                    .executeAsList()
-                    .map { busStopEntity ->
-                        SearchBusStopEntity(
-                            busStopEntity
-                                .description
-                                .lowercase()
-                                .trim()
-                                .replace(" ", "")
-                                .replace(Regex("[^a-z0-9]"), ""),
-                            BusStopEntity(
-                                busStopEntity.code,
-                                busStopEntity.roadName,
-                                busStopEntity.description,
-                                busStopEntity.latitude,
-                                busStopEntity.longitude,
-                            )
-                        )
-                    }
-                this@SqlDelightLocalDataSource.allSearchBusStops = allSearchBusStops
-                allSearchBusStops
-            }
-
-            allSearchBusStops
-                .filter {
-                    it.descriptionSearchKey.contains(descriptionHint)
-                }
-                .map { searchBusStopEntity ->
-                    searchBusStopEntity.busStopEntity
                 }
         }
     }
@@ -380,6 +341,52 @@ class SqlDelightLocalDataSource internal constructor(
                         busStopCode = it.busStopCode
                     )
                 }
+        }
+    }
+
+    override suspend fun findDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String
+    ): List<DirectBusEntity> {
+        return withContext(ioDispatcher) {
+            nxtBuzDb
+                .directBusEntityQueries
+                .findBySourceAndDenstinationBusStopCode(
+                    sourceBusStopCode = sourceBusStopCode,
+                    destinationBusStopCode = destinationBusStopCode
+                )
+                .executeAsList()
+                .map {
+                    DirectBusEntity(
+                        sourceBusStopCode = it.sourceBusStopCode,
+                        destinationBusStopCode = it.destinationBusStopCode,
+                        hasDirectBus = it.hasDirectBus == 1L,
+                        busServiceNumber = it.busServiceNumber,
+                        stops = it.stops.toInt(),
+                        distance = it.distance
+                    )
+                }
+        }
+    }
+
+    override suspend fun insertDirectBuses(directBusList: List<DirectBusEntity>) {
+        withContext(ioDispatcher) {
+            nxtBuzDb.directBusEntityQueries.transaction {
+                directBusList.forEach {
+                    nxtBuzDb
+                        .directBusEntityQueries
+                        .insert(
+                            DirectBusSqlDelightEntity(
+                                sourceBusStopCode = it.sourceBusStopCode,
+                                destinationBusStopCode = it.destinationBusStopCode,
+                                hasDirectBus = if (it.hasDirectBus) 1L else 0L,
+                                busServiceNumber = it.busServiceNumber,
+                                stops = it.stops.toLong(),
+                                distance = it.distance
+                            )
+                        )
+                }
+            }
         }
     }
 
