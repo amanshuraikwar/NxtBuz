@@ -106,6 +106,59 @@ class BusArrivalRepositoryImpl constructor(
         }
     }
 
+    override suspend fun isBusOperating(busStopCode: String, busServiceNumber: String): Boolean {
+        val (
+            _,
+            _,
+            wdFirstBus: LocalHourMinute?,
+            wdLastBus: LocalHourMinute?,
+            satFirstBus: LocalHourMinute?,
+            satLastBus: LocalHourMinute?,
+            sunFirstBus: LocalHourMinute?,
+            sunLastBus: LocalHourMinute?
+        ) = localDataSource
+            .findOperatingBus(
+                busStopCode = busStopCode,
+                busServiceNumber = busServiceNumber,
+            )
+            // this bus does not arrive at the bus stop
+            ?: return false
+
+        var operating = true
+
+        when {
+            TimeUtil.isWeekday() -> {
+                if (wdFirstBus != null) {
+                    operating = operating && wdFirstBus.isBefore(Clock.System.now())
+                }
+
+                if (wdLastBus != null) {
+                    operating = operating && wdLastBus.isAfter(Clock.System.now())
+                }
+            }
+            TimeUtil.isSaturday() -> {
+                if (satFirstBus != null) {
+                    operating = operating && satFirstBus.isBefore(Clock.System.now())
+                }
+
+                if (satLastBus != null) {
+                    operating = operating && satLastBus.isAfter(Clock.System.now())
+                }
+            }
+            TimeUtil.isSunday() -> {
+                if (sunFirstBus != null) {
+                    operating = operating && sunFirstBus.isBefore(Clock.System.now())
+                }
+
+                if (sunLastBus != null) {
+                    operating = operating && sunLastBus.isAfter(Clock.System.now())
+                }
+            }
+        }
+
+        return operating
+    }
+
     private suspend inline fun BusArrivalItemDto.toBusArrival(
         busStopCode: String,
     ): BusStopArrival {

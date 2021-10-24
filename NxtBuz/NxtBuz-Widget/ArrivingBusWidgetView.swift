@@ -27,21 +27,7 @@ struct ArrivingBusWidgetView: View {
                     spacing: 0
                 ) {
                     HStack {
-                        ZStack {
-                            Text(busServiceNumber)
-                                .font(NxtBuzFonts.title3)
-                                .fontWeight(.medium)
-                                .foregroundColor(nxtBuzTheme.isDark ? Color(.systemGray6) : .white)
-                            
-                            Text("961M")
-                                .font(NxtBuzFonts.title3)
-                                .fontWeight(.medium)
-                                .opacity(0.0)
-                        }
-                        .padding(.vertical, 2)
-                        .padding(.horizontal, 4)
-                        .background(Color(nxtBuzTheme.accentColor))
-                        .clipShape(Capsule())
+                        BusServiceNumberView(busServiceNumber: busServiceNumber, error: false)
                         
                         Spacer()
                     }

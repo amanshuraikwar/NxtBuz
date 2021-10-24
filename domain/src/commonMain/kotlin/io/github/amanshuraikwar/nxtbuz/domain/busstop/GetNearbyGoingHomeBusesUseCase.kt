@@ -4,6 +4,7 @@ import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
 import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.GoingHomeBus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.GoingHomeBusResult
+import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
 import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -13,6 +14,7 @@ open class GetNearbyGoingHomeBusesUseCase(
     private val userRepository: UserRepository,
     private val busStopRepository: BusStopRepository,
     private val busRouteRepository: BusRouteRepository,
+    private val busArrivalRepository: BusArrivalRepository,
 ) {
     operator fun invoke(
         lat: Double,
@@ -140,17 +142,27 @@ open class GetNearbyGoingHomeBusesUseCase(
 
                         busServiceNumberSet.add(bus.serviceNumber)
 
-                        goingHomeBusList.add(
-                            GoingHomeBus(
-                                sourceBusStopDescription = busStop.description,
-                                sourceBusStopCode = busStop.code,
-                                destinationBusStopDescription = homeBusStop.description,
-                                destinationBusStopCode = homeBusStop.code,
-                                busServiceNumber = bus.serviceNumber,
-                                stops = diffBusStopNumber,
-                                distance = distance
+                        val busOperating =
+                            busArrivalRepository
+                                .isBusOperating(
+                                    busStopCode = busStop.code,
+                                    busServiceNumber = bus.serviceNumber
+                                )
+
+                        // only add bus if its operating
+                        if (busOperating) {
+                            goingHomeBusList.add(
+                                GoingHomeBus(
+                                    sourceBusStopDescription = busStop.description,
+                                    sourceBusStopCode = busStop.code,
+                                    destinationBusStopDescription = homeBusStop.description,
+                                    destinationBusStopCode = homeBusStop.code,
+                                    busServiceNumber = bus.serviceNumber,
+                                    stops = diffBusStopNumber,
+                                    distance = distance
+                                )
                             )
-                        )
+                        }
                     }
 
                     emit(
@@ -165,10 +177,17 @@ open class GetNearbyGoingHomeBusesUseCase(
             }
 
             emit(
-                GoingHomeBusResult
-                    .Success(
-                        goingHomeBuses = goingHomeBusList
+                if (goingHomeBusList.isNotEmpty()) {
+                    GoingHomeBusResult
+                        .Success(
+                            goingHomeBuses = goingHomeBusList
+                        )
+                } else {
+                    GoingHomeBusResult.NoBusesGoingHome(
+                        homeBusStopCode = homeBusStopCode,
+                        homeBusStopDescription = homeBusStopList[0].description
                     )
+                }
             )
         }
     }

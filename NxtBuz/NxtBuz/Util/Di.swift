@@ -191,7 +191,8 @@ class Di {
         return IosGetNearbyGoingHomeBusesUseCase(
             userRepository: Di.userRepository,
             busStopRepository: Di.busStopRepository,
-            busRouteRepository: Di.busRouteRepository
+            busRouteRepository: Di.busRouteRepository,
+            busArrivalRepository: Di.busArrivalRepository
         )
     }
 }
