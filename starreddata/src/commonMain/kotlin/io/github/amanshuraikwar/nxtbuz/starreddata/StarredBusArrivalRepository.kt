@@ -6,14 +6,15 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleStarUpdate
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.localdatasource.StarredBusStopEntity
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
+import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-class StarredBusArrivalRepository constructor(
+class StarredBusArrivalRepositoryImpl constructor(
     private val localDataSource: LocalDataSource,
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider
-) {
+) : StarredBusArrivalRepository {
 
     private val coroutineScope: CoroutineScope by lazy {
         // We use supervisor scope because we don't want
@@ -22,16 +23,17 @@ class StarredBusArrivalRepository constructor(
     }
 
     private val _toggleStarUpdate = MutableSharedFlow<ToggleStarUpdate>()
-    val toggleStarUpdate: SharedFlow<ToggleStarUpdate> = _toggleStarUpdate
+    override val toggleStarUpdate: SharedFlow<ToggleStarUpdate> = _toggleStarUpdate
 
     private val _toggleShouldShowErrorArrivals = MutableSharedFlow<Boolean>()
-    val toggleShouldShowErrorArrivals: SharedFlow<Boolean> = _toggleShouldShowErrorArrivals
+    override val toggleShouldShowErrorArrivals: SharedFlow<Boolean> = _toggleShouldShowErrorArrivals
 
-    suspend fun shouldShowErrorStarredBusArrivals(): Boolean = withContext(dispatcherProvider.io) {
-        preferenceStorage.showErrorStarredBusArrivals
-    }
+    override suspend fun shouldShowErrorStarredBusArrivals(): Boolean =
+        withContext(dispatcherProvider.io) {
+            preferenceStorage.showErrorStarredBusArrivals
+        }
 
-    suspend fun setShouldShowErrorStarredBusArrivals(shouldShow: Boolean) {
+    override suspend fun setShouldShowErrorStarredBusArrivals(shouldShow: Boolean) {
         withContext(dispatcherProvider.io) {
             if (shouldShow != preferenceStorage.showErrorStarredBusArrivals) {
                 preferenceStorage.showErrorStarredBusArrivals = shouldShow
@@ -42,7 +44,7 @@ class StarredBusArrivalRepository constructor(
         }
     }
 
-    suspend fun getStarredBusServices(): List<StarredBusService> {
+    override suspend fun getStarredBusServices(): List<StarredBusService> {
         return withContext(dispatcherProvider.computation) {
             localDataSource
                 .findAllStarredBuses()
@@ -55,7 +57,7 @@ class StarredBusArrivalRepository constructor(
         }
     }
 
-    suspend fun toggleBusStopStar(busStopCode: String, busServiceNumber: String) {
+    override suspend fun toggleBusStopStar(busStopCode: String, busServiceNumber: String) {
         withContext(dispatcherProvider.io) {
             val isAlreadyStarred = localDataSource.findStarredBus(
                 busStopCode = busStopCode,
@@ -91,7 +93,7 @@ class StarredBusArrivalRepository constructor(
         }
     }
 
-    suspend fun toggleBusStopStar(
+    override suspend fun toggleBusStopStar(
         busStopCode: String,
         busServiceNumber: String,
         toggleTo: Boolean
@@ -133,7 +135,7 @@ class StarredBusArrivalRepository constructor(
         }
     }
 
-    suspend fun isStarred(
+    override suspend fun isStarred(
         busStopCode: String,
         busServiceNumber: String,
     ): Boolean = withContext(dispatcherProvider.io) {

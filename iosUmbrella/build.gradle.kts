@@ -1,5 +1,5 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
@@ -20,18 +20,12 @@ kotlin {
 
     iosTarget("ios") {
         binaries.withType<org.jetbrains.kotlin.gradle.plugin.mpp.Framework> {
-            export(project(":commonkmm"))
-            export(project(":ktorremotedatasource"))
+            export(project(":common"))
+            export(project(":domain"))
+            export(project(":di"))
             export(project(":localdatasource"))
             export(project(":preferencestorage"))
             export(project(":remotedatasource"))
-            export(project(":sqldelightdb"))
-            export(project(":userdata"))
-            export(project(":busstopdata"))
-            export(project(":busroutedata"))
-            export(project(":busarrivaldata"))
-            export(project(":starreddata"))
-            export(project(":searchdata"))
             export(project(":dynamo"))
             transitiveExport = true
             isStatic = true
@@ -43,25 +37,20 @@ kotlin {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        frameworkName = "iosUmbrella"
-        // set path to your ios project podfile, e.g. podfile = project.file("../iosApp/Podfile")
+        framework {
+            baseName = "iosUmbrella"
+        }
     }
-    
+
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":commonkmm"))
-                api(project(":ktorremotedatasource"))
+                api(project(":common"))
+                api(project(":domain"))
+                api(project(":di"))
                 api(project(":localdatasource"))
                 api(project(":preferencestorage"))
                 api(project(":remotedatasource"))
-                api(project(":sqldelightdb"))
-                api(project(":userdata"))
-                api(project(":busstopdata"))
-                api(project(":busroutedata"))
-                api(project(":busarrivaldata"))
-                api(project(":starreddata"))
-                api(project(":searchdata"))
                 api(project(":dynamo"))
                 implementation(Libs.Coroutines.core)
             }

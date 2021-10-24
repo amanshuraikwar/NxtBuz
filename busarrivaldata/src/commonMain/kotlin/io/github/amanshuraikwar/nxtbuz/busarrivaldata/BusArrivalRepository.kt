@@ -1,33 +1,36 @@
 package io.github.amanshuraikwar.nxtbuz.busarrivaldata
 
-import io.github.amanshuraikwar.nxtbuz.commonkmm.BusService
+import io.github.amanshuraikwar.nxtbuz.commonkmm.Bus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.TimeUtil
-import io.github.amanshuraikwar.nxtbuz.commonkmm.exception.IllegalDbStateException
 import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.*
+import io.github.amanshuraikwar.nxtbuz.commonkmm.exception.IllegalDbStateException
 import io.github.amanshuraikwar.nxtbuz.localdatasource.*
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.ArrivingBusItemDto
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusArrivalItemDto
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
+import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.*
 
-class BusArrivalRepository constructor(
+class BusArrivalRepositoryImpl constructor(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource,
     private val dispatcherProvider: CoroutinesDispatcherProvider
-) {
-    suspend fun getOperatingBusServices(busStopCode: String): List<String> {
+) : BusArrivalRepository {
+    override suspend fun getOperatingBusServices(busStopCode: String): List<Bus> {
         return withContext(dispatcherProvider.io) {
             localDataSource
                 .findOperatingBuses(busStopCode)
                 .map { operatingBusEntity ->
-                    operatingBusEntity.busServiceNumber
+                    Bus(
+                        serviceNumber = operatingBusEntity.busServiceNumber
+                    )
                 }
         }
     }
 
-    suspend fun getBusArrivals(busStopCode: String): List<BusStopArrival> {
+    override suspend fun getBusArrivals(busStopCode: String): List<BusStopArrival> {
         return withContext(dispatcherProvider.io) {
             // map of busServiceNumber -> OperatingBusEntity
             val operatingBusServiceNumberMap =
@@ -69,7 +72,10 @@ class BusArrivalRepository constructor(
         }
     }
 
-    suspend fun getBusArrivals(busStopCode: String, busServiceNumber: String): BusStopArrival {
+    override suspend fun getBusArrivals(
+        busStopCode: String,
+        busServiceNumber: String
+    ): BusStopArrival {
         return withContext(dispatcherProvider.io) {
             val operatingBusEntity =
                 localDataSource.findOperatingBus(

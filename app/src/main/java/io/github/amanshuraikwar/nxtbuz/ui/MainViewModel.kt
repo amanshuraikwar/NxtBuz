@@ -26,7 +26,7 @@ import javax.inject.Inject
 private const val TAG = "MainViewModel"
 
 class MainViewModel @Inject constructor(
-    private val cleanupLocationUpdatesUseCase: CleanupLocationUpdatesUseCase,
+    private val cleanupLocationUpdatesUseCase: io.github.amanshuraikwar.nxtbuz.domain.location.CleanupLocationUpdatesUseCase,
     private val userStateUseCase: GetUserStateUseCase,
     private val busStopUseCase: GetBusStopUseCase,
     private val shouldShowMapUseCase: ShouldShowMapUseCase,
