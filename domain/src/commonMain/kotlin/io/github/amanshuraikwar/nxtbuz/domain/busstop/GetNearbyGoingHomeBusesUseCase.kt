@@ -7,6 +7,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.GoingHomeBusResult
 import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 open class GetNearbyGoingHomeBusesUseCase(
     private val userRepository: UserRepository,

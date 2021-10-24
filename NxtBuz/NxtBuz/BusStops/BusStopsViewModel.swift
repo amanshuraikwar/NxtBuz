@@ -16,6 +16,8 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
     private let locationManager: CLLocationManager
     
     @Published var busesGoingHomeState: BusesGoingHomeState = .Fetching
+    
+    private var cancellationSignal: FlowCancellationSignal? = nil
 
     override init() {
         locationManager = CLLocationManager()
@@ -29,6 +31,7 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
         if showFetching {
             self.busStopsScreenState = .Fetching(message: "Fetching bus stops...")
             self.busesGoingHomeState = .Fetching
+            self.cancellationSignal?.cancel()
         }
         
         switch busStopsScreenState {
@@ -96,7 +99,13 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
             .getNearbyGoingHomeBusesUseCase()
             .invoke(
                 lat: lat,
-                lng: lng
+                lng: lng,
+                onStart: { cancellationSignal in
+                    Util.onMain {
+                        self.cancellationSignal?.cancel()
+                        self.cancellationSignal = cancellationSignal
+                    }
+                }
             ) { result in
                 let useCaseResult = Util.toUseCaseResult(result)
                 switch useCaseResult {
@@ -149,10 +158,11 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
     
     func onSearch(searchString: String) {
         if searchString == "" {
-            self.busStopsScreenState = .Fetching(message: "Fetching nearby bus stops...")
-            fetchBusStops()
+            fetchBusStops(showFetching: true)
         } else {
             self.busStopsScreenState = .Fetching(message: "Searching bus stops...")
+            self.busesGoingHomeState = .Fetching
+            self.cancellationSignal?.cancel()
             searchBusStops(searchString)
         }
     }

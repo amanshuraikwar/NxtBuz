@@ -34,7 +34,7 @@ class SettingsViewModel : ObservableObject {
                         }
                     }
                     
-                    if let success = data as? HomeBusStopResult.NotSet {
+                    if data is HomeBusStopResult.NotSet {
                         Util.onMain {
                             self.homeStopState = .NoBusStop
                         }
