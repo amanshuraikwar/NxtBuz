@@ -99,6 +99,10 @@ struct NxtBuzNavigationView : UIViewControllerRepresentable {
         func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
             self.parent.onCancel()
         }
+        
+        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+            print("helohelohelohelo")
+        }
     }
 }
 

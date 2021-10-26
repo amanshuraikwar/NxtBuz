@@ -8,12 +8,23 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var showGreeting = true
+    @StateObject private var viewModel = SettingsViewModel()
     
     @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
     
     var body: some View {
         List {
+            Section(
+                header: Text("Tips")
+                    .font(NxtBuzFonts.caption)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+            ) {
+                WarningBannerView(
+                    message: "In a widget, to refresh bus arrival timings, launch the app by clicking on it.",
+                    iconSystemName: "lightbulb.fill"
+                )
+            }
+            
             Section(
                 header: Text("App Info")
                     .font(NxtBuzFonts.caption)
@@ -35,6 +46,42 @@ struct SettingsView: View {
                             .padding(4)
                             .background(Color(nxtBuzTheme.accentColor).opacity(0.1))
                             .cornerRadius(8)
+                    }
+                }
+            }
+            
+            Section(
+                header: Text("Home Bus Stop")
+                    .font(NxtBuzFonts.caption)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+            ) {
+                switch viewModel.homeStopState {
+                case .Fetching:
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
+                case .NoBusStop:
+                    Text("No home bus stop set.")
+                        .font(NxtBuzFonts.body)
+                        .fontWeight(.medium)
+                        .foregroundColor(Color(nxtBuzTheme.primaryColor))
+                case .Success(let desc, let roadName, let busStopCode):
+                    VStack(
+                        alignment: .leading,
+                        spacing: 0
+                    ) {
+                        Text(desc)
+                            .font(NxtBuzFonts.body)
+                            .fontWeight(.medium)
+                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
+                        
+                        Text(
+                            "\(roadName)  •  \(busStopCode)".uppercased()
+                        )
+                        .font(NxtBuzFonts.caption)
+                        .padding(.top, 4)
+                        .foregroundColor(
+                            Color(nxtBuzTheme.secondaryColor)
+                        )
                     }
                 }
             }
@@ -90,10 +137,10 @@ struct SettingsView: View {
                     }
                 ) {
                     HStack {
-                        Text("Request a Feature")
+                        (Text("Send ") + Text("bugs").strikethrough(true, color: .orange) + Text(" hugs :)"))
                             .font(NxtBuzFonts.body)
-                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
                             .fontWeight(.medium)
+                            .foregroundColor(Color(nxtBuzTheme.primaryColor))
                         
                         Spacer()
                         
@@ -110,7 +157,7 @@ struct SettingsView: View {
                     }
                 ) {
                     HStack {
-                        Text("Made by Amanshu Raikwar")
+                        (Text("Made by ") + Text("genius").strikethrough(true, color: .orange) + Text(" Amanshu"))
                             .font(NxtBuzFonts.body)
                             .foregroundColor(Color(nxtBuzTheme.primaryColor))
                             .fontWeight(.medium)
@@ -122,8 +169,28 @@ struct SettingsView: View {
                     }
                 }
             }
+            
+            Section(
+                header: Text("Nerd Stuff")
+                    .font(NxtBuzFonts.caption)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+            ) {
+                switch viewModel.cachedDirectBusDataState {
+                case .Fetching:
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
+                case .Success(let count):
+                    WarningBannerView(
+                        message: "We have cached direct buses for \(count) bus stop permutations for better performance.",
+                        iconSystemName: "internaldrive.fill"
+                    )
+                }
+            }
         }
         .listStyle(InsetGroupedListStyle())
+        .onAppear {
+            viewModel.fetchHomeBusStop()
+        }
     }
 }
 

@@ -20,6 +20,7 @@ interface PreferenceStorage {
     var theme: NxtBuzTheme
     var useSystemTheme: Boolean
     var playStoreReviewTimeMillis: Long
+    var homeBusStopCode: String
 }
 
 
