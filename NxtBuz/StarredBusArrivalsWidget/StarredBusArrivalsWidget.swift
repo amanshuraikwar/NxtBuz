@@ -159,7 +159,13 @@ struct Provider: TimelineProvider {
                         
                         let timeline = Timeline(
                             entries: [entry],
-                            policy: .never
+                            policy: .after(
+                                Calendar.current.date(
+                                    byAdding: .minute,
+                                    value: 5,
+                                    to: Date()
+                                )!
+                            )
                         )
                         
                         completion(timeline)
