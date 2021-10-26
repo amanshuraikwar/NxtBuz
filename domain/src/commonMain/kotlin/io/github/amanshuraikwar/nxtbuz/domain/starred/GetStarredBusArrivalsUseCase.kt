@@ -17,7 +17,7 @@ open class GetStarredBusArrivalsUseCase(
     suspend operator fun invoke(): List<StarredBusArrival> {
         return coroutineScope {
             val busStopCodeBusServiceNumberSetMap = LinkedHashMap<String, MutableSet<String>>()
-            
+
             getStarredBusServicesUseCase().forEach { starredBusService ->
                 busStopCodeBusServiceNumberSetMap[starredBusService.busStopCode]
                     .let {

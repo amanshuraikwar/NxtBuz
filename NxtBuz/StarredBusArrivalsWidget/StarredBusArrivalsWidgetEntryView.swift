@@ -34,22 +34,7 @@ struct StarredBusArrivalsWidgetEntryView: View {
                         
                         Spacer()
 
-                        HStack(
-                            alignment: .bottom
-                        ) {
-                            Text("\(getTime(date: entry.date))")
-                                .font(NxtBuzFonts.caption)
-                                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                
-                            Spacer()
-                            
-                            Image(systemName: "star.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 16, height: 16)
-                                .foregroundColor(.yellow)
-                        }
+                        StarredBusArrivalWidgetFooterView(date: entry.date)
                     }
                     .padding()
                 case .NoStarredBuses:
@@ -65,22 +50,7 @@ struct StarredBusArrivalsWidgetEntryView: View {
                         
                         Spacer()
 
-                        HStack(
-                            alignment: .bottom
-                        ) {
-                            Text("\(getTime(date: entry.date))")
-                                .font(NxtBuzFonts.caption)
-                                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                
-                            Spacer()
-                            
-                            Image(systemName: "star.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 16, height: 16)
-                                .foregroundColor(.yellow)
-                        }
+                        StarredBusArrivalWidgetFooterView(date: entry.date)
                     }
                     .padding()
                 case .Success(let busStopDataList):
@@ -97,22 +67,7 @@ struct StarredBusArrivalsWidgetEntryView: View {
                             
                             Spacer()
 
-                            HStack(
-                                alignment: .bottom
-                            ) {
-                                Text("\(getTime(date: entry.date))")
-                                    .font(NxtBuzFonts.caption)
-                                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    
-                                Spacer()
-                                
-                                Image(systemName: "star.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 16, height: 16)
-                                    .foregroundColor(.yellow)
-                            }
+                            StarredBusArrivalWidgetFooterView(date: entry.date)
                         }
                         .padding()
                     } else {
@@ -156,23 +111,8 @@ struct StarredBusArrivalsWidgetEntryView: View {
                                 
                                 Spacer()
 
-                                HStack(
-                                    alignment: .bottom
-                                ) {
-                                    Text("\(getTime(date: entry.date))")
-                                        .font(NxtBuzFonts.caption)
-                                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        
-                                    Spacer()
-                                    
-                                    Image(systemName: "star.fill")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 16, height: 16)
-                                        .foregroundColor(.yellow)
-                                }
-                                .padding(.horizontal)
+                                StarredBusArrivalWidgetFooterView(date: entry.date)
+                                    .padding(.horizontal)
                             }
                             .padding(.vertical)
                         }
@@ -188,13 +128,6 @@ struct StarredBusArrivalsWidgetEntryView: View {
         .onChange(of: colorScheme) { colorScheme in
             nxtBuzTheme.onSystemThemeChanged(isDark: colorScheme == .dark)
         }
-    }
-    
-    public func getTime(date time: Date) -> String {
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "h:mm a"
-        let stringDate = timeFormatter.string(from: time)
-        return stringDate
     }
 }
 
