@@ -55,6 +55,12 @@ class HomeViewModel : ObservableObject {
                     ofKind: "io.github.amanshuraikwar.NxtBuz.busArrivalWidget"
                 )
             }
+            
+            if scheme == "goingHomeBusWidget" {
+                WidgetCenter.shared.reloadTimelines(
+                    ofKind: "io.github.amanshuraikwar.NxtBuz.goingHomeBusWidget"
+                )
+            }
         }
     }
 }

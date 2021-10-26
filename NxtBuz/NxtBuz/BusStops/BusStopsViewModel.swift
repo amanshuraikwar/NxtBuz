@@ -8,6 +8,7 @@
 import Foundation
 import iosUmbrella
 import CoreLocation
+import WidgetKit
 
 class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var busStopsScreenState: BusStopsScreenState = .Fetching(message: "Fetching bus stops...")
@@ -178,6 +179,9 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
                 case .Error(let message):
                     print(message)
                 case .Success(_):
+                    WidgetCenter.shared.reloadTimelines(
+                        ofKind: "io.github.amanshuraikwar.NxtBuz.goingHomeBusWidget"
+                    )
                     print("set home bus stop \(busStopCode) success")
                 }
             }
