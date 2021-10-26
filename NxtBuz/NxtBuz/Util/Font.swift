@@ -30,8 +30,12 @@ struct NxtBuzFonts {
     public static var bodyMonospaced = Font.system(.body, design: .monospaced)
 
     public static var callout = Font.system(.callout, design: .rounded)
+    
+    public static var calloutMonospaced = Font.system(.callout, design: .monospaced)
 
     public static var footnote = Font.system(.footnote, design: .rounded)
 
     public static var caption = Font.system(.caption, design: .rounded)
+    
+    public static var captionMonospaced = Font.system(.caption, design: .monospaced)
 }

@@ -1,0 +1,8 @@
+CREATE TABLE DirectBusEntity (
+    sourceBusStopCode TEXT NOT NULL,
+    destinationBusStopCode TEXT NOT NULL,
+    hasDirectBus INTEGER NOT NULL,
+    busServiceNumber TEXT NOT NULL,
+    stops INTEGER NOT NULL,
+    distance REAL NOT NULL
+);

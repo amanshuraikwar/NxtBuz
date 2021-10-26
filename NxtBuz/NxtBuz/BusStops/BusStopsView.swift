@@ -69,6 +69,16 @@ struct BusStopsView: View {
                 )
             case .Success(let header, let busStopList, let searchResults, let lowAccuracy):
                 List {
+                    if !searchResults {
+                        Section(
+                            header: Text("Buses going home")
+                                .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+                                .font(NxtBuzFonts.caption)
+                        ) {
+                            GoingHomeBusesView(state: $viewModel.busesGoingHomeState)
+                        }
+                    }
+                    
                     Section(
                         header: Text(header)
                             .foregroundColor(Color(nxtBuzTheme.secondaryColor))
@@ -93,7 +103,8 @@ struct BusStopsView: View {
                                         busStopName: busStop.description_,
                                         roadName: busStop.roadName,
                                         busStopCode: busStop.code,
-                                        operatingBusServiceNumbers: getOperatingBusStr(busStop.operatingBusList)
+                                        operatingBusServiceNumbers: getOperatingBusStr(busStop.operatingBusList),
+                                        onSetHomeClick: viewModel.onSetHomeClick
                                     )
                                 }
                             }

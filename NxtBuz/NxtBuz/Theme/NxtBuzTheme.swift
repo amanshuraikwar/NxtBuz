@@ -21,10 +21,18 @@ class NxtBuzTheme : ObservableObject {
         isDark = isSystemInDarkMode
         updateTheme(Di.get().getThemeUseCase().getThemeSync())
         themeInit = true
-        Di.get().getThemeUseCase().getThemeUpdates { theme in
-            DispatchQueue.main.sync {
-                self.updateTheme(theme)
+        
+        Di.get().getThemeUseCase().getThemeUpdates { result in
+            let useCaseResult = Util.toUseCaseResult(result)
+            switch useCaseResult {
+            case .Success(let data):
+                Util.onMain {
+                    self.updateTheme(data)
+                }
+            case .Error(let message):
+                print(message)
             }
+            
         }
     }
     

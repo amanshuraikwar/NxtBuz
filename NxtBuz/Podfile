@@ -14,3 +14,15 @@ target 'SelectBusArrival' do
   platform :ios, '14.1'
   pod 'iosUmbrella', :path => '../iosUmbrella'
 end
+
+target 'StarredBusArrivalsWidgetExtension' do
+  use_frameworks!
+  platform :ios, '14.1'
+  pod 'iosUmbrella', :path => '../iosUmbrella'
+end
+
+target 'GoingHomeBusWidgetExtension' do
+  use_frameworks!
+  platform :ios, '14.1'
+  pod 'iosUmbrella', :path => '../iosUmbrella'
+end

@@ -1,7 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.localdatasource
 
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
@@ -46,6 +45,36 @@ fun LocalHourMinute.isAfter(instant: Instant): Boolean {
         }
         hour == localDateTime.hour -> {
             minute > localDateTime.minute
+        }
+        else -> {
+            false
+        }
+    }
+}
+
+fun Instant.isBefore(localHourMinute: LocalHourMinute): Boolean {
+    val localDateTime = toLocalDateTime(TimeZone.currentSystemDefault())
+    return when {
+        localDateTime.hour < localHourMinute.hour -> {
+            true
+        }
+        localDateTime.hour == localHourMinute.hour -> {
+            localDateTime.minute < localHourMinute.minute
+        }
+        else -> {
+            false
+        }
+    }
+}
+
+fun Instant.isAfter(localHourMinute: LocalHourMinute): Boolean {
+    val localDateTime = toLocalDateTime(TimeZone.currentSystemDefault())
+    return when {
+        localDateTime.hour > localHourMinute.hour -> {
+            true
+        }
+        localDateTime.hour == localHourMinute.hour -> {
+            localDateTime.minute > localHourMinute.minute
         }
         else -> {
             false

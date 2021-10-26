@@ -12,53 +12,59 @@ import SwiftUI
 class Di {
     private static let instance = Di()
     
-    private static let coroutineDispatcherProvider = DispatcherProviderFactory.init().getDispatcherProvider()
+    private static let coroutineDispatcherProvider = CoroutineProvides.shared.provideDispatcherProvider()
     
-    private static let remoteDataSource = KtorRemoteDataSource.Companion().createInstance(
+    private static let remoteDataSource = RemoteDataSourceProvides.shared.provideRemoteDataSource(
         ltaAccountKey: "yO8B1RhDRoesLHDACerOUg==",
         addLoggingInterceptors: true,
-        ioDispatcher: coroutineDispatcherProvider.io
+        coroutinesDispatcherProvider: coroutineDispatcherProvider
     )
     
-    private static let localDataSource = SqlDelightLocalDataSource.Companion().createInstance(
-        dbFactory: DbFactory(dbBasePath: FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.io.github.amanshuraikwar.NxtBuz")!.path),
-        ioDispatcher: coroutineDispatcherProvider.io
+    private static let localDataSource = LocalDataSourceProvides.shared.provideLocalDataSource(
+        localDataSourceParams: LocalDataSourceParams(
+            dbBasePathName: FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.io.github.amanshuraikwar.NxtBuz")!.path
+        ),
+        dispatcherProvider: coroutineDispatcherProvider
     )
     
-    private static let preferenceStorage = SettingsFactory(settingsSuiteName: "group.io.github.amanshuraikwar.NxtBuz").createPreferenceStorage()
+    private static let preferenceStorage = PreferenceProvides.shared.providePreferenceStorage(
+        preferenceStorageParams: PreferenceStorageParams(
+            settingsSuiteName: "group.io.github.amanshuraikwar.NxtBuz"
+        )
+    )
     
-    private static let userRepository = UserRepository(
+    private static let userRepository = RepositoryProvides.shared.provideUserRepository(
+        systemThemeHelper: SystemThemeHelper(),
         preferenceStorage: preferenceStorage,
-        dispatcherProvider: coroutineDispatcherProvider,
-        systemThemeHelper: SystemThemeHelper()
+        dispatcherProvider: coroutineDispatcherProvider
     )
     
-    private static let busRouteRepository = BusRouteRepository(
+    private static let busRouteRepository = RepositoryProvides.shared.provideBusRouteRepository(
         localDataSource: localDataSource,
         remoteDataSource: remoteDataSource,
         dispatcherProvider: coroutineDispatcherProvider
     )
     
-    private static let busStopRepository = BusStopRepository(
+    private static let busStopRepository = RepositoryProvides.shared.provideBusStopRepository(
         localDataSource: localDataSource,
         remoteDataSource: remoteDataSource,
         preferenceStorage: preferenceStorage,
         dispatcherProvider: coroutineDispatcherProvider
     )
     
-    private static let busArrivalRepository = BusArrivalRepository(
+    private static let busArrivalRepository = RepositoryProvides.shared.provideBusArrivalRepository(
         localDataSource: localDataSource,
         remoteDataSource: remoteDataSource,
         dispatcherProvider: coroutineDispatcherProvider
     )
     
-    private static let starredBusArrivalRepository = StarredBusArrivalRepository(
+    private static let starredBusArrivalRepository = RepositoryProvides.shared.provideStarredBusArrivalRepository(
         localDataSource: localDataSource,
         preferenceStorage: preferenceStorage,
         dispatcherProvider: coroutineDispatcherProvider
     )
     
-    private static let searchRepository = SearchRepository(
+    private static let searchRepository = RepositoryProvides.shared.provideSearchRepository(
         localDataSource: localDataSource,
         dispatcherProvider: coroutineDispatcherProvider
     )
@@ -96,74 +102,103 @@ class Di {
         navigatedBusStopCode = busStopCode
     }
     
-    func getUserStateUserCase() -> GetUserStateUseCase {
-        return GetUserStateUseCase(
+    func getUserStateUserCase() -> IosGetUserStateUseCase {
+        return IosGetUserStateUseCase(
             userRepository: Di.userRepository
         )
     }
     
-    func getDoSetupUserStateUserCase() -> DoSetupUseCase {
-        return DoSetupUseCase(
+    func getDoSetupUserStateUserCase() -> IosDoSetupUseCase {
+        return IosDoSetupUseCase(
             userRepository: Di.userRepository,
             busStopRepository: Di.busStopRepository,
             busRouteRepository: Di.busRouteRepository
         )
     }
     
-    func getBusStopsUseCase() -> GetBusStopsUseCase {
-        return GetBusStopsUseCase(
+    func getBusStopsUseCase() -> IosGetBusStopsUseCase {
+        return IosGetBusStopsUseCase(
             busStopRepository: Di.busStopRepository
         )
     }
     
-    func getBusArrivalsUseCase() -> GetBusArrivalsUseCase {
-        return GetBusArrivalsUseCase(
+    func getBusArrivalsUseCase() -> IosGetBusArrivalsUseCase {
+        return IosGetBusArrivalsUseCase(
             busArrivalRepository: Di.busArrivalRepository,
             starredBusArrivalRepository: Di.starredBusArrivalRepository
         )
     }
     
-    func getToggleBusStopStarUseCase() -> ToggleBusStopStarUseCase {
-        return ToggleBusStopStarUseCase(repo: Di.starredBusArrivalRepository)
+    func getToggleBusStopStarUseCase() -> IosToggleBusStopStarUseCase {
+        return IosToggleBusStopStarUseCase(repo: Di.starredBusArrivalRepository)
     }
     
     func getStarredBusServicesUseCase() -> GetStarredBusServicesUseCase {
         return GetStarredBusServicesUseCase(repo: Di.starredBusArrivalRepository)
     }
     
-    func getBusStopUseCase() -> GetBusStopUseCase {
-        return GetBusStopUseCase(busStopRepository: Di.busStopRepository)
+    func getBusStopUseCase() -> IosGetBusStopUseCase {
+        return IosGetBusStopUseCase(busStopRepository: Di.busStopRepository)
     }
     
-    func getStarredBusArrivalsUseCase() -> GetStarredBusArrivalsUseCase {
-        return GetStarredBusArrivalsUseCase(
+    func getShowErrorStarredBusArrivalsUseCase() -> ShowErrorStarredBusArrivalsUseCase {
+        return ShowErrorStarredBusArrivalsUseCase(repo: Di.starredBusArrivalRepository)
+    }
+    
+    func getStarredBusArrivalsUseCase() -> IosGetStarredBusArrivalsUseCase {
+        return IosGetStarredBusArrivalsUseCase(
             getStarredBusServicesUseCase: getStarredBusServicesUseCase(),
             getBusArrivalsUseCase: getBusArrivalsUseCase(),
-            getBusStopUseCase: getBusStopUseCase()
+            getBusStopUseCase: getBusStopUseCase(),
+            showErrorStarredBusArrivalsUseCase: getShowErrorStarredBusArrivalsUseCase()
         )
     }
     
-    func getToggleStarUpdateUseCase() -> ToggleStarUpdateUseCase {
-        return ToggleStarUpdateUseCase(
+    func getToggleStarUpdateUseCase() -> IosToggleStarUpdateUseCase {
+        return IosToggleStarUpdateUseCase(
             repo: Di.starredBusArrivalRepository
         )
     }
     
-    func getSearchUseCase() -> SearchUseCase {
-        return SearchUseCase(
+    func getSearchUseCase() -> IosSearchUseCase {
+        return IosSearchUseCase(
             searchRepository: Di.searchRepository
         )
     }
     
-    func getThemeUseCase() -> GetThemeUseCase {
-        return GetThemeUseCase(dynamoThemeRepository: Di.dynamoThemeRepository)
+    func getThemeUseCase() -> GetDynamoThemeUseCase {
+        return GetDynamoThemeUseCase(dynamoThemeRepository: Di.dynamoThemeRepository)
     }
     
-    func getUseSystemThemeUseCase() -> GetUseSystemThemeUseCase {
-        GetUseSystemThemeUseCase(userRepository: Di.userRepository)
+    func getOperatingBusServicesUseCase() -> IosGetOperatingBusServicesUseCase {
+        IosGetOperatingBusServicesUseCase(busArrivalRepository: Di.busArrivalRepository)
     }
     
-    func getOperatingBusServicesUseCase() -> GetOperatingBusServicesUseCase {
-        GetOperatingBusServicesUseCase(busArrivalRepository: Di.busArrivalRepository)
+    func setHomeBusStopUseCase() -> IosSetHomeBusStopUseCase {
+        return IosSetHomeBusStopUseCase(
+            repo: Di.userRepository
+        )
+    }
+    
+    func getHomeBusStopUseCase() -> IosGetHomeBusStopUseCase {
+        return IosGetHomeBusStopUseCase(
+            userRepository: Di.userRepository,
+            busStopRepository: Di.busStopRepository
+        )
+    }
+    
+    func getNearbyGoingHomeBusesUseCase() -> IosGetNearbyGoingHomeBusesUseCase {
+        return IosGetNearbyGoingHomeBusesUseCase(
+            userRepository: Di.userRepository,
+            busStopRepository: Di.busStopRepository,
+            busRouteRepository: Di.busRouteRepository,
+            busArrivalRepository: Di.busArrivalRepository
+        )
+    }
+    
+    func getCachedDirectBusDataUseCase() -> IosGetCachedDirectBusDataUseCase {
+        return IosGetCachedDirectBusDataUseCase(
+            busStopRepository: Di.busStopRepository
+        )
     }
 }

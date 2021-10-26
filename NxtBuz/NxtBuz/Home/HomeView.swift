@@ -76,29 +76,11 @@ struct HomeView: View {
                 .tag(3)
             }
             .onOpenURL { url in
-                //searchString =
                 viewModel.onDeeplinkUrlOpen(url: url)
             }
             .alert(isPresented: $viewModel.showingAlert) {
                 Alert(title: Text("Bus arrivals updated!"), dismissButton: .default(Text("Got it!")))
             }
-//            .sheet(
-//                item: $viewModel.busStopArrivalsSheetData,
-//                onDismiss: {
-//                    //viewModel.busStopArrivalsSheetData = nil
-//                },
-//                content: { busStopArrivalsSheetData in
-//                    NxtBuzNavigationView(
-//                        AnyView(
-//                            BusStopArrivalsBottomSheetView(busStopCode: busStopArrivalsSheetData.busStopCode)
-//                                .environmentObject(nxtBuzTheme)
-//                        ),
-//                        title: ""
-//                    )
-//                    .ignoresSafeArea()
-//
-//                }
-//            )
         case HomeScreenState.Fetching:
             ProgressView()
                 .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
@@ -108,8 +90,6 @@ struct HomeView: View {
         }
     }
 }
-
-
 
 //struct HomeView_Previews: PreviewProvider {
 //    static var previews: some View {
