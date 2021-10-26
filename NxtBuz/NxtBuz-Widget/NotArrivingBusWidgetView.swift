@@ -51,6 +51,13 @@ struct NotArrivingBusWidgetView: View {
                 .padding(.leading)
                 .padding(.trailing, 8)
                 .frame(width: geometry.size.width / 2.5)
+                .background(
+                    LinearGradient(
+                        gradient: nxtBuzTheme.isDark ? Gradient(colors: [Color(.systemGray5), Color(.systemGray6)]) : Gradient(colors: [Color(.systemGray6), Color(.white)]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
                 
                 VStack(
                     spacing: 0

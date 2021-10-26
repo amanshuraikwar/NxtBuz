@@ -195,4 +195,10 @@ class Di {
             busArrivalRepository: Di.busArrivalRepository
         )
     }
+    
+    func getCachedDirectBusDataUseCase() -> IosGetCachedDirectBusDataUseCase {
+        return IosGetCachedDirectBusDataUseCase(
+            busStopRepository: Di.busStopRepository
+        )
+    }
 }
