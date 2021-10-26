@@ -15,6 +15,17 @@ struct SettingsView: View {
     var body: some View {
         List {
             Section(
+                header: Text("Tips")
+                    .font(NxtBuzFonts.caption)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+            ) {
+                WarningBannerView(
+                    message: "In a widget, to refresh bus arrival timings, launch the app by clicking on it.",
+                    iconSystemName: "lightbulb.fill"
+                )
+            }
+            
+            Section(
                 header: Text("App Info")
                     .font(NxtBuzFonts.caption)
                     .foregroundColor(Color(nxtBuzTheme.secondaryColor))
@@ -160,14 +171,20 @@ struct SettingsView: View {
             }
             
             Section(
-                header: Text("Tips")
+                header: Text("Nerd Stuff")
                     .font(NxtBuzFonts.caption)
                     .foregroundColor(Color(nxtBuzTheme.secondaryColor))
             ) {
-                WarningBannerView(
-                    message: "In a widget, to refresh bus arrival timings, launch the app by clicking on it.",
-                    iconSystemName: "lightbulb.fill"
-                )
+                switch viewModel.cachedDirectBusDataState {
+                case .Fetching:
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
+                case .Success(let count):
+                    WarningBannerView(
+                        message: "We have cached direct buses for \(count) bus stop permutations for better performance.",
+                        iconSystemName: "internaldrive.fill"
+                    )
+                }
             }
         }
         .listStyle(InsetGroupedListStyle())

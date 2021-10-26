@@ -11,6 +11,7 @@ import SwiftUI
 
 class SettingsViewModel : ObservableObject {
     @Published var homeStopState: HomeBusStopState = .Fetching
+    @Published var cachedDirectBusDataState: CachedDirectBusDataState = .Fetching
     
     func fetchHomeBusStop() {
         Di.get()
@@ -41,7 +42,30 @@ class SettingsViewModel : ObservableObject {
                     }
                 }
             }
+        
+        Di.get()
+            .getCachedDirectBusDataUseCase()
+            .invoke { result in
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Error(_):
+                    Util.onMain {
+                        self.cachedDirectBusDataState = .Success(count: 0)
+                    }
+                case .Success(let data):
+                    Util.onMain {
+                        self.cachedDirectBusDataState = .Success(count: Int(truncating: data))
+                    }
+                }
+            }
     }
+}
+
+enum CachedDirectBusDataState {
+    case Fetching
+    case Success(
+        count: Int
+    )
 }
 
 enum HomeBusStopState {
