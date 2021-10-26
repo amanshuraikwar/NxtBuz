@@ -264,4 +264,15 @@ class BusStopRepositoryImpl constructor(
             }
             .awaitAll()
     }
+
+    override suspend fun getCachedDirectBusesStopPermutationsCount(): Int {
+        return withContext(dispatcherProvider.io) {
+            localDataSource
+                .findAllDirectBuses()
+                .distinctBy {
+                    it.sourceBusStopCode + "->" + it.destinationBusStopCode
+                }
+                .size
+        }
+    }
 }

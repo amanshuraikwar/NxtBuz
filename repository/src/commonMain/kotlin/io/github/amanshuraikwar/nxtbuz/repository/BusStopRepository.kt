@@ -45,4 +45,6 @@ interface BusStopRepository {
     suspend fun setDirectBuses(directBusList: List<DirectBus>)
 
     suspend fun setNoDirectBusesFor(sourceBusStopCode: String, destinationBusStopCode: String)
+
+    suspend fun getCachedDirectBusesStopPermutationsCount(): Int
 }
