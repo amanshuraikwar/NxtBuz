@@ -51,4 +51,6 @@ interface LocalDataSource {
     ): List<DirectBusEntity>
 
     suspend fun insertDirectBuses(directBusList: List<DirectBusEntity>)
+
+    suspend fun findAllDirectBuses(): List<DirectBusEntity>
 }

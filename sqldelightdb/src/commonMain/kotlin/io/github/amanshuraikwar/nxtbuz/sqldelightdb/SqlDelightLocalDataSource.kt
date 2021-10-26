@@ -390,6 +390,24 @@ class SqlDelightLocalDataSource internal constructor(
         }
     }
 
+    override suspend fun findAllDirectBuses(): List<DirectBusEntity> {
+        return withContext(ioDispatcher) {
+            nxtBuzDb.directBusEntityQueries
+                .findAll()
+                .executeAsList()
+                .map {
+                    DirectBusEntity(
+                        sourceBusStopCode = it.sourceBusStopCode,
+                        destinationBusStopCode = it.destinationBusStopCode,
+                        hasDirectBus = it.hasDirectBus == 1L,
+                        busServiceNumber = it.busServiceNumber,
+                        stops = it.stops.toInt(),
+                        distance = it.distance
+                    )
+                }
+        }
+    }
+
     companion object {
         fun createInstance(
             dbFactory: DbFactory,
