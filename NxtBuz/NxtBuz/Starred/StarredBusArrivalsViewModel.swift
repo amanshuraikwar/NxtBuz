@@ -8,6 +8,7 @@
 import Foundation
 import iosUmbrella
 import UIKit
+import WidgetKit
 
 class StarredBusArrivalsViewModel : ObservableObject {
     @Published var screenState: StarredBusArrivalsScreenState = .Fetching
@@ -222,6 +223,7 @@ class StarredBusArrivalsViewModel : ObservableObject {
                     case .Error(let message):
                         print(message)
                     case .Success(_):
+                        WidgetCenter.shared.reloadTimelines(ofKind: "io.github.amanshuraikwar.NxtBuz.starredBusArrivalsWidget")
                         self.getArrivals()
                     }
                 }

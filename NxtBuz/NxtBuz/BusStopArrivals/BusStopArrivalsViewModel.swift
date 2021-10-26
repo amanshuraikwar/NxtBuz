@@ -8,6 +8,7 @@
 import Foundation
 import iosUmbrella
 import SwiftUI
+import WidgetKit
 
 class BusStopArrivalsViewModel : ObservableObject {
     @Published var screenState: BusStopArrivalsScreenState = .Fetching
@@ -157,7 +158,7 @@ class BusStopArrivalsViewModel : ObservableObject {
                     let useCaseResult = Util.toUseCaseResult(result)
                     switch useCaseResult {
                     case .Success(_):
-                        print("Star toggle success.")
+                        WidgetCenter.shared.reloadTimelines(ofKind: "io.github.amanshuraikwar.NxtBuz.starredBusArrivalsWidget")
                     case .Error(let message):
                         print("Star toggle failed \(message).")
                     }

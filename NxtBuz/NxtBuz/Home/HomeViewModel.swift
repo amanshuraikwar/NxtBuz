@@ -42,20 +42,19 @@ class HomeViewModel : ObservableObject {
     }
     
     func onDeeplinkUrlOpen(url: URL) {
-        WidgetCenter.shared.reloadTimelines(ofKind: "io.github.amanshuraikwar.NxtBuz.busArrivalWidget")
-        if let host = url.host {
-            if host == "open" {
-                if let busStopDescription = url.valueOf("desc") {
-                    
-                }
-            } else if host == "refreshBusStopArrivals" {
-                showingAlert = true
+        if let scheme = url.scheme {
+            if scheme == "starredBusArrivalsWidget" {
+                WidgetCenter.shared.reloadTimelines(
+                    ofKind: "io.github.amanshuraikwar.NxtBuz.starredBusArrivalsWidget"
+                )
+                self.tabSelection = 2
             }
-        }
-        
-        if let busStopCode = url.valueOf("busStopCode") {
-            //self.tabSelection = 1
-            //self.busStopArrivalsSheetData = BusStopArrivalsSheetData(busStopCode: busStopCode)
+            
+            if scheme == "busArrivalWidget" {
+                WidgetCenter.shared.reloadTimelines(
+                    ofKind: "io.github.amanshuraikwar.NxtBuz.busArrivalWidget"
+                )
+            }
         }
     }
 }
@@ -63,7 +62,6 @@ class HomeViewModel : ObservableObject {
 extension URL {
     func valueOf(_ queryParamaterName: String) -> String? {
         guard let url = URLComponents(string: self.absoluteString) else { return nil }
-        print("ypoyoyoyo" + url.path)
         return url.queryItems?.first(where: { $0.name == queryParamaterName })?.value
     }
 }
