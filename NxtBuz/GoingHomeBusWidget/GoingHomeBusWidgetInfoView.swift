@@ -24,6 +24,7 @@ struct GoingHomeBusWidgetInfoView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+                .lineLimit(4)
             
             Spacer()
             

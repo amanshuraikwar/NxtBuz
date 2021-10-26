@@ -8,6 +8,7 @@
 import WidgetKit
 import SwiftUI
 import iosUmbrella
+import CoreLocation
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> GoingHomeBusEntry {
@@ -82,11 +83,52 @@ struct Provider: TimelineProvider {
     func emitGoingHomeBusTimeline(
         completion: @escaping (Timeline<GoingHomeBusEntry>) -> ()
     ) {
+        let locationManager = CLLocationManager()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        let date = Date()
+        var state = GoingHomeBusWidgetState.Error(message: "Please enable widget location access in settings.")
+        
+        var lat = -1.0
+        var lng = -1.0
+        
+        switch locationManager.authorizationStatus {
+        case .notDetermined, .denied:
+            state = GoingHomeBusWidgetState.Error(
+                message: "Please enable widget location access in settings."
+            )
+        case .restricted:
+            state = GoingHomeBusWidgetState.Error(
+                message: "Location use is currently restricted, please check back later."
+            )
+        case .authorizedAlways, .authorizedWhenInUse:
+            lat = locationManager.location?.coordinate.latitude ?? -1.0
+            lng = locationManager.location?.coordinate.longitude ?? -1.0
+        @unknown default:
+            lat = -1.0
+            lng = -1.0
+        }
+        
+        if lat == -1.0 || lng == -1.0 {
+            let entry = GoingHomeBusEntry(
+                date: date,
+                state: state
+            )
+            
+            let timeline = Timeline(
+                entries: [entry],
+                policy: .after(Calendar.current.date(byAdding: .minute, value: 30, to: date)!)
+            )
+            
+            completion(timeline)
+            
+            return
+        }
+        
         Di.get()
             .getNearbyGoingHomeBusesUseCase()
             .invoke(
-                lat: 1.3416,
-                lng: 103.7757,
+                lat: lat,
+                lng: lng,
                 onStart: { _ in }
             ) { result in
                 let useCaseResult = Util.toUseCaseResult(result)
