@@ -43,40 +43,39 @@ struct StarredBusStopWidgetView: View {
             VStack(
                 spacing: 0
             ) {
-                ForEach(busStopData.starredBusArrivalList, id: \.self) { starredBusArrival in
-                    if let arriving = starredBusArrival.busArrivals as? BusArrivals.Arriving {
-                        HStack {
-                            Image(getBusTypeImageName(arriving.nextArrivingBus.type))
-                                .renderingMode(.template)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 16, height: 16)
-                            
-                            ZStack {
-                                Text(starredBusArrival.busServiceNumber)
-                                    .font(NxtBuzFonts.callout)
-                                    .fontWeight(.bold)
-                                
-                                Text("961M")
-                                    .font(NxtBuzFonts.callout)
-                                    .fontWeight(.bold)
-                                    .opacity(0)
-                            }
-                            .background(Color(nxtBuzTheme.accentColor))
-                            .clipShape(Capsule())
-                            
-                            Spacer()
-                            
-                            Text(getTime(date: arriving.nextArrivingBus.arrivalInstant.toNSDate()))
-                                .font(NxtBuzFonts.calloutMonospaced)
+                ForEach(busStopData.starredBusServiceDataList) { starredBusServiceData in
+                    HStack {
+                        Image(getBusTypeImageName(starredBusServiceData.busType))
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
+                        
+                        ZStack {
+                            Text(starredBusServiceData.busServiceNumber)
+                                .font(NxtBuzFonts.callout)
                                 .fontWeight(.bold)
+                            
+                            Text("961M")
+                                .font(NxtBuzFonts.callout)
+                                .fontWeight(.bold)
+                                .opacity(0)
                         }
-                        .padding(.vertical, 2)
                         .padding(.horizontal, 4)
-                        .background(Color(.white).opacity(0.2))
-                        .cornerRadius(8)
-                        .padding(.bottom, 4)
+                        .background(Color(nxtBuzTheme.accentColor))
+                        .clipShape(Capsule())
+                        
+                        Spacer()
+                        
+                        Text(getTime(date: starredBusServiceData.busArrivalDate))
+                            .font(NxtBuzFonts.calloutMonospaced)
+                            .fontWeight(.bold)
                     }
+                    .padding(.vertical, 2)
+                    .padding(.horizontal, 4)
+                    .background(Color(.white).opacity(0.2))
+                    .cornerRadius(8)
+                    .padding(.bottom, 4)
                 }
             }
             .foregroundColor(nxtBuzTheme.isDark ? Color(.systemGray6) : .white)

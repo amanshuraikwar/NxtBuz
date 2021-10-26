@@ -11,11 +11,111 @@ import iosUmbrella
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> StarredBusArrivalsWidgetEntry {
-        StarredBusArrivalsWidgetEntry(date: Date(), state: .NoStarredBuses)
+        StarredBusArrivalsWidgetEntry(
+            date: Date(),
+            state: StarredBusArrivalsWidgetState.Success(
+                busStopDataList: [
+                    StarredBusStopData(
+                        busStopCode: "123456",
+                        busStopDescription: "Opp Jln Jurong Kechil",
+                        starredBusServiceDataList: [
+                            StarredBusServiceData(
+                                busServiceNumber: "961M",
+                                busType: BusType.dd,
+                                busArrivalDate: Date()
+                            ),
+                            StarredBusServiceData(
+                                busServiceNumber: "61",
+                                busType: BusType.bd,
+                                busArrivalDate: Calendar.current.date(
+                                    byAdding: .minute,
+                                    value: 2,
+                                    to: Date()
+                                )!
+                            )
+                        ]
+                    ),
+                    StarredBusStopData(
+                        busStopCode: "123456",
+                        busStopDescription: "Opp Blk 19",
+                        starredBusServiceDataList: [
+                            StarredBusServiceData(
+                                busServiceNumber: "77",
+                                busType: BusType.sd,
+                                busArrivalDate: Calendar.current.date(
+                                    byAdding: .minute,
+                                    value: 4,
+                                    to: Date()
+                                )!
+                            ),
+                            StarredBusServiceData(
+                                busServiceNumber: "970",
+                                busType: BusType.dd,
+                                busArrivalDate: Calendar.current.date(
+                                    byAdding: .minute,
+                                    value: 6,
+                                    to: Date()
+                                )!
+                            )
+                        ]
+                    )
+                ]
+            )
+        )
     }
 
     func getSnapshot(in context: Context, completion: @escaping (StarredBusArrivalsWidgetEntry) -> ()) {
-        let entry = StarredBusArrivalsWidgetEntry(date: Date(), state: .NoStarredBuses)
+        let entry = StarredBusArrivalsWidgetEntry(
+            date: Date(),
+            state: StarredBusArrivalsWidgetState.Success(
+                busStopDataList: [
+                    StarredBusStopData(
+                        busStopCode: "123456",
+                        busStopDescription: "Opp Jln Jurong Kechil",
+                        starredBusServiceDataList: [
+                            StarredBusServiceData(
+                                busServiceNumber: "961M",
+                                busType: BusType.dd,
+                                busArrivalDate: Date()
+                            ),
+                            StarredBusServiceData(
+                                busServiceNumber: "61",
+                                busType: BusType.bd,
+                                busArrivalDate: Calendar.current.date(
+                                    byAdding: .minute,
+                                    value: 2,
+                                    to: Date()
+                                )!
+                            )
+                        ]
+                    ),
+                    StarredBusStopData(
+                        busStopCode: "123456",
+                        busStopDescription: "Opp Blk 19",
+                        starredBusServiceDataList: [
+                            StarredBusServiceData(
+                                busServiceNumber: "77",
+                                busType: BusType.sd,
+                                busArrivalDate: Calendar.current.date(
+                                    byAdding: .minute,
+                                    value: 4,
+                                    to: Date()
+                                )!
+                            ),
+                            StarredBusServiceData(
+                                busServiceNumber: "970",
+                                busType: BusType.dd,
+                                busArrivalDate: Calendar.current.date(
+                                    byAdding: .minute,
+                                    value: 6,
+                                    to: Date()
+                                )!
+                            )
+                        ]
+                    )
+                ]
+            )
+        )
         completion(entry)
     }
 
@@ -103,7 +203,7 @@ struct Provider: TimelineProvider {
                         var currentBusStopCode = ""
                         var currentBusStopDescription = ""
                         var currentBusCount = 0
-                        var currentStarredBusArrivalList: [StarredBusArrival] = []
+                        var currentStarredBusServiceDataList: [StarredBusServiceData] = []
                         var currentBusStopCount = 1
                         
                         for starredBusArrival in starredBusArrivalList {
@@ -112,26 +212,30 @@ struct Provider: TimelineProvider {
                             }
                             
                             if currentBusStopCode != starredBusArrival.busStopCode {
-                                if !currentStarredBusArrivalList.isEmpty {
+                                if !currentStarredBusServiceDataList.isEmpty {
                                     busStopDataList.append(
                                         StarredBusStopData(
                                             busStopCode: currentBusStopCode,
                                             busStopDescription: currentBusStopDescription,
-                                            starredBusArrivalList: currentStarredBusArrivalList
+                                            starredBusServiceDataList: currentStarredBusServiceDataList
                                         )
                                     )
                                     currentBusStopCount += 1
                                 }
                                 currentBusStopCode = starredBusArrival.busStopCode
                                 currentBusStopDescription = starredBusArrival.busStop.description_
-                                currentStarredBusArrivalList = []
+                                currentStarredBusServiceDataList = []
                                 currentBusCount = 0
                             }
                             
                             if currentBusCount != StarredBusStopWidgetView.MAX_DISPLAY_BUSES {
-                                if starredBusArrival.busArrivals is BusArrivals.Arriving {
-                                    currentStarredBusArrivalList.append(
-                                        starredBusArrival
+                                if let arriving = starredBusArrival.busArrivals as? BusArrivals.Arriving {
+                                    currentStarredBusServiceDataList.append(
+                                        StarredBusServiceData(
+                                            busServiceNumber: starredBusArrival.busServiceNumber,
+                                            busType: arriving.nextArrivingBus.type,
+                                            busArrivalDate: arriving.nextArrivingBus.arrivalInstant.toNSDate()
+                                        )
                                     )
                                     currentBusCount += 1
                                 }
@@ -139,12 +243,12 @@ struct Provider: TimelineProvider {
                         }
                         
                         if currentBusStopCount <= StarredBusStopWidgetView.MAX_DISPLAY_BUS_STOPS {
-                            if !currentStarredBusArrivalList.isEmpty {
+                            if !currentStarredBusServiceDataList.isEmpty {
                                 busStopDataList.append(
                                     StarredBusStopData(
                                         busStopCode: currentBusStopCode,
                                         busStopDescription: currentBusStopDescription,
-                                        starredBusArrivalList: currentStarredBusArrivalList
+                                        starredBusServiceDataList: currentStarredBusServiceDataList
                                     )
                                 )
                             }
@@ -186,7 +290,7 @@ struct StarredBusArrivalsWidget: Widget {
         .supportedFamilies([.systemLarge])
         .configurationDisplayName("Starred Bus Arrivals")
         .description(
-            "See approximate bus arrival timing of a starred buses"
+            "See bus arrival timing of up to 6 recently starred buses"
         )
     }
 }

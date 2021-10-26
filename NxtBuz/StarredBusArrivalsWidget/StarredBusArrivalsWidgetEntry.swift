@@ -14,25 +14,18 @@ struct StarredBusArrivalsWidgetEntry : TimelineEntry {
     let state: StarredBusArrivalsWidgetState
 }
 
-struct ArrivingBusData : Identifiable {
+struct StarredBusServiceData : Identifiable {
     let id = UUID()
-    let busType: BusType
-    let busLoad: BusLoad
-    let wheelChairAccess: Bool
-    let nextArrivalTime: Date
-}
-
-struct StarredBusServiceData {
     let busServiceNumber: String
-    let nextArrivingBusData: ArrivingBusData
-    let followingArrivingBusDataList: [ArrivingBusData]
+    let busType: BusType
+    let busArrivalDate: Date
 }
 
 struct StarredBusStopData : Identifiable {
     let id = UUID()
     let busStopCode: String
     let busStopDescription: String
-    let starredBusArrivalList: [StarredBusArrival]
+    let starredBusServiceDataList: [StarredBusServiceData]
 }
 
 enum StarredBusArrivalsWidgetState {
