@@ -20,3 +20,9 @@ target 'StarredBusArrivalsWidgetExtension' do
   platform :ios, '14.1'
   pod 'iosUmbrella', :path => '../iosUmbrella'
 end
+
+target 'GoingHomeBusWidgetExtension' do
+  use_frameworks!
+  platform :ios, '14.1'
+  pod 'iosUmbrella', :path => '../iosUmbrella'
+end

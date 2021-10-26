@@ -126,7 +126,7 @@ struct SettingsView: View {
                     }
                 ) {
                     HStack {
-                        Text("Next Bus SG")
+                        (Text("Send ") + Text("bugs").strikethrough(true, color: .orange) + Text(" hugs :)"))
                             .font(NxtBuzFonts.body)
                             .fontWeight(.medium)
                             .foregroundColor(Color(nxtBuzTheme.primaryColor))
@@ -146,7 +146,7 @@ struct SettingsView: View {
                     }
                 ) {
                     HStack {
-                        Text("Made by Amanshu Raikwar")
+                        (Text("Made by ") + Text("genius").strikethrough(true, color: .orange) + Text(" Amanshu"))
                             .font(NxtBuzFonts.body)
                             .foregroundColor(Color(nxtBuzTheme.primaryColor))
                             .fontWeight(.medium)
@@ -157,6 +157,17 @@ struct SettingsView: View {
                             .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                     }
                 }
+            }
+            
+            Section(
+                header: Text("Tips")
+                    .font(NxtBuzFonts.caption)
+                    .foregroundColor(Color(nxtBuzTheme.secondaryColor))
+            ) {
+                WarningBannerView(
+                    message: "In a widget, to refresh bus arrival timings, launch the app by clicking on it.",
+                    iconSystemName: "lightbulb.fill"
+                )
             }
         }
         .listStyle(InsetGroupedListStyle())
