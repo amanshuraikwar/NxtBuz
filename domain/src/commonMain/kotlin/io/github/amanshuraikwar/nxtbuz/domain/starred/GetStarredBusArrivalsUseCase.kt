@@ -16,9 +16,17 @@ open class GetStarredBusArrivalsUseCase(
 ) {
     suspend operator fun invoke(): List<StarredBusArrival> {
         return coroutineScope {
-            val busStopCodeBusServiceNumberSetMap = getStarredBusServicesUseCase()
-                .groupBy { starredBusService -> starredBusService.busStopCode }
-                .mapValues { (_, list) -> list.map { it.busServiceNumber }.toSet() }
+            val busStopCodeBusServiceNumberSetMap = LinkedHashMap<String, MutableSet<String>>()
+            
+            getStarredBusServicesUseCase().forEach { starredBusService ->
+                busStopCodeBusServiceNumberSetMap[starredBusService.busStopCode]
+                    .let {
+                        it ?: mutableSetOf<String>().apply {
+                            busStopCodeBusServiceNumberSetMap[starredBusService.busStopCode] = this
+                        }
+                    }
+                    .add(starredBusService.busServiceNumber)
+            }
 
             // fetch bus stop arrivals per bus stop in parallel
             busStopCodeBusServiceNumberSetMap

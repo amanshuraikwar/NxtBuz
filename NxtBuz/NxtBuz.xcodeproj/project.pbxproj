@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1E45898CE66B61538F750856 /* Pods_SelectBusArrival.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4BF1578424D246D236C79B /* Pods_SelectBusArrival.framework */; };
 		40EDB6F4742347C6392D1E94 /* Pods_NxtBuz_WidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED98D923D3F52B3BD3CA7123 /* Pods_NxtBuz_WidgetExtension.framework */; };
+		A50D830927259A1200D6B6C8 /* StarredBusStopWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50D830827259A1200D6B6C8 /* StarredBusStopWidgetView.swift */; };
+		A50D830A27259CB300D6B6C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E1E81C26F10216007470A4 /* Assets.xcassets */; };
 		A5144DEE2706C959002274C8 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DED2706C959002274C8 /* SecondaryButton.swift */; };
 		A5144DF02706DE66002274C8 /* BusStopArrivalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */; };
 		A5144DF227070030002274C8 /* WarningBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DF127070030002274C8 /* WarningBannerView.swift */; };
@@ -39,6 +41,18 @@
 		A53460AC27074A0500A1C990 /* NxtBuz_Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A2526FB50870095D96A /* NxtBuz_Widget.intentdefinition */; };
 		A53460AE270750E000A1C990 /* Di.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBA126F5C07200BB79DA /* Di.swift */; };
 		A559FC85272532E3002B8DE6 /* BusServiceNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1D2701D726000729E9 /* BusServiceNumberView.swift */; };
+		A559FCA127258066002B8DE6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A57B9A1E26FB50870095D96A /* WidgetKit.framework */; };
+		A559FCA227258066002B8DE6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A57B9A2026FB50870095D96A /* SwiftUI.framework */; };
+		A559FCA527258066002B8DE6 /* StarredBusArrivalsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A559FCA427258066002B8DE6 /* StarredBusArrivalsWidget.swift */; };
+		A559FCA727258069002B8DE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A559FCA627258069002B8DE6 /* Assets.xcassets */; };
+		A559FCAB27258069002B8DE6 /* StarredBusArrivalsWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A559FCA027258066002B8DE6 /* StarredBusArrivalsWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A559FCB227258165002B8DE6 /* StarredBusArrivalsWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A559FCB127258165002B8DE6 /* StarredBusArrivalsWidgetEntryView.swift */; };
+		A559FCB32725824F002B8DE6 /* StarredBusArrivalsWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A559FCAF27258093002B8DE6 /* StarredBusArrivalsWidgetEntry.swift */; };
+		A559FCB42725847D002B8DE6 /* Di.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBA126F5C07200BB79DA /* Di.swift */; };
+		A559FCB5272584D8002B8DE6 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5627228E02005A67FB /* Util.swift */; };
+		A559FCB627258A5A002B8DE6 /* UseCaseResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5427228808005A67FB /* UseCaseResult.swift */; };
+		A559FCB727258B2E002B8DE6 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9926F5B1C800BB79DA /* Font.swift */; };
+		A559FCB827258B40002B8DE6 /* NxtBuzTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF62704B9F40035A7E5 /* NxtBuzTheme.swift */; };
 		A55AACF72704B9F40035A7E5 /* NxtBuzTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF62704B9F40035A7E5 /* NxtBuzTheme.swift */; };
 		A55AACF92704BEB90035A7E5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF82704BEB90035A7E5 /* HomeView.swift */; };
 		A55AACFB27060EB80035A7E5 /* AppearanceModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACFA27060EB80035A7E5 /* AppearanceModifier.swift */; };
@@ -87,6 +101,7 @@
 		A5E24AA32700209300ACF274 /* StarredBusStopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E24AA22700209300ACF274 /* StarredBusStopView.swift */; };
 		A5F0FB19271AB7590028F7DB /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0FB18271AB7590028F7DB /* SettingsViewModel.swift */; };
 		A5F0FB1B271AD1680028F7DB /* GoingHomeBusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0FB1A271AD1680028F7DB /* GoingHomeBusView.swift */; };
+		CB5BCDD6C83F1A439E3A8EFE /* Pods_StarredBusArrivalsWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C668BE7A335792604F82FE /* Pods_StarredBusArrivalsWidgetExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +118,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = A534608A2707495400A1C990;
 			remoteInfo = SelectBusArrival;
+		};
+		A559FCA927258069002B8DE6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5E1E80D26F10213007470A4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A559FC9F27258066002B8DE6;
+			remoteInfo = StarredBusArrivalsWidgetExtension;
 		};
 		A57B9A3926FB874F0095D96A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -137,6 +159,7 @@
 				A53460A52707495400A1C990 /* SelectBusArrival.appex in Embed App Extensions */,
 				A57B9A2D26FB508B0095D96A /* NxtBuz-WidgetExtension.appex in Embed App Extensions */,
 				A53460A22707495400A1C990 /* SelectBusArrivalUI.appex in Embed App Extensions */,
+				A559FCAB27258069002B8DE6 /* StarredBusArrivalsWidgetExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -145,8 +168,11 @@
 
 /* Begin PBXFileReference section */
 		1745AD13085AFEA1CA1DD517 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz-WidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
+		43C668BE7A335792604F82FE /* Pods_StarredBusArrivalsWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StarredBusArrivalsWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4483401B921C37668D13F340 /* Pods-SelectBusArrival.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelectBusArrival.debug.xcconfig"; path = "Target Support Files/Pods-SelectBusArrival/Pods-SelectBusArrival.debug.xcconfig"; sourceTree = "<group>"; };
+		470320552A22F3CC7189097C /* Pods-StarredBusArrivalsWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StarredBusArrivalsWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-StarredBusArrivalsWidgetExtension/Pods-StarredBusArrivalsWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
 		9C4BF1578424D246D236C79B /* Pods_SelectBusArrival.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelectBusArrival.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A50D830827259A1200D6B6C8 /* StarredBusStopWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredBusStopWidgetView.swift; sourceTree = "<group>"; };
 		A5144DED2706C959002274C8 /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
 		A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopArrivalView.swift; sourceTree = "<group>"; };
 		A5144DF127070030002274C8 /* WarningBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningBannerView.swift; sourceTree = "<group>"; };
@@ -179,6 +205,13 @@
 		A534609D2707495400A1C990 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		A534609F2707495400A1C990 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A53460AD27074FD400A1C990 /* SelectBusArrival.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SelectBusArrival.entitlements; sourceTree = "<group>"; };
+		A559FCA027258066002B8DE6 /* StarredBusArrivalsWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StarredBusArrivalsWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A559FCA427258066002B8DE6 /* StarredBusArrivalsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredBusArrivalsWidget.swift; sourceTree = "<group>"; };
+		A559FCA627258069002B8DE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A559FCA827258069002B8DE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A559FCAF27258093002B8DE6 /* StarredBusArrivalsWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredBusArrivalsWidgetEntry.swift; sourceTree = "<group>"; };
+		A559FCB127258165002B8DE6 /* StarredBusArrivalsWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredBusArrivalsWidgetEntryView.swift; sourceTree = "<group>"; };
+		A559FCB927258CA2002B8DE6 /* StarredBusArrivalsWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StarredBusArrivalsWidgetExtension.entitlements; sourceTree = "<group>"; };
 		A55AACF62704B9F40035A7E5 /* NxtBuzTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NxtBuzTheme.swift; sourceTree = "<group>"; };
 		A55AACF82704BEB90035A7E5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A55AACFA27060EB80035A7E5 /* AppearanceModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceModifier.swift; sourceTree = "<group>"; };
@@ -227,6 +260,7 @@
 		B3B8C3EDAF9C8EA6095B5213 /* Pods-SelectBusArrival.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelectBusArrival.release.xcconfig"; path = "Target Support Files/Pods-SelectBusArrival/Pods-SelectBusArrival.release.xcconfig"; sourceTree = "<group>"; };
 		B3D756E3D85E99C0D6B8FF34 /* Pods-NxtBuz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.release.xcconfig"; sourceTree = "<group>"; };
 		B637FC6A4A02166145A04DF7 /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz-WidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		B6DDCC6A895F0FF66307D7B6 /* Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-StarredBusArrivalsWidgetExtension/Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NxtBuz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED98D923D3F52B3BD3CA7123 /* Pods_NxtBuz_WidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NxtBuz_WidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -246,6 +280,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				A53460982707495400A1C990 /* IntentsUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A559FC9D27258066002B8DE6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A559FCA227258066002B8DE6 /* SwiftUI.framework in Frameworks */,
+				A559FCA127258066002B8DE6 /* WidgetKit.framework in Frameworks */,
+				CB5BCDD6C83F1A439E3A8EFE /* Pods_StarredBusArrivalsWidgetExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +340,7 @@
 				A534608C2707495400A1C990 /* Intents.framework */,
 				A53460972707495400A1C990 /* IntentsUI.framework */,
 				9C4BF1578424D246D236C79B /* Pods_SelectBusArrival.framework */,
+				43C668BE7A335792604F82FE /* Pods_StarredBusArrivalsWidgetExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -309,6 +354,8 @@
 				1745AD13085AFEA1CA1DD517 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */,
 				4483401B921C37668D13F340 /* Pods-SelectBusArrival.debug.xcconfig */,
 				B3B8C3EDAF9C8EA6095B5213 /* Pods-SelectBusArrival.release.xcconfig */,
+				B6DDCC6A895F0FF66307D7B6 /* Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig */,
+				470320552A22F3CC7189097C /* Pods-StarredBusArrivalsWidgetExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -403,6 +450,19 @@
 			path = SelectBusArrivalUI;
 			sourceTree = "<group>";
 		};
+		A559FCA327258066002B8DE6 /* StarredBusArrivalsWidget */ = {
+			isa = PBXGroup;
+			children = (
+				A559FCA427258066002B8DE6 /* StarredBusArrivalsWidget.swift */,
+				A559FCB127258165002B8DE6 /* StarredBusArrivalsWidgetEntryView.swift */,
+				A50D830827259A1200D6B6C8 /* StarredBusStopWidgetView.swift */,
+				A559FCAF27258093002B8DE6 /* StarredBusArrivalsWidgetEntry.swift */,
+				A559FCA627258069002B8DE6 /* Assets.xcassets */,
+				A559FCA827258069002B8DE6 /* Info.plist */,
+			);
+			path = StarredBusArrivalsWidget;
+			sourceTree = "<group>";
+		};
 		A55AACF52704B7C90035A7E5 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
@@ -448,6 +508,7 @@
 		A5E1E80C26F10213007470A4 = {
 			isa = PBXGroup;
 			children = (
+				A559FCB927258CA2002B8DE6 /* StarredBusArrivalsWidgetExtension.entitlements */,
 				A53460842707365000A1C990 /* NxtBuz-WidgetExtension.entitlements */,
 				A5E1E81726F10213007470A4 /* NxtBuz */,
 				A5E1E82926F10217007470A4 /* NxtBuzTests */,
@@ -455,6 +516,7 @@
 				A57B9A2226FB50870095D96A /* NxtBuz-Widget */,
 				A534608E2707495400A1C990 /* SelectBusArrival */,
 				A53460992707495400A1C990 /* SelectBusArrivalUI */,
+				A559FCA327258066002B8DE6 /* StarredBusArrivalsWidget */,
 				A5E1E81626F10213007470A4 /* Products */,
 				9F8567213E5A41566A3F5DBF /* Pods */,
 				85E5C2E06476F8CE84A24F24 /* Frameworks */,
@@ -470,6 +532,7 @@
 				A57B9A1D26FB50870095D96A /* NxtBuz-WidgetExtension.appex */,
 				A534608B2707495400A1C990 /* SelectBusArrival.appex */,
 				A53460962707495400A1C990 /* SelectBusArrivalUI.appex */,
+				A559FCA027258066002B8DE6 /* StarredBusArrivalsWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -558,6 +621,24 @@
 			productReference = A53460962707495400A1C990 /* SelectBusArrivalUI.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		A559FC9F27258066002B8DE6 /* StarredBusArrivalsWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A559FCAE27258069002B8DE6 /* Build configuration list for PBXNativeTarget "StarredBusArrivalsWidgetExtension" */;
+			buildPhases = (
+				28B926A34DCC58BC2DF8E14F /* [CP] Check Pods Manifest.lock */,
+				A559FC9C27258066002B8DE6 /* Sources */,
+				A559FC9D27258066002B8DE6 /* Frameworks */,
+				A559FC9E27258066002B8DE6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StarredBusArrivalsWidgetExtension;
+			productName = StarredBusArrivalsWidgetExtension;
+			productReference = A559FCA027258066002B8DE6 /* StarredBusArrivalsWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		A57B9A1C26FB50870095D96A /* NxtBuz-WidgetExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A57B9A2E26FB508B0095D96A /* Build configuration list for PBXNativeTarget "NxtBuz-WidgetExtension" */;
@@ -592,6 +673,7 @@
 				A57B9A3A26FB874F0095D96A /* PBXTargetDependency */,
 				A53460A12707495400A1C990 /* PBXTargetDependency */,
 				A53460A42707495400A1C990 /* PBXTargetDependency */,
+				A559FCAA27258069002B8DE6 /* PBXTargetDependency */,
 			);
 			name = NxtBuz;
 			productName = NxtBuz;
@@ -649,6 +731,9 @@
 					A53460952707495400A1C990 = {
 						CreatedOnToolsVersion = 13.0;
 					};
+					A559FC9F27258066002B8DE6 = {
+						CreatedOnToolsVersion = 13.0;
+					};
 					A57B9A1C26FB50870095D96A = {
 						CreatedOnToolsVersion = 13.0;
 					};
@@ -684,6 +769,7 @@
 				A57B9A1C26FB50870095D96A /* NxtBuz-WidgetExtension */,
 				A534608A2707495400A1C990 /* SelectBusArrival */,
 				A53460952707495400A1C990 /* SelectBusArrivalUI */,
+				A559FC9F27258066002B8DE6 /* StarredBusArrivalsWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -701,6 +787,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				A534609E2707495400A1C990 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A559FC9E27258066002B8DE6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A50D830A27259CB300D6B6C8 /* Assets.xcassets in Resources */,
+				A559FCA727258069002B8DE6 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -739,6 +834,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		28B926A34DCC58BC2DF8E14F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StarredBusArrivalsWidgetExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		596CC1BE00B0EDDBB3107CC6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -826,6 +943,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				A534609B2707495400A1C990 /* IntentViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A559FC9C27258066002B8DE6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A559FCB42725847D002B8DE6 /* Di.swift in Sources */,
+				A559FCB227258165002B8DE6 /* StarredBusArrivalsWidgetEntryView.swift in Sources */,
+				A559FCB827258B40002B8DE6 /* NxtBuzTheme.swift in Sources */,
+				A559FCB727258B2E002B8DE6 /* Font.swift in Sources */,
+				A559FCB5272584D8002B8DE6 /* Util.swift in Sources */,
+				A559FCA527258066002B8DE6 /* StarredBusArrivalsWidget.swift in Sources */,
+				A559FCB627258A5A002B8DE6 /* UseCaseResult.swift in Sources */,
+				A50D830927259A1200D6B6C8 /* StarredBusStopWidgetView.swift in Sources */,
+				A559FCB32725824F002B8DE6 /* StarredBusArrivalsWidgetEntry.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -926,6 +1059,11 @@
 			isa = PBXTargetDependency;
 			target = A534608A2707495400A1C990 /* SelectBusArrival */;
 			targetProxy = A53460A32707495400A1C990 /* PBXContainerItemProxy */;
+		};
+		A559FCAA27258069002B8DE6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A559FC9F27258066002B8DE6 /* StarredBusArrivalsWidgetExtension */;
+			targetProxy = A559FCA927258069002B8DE6 /* PBXContainerItemProxy */;
 		};
 		A57B9A3A26FB874F0095D96A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1076,6 +1214,84 @@
 					"-l\"sqlite3\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.SelectBusArrival;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A559FCAC27258069002B8DE6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6DDCC6A895F0FF66307D7B6 /* Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = StarredBusArrivalsWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StarredBusArrivalsWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = StarredBusArrivalsWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-framework",
+					"\"iosUmbrella\"",
+					"-l\"sqlite3\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.debug.StarredBusArrivalsWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A559FCAD27258069002B8DE6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 470320552A22F3CC7189097C /* Pods-StarredBusArrivalsWidgetExtension.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = StarredBusArrivalsWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StarredBusArrivalsWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = StarredBusArrivalsWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-framework",
+					"\"iosUmbrella\"",
+					"-l\"sqlite3\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.StarredBusArrivalsWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1467,6 +1683,15 @@
 			buildConfigurations = (
 				A53460AA2707495400A1C990 /* Debug */,
 				A53460AB2707495400A1C990 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A559FCAE27258069002B8DE6 /* Build configuration list for PBXNativeTarget "StarredBusArrivalsWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A559FCAC27258069002B8DE6 /* Debug */,
+				A559FCAD27258069002B8DE6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

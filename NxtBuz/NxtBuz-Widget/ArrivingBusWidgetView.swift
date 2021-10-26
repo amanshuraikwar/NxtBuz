@@ -85,23 +85,24 @@ struct ArrivingBusWidgetView: View {
                         .cornerRadius(8)
                         .padding(.bottom, 4)
                     }
+                    .foregroundColor(nxtBuzTheme.isDark ? Color(.systemGray6) : .white)
                     
                     Spacer()
                     
-                    HStack {
-                        Spacer()
-                        
-                        Link(destination: URL(string: "busArrivalWidget://refreshBusStopArrivals?busStopCode=\(busStopCode)&busServiceNumber=\(busServiceNumber)")!) {
-                            Image(systemName: "arrow.triangle.2.circlepath")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 18, height: 18)
-                                .padding(6)
-                                .foregroundColor(Color(nxtBuzTheme.accentColor))
-                                .background(.white)
-                                .cornerRadius(12)
-                        }
-                    }
+//                    HStack {
+//                        Spacer()
+//                        
+//                        Link(destination: URL(string: "busArrivalWidget://refreshBusStopArrivals?busStopCode=\(busStopCode)&busServiceNumber=\(busServiceNumber)")!) {
+//                            Image(systemName: "arrow.triangle.2.circlepath")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 18, height: 18)
+//                                .padding(6)
+//                                .foregroundColor(Color(nxtBuzTheme.accentColor))
+//                                .background(.white)
+//                                .cornerRadius(12)
+//                        }
+//                    }
                 }
                 .foregroundColor(.white)
                 .padding(.vertical)
