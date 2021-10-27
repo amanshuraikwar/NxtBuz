@@ -27,21 +27,7 @@ struct ArrivingBusWidgetView: View {
                     spacing: 0
                 ) {
                     HStack {
-                        ZStack {
-                            Text(busServiceNumber)
-                                .font(NxtBuzFonts.title3)
-                                .fontWeight(.medium)
-                                .foregroundColor(Color(.white))
-                            
-                            Text("961M")
-                                .font(NxtBuzFonts.title3)
-                                .fontWeight(.medium)
-                                .opacity(0.0)
-                        }
-                        .padding(.vertical, 2)
-                        .padding(.horizontal, 4)
-                        .background(Color(nxtBuzTheme.accentColor))
-                        .clipShape(Capsule())
+                        BusServiceNumberView(busServiceNumber: busServiceNumber, error: false)
                         
                         Spacer()
                     }
@@ -67,6 +53,13 @@ struct ArrivingBusWidgetView: View {
                 .padding(.leading)
                 .padding(.trailing, 8)
                 .frame(width: geometry.size.width / 2.5)
+                .background(
+                    LinearGradient(
+                        gradient: nxtBuzTheme.isDark ? Gradient(colors: [Color(.systemGray5), Color(.systemGray6)]) : Gradient(colors: [Color(.systemGray6), Color(.white)]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
                 
                 VStack(
                     spacing: 0
@@ -99,30 +92,15 @@ struct ArrivingBusWidgetView: View {
                         .cornerRadius(8)
                         .padding(.bottom, 4)
                     }
+                    .foregroundColor(nxtBuzTheme.isDark ? Color(.systemGray6) : .white)
                     
                     Spacer()
-                    
-                    HStack {
-                        Spacer()
-                        
-                        Link(destination: URL(string: "busArrivalWidget://refreshBusStopArrivals?busStopCode=\(busStopCode)&busServiceNumber=\(busServiceNumber)")!) {
-                            Image(systemName: "arrow.triangle.2.circlepath")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 18, height: 18)
-                                .padding(6)
-                                .foregroundColor(Color(nxtBuzTheme.accentColor))
-                                .background(.white)
-                                .cornerRadius(12)
-                        }
-                    }
                 }
                 .foregroundColor(.white)
                 .padding(.vertical)
                 .padding(.trailing)
                 .padding(.leading)
                 .frame(width: geometry.size.width * 3 / 5)
-                //.frame(width: geometry.size.height, alignment: .top)
                 .background(Color(nxtBuzTheme.accentColor))
             }
         }
