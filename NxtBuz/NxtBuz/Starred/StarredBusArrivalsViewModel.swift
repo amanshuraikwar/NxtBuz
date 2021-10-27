@@ -8,6 +8,7 @@
 import Foundation
 import iosUmbrella
 import UIKit
+import WidgetKit
 
 class StarredBusArrivalsViewModel : ObservableObject {
     @Published var screenState: StarredBusArrivalsScreenState = .Fetching
@@ -26,28 +27,14 @@ class StarredBusArrivalsViewModel : ObservableObject {
         
         Di.get()
             .getStarredBusArrivalsUseCase()
-            .getStarredBusArrivals { starredBusArrivalOutput in
-                if let starredBusArrivalList = (starredBusArrivalOutput as? IosStarredBusArrivalOutput.Success)?.starredBusArrivalList {
+            .invoke { result in
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Error(let message):
                     switch self.screenState {
                     case .Fetching, .Error:
-                        self.setSucessScreenState(starredBusArrivalList: starredBusArrivalList)
-                    case .Success(let data):
-                        self.updateSuccessScreenState(
-                            data: data,
-                            starredBusArrivalList: starredBusArrivalList
-                        )
-                    }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                        self.getArrivalsAct(uuid: uuid)
-                    }
-                }
-                
-                if let error = (starredBusArrivalOutput as? IosStarredBusArrivalOutput.Error) {
-                    switch self.screenState {
-                    case .Fetching, .Error:
-                        DispatchQueue.main.async {
-                            self.screenState = .Error(message: error.errorMessage)
+                        Util.onMain {
+                            self.screenState = .Error(message: message)
                         }
                     case .Success(let data):
                         // if arrivals were last updated 5 mins ago
@@ -63,6 +50,21 @@ class StarredBusArrivalsViewModel : ObservableObject {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                             self.getArrivalsAct(uuid: uuid)
                         }
+                    }
+                case .Success(let data):
+                    let starredBusArrivalList = data.compactMap({ $0 as? StarredBusArrival })
+                    switch self.screenState {
+                    case .Fetching, .Error:
+                        self.setSucessScreenState(starredBusArrivalList: starredBusArrivalList)
+                    case .Success(let data):
+                        self.updateSuccessScreenState(
+                            data: data,
+                            starredBusArrivalList: starredBusArrivalList
+                        )
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                        self.getArrivalsAct(uuid: uuid)
                     }
                 }
             }
@@ -90,7 +92,7 @@ class StarredBusArrivalsViewModel : ObservableObject {
             )
         }
         
-        DispatchQueue.main.sync {
+        Util.onMain {
             self.screenState = .Success(
                 data: StarredBusArrivalsScreenSuccessData(
                     starredBusStopList: starredBusStopList,
@@ -129,11 +131,11 @@ class StarredBusArrivalsViewModel : ObservableObject {
                     }
                     
                     if let currentStarredBusArrivalItemData = currentStarredBusArrivalItemData {
-                        DispatchQueue.main.sync {
+                        Util.onMain {
                             currentStarredBusArrivalItemData.starredBusArrival = newStarredBusArrival
                         }
                     } else {
-                        DispatchQueue.main.sync {
+                        Util.onMain {
                             currentStarredBusStop.starredBusArrivalItemDataList.append(
                                 StarredBusArrivalItemData(
                                     starredBusArrival: newStarredBusArrival
@@ -171,7 +173,7 @@ class StarredBusArrivalsViewModel : ObservableObject {
                     }
                     
                     if !contains {
-                        DispatchQueue.main.sync {
+                        Util.onMain {
                             starredBusStop.starredBusArrivalItemDataList.remove(at: staredBusStopItemDataIndex)
                         }
                         staredBusStopItemDataIndex -= 1
@@ -180,7 +182,7 @@ class StarredBusArrivalsViewModel : ObservableObject {
                     staredBusStopItemDataIndex += 1
                 }
             } else {
-                DispatchQueue.main.sync {
+                Util.onMain {
                     data.starredBusStopList.remove(at: starredBusStopIndex)
                 }
                 starredBusStopIndex -= 1
@@ -215,8 +217,15 @@ class StarredBusArrivalsViewModel : ObservableObject {
                 busStopCode: busStopCode,
                 busServiceNumber: busServiceNumber,
                 toggleTo: false,
-                completion: {
-                    self.getArrivals()
+                completion: { result in
+                    let useCaseResult = Util.toUseCaseResult(result)
+                    switch useCaseResult {
+                    case .Error(let message):
+                        print(message)
+                    case .Success(_):
+                        WidgetCenter.shared.reloadTimelines(ofKind: "io.github.amanshuraikwar.NxtBuz.starredBusArrivalsWidget")
+                        self.getArrivals()
+                    }
                 }
             )
     }

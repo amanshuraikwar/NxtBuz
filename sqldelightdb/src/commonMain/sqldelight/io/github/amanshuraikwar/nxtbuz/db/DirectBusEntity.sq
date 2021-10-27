@@ -1,0 +1,24 @@
+CREATE TABLE DirectBusEntity (
+    sourceBusStopCode TEXT NOT NULL,
+    destinationBusStopCode TEXT NOT NULL,
+    hasDirectBus INTEGER NOT NULL,
+    busServiceNumber TEXT NOT NULL,
+    stops INTEGER NOT NULL,
+    distance REAL NOT NULL
+);
+
+insert:
+INSERT INTO DirectBusEntity
+VALUES ?;
+
+deleteAll:
+DELETE FROM DirectBusEntity;
+
+findAll:
+SELECT * FROM DirectBusEntity;
+
+findBySourceAndDenstinationBusStopCode:
+SELECT * FROM DirectBusEntity WHERE sourceBusStopCode = :sourceBusStopCode AND destinationBusStopCode = :destinationBusStopCode;
+
+deleteBySourceAndDenstinationBusStopCode:
+DELETE FROM DirectBusEntity WHERE sourceBusStopCode = :sourceBusStopCode AND destinationBusStopCode = :destinationBusStopCode;

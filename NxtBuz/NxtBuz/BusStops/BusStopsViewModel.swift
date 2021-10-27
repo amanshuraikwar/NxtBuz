@@ -8,12 +8,17 @@
 import Foundation
 import iosUmbrella
 import CoreLocation
+import WidgetKit
 
 class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var busStopsScreenState: BusStopsScreenState = .Fetching(message: "Fetching bus stops...")
     private let getBusStopsUseCase = Di.get().getBusStopsUseCase()
     
     private let locationManager: CLLocationManager
+    
+    @Published var busesGoingHomeState: BusesGoingHomeState = .Fetching
+    
+    private var cancellationSignal: FlowCancellationSignal? = nil
 
     override init() {
         locationManager = CLLocationManager()
@@ -26,6 +31,8 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
     func fetchBusStops(showFetching: Bool = false) {
         if showFetching {
             self.busStopsScreenState = .Fetching(message: "Fetching bus stops...")
+            self.busesGoingHomeState = .Fetching
+            self.cancellationSignal?.cancel()
         }
         
         switch busStopsScreenState {
@@ -70,17 +77,47 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
             lat: lat,
             lon: lng,
             limit: 50
-        ) { busStopList in
-            DispatchQueue.main.sync {
-                self.busStopsScreenState =
-                    .Success(
-                        header: "Nearby Bus Stops",
-                        busStopList: busStopList,
-                        searchResults: false,
-                        locationLowAccuracy: lowAccuracy
-                    )
+        ) { result in
+            let useCaseResult = Util.toUseCaseResult(result)
+            switch useCaseResult {
+            case .Error(let message):
+                print(message)
+            case .Success(let data):
+                let busStopList = data.compactMap({ $0 as? BusStop })
+                Util.onMain {
+                    self.busStopsScreenState =
+                        .Success(
+                            header: "Nearby Bus Stops",
+                            busStopList: busStopList,
+                            searchResults: false,
+                            locationLowAccuracy: lowAccuracy
+                        )
+                }
             }
         }
+        
+        Di.get()
+            .getNearbyGoingHomeBusesUseCase()
+            .invoke(
+                lat: lat,
+                lng: lng,
+                onStart: { cancellationSignal in
+                    Util.onMain {
+                        self.cancellationSignal?.cancel()
+                        self.cancellationSignal = cancellationSignal
+                    }
+                }
+            ) { result in
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Error(let message):
+                    print(message)
+                case .Success(let data):
+                    Util.onMain {
+                        self.busesGoingHomeState = .Success(result: data)
+                    }
+                }
+            }
     }
     
     func requestPermission() {
@@ -98,23 +135,23 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
             .invoke(
                 query: searchString,
                 limit: 50
-            ) { searchOutput in
-                if let success = searchOutput as? IosSearchOutput.Success {
-                    DispatchQueue.main.sync {
+            ) { result in
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Error(let message):
+                    print(message)
+                    Util.onMain {
+                        self.busStopsScreenState = .Error(errorMessage: message)
+                    }
+                case .Success(let searchResult):
+                    Util.onMain {
                         self.busStopsScreenState =
                             .Success(
                                 header: "Matching Bus Stops",
-                                busStopList: success.searchResult.busStopList,
+                                busStopList: searchResult.busStopList,
                                 searchResults: true,
                                 locationLowAccuracy: false
                             )
-                    }
-                }
-                
-                if let error = searchOutput as? IosSearchOutput.Error {
-                    print(error.message)
-                    DispatchQueue.main.sync {
-                        self.busStopsScreenState = .Error(errorMessage: error.message)
                     }
                 }
             }
@@ -122,13 +159,40 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
     
     func onSearch(searchString: String) {
         if searchString == "" {
-            self.busStopsScreenState = .Fetching(message: "Fetching nearby bus stops...")
-            fetchBusStops()
+            fetchBusStops(showFetching: true)
         } else {
             self.busStopsScreenState = .Fetching(message: "Searching bus stops...")
+            self.busesGoingHomeState = .Fetching
+            self.cancellationSignal?.cancel()
             searchBusStops(searchString)
         }
     }
+    
+    func onSetHomeClick(busStopCode: String) {
+        Di.get()
+            .setHomeBusStopUseCase()
+            .invoke(
+                busStopCode: busStopCode
+            ) { result in
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Error(let message):
+                    print(message)
+                case .Success(_):
+                    WidgetCenter.shared.reloadTimelines(
+                        ofKind: "io.github.amanshuraikwar.NxtBuz.goingHomeBusWidget"
+                    )
+                    print("set home bus stop \(busStopCode) success")
+                }
+            }
+    }
+}
+
+enum BusesGoingHomeState {
+    case Fetching
+    case Success(
+        result: GoingHomeBusResult
+    )
 }
 
 enum BusStopsScreenState {
@@ -136,5 +200,10 @@ enum BusStopsScreenState {
     case AskLocationPermission
     case Error(errorMessage: String)
     case GoToSettingsLocationPermission
-    case Success(header: String, busStopList: [BusStop], searchResults: Bool, locationLowAccuracy: Bool)
+    case Success(
+        header: String,
+        busStopList: [BusStop],
+        searchResults: Bool,
+        locationLowAccuracy: Bool
+    )
 }

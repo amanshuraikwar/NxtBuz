@@ -3,9 +3,9 @@
 package io.github.amanshuraikwar.nxtbuz.buildSrc
 
 object Libs {
-    const val compileSdk = 30
+    const val compileSdk = 31
     const val minSdk = 23
-    const val targetSdk = 30
+    const val targetSdk = 31
 
     const val iosMinDeploymentTarget = "14.1"
 
@@ -51,7 +51,7 @@ object Libs {
 
     object AndroidX {
         object Work {
-            private const val version = "2.7.0-alpha04"
+            private const val version = "2.7.0"
             const val runtime = "androidx.work:work-runtime:$version"
             const val ktx = "androidx.work:work-runtime-ktx:$version"
         }
@@ -79,7 +79,7 @@ object Libs {
         }
 
         object Compose {
-            const val version = "1.0.1"
+            const val version = "1.0.4"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -87,7 +87,7 @@ object Libs {
             const val materialIcons = "androidx.compose.material:material-icons-core:$version"
             const val materialIconsExtended =
                 "androidx.compose.material:material-icons-extended:$version"
-            const val activity = "androidx.activity:activity-compose:1.3.0-alpha03"
+            const val activity = "androidx.activity:activity-compose:1.3.1"
 
             val all = listOf(
                 ui,
