@@ -41,6 +41,7 @@
 		A53460A52707495400A1C990 /* SelectBusArrival.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A534608B2707495400A1C990 /* SelectBusArrival.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A53460AC27074A0500A1C990 /* NxtBuz_Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A2526FB50870095D96A /* NxtBuz_Widget.intentdefinition */; };
 		A53460AE270750E000A1C990 /* Di.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBA126F5C07200BB79DA /* Di.swift */; };
+		A5437E5D272ED57A00E33CFB /* GoingHomeBusWidgetLocationUnknownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5437E5C272ED57A00E33CFB /* GoingHomeBusWidgetLocationUnknownView.swift */; };
 		A559FC85272532E3002B8DE6 /* BusServiceNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1D2701D726000729E9 /* BusServiceNumberView.swift */; };
 		A559FCA127258066002B8DE6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A57B9A1E26FB50870095D96A /* WidgetKit.framework */; };
 		A559FCA227258066002B8DE6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A57B9A2026FB50870095D96A /* SwiftUI.framework */; };
@@ -99,8 +100,8 @@
 		A5D2A7C72727F2B400D63B81 /* BusServiceNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1D2701D726000729E9 /* BusServiceNumberView.swift */; };
 		A5D2A7C92727FF9800D63B81 /* GoingHomeBusWidgetInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D2A7C82727FF9800D63B81 /* GoingHomeBusWidgetInfoView.swift */; };
 		A5D71BD9270F35A400761329 /* NxtBuzTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55AACF62704B9F40035A7E5 /* NxtBuzTheme.swift */; };
-		A5D71BDC270F3C2500761329 /* ArrivingBusWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D71BDA270F3B0B00761329 /* ArrivingBusWidgetView.swift */; };
-		A5D71BDF271070D100761329 /* NotArrivingBusWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D71BDD27106FE700761329 /* NotArrivingBusWidgetView.swift */; };
+		A5D71BDC270F3C2500761329 /* ArrivingWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D71BDA270F3B0B00761329 /* ArrivingWidgetView.swift */; };
+		A5D71BDF271070D100761329 /* NotArrivingWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D71BDD27106FE700761329 /* NotArrivingWidgetView.swift */; };
 		A5E15D5527228808005A67FB /* UseCaseResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5427228808005A67FB /* UseCaseResult.swift */; };
 		A5E15D5727228E02005A67FB /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5627228E02005A67FB /* Util.swift */; };
 		A5E15D58272299B4005A67FB /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5627228E02005A67FB /* Util.swift */; };
@@ -230,6 +231,7 @@
 		A534609D2707495400A1C990 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		A534609F2707495400A1C990 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A53460AD27074FD400A1C990 /* SelectBusArrival.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SelectBusArrival.entitlements; sourceTree = "<group>"; };
+		A5437E5C272ED57A00E33CFB /* GoingHomeBusWidgetLocationUnknownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoingHomeBusWidgetLocationUnknownView.swift; sourceTree = "<group>"; };
 		A559FCA027258066002B8DE6 /* StarredBusArrivalsWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StarredBusArrivalsWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A559FCA427258066002B8DE6 /* StarredBusArrivalsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredBusArrivalsWidget.swift; sourceTree = "<group>"; };
 		A559FCA627258069002B8DE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -270,8 +272,8 @@
 		A5D2A7BD2727ED9400D63B81 /* GoingHomeBusEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoingHomeBusEntry.swift; sourceTree = "<group>"; };
 		A5D2A7C52727F22F00D63B81 /* GoingHomeBusWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoingHomeBusWidgetEntryView.swift; sourceTree = "<group>"; };
 		A5D2A7C82727FF9800D63B81 /* GoingHomeBusWidgetInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoingHomeBusWidgetInfoView.swift; sourceTree = "<group>"; };
-		A5D71BDA270F3B0B00761329 /* ArrivingBusWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrivingBusWidgetView.swift; sourceTree = "<group>"; };
-		A5D71BDD27106FE700761329 /* NotArrivingBusWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotArrivingBusWidgetView.swift; sourceTree = "<group>"; };
+		A5D71BDA270F3B0B00761329 /* ArrivingWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrivingWidgetView.swift; sourceTree = "<group>"; };
+		A5D71BDD27106FE700761329 /* NotArrivingWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotArrivingWidgetView.swift; sourceTree = "<group>"; };
 		A5E15D5427228808005A67FB /* UseCaseResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseCaseResult.swift; sourceTree = "<group>"; };
 		A5E15D5627228E02005A67FB /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		A5E1E81526F10213007470A4 /* NxtBuz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NxtBuz.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -534,8 +536,8 @@
 			isa = PBXGroup;
 			children = (
 				A57B9A2326FB50870095D96A /* NxtBuz_Widget.swift */,
-				A5D71BDA270F3B0B00761329 /* ArrivingBusWidgetView.swift */,
-				A5D71BDD27106FE700761329 /* NotArrivingBusWidgetView.swift */,
+				A5D71BDA270F3B0B00761329 /* ArrivingWidgetView.swift */,
+				A5D71BDD27106FE700761329 /* NotArrivingWidgetView.swift */,
 				A57B9A2526FB50870095D96A /* NxtBuz_Widget.intentdefinition */,
 				A57B9A2626FB508B0095D96A /* Assets.xcassets */,
 				A57B9A2826FB508B0095D96A /* Info.plist */,
@@ -561,6 +563,7 @@
 				A5D2A7B12727EC8800D63B81 /* GoingHomeBusWidget.swift */,
 				A5D2A7C52727F22F00D63B81 /* GoingHomeBusWidgetEntryView.swift */,
 				A5D2A7C82727FF9800D63B81 /* GoingHomeBusWidgetInfoView.swift */,
+				A5437E5C272ED57A00E33CFB /* GoingHomeBusWidgetLocationUnknownView.swift */,
 				A5D2A7BD2727ED9400D63B81 /* GoingHomeBusEntry.swift */,
 				A5D2A7B32727EC8B00D63B81 /* Assets.xcassets */,
 				A5D2A7B52727EC8B00D63B81 /* Info.plist */,
@@ -1088,11 +1091,11 @@
 			files = (
 				A57B9A3B26FB87F10095D96A /* Di.swift in Sources */,
 				A5E15D5B272299DF005A67FB /* UseCaseResult.swift in Sources */,
-				A5D71BDC270F3C2500761329 /* ArrivingBusWidgetView.swift in Sources */,
+				A5D71BDC270F3C2500761329 /* ArrivingWidgetView.swift in Sources */,
 				A57B9A2426FB50870095D96A /* NxtBuz_Widget.swift in Sources */,
 				A5E15D58272299B4005A67FB /* Util.swift in Sources */,
 				A57B9A2926FB508B0095D96A /* NxtBuz_Widget.intentdefinition in Sources */,
-				A5D71BDF271070D100761329 /* NotArrivingBusWidgetView.swift in Sources */,
+				A5D71BDF271070D100761329 /* NotArrivingWidgetView.swift in Sources */,
 				A57B9A3526FB58E70095D96A /* Font.swift in Sources */,
 				A559FC85272532E3002B8DE6 /* BusServiceNumberView.swift in Sources */,
 				A5D71BD9270F35A400761329 /* NxtBuzTheme.swift in Sources */,
@@ -1109,6 +1112,7 @@
 				A5D2A7C02727EF3800D63B81 /* NxtBuzTheme.swift in Sources */,
 				A5D2A7C72727F2B400D63B81 /* BusServiceNumberView.swift in Sources */,
 				A5D2A7C62727F22F00D63B81 /* GoingHomeBusWidgetEntryView.swift in Sources */,
+				A5437E5D272ED57A00E33CFB /* GoingHomeBusWidgetLocationUnknownView.swift in Sources */,
 				A5D2A7C22727EF4500D63B81 /* Di.swift in Sources */,
 				A5D2A7BF2727EDBB00D63B81 /* GoingHomeBusEntry.swift in Sources */,
 				A5D2A7C92727FF9800D63B81 /* GoingHomeBusWidgetInfoView.swift in Sources */,

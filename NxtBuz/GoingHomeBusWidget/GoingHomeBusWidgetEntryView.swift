@@ -31,6 +31,9 @@ struct GoingHomeBusWidgetEntryView : View {
             case .NoBusStopsNearby:
                 GoingHomeBusWidgetInfoView(message: "No bus stops nearby")
                     .padding()
+            case .LocationUnknown:
+                GoingHomeBusWidgetLocationUnknownView()
+                    .padding()
             case .Success(
                 let busServiceNumber,
                 let sourceBusStopDescription,

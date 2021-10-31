@@ -114,10 +114,36 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
                     print(message)
                 case .Success(let data):
                     Util.onMain {
-                        self.busesGoingHomeState = .Success(result: data)
+                        if let data = data as? GoingHomeBusResult.Success {
+                            if data.directBuses.count > 2 {
+                                self.busesGoingHomeState = .Success(result: data, showMore: true, showLess: false)
+                            } else {
+                                self.busesGoingHomeState = .Success(result: data, showMore: false, showLess: false)
+                            }
+                        } else {
+                            self.busesGoingHomeState = .Success(result: data, showMore: false, showLess: false)
+                        }
                     }
                 }
             }
+    }
+    
+    func onShowMoreGoingHomeBusesClick() {
+        switch self.busesGoingHomeState {
+        case .Success(let result, _, _):
+            self.busesGoingHomeState = .Success(result: result, showMore: false, showLess: true)
+        case .Fetching:
+            {}()
+        }
+    }
+    
+    func onShowLessGoingHomeBusesClick() {
+        switch self.busesGoingHomeState {
+        case .Success(let result, _, _):
+            self.busesGoingHomeState = .Success(result: result, showMore: true, showLess: false)
+        case .Fetching:
+            {}()
+        }
     }
     
     func requestPermission() {
@@ -191,7 +217,9 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
 enum BusesGoingHomeState {
     case Fetching
     case Success(
-        result: GoingHomeBusResult
+        result: GoingHomeBusResult,
+        showMore: Bool,
+        showLess: Bool
     )
 }
 

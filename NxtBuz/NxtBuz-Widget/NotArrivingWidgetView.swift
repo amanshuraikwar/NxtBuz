@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NotArrivingBusWidgetView: View {
+struct NotArrivingWidgetView: View {
     let busStopCode: String
     let busStopDescription: String
     let busServiceNumber: String
