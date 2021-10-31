@@ -10,7 +10,7 @@ import SwiftUI
 import iosUmbrella
 import CoreLocation
 
-struct Provider: TimelineProvider {
+class Provider: TimelineProvider {
     func placeholder(in context: Context) -> GoingHomeBusEntry {
         GoingHomeBusEntry(
             date: Date(),
@@ -74,7 +74,7 @@ struct Provider: TimelineProvider {
                     
                     completion(timeline)
                 } else {
-                    emitGoingHomeBusTimeline(completion: completion)
+                    self.emitGoingHomeBusTimeline(completion: completion)
                 }
             }
         }
@@ -85,8 +85,9 @@ struct Provider: TimelineProvider {
     ) {
         let locationManager = CLLocationManager()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
         let date = Date()
-        var state = GoingHomeBusWidgetState.Error(message: "Please enable widget location access in settings.")
+        var state: GoingHomeBusWidgetState = GoingHomeBusWidgetState.LocationUnknown
         
         var lat = -1.0
         var lng = -1.0
@@ -94,12 +95,10 @@ struct Provider: TimelineProvider {
         switch locationManager.authorizationStatus {
         case .notDetermined, .denied:
             state = GoingHomeBusWidgetState.Error(
-                message: "Please enable widget location access in settings."
+                message: "Please enable location access."
             )
         case .restricted:
-            state = GoingHomeBusWidgetState.Error(
-                message: "Location use is currently restricted, please check back later."
-            )
+            state = GoingHomeBusWidgetState.LocationUnknown
         case .authorizedAlways, .authorizedWhenInUse:
             lat = locationManager.location?.coordinate.latitude ?? -1.0
             lng = locationManager.location?.coordinate.longitude ?? -1.0
