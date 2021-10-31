@@ -12,6 +12,9 @@ struct GoingHomeBusesView: View {
     @Binding var state: BusesGoingHomeState
     @EnvironmentObject var nxtBuzTheme: NxtBuzTheme
     
+    let onShowMoreClick: () -> ()
+    let onShowLessClick: () -> ()
+    
     var body: some View {
         switch state {
         case .Fetching:
@@ -25,7 +28,7 @@ struct GoingHomeBusesView: View {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: Color(nxtBuzTheme.accentColor)))
             }
-        case .Success(let result):
+        case .Success(let result, let showMore, let showLess):
             if result is GoingHomeBusResult.NoBusStopsNearby {
                 WarningBannerView(
                     message: "No bus stops nearby.",
@@ -68,7 +71,7 @@ struct GoingHomeBusesView: View {
             
             if let result = result as? GoingHomeBusResult.Success {
                 ForEach(
-                    Array(result.directBuses.enumerated()),
+                    showMore ? Array(result.directBuses[0...0].enumerated()) : Array(result.directBuses.enumerated()),
                     id: \.1
                 ) { index, directBus in
                     NavigationLink(
@@ -83,6 +86,29 @@ struct GoingHomeBusesView: View {
                             distance: directBus.distance,
                             stops: Int(directBus.stops)
                         )
+                    }
+                }
+                
+                if showMore || showLess {
+                    HStack {
+                        Spacer()
+                        
+                        Text(showMore ? "Show More" : "Show Less")
+                            .font(NxtBuzFonts.footnote)
+                        
+                        Image(systemName: "chevron.right")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 12, height: 12)
+                            .rotationEffect(.degrees(showLess ? -90 : +90))
+                            .padding(.leading, 2)    
+                    }
+                    .foregroundColor(Color(nxtBuzTheme.accentColor))
+                    .padding(.vertical, 2)
+                    .padding(.horizontal, 4)
+                    .cornerRadius(8)
+                    .onTapGesture {
+                        showMore ? onShowMoreClick() : onShowLessClick()
                     }
                 }
             }
