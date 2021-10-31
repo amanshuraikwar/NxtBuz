@@ -75,7 +75,15 @@ struct BusStopsView: View {
                                 .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                                 .font(NxtBuzFonts.caption)
                         ) {
-                            GoingHomeBusesView(state: $viewModel.busesGoingHomeState)
+                            GoingHomeBusesView(
+                                state: $viewModel.busesGoingHomeState,
+                                onShowMoreClick: {
+                                    viewModel.onShowMoreGoingHomeBusesClick()
+                                },
+                                onShowLessClick: {
+                                    viewModel.onShowLessGoingHomeBusesClick()
+                                }
+                            )
                         }
                     }
                     

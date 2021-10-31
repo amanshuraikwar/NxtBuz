@@ -20,6 +20,7 @@ enum GoingHomeBusWidgetState {
     case NoBusesGoingHome(
         homeBusStopDescription: String
     )
+    case LocationUnknown
     case NoBusStopsNearby
     case HomeBusStopNotSet
     case Success(

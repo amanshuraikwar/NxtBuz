@@ -362,7 +362,7 @@ struct NxtBuz_WidgetEntryView : View {
                 let nextArrivingBusData,
                 let followingArrivingBusDataList
             ):
-                ArrivingBusWidgetView(
+                ArrivingWidgetView(
                     busStopCode: busStopCode,
                     busStopDescription: busStopDescription,
                     busServiceNumber: busServiceNumber,
@@ -375,7 +375,7 @@ struct NxtBuz_WidgetEntryView : View {
                 let busStopDescription,
                 let busServiceNumber, let errorMessage
             ):
-                NotArrivingBusWidgetView(
+                NotArrivingWidgetView(
                     busStopCode: busStopCode,
                     busStopDescription: busStopDescription,
                     busServiceNumber: busServiceNumber,

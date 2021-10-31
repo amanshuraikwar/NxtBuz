@@ -8,7 +8,7 @@
 import SwiftUI
 import iosUmbrella
 
-struct ArrivingBusWidgetView: View {
+struct ArrivingWidgetView: View {
     let busStopCode: String
     let busStopDescription: String
     let busServiceNumber: String
@@ -88,7 +88,7 @@ struct ArrivingBusWidgetView: View {
                         }
                         .padding(.vertical, 2)
                         .padding(.horizontal, 4)
-                        .background(Color(.white).opacity(0.2))
+                        .background(nxtBuzTheme.isDark ? Color(.systemGray6).opacity(0.1) : .white.opacity(0.2))
                         .cornerRadius(8)
                         .padding(.bottom, 4)
                     }
