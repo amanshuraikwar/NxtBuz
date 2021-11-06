@@ -1,5 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.commonkmm
 
-expect class SystemThemeHelper {
+interface SystemThemeHelper {
     fun isSystemInDarkTheme(): Boolean
 }

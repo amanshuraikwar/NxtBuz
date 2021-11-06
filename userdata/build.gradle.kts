@@ -10,7 +10,11 @@ plugins {
 version = "1.0"
 
 kotlin {
-    android()
+    android {
+//        tasks.named<Test>("test") {
+//            useJUnit()
+//        }
+    }
 
     val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
         if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
@@ -44,6 +48,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation("io.mockk:mockk:1.9.3.kotlin12")
             }
         }
         val androidMain by getting
@@ -51,6 +56,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
+                //implementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
             }
         }
         val iosMain by getting
