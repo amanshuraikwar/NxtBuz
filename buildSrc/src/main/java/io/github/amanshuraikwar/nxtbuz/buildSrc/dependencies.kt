@@ -47,6 +47,10 @@ object Libs {
         private const val version = "1.5.2-native-mt"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+        // TODO-amanshuraikwar (02 Nov 2021 04:09:19 PM): do not use this in KMM common module
+        //  this is JVM only dependency for now
+        //  Ref: https://github.com/Kotlin/kotlinx.coroutines/issues/1996
+        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
     }
 
     object AndroidX {

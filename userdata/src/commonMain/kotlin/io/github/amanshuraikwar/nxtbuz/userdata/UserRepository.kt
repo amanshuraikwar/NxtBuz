@@ -61,9 +61,8 @@ class UserRepositoryImpl constructor(
     override suspend fun shouldStartPlayStoreReview(): Boolean {
         return withContext(dispatcherProvider.io) {
             preferenceStorage.playStoreReviewTimeMillis != -1L &&
-                    ((Clock.System.now().toEpochMilliseconds() -
-                            preferenceStorage.playStoreReviewTimeMillis) /
-                            (1000 * 60 * 60 * 24 * 7) > 1)
+                    (Clock.System.now().toEpochMilliseconds() -
+                            preferenceStorage.playStoreReviewTimeMillis) >= 1000 * 60 * 60 * 24 * 7
         }
     }
 
