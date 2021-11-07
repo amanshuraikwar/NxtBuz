@@ -6,18 +6,22 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.commonkmm.SystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.UserState
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
+import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
+import io.mockk.MockKAnnotations
 import io.mockk.every
+import io.mockk.impl.annotations.SpyK
 import io.mockk.mockk
 import io.mockk.mockkObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
 expect fun runTest(block: suspend () -> Unit)
 
-class CommonGreetingTest {
+class UserRepositoryTest {
     private val fakePreferenceStorage = object : PreferenceStorage {
         override var onboardingCompleted: Boolean = false
 
@@ -48,13 +52,12 @@ class CommonGreetingTest {
         override var permissionDeniedPermanently: Boolean
             get() = TODO("Not yet implemented")
             set(value) {}
-        override var theme: NxtBuzTheme
-            get() = TODO("Not yet implemented")
-            set(value) {}
+
+        override var theme: NxtBuzTheme = NxtBuzTheme.DARK
 
         override var useSystemTheme: Boolean = true
 
-        override var playStoreReviewTimeMillis: Long = 0L
+        override var playStoreReviewTimeMillis: Long = -1L
 
         override var homeBusStopCode: String
             get() = TODO("Not yet implemented")
@@ -71,18 +74,25 @@ class CommonGreetingTest {
         location = Dispatchers.Default,
     )
 
-    private val fakeSystemThemeHelper = object : SystemThemeHelper {
+    @SpyK
+    private var fakeSystemThemeHelper: SystemThemeHelper = object : SystemThemeHelper {
         override fun isSystemInDarkTheme(): Boolean {
-            return false
+            return true
         }
-
     }
 
-    private val userRepo = UserRepositoryImpl(
-        preferenceStorage = fakePreferenceStorage,
-        dispatcherProvider = fakeCoroutinesDispatcherProvider,
-        systemThemeHelper = fakeSystemThemeHelper
-    )
+    lateinit var userRepo: UserRepository
+
+    @BeforeTest
+    fun setUp() {
+        MockKAnnotations.init(this, relaxUnitFun = true)
+
+        userRepo = UserRepositoryImpl(
+            preferenceStorage = fakePreferenceStorage,
+            dispatcherProvider = fakeCoroutinesDispatcherProvider,
+            systemThemeHelper = fakeSystemThemeHelper
+        )
+    }
 
     @Test
     fun `Default user state should be New`() {
@@ -226,6 +236,56 @@ class CommonGreetingTest {
                 "Should start play store review when setup is complete and 1 week has passed"
             ) {
                 userRepo.shouldStartPlayStoreReview()
+            }
+        }
+    }
+
+    @Test
+    fun `Return system theme when use system theme is true`() {
+        runTest {
+            every { fakeSystemThemeHelper.isSystemInDarkTheme() } returns true
+
+            userRepo.setUseSystemTheme(true)
+
+            assertTrue(
+                "Return system theme when use system theme is true"
+            ) {
+                userRepo.getTheme() == NxtBuzTheme.DARK
+            }
+
+            every { fakeSystemThemeHelper.isSystemInDarkTheme() } returns false
+
+            userRepo.refreshTheme()
+
+            assertTrue(
+                "Return system theme when use system theme is true"
+            ) {
+                userRepo.getTheme() == NxtBuzTheme.LIGHT
+            }
+        }
+    }
+
+    @Test
+    fun `Return forced theme when use system theme is false`() {
+        runTest {
+            userRepo.setUseSystemTheme(false)
+
+            userRepo.setForcedTheme(NxtBuzTheme.DARK)
+
+            assertTrue(
+                "Return forced theme when use system theme is false"
+            ) {
+                userRepo.getTheme() == NxtBuzTheme.DARK
+            }
+
+            userRepo.setForcedTheme(NxtBuzTheme.LIGHT)
+
+            userRepo.refreshTheme()
+
+            assertTrue(
+                "Return forced theme when use system theme is false"
+            ) {
+                userRepo.getTheme() == NxtBuzTheme.LIGHT
             }
         }
     }
