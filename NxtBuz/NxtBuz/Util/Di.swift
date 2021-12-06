@@ -34,7 +34,7 @@ class Di {
     )
     
     private static let userRepository = RepositoryProvides.shared.provideUserRepository(
-        systemThemeHelper: SystemThemeHelper(),
+        systemThemeHelper: IosSystemThemeHelper(),
         preferenceStorage: preferenceStorage,
         dispatcherProvider: coroutineDispatcherProvider
     )

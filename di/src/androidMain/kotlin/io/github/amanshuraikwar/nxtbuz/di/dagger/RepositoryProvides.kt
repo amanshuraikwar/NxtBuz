@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
+import io.github.amanshuraikwar.nxtbuz.commonkmm.AndroidSystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.SystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.di.RepositoryProvides
@@ -41,7 +42,7 @@ class RepositoryProvides {
         return RepositoryProvides.provideUserRepository(
             preferenceStorage = preferenceStorage,
             dispatcherProvider = dispatcherProvider,
-            systemThemeHelper = SystemThemeHelper(context)
+            systemThemeHelper = AndroidSystemThemeHelper(context)
         )
     }
 

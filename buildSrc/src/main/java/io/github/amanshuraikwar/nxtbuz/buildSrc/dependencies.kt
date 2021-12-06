@@ -37,7 +37,7 @@ object Libs {
     }
 
     object KotlinX {
-        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.1"
+        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.1"
         const val serializationCore = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1"
         const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1"
         const val serializationGradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.10"
@@ -76,7 +76,7 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.3.0"
+            private const val version = "2.4.0-rc01"
             const val runtime = "androidx.room:room-runtime:$version"
             const val compiler = "androidx.room:room-compiler:$version"
             const val ktx = "androidx.room:room-ktx:$version"
@@ -129,9 +129,10 @@ object Libs {
     }
 
     object SqlDelight {
-        const val gradlePlugin = "com.squareup.sqldelight:gradle-plugin:1.5.0"
-        const val androidDriver = "com.squareup.sqldelight:android-driver:1.5.0"
-        const val nativeDriver = "com.squareup.sqldelight:native-driver:1.5.0"
+        private const val version = "1.5.3"
+        const val gradlePlugin = "com.squareup.sqldelight:gradle-plugin:$version"
+        const val androidDriver = "com.squareup.sqldelight:android-driver:$version"
+        const val nativeDriver = "com.squareup.sqldelight:native-driver:$version"
     }
 
     object Ktor {
