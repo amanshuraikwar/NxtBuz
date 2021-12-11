@@ -49,18 +49,16 @@ class UserRepositoryImpl constructor(
     }
 
     override suspend fun markSetupComplete() = withContext(dispatcherProvider.io) {
-        updatePlayStoreReviewTime()
         preferenceStorage.onboardingCompleted = true
     }
 
     override suspend fun markSetupIncomplete() = withContext(dispatcherProvider.io) {
-        preferenceStorage.playStoreReviewTimeMillis = -1L
         preferenceStorage.onboardingCompleted = false
     }
 
     override suspend fun shouldStartPlayStoreReview(): Boolean {
         return withContext(dispatcherProvider.io) {
-            preferenceStorage.playStoreReviewTimeMillis != -1L &&
+            preferenceStorage.onboardingCompleted &&
                     (Clock.System.now().toEpochMilliseconds() -
                             preferenceStorage.playStoreReviewTimeMillis) >= 1000 * 60 * 60 * 24 * 7
         }

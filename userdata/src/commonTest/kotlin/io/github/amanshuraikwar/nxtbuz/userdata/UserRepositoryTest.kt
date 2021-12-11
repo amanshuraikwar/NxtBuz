@@ -1,11 +1,11 @@
+@file:Suppress("IllegalIdentifier")
+
 package io.github.amanshuraikwar.nxtbuz.userdata
 
-import io.github.amanshuraikwar.nxtbuz.commonkmm.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.commonkmm.SystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.UserState
-import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -22,47 +22,7 @@ import kotlin.test.assertTrue
 expect fun runTest(block: suspend () -> Unit)
 
 class UserRepositoryTest {
-    private val fakePreferenceStorage = object : PreferenceStorage {
-        override var onboardingCompleted: Boolean = false
-
-        override var busStopsQueryLimit: Int
-            get() = TODO("Not yet implemented")
-            set(value) {}
-        override var defaultLocation: Pair<Double, Double>
-            get() = TODO("Not yet implemented")
-            set(value) {}
-        override var maxDistanceOfClosestBusStop: Int
-            get() = TODO("Not yet implemented")
-            set(value) {}
-        override var showErrorStarredBusArrivals: Boolean
-            get() = TODO("Not yet implemented")
-            set(value) {}
-        override var alertStarredBusArrivals: Boolean
-            get() = TODO("Not yet implemented")
-            set(value) {}
-        override var alertStarredBusArrivalsMinutes: Int
-            get() = TODO("Not yet implemented")
-            set(value) {}
-        override var alertStarredBusArrivalsFrequency: AlertFrequency
-            get() = TODO("Not yet implemented")
-            set(value) {}
-        override var showMap: Boolean
-            get() = TODO("Not yet implemented")
-            set(value) {}
-        override var permissionDeniedPermanently: Boolean
-            get() = TODO("Not yet implemented")
-            set(value) {}
-
-        override var theme: NxtBuzTheme = NxtBuzTheme.DARK
-
-        override var useSystemTheme: Boolean = true
-
-        override var playStoreReviewTimeMillis: Long = -1L
-
-        override var homeBusStopCode: String
-            get() = TODO("Not yet implemented")
-            set(value) {}
-    }
+    private val fakePreferenceStorage = FakePreferenceStorage()
 
     private val fakeCoroutinesDispatcherProvider = CoroutinesDispatcherProvider(
         main = Dispatchers.Default,
@@ -140,6 +100,7 @@ class UserRepositoryTest {
             mockkObject(Clock.System)
             every { Clock.System.now() } returns instant
 
+            userRepo.markSetupComplete()
             userRepo.updatePlayStoreReviewTime()
 
             // 7 days' + 1 millis from zero millis
@@ -162,13 +123,14 @@ class UserRepositoryTest {
             mockkObject(Clock.System)
             every { Clock.System.now() } returns instant
 
+            userRepo.markSetupComplete()
             userRepo.updatePlayStoreReviewTime()
 
             // 7 days' millis from zero millis
             every { instant.toEpochMilliseconds() } returns 1000 * 60 * 60 * 24 * 7L
 
             assertTrue(
-                "Should start play store review after 1 week"
+                "Should start play store review at 1 week"
             ) {
                 userRepo.shouldStartPlayStoreReview()
             }
@@ -184,13 +146,14 @@ class UserRepositoryTest {
             mockkObject(Clock.System)
             every { Clock.System.now() } returns instant
 
+            userRepo.markSetupComplete()
             userRepo.updatePlayStoreReviewTime()
 
             // 7 days' - 1 millis from zero millis
             every { instant.toEpochMilliseconds() } returns 1000 * 60 * 60 * 24 * 7L - 1
 
             assertTrue(
-                "Should start play store review after 1 week"
+                "Should not start play store review before 1 week"
             ) {
                 !userRepo.shouldStartPlayStoreReview()
             }
@@ -214,28 +177,6 @@ class UserRepositoryTest {
                 "Should not start play store review when setup is not complete"
             ) {
                 !userRepo.shouldStartPlayStoreReview()
-            }
-        }
-    }
-
-    @Test
-    fun `Should start play store review when setup is complete and 1 week has passed`() {
-        runTest {
-            val instant = mockk<Instant>()
-            every { instant.toEpochMilliseconds() } returns 0L
-
-            mockkObject(Clock.System)
-            every { Clock.System.now() } returns instant
-
-            userRepo.markSetupComplete()
-
-            // 7 days' + 1 millis from zero millis
-            every { instant.toEpochMilliseconds() } returns 1000 * 60 * 60 * 24 * 7L + 1
-
-            assertTrue(
-                "Should start play store review when setup is complete and 1 week has passed"
-            ) {
-                userRepo.shouldStartPlayStoreReview()
             }
         }
     }

@@ -82,7 +82,7 @@ internal class PreferenceStorageImpl(
     )
 
     override var playStoreReviewTimeMillis by LongPreference(
-        settings, PREF_SETUP_COMPLETE_TIME_MILLIS, -1
+        settings, PREF_SETUP_COMPLETE_TIME_MILLIS, 0
     )
 
     override var homeBusStopCode: String by StringPreference(

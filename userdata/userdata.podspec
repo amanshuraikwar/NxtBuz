@@ -1,11 +1,11 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'userdata'
-    spec.version                  = '1.0'
-    spec.homepage                 = 'Link to the Shared Module homepage'
+    spec.version                  = '2.2.0-11-gd9164a6'
+    spec.homepage                 = 'https://amanshuraikwar.github.io/nextbus'
     spec.source                   = { :git => "Not Published", :tag => "Cocoapods/#{spec.name}/#{spec.version}" }
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'Some description for the Shared Module'
+    spec.summary                  = 'Business module for user data'
 
     spec.vendored_frameworks      = "build/cocoapods/framework/userdata.framework"
     spec.libraries                = "c++"

@@ -33,8 +33,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(Libs.multiplatformSettings)
-                implementation(Libs.multiplatformSettingsNoArg)
+                implementation(Libs.MultiplatformSettings.lib)
+                implementation(Libs.MultiplatformSettings.noArg)
 
                 with(Libs.Ktor) {
                     implementation(clientCore)
