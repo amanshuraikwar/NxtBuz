@@ -7,9 +7,7 @@ plugins {
     id("com.android.library")
 }
 
-apply(from = "${project.rootDir}/git_version.gradle")
-
-version = ext.get("gitVersionName").toString()
+version = Libs.kmmLibVersion
 
 kotlin {
     android {}
@@ -19,8 +17,6 @@ kotlin {
             ::iosArm64
         else
             ::iosX64
-
-    logger.log(org.gradle.api.logging.LogLevel.ERROR, System.getenv("SDK_NAME"))
 
     iosTarget("ios") {}
     iosSimulatorArm64()
