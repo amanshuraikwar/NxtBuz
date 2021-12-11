@@ -8,12 +8,17 @@ object Libs {
     const val targetSdk = 31
 
     const val iosMinDeploymentTarget = "14.1"
+    const val appHomePage = "https://amanshuraikwar.github.io/nextbus"
 
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.2"
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 
-    const val multiplatformSettings = "com.russhwolf:multiplatform-settings:0.8.1"
-    const val multiplatformSettingsNoArg = "com.russhwolf:multiplatform-settings-no-arg:0.8.1"
+    object MultiplatformSettings {
+        private const val version = "0.8.1"
+        const val lib = "com.russhwolf:multiplatform-settings:0.8.1"
+        const val noArg = "com.russhwolf:multiplatform-settings-no-arg:0.8.1"
+        const val test = "com.russhwolf:multiplatform-settings-test:0.8.1"
+    }
 
     object Google {
         const val material = "com.google.android.material:material:1.4.0-rc01"

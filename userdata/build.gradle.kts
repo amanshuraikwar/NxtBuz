@@ -1,5 +1,5 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
@@ -7,14 +7,12 @@ plugins {
     id("com.android.library")
 }
 
-version = "1.0"
+apply(from = "${project.rootDir}/git_version.gradle")
+
+version = ext.get("gitVersionName").toString()
 
 kotlin {
-    android {
-//        tasks.named<Test>("test") {
-//            useJUnit()
-//        }
-    }
+    android {}
 
     val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
         if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
@@ -22,14 +20,18 @@ kotlin {
         else
             ::iosX64
 
+    logger.log(org.gradle.api.logging.LogLevel.ERROR, System.getenv("SDK_NAME"))
+
     iosTarget("ios") {}
     iosSimulatorArm64()
 
     cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
+        summary = "Business module for user data"
+        homepage = Libs.appHomePage
         ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        frameworkName = "userdata"
+        framework {
+            baseName = "userdata"
+        }
         podfile = project.file("../NxtBuz/Podfile")
     }
 
