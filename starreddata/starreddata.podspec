@@ -1,11 +1,11 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'starreddata'
     spec.version                  = '1.0'
-    spec.homepage                 = 'Link to the Shared Module homepage'
+    spec.homepage                 = 'https://amanshuraikwar.github.io/nextbus'
     spec.source                   = { :git => "Not Published", :tag => "Cocoapods/#{spec.name}/#{spec.version}" }
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'Some description for the Shared Module'
+    spec.summary                  = 'Business module for starred data'
 
     spec.vendored_frameworks      = "build/cocoapods/framework/starreddata.framework"
     spec.libraries                = "c++"

@@ -1,11 +1,11 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'sqldelightdb'
     spec.version                  = '2'
-    spec.homepage                 = 'Link to the Shared Module homepage'
+    spec.homepage                 = 'https://amanshuraikwar.github.io/nextbus'
     spec.source                   = { :git => "Not Published", :tag => "Cocoapods/#{spec.name}/#{spec.version}" }
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'Some description for the Shared Module'
+    spec.summary                  = 'Local data storage module using sqldelight'
 
     spec.vendored_frameworks      = "build/cocoapods/framework/sqldelightdb.framework"
     spec.libraries                = "c++"

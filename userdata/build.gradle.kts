@@ -14,7 +14,8 @@ kotlin {
 
     val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
         System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
-        System.getenv("NATIVE_ARCH")?.startsWith("arm") == true -> ::iosSimulatorArm64 // available to KT 1.5.30
+        System.getenv("NATIVE_ARCH")
+            ?.startsWith("arm") == true -> ::iosSimulatorArm64  // available to KT 1.5.30
         else -> ::iosX64
     }
     iosTarget("ios") {}
@@ -26,7 +27,6 @@ kotlin {
         framework {
             baseName = "userdata"
         }
-        podfile = project.file("../NxtBuz/Podfile")
     }
 
     sourceSets {
