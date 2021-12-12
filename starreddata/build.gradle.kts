@@ -7,24 +7,26 @@ plugins {
     id("com.android.library")
 }
 
-version = "1.0"
+version = Libs.kmmLibVersion
 
 kotlin {
-    android()
+    android {}
 
     val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
         System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
-        System.getenv("NATIVE_ARCH")?.startsWith("arm") == true -> ::iosSimulatorArm64 // available to KT 1.5.30
+        System.getenv("NATIVE_ARCH")
+            ?.startsWith("arm") == true -> ::iosSimulatorArm64  // available to KT 1.5.30
         else -> ::iosX64
     }
     iosTarget("ios") {}
 
     cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
+        summary = "Business module for starred data"
+        homepage = Libs.appHomePage
         ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        frameworkName = "starreddata"
-        // set path to your ios project podfile, e.g. podfile = project.file("../iosApp/Podfile")
+        framework {
+             baseName = "starreddata"
+        }
     }
     
     sourceSets {
