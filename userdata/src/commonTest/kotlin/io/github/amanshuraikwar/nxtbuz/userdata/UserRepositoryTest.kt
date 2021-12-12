@@ -7,6 +7,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.commonkmm.SystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.UserState
 import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
+import io.github.amanshuraikwar.testutil.runTest
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.SpyK
@@ -18,8 +19,6 @@ import kotlinx.datetime.Instant
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
-
-expect fun runTest(block: suspend () -> Unit)
 
 class UserRepositoryTest {
     private val fakePreferenceStorage = FakePreferenceStorage()

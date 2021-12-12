@@ -1,13 +1,13 @@
 Pod::Spec.new do |spec|
-    spec.name                     = 'userdata'
+    spec.name                     = 'test_util'
     spec.version                  = '1.0'
     spec.homepage                 = 'https://amanshuraikwar.github.io/nextbus'
     spec.source                   = { :git => "Not Published", :tag => "Cocoapods/#{spec.name}/#{spec.version}" }
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'Business module for user data'
+    spec.summary                  = 'Util module for kmm shared unit tests'
 
-    spec.vendored_frameworks      = "build/cocoapods/framework/userdata.framework"
+    spec.vendored_frameworks      = "build/cocoapods/framework/test-util.framework"
     spec.libraries                = "c++"
     spec.module_name              = "#{spec.name}_umbrella"
 
@@ -16,13 +16,13 @@ Pod::Spec.new do |spec|
                 
 
     spec.pod_target_xcconfig = {
-        'KOTLIN_PROJECT_PATH' => ':userdata',
-        'PRODUCT_MODULE_NAME' => 'userdata',
+        'KOTLIN_PROJECT_PATH' => ':test-util',
+        'PRODUCT_MODULE_NAME' => 'test_util',
     }
 
     spec.script_phases = [
         {
-            :name => 'Build userdata',
+            :name => 'Build test_util',
             :execution_position => :before_compile,
             :shell_path => '/bin/sh',
             :script => <<-SCRIPT
