@@ -1,5 +1,5 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
@@ -7,10 +7,10 @@ plugins {
     id("com.android.library")
 }
 
-version = "1.0"
+version = Libs.kmmLibVersion
 
 kotlin {
-    android()
+    android {}
 
     val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
         System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
@@ -20,36 +20,24 @@ kotlin {
     iosTarget("ios") {}
 
     cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
+        summary = "Util module for kmm shared unit tests"
+        homepage = Libs.appHomePage
         ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        frameworkName = "preferencestorage"
+        framework {
+            baseName = "test-util"
+        }
         podfile = project.file("../NxtBuz/Podfile")
     }
-    
+
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(Libs.MultiplatformSettings.lib)
-                implementation(Libs.MultiplatformSettings.noArg)
-                implementation(project(":common"))
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(Libs.Kotlin.stdlib)
+                implementation(Libs.Coroutines.core)
             }
         }
         val androidMain by getting
-        val androidTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13.2")
-            }
-        }
         val iosMain by getting
-        val iosTest by getting
     }
 }
 

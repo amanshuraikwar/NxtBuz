@@ -12,14 +12,12 @@ version = Libs.kmmLibVersion
 kotlin {
     android {}
 
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
-        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
-            ::iosArm64
-        else
-            ::iosX64
-
+    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
+        System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
+        System.getenv("NATIVE_ARCH")?.startsWith("arm") == true -> ::iosSimulatorArm64 // available to KT 1.5.30
+        else -> ::iosX64
+    }
     iosTarget("ios") {}
-    iosSimulatorArm64()
 
     cocoapods {
         summary = "Business module for user data"
@@ -45,9 +43,10 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                implementation(project(":test-util"))
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation("io.mockk:mockk:1.9.3.kotlin12")
+                implementation(Libs.mockk)
             }
         }
         val androidMain by getting
@@ -55,17 +54,10 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
-                //implementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
             }
         }
         val iosMain by getting
         val iosTest by getting
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
-        }
     }
 }
 

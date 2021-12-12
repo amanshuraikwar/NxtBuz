@@ -14,6 +14,8 @@ object Libs {
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.2"
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 
+    const val mockk = "io.mockk:mockk:1.8.13.kotlin13"
+
     object MultiplatformSettings {
         private const val version = "0.8.1"
         const val lib = "com.russhwolf:multiplatform-settings:0.8.1"

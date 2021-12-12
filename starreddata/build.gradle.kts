@@ -12,14 +12,12 @@ version = "1.0"
 kotlin {
     android()
 
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
-        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
-            ::iosArm64
-        else
-            ::iosX64
-
+    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
+        System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
+        System.getenv("NATIVE_ARCH")?.startsWith("arm") == true -> ::iosSimulatorArm64 // available to KT 1.5.30
+        else -> ::iosX64
+    }
     iosTarget("ios") {}
-    iosSimulatorArm64()
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -42,8 +40,11 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                implementation(project(":test-util"))
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation(Libs.mockk)
+                implementation(Libs.Coroutines.core)
             }
         }
         val androidMain by getting
@@ -51,16 +52,11 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
+                implementation(Libs.Coroutines.core)
             }
         }
         val iosMain by getting
         val iosTest by getting
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
-        }
     }
 }
 
