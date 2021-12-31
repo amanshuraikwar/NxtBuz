@@ -20,4 +20,12 @@ jobs:
       - name: Run Unit Tests
         run: |
           touch local.properties
+          echo "lta.account.key.debug=a" >> local.properties
+          echo "lta.account.key.release=a" >> local.properties
+          echo "google.maps.api.key.debug=a" >> local.properties
+          echo "google.maps.api.key.release=a" >> local.properties
+          echo "keystore.file.path=a" >> local.properties
+          echo "keystore.password=a" >> local.properties
+          echo "keystore.key.alias=a" >> local.properties
+          echo "keystore.key.password=a" >> local.properties
           ./gradlew :userdata:testDebugUnitTest
