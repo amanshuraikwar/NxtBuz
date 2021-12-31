@@ -2,12 +2,14 @@
 
 package io.github.amanshuraikwar.nxtbuz.starreddata
 
+import com.squareup.sqldelight.db.SqlDriver
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusService
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleStarUpdate
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.localdatasource.StarredBusStopEntity
 import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.sqldelightdb.SqlDelightLocalDataSource
 import io.github.amanshuraikwar.testutil.runTest
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -289,4 +291,90 @@ class StarredBusArrivalRepositoryTest {
             )
         }
     }
+
+    @Test
+    fun `toggle star bus stop to true and get correct toggle star value`() {
+        val driver = getSqlDriver()
+        if (driver == null) {
+            assertEquals(expected = true, actual = false, message = "SQL Driver was null.")
+            return
+        }
+
+        val localDataSource = SqlDelightLocalDataSource.createInstance(
+            driver = driver,
+            ioDispatcher = fakeCoroutinesDispatcherProvider.io
+        )
+
+        val repo = StarredBusArrivalRepositoryImpl(
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = fakeCoroutinesDispatcherProvider,
+            localDataSource = localDataSource
+        )
+
+        runTest {
+            repo.toggleBusStopStar(
+                busStopCode = "11401",
+                busServiceNumber = "106",
+                toggleTo = true
+            )
+
+            assertEquals(
+                expected = true,
+                actual = repo.isStarred(
+                    busStopCode = "11401",
+                    busServiceNumber = "106"
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `toggle star multiple bus stops and get correct starred buses`() {
+        val driver = getSqlDriver()
+        if (driver == null) {
+            assertEquals(expected = true, actual = false, message = "SQL Driver was null.")
+            return
+        }
+
+        val localDataSource = SqlDelightLocalDataSource.createInstance(
+            driver = driver,
+            ioDispatcher = fakeCoroutinesDispatcherProvider.io
+        )
+
+        val repo = StarredBusArrivalRepositoryImpl(
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = fakeCoroutinesDispatcherProvider,
+            localDataSource = localDataSource
+        )
+
+        runTest {
+            repo.toggleBusStopStar(
+                busStopCode = "11401",
+                busServiceNumber = "106",
+                toggleTo = true
+            )
+
+            repo.toggleBusStopStar(
+                busStopCode = "11406",
+                busServiceNumber = "961",
+                toggleTo = true
+            )
+
+            assertEquals(
+                expected = listOf(
+                    StarredBusService(
+                        busStopCode = "11401",
+                        busServiceNumber = "106",
+                    ),
+                    StarredBusService(
+                        busStopCode = "11406",
+                        busServiceNumber = "961",
+                    )
+                ),
+                actual = repo.getStarredBusServices()
+            )
+        }
+    }
 }
+
+expect fun getSqlDriver(): SqlDriver?

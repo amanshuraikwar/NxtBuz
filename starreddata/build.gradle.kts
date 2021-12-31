@@ -47,6 +47,7 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
                 implementation(Libs.mockk)
                 implementation(Libs.Coroutines.core)
+                implementation(project(":sqldelightdb"))
             }
         }
         val androidMain by getting
@@ -55,6 +56,7 @@ kotlin {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
                 implementation(Libs.Coroutines.core)
+                implementation(Libs.SqlDelight.jvmDriver)
             }
         }
         val iosMain by getting

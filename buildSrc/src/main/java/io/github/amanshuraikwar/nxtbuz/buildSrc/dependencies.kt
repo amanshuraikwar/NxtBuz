@@ -11,7 +11,7 @@ object Libs {
     const val appHomePage = "https://amanshuraikwar.github.io/nextbus"
     const val kmmLibVersion = "1.0"
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.2"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.4"
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 
     const val mockk = "io.mockk:mockk:1.8.13.kotlin13"
@@ -141,6 +141,7 @@ object Libs {
         const val gradlePlugin = "com.squareup.sqldelight:gradle-plugin:$version"
         const val androidDriver = "com.squareup.sqldelight:android-driver:$version"
         const val nativeDriver = "com.squareup.sqldelight:native-driver:$version"
+        const val jvmDriver = "com.squareup.sqldelight:sqlite-driver:$version"
     }
 
     object Ktor {

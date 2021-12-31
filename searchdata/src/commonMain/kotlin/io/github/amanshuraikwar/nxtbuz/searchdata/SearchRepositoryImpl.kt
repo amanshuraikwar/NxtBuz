@@ -16,10 +16,7 @@ class SearchRepositoryImpl constructor(
 
             val busStopList =
                 localDataSource.findBusStopsByDescription(
-                    query
-                        .lowercase()
-                        .trim()
-                        .replace(Regex("[^a-z0-9]"), ""),
+                    query.toSearchDescriptionHint(),
                     limit
                 )
                     .map { busStopEntity ->
