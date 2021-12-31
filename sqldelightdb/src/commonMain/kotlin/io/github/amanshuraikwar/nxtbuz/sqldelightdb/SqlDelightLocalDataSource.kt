@@ -1,5 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.sqldelightdb
 
+import com.squareup.sqldelight.db.SqlDriver
+import io.github.amanshuraikwar.nxtbuz.commonkmm.toSearchDescriptionHint
 import io.github.amanshuraikwar.nxtbuz.db.NxtBuzDb
 import io.github.amanshuraikwar.nxtbuz.localdatasource.*
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,10 +26,7 @@ class SqlDelightLocalDataSource internal constructor(
                                 it.code,
                                 it.roadName,
                                 it.description,
-                                it.description
-                                    .lowercase()
-                                    .trim()
-                                    .replace(Regex("[^a-z0-9]"), ""),
+                                it.description.toSearchDescriptionHint(),
                                 it.latitude,
                                 it.longitude
                             )
@@ -416,6 +415,16 @@ class SqlDelightLocalDataSource internal constructor(
             return SqlDelightLocalDataSource(
                 ioDispatcher = ioDispatcher,
                 nxtBuzDb = dbFactory.createDb()
+            )
+        }
+
+        fun createInstance(
+            driver: SqlDriver,
+            ioDispatcher: CoroutineDispatcher
+        ): LocalDataSource {
+            return SqlDelightLocalDataSource(
+                ioDispatcher = ioDispatcher,
+                nxtBuzDb = NxtBuzDb(driver)
             )
         }
     }

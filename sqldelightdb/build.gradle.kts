@@ -41,6 +41,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":common"))
                 implementation(project(":localdatasource"))
                 implementation(Libs.Coroutines.core)
             }

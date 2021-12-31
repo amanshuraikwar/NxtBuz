@@ -41,8 +41,10 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                implementation(project(":test-util"))
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation(project(":sqldelightdb"))
             }
         }
         val androidMain by getting
@@ -50,6 +52,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
+                implementation(Libs.SqlDelight.jvmDriver)
             }
         }
         val iosMain by getting

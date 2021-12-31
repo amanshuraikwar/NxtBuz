@@ -29,3 +29,5 @@ jobs:
           echo "keystore.key.alias=a" >> local.properties
           echo "keystore.key.password=a" >> local.properties
           ./gradlew :userdata:testDebugUnitTest
+          ./gradlew :starreddata:testDebugUnitTest
+          ./gradlew :searchdata:testDebugUnitTest
