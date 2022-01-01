@@ -2,19 +2,19 @@
 
 package io.github.amanshuraikwar.nxtbuz.starreddata
 
-import com.squareup.sqldelight.db.SqlDriver
-import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusService
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleStarUpdate
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.localdatasource.StarredBusStopEntity
 import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
-import io.github.amanshuraikwar.nxtbuz.sqldelightdb.SqlDelightLocalDataSource
+import io.github.amanshuraikwar.testutil.FakeCoroutinesDispatcherProvider
+import io.github.amanshuraikwar.testutil.FakeLocalDataSource
+import io.github.amanshuraikwar.testutil.FakePreferenceStorage
+import io.github.amanshuraikwar.testutil.joinWithExpiry
 import io.github.amanshuraikwar.testutil.runTest
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlin.test.BeforeTest
@@ -22,15 +22,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class StarredBusArrivalRepositoryTest {
-    private val fakeCoroutinesDispatcherProvider = CoroutinesDispatcherProvider(
-        main = Dispatchers.Default,
-        computation = Dispatchers.Default,
-        io = Dispatchers.Default,
-        pool8 = Dispatchers.Default,
-        map = Dispatchers.Default,
-        arrivalService = Dispatchers.Default,
-        location = Dispatchers.Default,
-    )
+    private val fakeCoroutinesDispatcherProvider = FakeCoroutinesDispatcherProvider
 
     lateinit var repo: StarredBusArrivalRepository
 
@@ -52,18 +44,18 @@ class StarredBusArrivalRepositoryTest {
     fun `should show error starred bus arrivals toggle update`() {
         runTest {
             var deferred = launch {
-                assertEquals(true, repo.toggleShouldShowErrorArrivals.first())
-            }
-            repo.setShouldShowErrorStarredBusArrivals(true)
-            deferred.join()
-            assertEquals(true, repo.shouldShowErrorStarredBusArrivals())
-
-            deferred = launch {
                 assertEquals(false, repo.toggleShouldShowErrorArrivals.first())
             }
             repo.setShouldShowErrorStarredBusArrivals(false)
-            deferred.join()
+            deferred.joinWithExpiry(3000)
             assertEquals(false, repo.shouldShowErrorStarredBusArrivals())
+
+            deferred = launch {
+                assertEquals(true, repo.toggleShouldShowErrorArrivals.first())
+            }
+            repo.setShouldShowErrorStarredBusArrivals(true)
+            deferred.joinWithExpiry(3000)
+            assertEquals(true, repo.shouldShowErrorStarredBusArrivals())
         }
     }
 
@@ -147,7 +139,7 @@ class StarredBusArrivalRepositoryTest {
                 busServiceNumber = "106"
             )
 
-            deferred.join()
+            deferred.joinWithExpiry(3000)
         }
     }
 
@@ -180,7 +172,7 @@ class StarredBusArrivalRepositoryTest {
                 busServiceNumber = "106"
             )
 
-            deferred.join()
+            deferred.joinWithExpiry(3000)
         }
     }
 
@@ -211,7 +203,7 @@ class StarredBusArrivalRepositoryTest {
                 toggleTo = true
             )
 
-            deferred.join()
+            deferred.joinWithExpiry(3000)
         }
     }
 
@@ -245,7 +237,7 @@ class StarredBusArrivalRepositoryTest {
                 toggleTo = false
             )
 
-            deferred.join()
+            deferred.joinWithExpiry(3000)
         }
     }
 
@@ -294,16 +286,7 @@ class StarredBusArrivalRepositoryTest {
 
     @Test
     fun `toggle star bus stop to true and get correct toggle star value`() {
-        val driver = getSqlDriver()
-        if (driver == null) {
-            assertEquals(expected = true, actual = false, message = "SQL Driver was null.")
-            return
-        }
-
-        val localDataSource = SqlDelightLocalDataSource.createInstance(
-            driver = driver,
-            ioDispatcher = fakeCoroutinesDispatcherProvider.io
-        )
+        val localDataSource = FakeLocalDataSource()
 
         val repo = StarredBusArrivalRepositoryImpl(
             preferenceStorage = FakePreferenceStorage(),
@@ -330,16 +313,7 @@ class StarredBusArrivalRepositoryTest {
 
     @Test
     fun `toggle star multiple bus stops and get correct starred buses`() {
-        val driver = getSqlDriver()
-        if (driver == null) {
-            assertEquals(expected = true, actual = false, message = "SQL Driver was null.")
-            return
-        }
-
-        val localDataSource = SqlDelightLocalDataSource.createInstance(
-            driver = driver,
-            ioDispatcher = fakeCoroutinesDispatcherProvider.io
-        )
+        val localDataSource = FakeLocalDataSource()
 
         val repo = StarredBusArrivalRepositoryImpl(
             preferenceStorage = FakePreferenceStorage(),
@@ -376,5 +350,3 @@ class StarredBusArrivalRepositoryTest {
         }
     }
 }
-
-expect fun getSqlDriver(): SqlDriver?

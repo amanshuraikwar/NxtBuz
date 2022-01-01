@@ -2,18 +2,18 @@
 
 package io.github.amanshuraikwar.nxtbuz.userdata
 
-import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.commonkmm.SystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.UserState
 import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
+import io.github.amanshuraikwar.testutil.FakeCoroutinesDispatcherProvider
+import io.github.amanshuraikwar.testutil.FakePreferenceStorage
 import io.github.amanshuraikwar.testutil.runTest
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.SpyK
 import io.mockk.mockk
 import io.mockk.mockkObject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.test.BeforeTest
@@ -23,15 +23,7 @@ import kotlin.test.assertTrue
 class UserRepositoryTest {
     private val fakePreferenceStorage = FakePreferenceStorage()
 
-    private val fakeCoroutinesDispatcherProvider = CoroutinesDispatcherProvider(
-        main = Dispatchers.Default,
-        computation = Dispatchers.Default,
-        io = Dispatchers.Default,
-        pool8 = Dispatchers.Default,
-        map = Dispatchers.Default,
-        arrivalService = Dispatchers.Default,
-        location = Dispatchers.Default,
-    )
+    private val fakeCoroutinesDispatcherProvider = FakeCoroutinesDispatcherProvider
 
     @SpyK
     private var fakeSystemThemeHelper: SystemThemeHelper = object : SystemThemeHelper {

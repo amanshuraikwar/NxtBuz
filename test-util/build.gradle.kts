@@ -34,9 +34,19 @@ kotlin {
             dependencies {
                 implementation(Libs.Kotlin.stdlib)
                 implementation(Libs.Coroutines.core)
+                implementation(Libs.MultiplatformSettings.lib)
+                implementation(Libs.MultiplatformSettings.test)
+                implementation(project(":preferencestorage"))
+                implementation(project(":sqldelightdb"))
+                implementation(project(":localdatasource"))
+                implementation(project(":common"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation(Libs.SqlDelight.jvmDriver)
+            }
+        }
         val iosMain by getting
     }
 }
