@@ -52,7 +52,6 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
-                implementation(Libs.SqlDelight.jvmDriver)
             }
         }
         val iosMain by getting

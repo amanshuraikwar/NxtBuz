@@ -1,37 +1,21 @@
 package io.github.amanshuraikwar.nxtbuz.searchdata
 
-import com.squareup.sqldelight.db.SqlDriver
 import io.github.amanshuraikwar.nxtbuz.commonkmm.Bus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
-import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.SearchResult
 import io.github.amanshuraikwar.nxtbuz.localdatasource.BusStopEntity
 import io.github.amanshuraikwar.nxtbuz.localdatasource.OperatingBusEntity
-import io.github.amanshuraikwar.nxtbuz.sqldelightdb.SqlDelightLocalDataSource
+import io.github.amanshuraikwar.testutil.FakeCoroutinesDispatcherProvider
+import io.github.amanshuraikwar.testutil.FakeLocalDataSource
 import io.github.amanshuraikwar.testutil.runTest
-import kotlinx.coroutines.Dispatchers
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 // TODO-amanshuraikwar (31 Dec 2021 08:57:14 PM): test for bus services as well
 class SearchRepositoryTest {
-    private val fakeCoroutinesDispatcherProvider = CoroutinesDispatcherProvider(
-        main = Dispatchers.Default,
-        computation = Dispatchers.Default,
-        io = Dispatchers.Default,
-        pool8 = Dispatchers.Default,
-        map = Dispatchers.Default,
-        arrivalService = Dispatchers.Default,
-        location = Dispatchers.Default,
-    )
+    private val fakeCoroutinesDispatcherProvider = FakeCoroutinesDispatcherProvider
 
-    private val driver = getSqlDriver()
-
-    private val localDataSource = SqlDelightLocalDataSource.createInstance(
-        driver = driver ?: throw Exception("SQL Driver is null"),
-        ioDispatcher = fakeCoroutinesDispatcherProvider.io
-    )
+    private val localDataSource = FakeLocalDataSource()
 
     private val repo = SearchRepositoryImpl(
         dispatcherProvider = fakeCoroutinesDispatcherProvider,
@@ -254,5 +238,3 @@ class SearchRepositoryTest {
         }
     }
 }
-
-expect fun getSqlDriver(): SqlDriver?
