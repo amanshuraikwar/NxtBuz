@@ -155,5 +155,6 @@ object Libs {
         const val clientIos = "io.ktor:ktor-client-ios:$version"
         const val clientCio = "io.ktor:ktor-client-cio:$version"
         const val clientJs = "io.ktor:ktor-client-js:$version"
+        const val clientMock = "io.ktor:ktor-client-mock:$version"
     }
 }

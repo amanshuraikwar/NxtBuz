@@ -8,8 +8,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlin.math.max
 import io.github.amanshuraikwar.nxtbuz.db.BusStopEntity as BusStopSqlDelightEntity
-import io.github.amanshuraikwar.nxtbuz.db.StarredBusServiceEntity as StarredBusServiceSqlDelightEntity
 import io.github.amanshuraikwar.nxtbuz.db.DirectBusEntity as DirectBusSqlDelightEntity
+import io.github.amanshuraikwar.nxtbuz.db.StarredBusServiceEntity as StarredBusServiceSqlDelightEntity
 
 class SqlDelightLocalDataSource internal constructor(
     private val ioDispatcher: CoroutineDispatcher,
@@ -106,6 +106,20 @@ class SqlDelightLocalDataSource internal constructor(
                         busStopEntity.longitude,
                     )
                 }
+        }
+    }
+
+    override suspend fun getAllBusStops(): List<BusStopEntity> {
+        return withContext(ioDispatcher) {
+            nxtBuzDb.busStopEntityQueries.findAll().executeAsList().map { busStopEntity ->
+                BusStopEntity(
+                    busStopEntity.code,
+                    busStopEntity.roadName,
+                    busStopEntity.description,
+                    busStopEntity.latitude,
+                    busStopEntity.longitude,
+                )
+            }
         }
     }
 

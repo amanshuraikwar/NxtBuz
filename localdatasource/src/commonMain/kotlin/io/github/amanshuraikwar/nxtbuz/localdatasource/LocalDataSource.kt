@@ -11,6 +11,8 @@ interface LocalDataSource {
 
     suspend fun findBusStopByCode(busStopCode: String): BusStopEntity?
 
+    suspend fun getAllBusStops(): List<BusStopEntity>
+
     suspend fun insertOperatingBuses(operatingBusList: List<OperatingBusEntity>)
 
     suspend fun findOperatingBuses(busStopCode: String): List<OperatingBusEntity>
