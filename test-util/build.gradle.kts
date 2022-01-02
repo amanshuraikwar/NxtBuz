@@ -40,6 +40,11 @@ kotlin {
                 implementation(project(":sqldelightdb"))
                 implementation(project(":localdatasource"))
                 implementation(project(":common"))
+                implementation(project(":remotedatasource"))
+                implementation(project(":ktorremotedatasource"))
+                implementation(Libs.Ktor.clientMock)
+                api(Libs.Ktor.clientCore)
+                implementation(Libs.KotlinX.serializationJson)
             }
         }
         val androidMain by getting {

@@ -1,6 +1,12 @@
 package io.github.amanshuraikwar.nxtbuz.ktorremotedatasource
 
-import io.github.amanshuraikwar.nxtbuz.remotedatasource.*
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.ArrivingBusItemDto
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusArrivalItemDto
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusArrivalsResponseDto
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusRouteItemDto
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusStopItemDto
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
+import io.ktor.client.engine.HttpClientEngine
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -133,6 +139,23 @@ class KtorRemoteDataSource internal constructor(
             return KtorRemoteDataSource(
                 ltaApi = LtaBusApi
                     .createInstance(
+                        addLoggingInterceptors = addLoggingInterceptors,
+                        ltaAccountKey = ltaAccountKey,
+                    ),
+                ioDispatcher = ioDispatcher
+            )
+        }
+
+        fun createInstance(
+            engine: HttpClientEngine,
+            ltaAccountKey: String,
+            addLoggingInterceptors: Boolean,
+            ioDispatcher: CoroutineDispatcher
+        ): RemoteDataSource {
+            return KtorRemoteDataSource(
+                ltaApi = LtaBusApi
+                    .createInstance(
+                        engine = engine,
                         addLoggingInterceptors = addLoggingInterceptors,
                         ltaAccountKey = ltaAccountKey,
                     ),
