@@ -26,86 +26,98 @@ class BusStopRepositoryImpl constructor(
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : BusStopRepository {
-    override fun setup(): Flow<Double> = flow {
-        emit(0.0)
+    override fun setup(): Flow<Double> {
+        return flow {
+            emit(0.0)
 
-        localDataSource.deleteAllBusStops()
+            localDataSource.deleteAllBusStops()
 
-        // fetch bus stops from the api until the api returns an empty list
-        var skip = 0
-        val busStopItemList = mutableListOf<BusStopItemDto>()
-        while (true) {
-            val fetchedBusStops = remoteDataSource.getBusStops(skip)
-            if (fetchedBusStops.isEmpty()) break
-            busStopItemList.addAll(fetchedBusStops)
-            skip += 500
-        }
+            // fetch bus stops from the api until the api returns an empty list
+            var skip = 0
+            val busStopItemList = mutableListOf<BusStopItemDto>()
+            while (true) {
+                val fetchedBusStops = remoteDataSource.getBusStops(skip)
+                if (fetchedBusStops.isEmpty()) break
+                busStopItemList.addAll(fetchedBusStops)
+                skip += 500
+            }
 
-        emit(0.5)
+            emit(0.5)
 
-        // save all bus stops in local db
-        localDataSource.insertBusStops(
-            busStopItemList
-                .distinctBy { it.code }
-                .map {
-                    BusStopEntity(
-                        code = it.code,
-                        roadName = it.roadName,
-                        description = it.description,
-                        latitude = it.lat,
-                        longitude = it.lng
-                    )
-                }
-        )
+            // save all bus stops in local db
+            localDataSource.insertBusStops(
+                busStopItemList
+                    .distinctBy { it.code }
+                    .map {
+                        BusStopEntity(
+                            code = it.code,
+                            roadName = it.roadName,
+                            description = it.description,
+                            latitude = it.lat,
+                            longitude = it.lng
+                        )
+                    }
+            )
 
-        emit(1.0)
-    }.flowOn(dispatcherProvider.computation)
+            emit(1.0)
+        }.flowOn(dispatcherProvider.computation)
+    }
 
     @Suppress("unused")
     override suspend fun getCloseBusStops(
         latitude: Double,
         longitude: Double,
         limit: Int
-    ): List<BusStop> = withContext(dispatcherProvider.io) {
-        localDataSource
-            .findCloseBusStops(latitude, longitude, limit)
-            .distinctBy { it.code }
-            .map { busStopEntity ->
-                async(dispatcherProvider.pool8) {
-                    BusStop(
-                        busStopEntity.code,
-                        busStopEntity.roadName,
-                        busStopEntity.description,
-                        busStopEntity.latitude,
-                        busStopEntity.longitude,
-                        localDataSource.findOperatingBuses(busStopEntity.code)
-                            .map {
-                                Bus(it.busServiceNumber)
-                            }
-                    )
+    ): List<BusStop> {
+        return withContext(dispatcherProvider.io) {
+            localDataSource
+                .findCloseBusStops(latitude, longitude, limit)
+                .distinctBy { it.code }
+                .map { busStopEntity ->
+                    async(dispatcherProvider.pool8) {
+                        BusStop(
+                            busStopEntity.code,
+                            busStopEntity.roadName,
+                            busStopEntity.description,
+                            busStopEntity.latitude,
+                            busStopEntity.longitude,
+                            localDataSource.findOperatingBuses(busStopEntity.code)
+                                .map {
+                                    Bus(it.busServiceNumber)
+                                }
+                        )
+                    }
                 }
-            }
-            .awaitAll()
+                .awaitAll()
+        }
     }
 
-    override suspend fun getBusStopQueryLimit(): Int = withContext(dispatcherProvider.io) {
-        preferenceStorage.busStopsQueryLimit
+    override suspend fun getBusStopQueryLimit(): Int {
+        return withContext(dispatcherProvider.io) {
+            preferenceStorage.busStopsQueryLimit
+        }
     }
 
-    override suspend fun setBusStopQueryLimit(
-        newLimit: Int
-    ) = withContext(dispatcherProvider.io) {
-        preferenceStorage.busStopsQueryLimit = newLimit.coerceIn(1..Int.MAX_VALUE)
+    override suspend fun setBusStopQueryLimit(newLimit: Int) {
+        withContext(dispatcherProvider.io) {
+            preferenceStorage.busStopsQueryLimit =
+                newLimit.coerceAtLeast(1)
+        }
     }
 
-    override suspend fun getMaxDistanceOfClosesBusStop(): Int = withContext(dispatcherProvider.io) {
-        preferenceStorage.maxDistanceOfClosestBusStop
+    override suspend fun getMaxDistanceOfClosesBusStop(): Int {
+        return withContext(dispatcherProvider.io) {
+            preferenceStorage.maxDistanceOfClosestBusStop
+        }
     }
 
     override suspend fun setMaxDistanceOfClosesBusStop(
         newMaxDistance: Int
-    ) = withContext(dispatcherProvider.io) {
-        preferenceStorage.maxDistanceOfClosestBusStop = newMaxDistance.coerceIn(1..Int.MAX_VALUE)
+    ) {
+        return withContext(dispatcherProvider.io) {
+            preferenceStorage.maxDistanceOfClosestBusStop =
+                newMaxDistance.coerceAtLeast(1)
+        }
     }
 
     override suspend fun searchBusStops(query: String, limit: Int): List<BusStop> =

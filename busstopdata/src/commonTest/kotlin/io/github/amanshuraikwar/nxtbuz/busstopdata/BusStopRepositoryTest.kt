@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busstopdata
 
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.localdatasource.BusStopEntity
 import io.github.amanshuraikwar.testutil.FakeCoroutinesDispatcherProvider
 import io.github.amanshuraikwar.testutil.FakeLocalDataSource
@@ -341,5 +342,218 @@ class BusStopRepositoryTest {
         }
     }
 
-    
+    /*
+        Code to generate coordinates:
+        val x = 1.0
+        val y = 1.0
+
+        val z = sqrt(x.pow(2) + y.pow(2))
+        z
+        val list = mutableListOf<String>()
+        for (i in 10 downTo 1) {
+            println(sqrt(i.toFloat().pow(2) - 1.0))
+        }
+     */
+    @Test
+    fun `get close bus stops`() {
+        val localDataSource = FakeLocalDataSource()
+
+        runTest {
+            localDataSource.insertBusStops(
+                listOf(
+                    BusStopEntity(
+                        code = "5",
+                        roadName = "5",
+                        description = "5",
+                        latitude = 1.0,
+                        longitude = 5.916079783099616
+                    ),
+                    BusStopEntity(
+                        code = "2",
+                        roadName = "2",
+                        description = "2",
+                        latitude = 1.0,
+                        longitude = 2.8284271247461903
+                    ),
+                    BusStopEntity(
+                        code = "6",
+                        roadName = "6",
+                        description = "6",
+                        latitude = 1.0,
+                        longitude = 6.928203230275509
+                    ),
+                    BusStopEntity(
+                        code = "9",
+                        roadName = "9",
+                        description = "9",
+                        latitude = 1.0,
+                        longitude = 9.9498743710662
+                    ),
+                    BusStopEntity(
+                        code = "1",
+                        roadName = "1",
+                        description = "1",
+                        latitude = 1.0,
+                        longitude = 1.7320508075688772
+                    ),
+                    BusStopEntity(
+                        code = "0",
+                        roadName = "0",
+                        description = "0",
+                        latitude = 1.0,
+                        longitude = 0.0
+                    ),
+                    BusStopEntity(
+                        code = "4",
+                        roadName = "4",
+                        description = "4",
+                        latitude = 1.0,
+                        longitude = 4.898979485566356
+                    ),
+                    BusStopEntity(
+                        code = "3",
+                        roadName = "3",
+                        description = "3",
+                        latitude = 1.0,
+                        longitude = 3.872983346207417
+                    ),
+                    BusStopEntity(
+                        code = "8",
+                        roadName = "8",
+                        description = "8",
+                        latitude = 1.0,
+                        longitude = 8.94427190999916
+                    ),
+                    BusStopEntity(
+                        code = "7",
+                        roadName = "7",
+                        description = "7",
+                        latitude = 1.0,
+                        longitude = 7.937253933193772
+                    ),
+                )
+            )
+        }
+
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            assertEquals(
+                listOf(
+                    BusStop(
+                        code = "0",
+                        roadName = "0",
+                        description = "0",
+                        latitude = 1.0,
+                        longitude = 0.0,
+                        operatingBusList = listOf(),
+                    ),
+                    BusStop(
+                        code = "1",
+                        roadName = "1",
+                        description = "1",
+                        latitude = 1.0,
+                        longitude = 1.7320508075688772,
+                        operatingBusList = listOf(),
+                    ),
+                    BusStop(
+                        code = "2",
+                        roadName = "2",
+                        description = "2",
+                        latitude = 1.0,
+                        longitude = 2.8284271247461903,
+                        operatingBusList = listOf(),
+                    ),
+                    BusStop(
+                        code = "3",
+                        roadName = "3",
+                        description = "3",
+                        latitude = 1.0,
+                        longitude = 3.872983346207417,
+                        operatingBusList = listOf(),
+                    ),
+                    BusStop(
+                        code = "4",
+                        roadName = "4",
+                        description = "4",
+                        latitude = 1.0,
+                        longitude = 4.898979485566356,
+                        operatingBusList = listOf(),
+                    ),
+                ),
+                repo.getCloseBusStops(0.0, 0.0, 5)
+            )
+        }
+    }
+
+    @Test
+    fun `get close bus stop query limit already stored in preference storage`() {
+        val preferenceStorage = FakePreferenceStorage()
+        val repo = BusStopRepositoryImpl(
+            localDataSource = FakeLocalDataSource(),
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = preferenceStorage,
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        preferenceStorage.busStopsQueryLimit = 1042
+
+        runTest {
+            assertEquals(
+               1042,
+                repo.getBusStopQueryLimit()
+            )
+        }
+    }
+
+    @Test
+    fun `get close bus stop query limit, after correct set values`() {
+        val preferenceStorage = FakePreferenceStorage()
+        val repo = BusStopRepositoryImpl(
+            localDataSource = FakeLocalDataSource(),
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = preferenceStorage,
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            repo.setBusStopQueryLimit(1043)
+            assertEquals(
+                1043,
+                repo.getBusStopQueryLimit()
+            )
+        }
+    }
+
+    @Test
+    fun `get close bus stop query limit, after coerced set values, lower limit`() {
+        val preferenceStorage = FakePreferenceStorage()
+        val repo = BusStopRepositoryImpl(
+            localDataSource = FakeLocalDataSource(),
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = preferenceStorage,
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            repo.setBusStopQueryLimit(-103)
+            assertEquals(
+                1,
+                repo.getBusStopQueryLimit()
+            )
+        }
+    }
 }
