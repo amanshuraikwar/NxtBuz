@@ -556,4 +556,68 @@ class BusStopRepositoryTest {
             )
         }
     }
+
+    @Test
+    fun `get max distance of closest bus stop already stored in preference storage`() {
+        val preferenceStorage = FakePreferenceStorage()
+        val repo = BusStopRepositoryImpl(
+            localDataSource = FakeLocalDataSource(),
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = preferenceStorage,
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        preferenceStorage.maxDistanceOfClosestBusStop = 345
+
+        runTest {
+            assertEquals(
+                345,
+                repo.getMaxDistanceOfClosesBusStop()
+            )
+        }
+    }
+
+    @Test
+    fun `get max distance of closest bus stop, after correct set values`() {
+        val preferenceStorage = FakePreferenceStorage()
+        val repo = BusStopRepositoryImpl(
+            localDataSource = FakeLocalDataSource(),
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = preferenceStorage,
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            repo.setMaxDistanceOfClosesBusStop(176)
+            assertEquals(
+                176,
+                repo.getMaxDistanceOfClosesBusStop()
+            )
+        }
+    }
+
+    @Test
+    fun `get max distance of closest bus stop, after coerced set values, lower limit`() {
+        val preferenceStorage = FakePreferenceStorage()
+        val repo = BusStopRepositoryImpl(
+            localDataSource = FakeLocalDataSource(),
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = preferenceStorage,
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            repo.setMaxDistanceOfClosesBusStop(-103)
+            assertEquals(
+                1,
+                repo.getMaxDistanceOfClosesBusStop()
+            )
+        }
+    }
 }
