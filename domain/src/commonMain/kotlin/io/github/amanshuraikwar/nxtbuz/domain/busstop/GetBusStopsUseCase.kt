@@ -14,8 +14,4 @@ open class GetBusStopsUseCase constructor(
             maxDistanceMetres = 500
         )
     }
-
-    suspend operator fun invoke(query: String, limit: Int): List<BusStop> {
-        return busStopRepository.searchBusStops(query, limit)
-    }
 }

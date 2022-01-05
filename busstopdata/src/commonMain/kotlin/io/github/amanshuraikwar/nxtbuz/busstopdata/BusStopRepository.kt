@@ -120,34 +120,11 @@ class BusStopRepositoryImpl constructor(
         }
     }
 
-    override suspend fun searchBusStops(query: String, limit: Int): List<BusStop> =
-        withContext(dispatcherProvider.io) {
-            localDataSource.findBusStopsByDescription(query, limit)
-                .distinctBy { it.code }
-                .map { busStopEntity ->
-                    async(dispatcherProvider.pool8) {
-                        BusStop(
-                            busStopEntity.code,
-                            busStopEntity.roadName,
-                            busStopEntity.description,
-                            busStopEntity.latitude,
-                            busStopEntity.longitude,
-                            localDataSource
-                                .findOperatingBuses(busStopEntity.code)
-                                .map { Bus(it.busServiceNumber) }
-                        )
-                    }
-                }.awaitAll()
-        }
-
-    override suspend fun getBusStop(busStopCode: String): BusStop =
+    override suspend fun getBusStop(busStopCode: String): BusStop? =
         withContext(dispatcherProvider.io) {
             localDataSource
                 .findBusStopByCode(busStopCode)
-                .let { busStopEntity ->
-                    busStopEntity ?: throw Exception("No bus stop found for code $busStopCode")
-                }
-                .let { busStopEntity ->
+                ?.let { busStopEntity ->
                     BusStop(
                         busStopEntity.code,
                         busStopEntity.roadName,
@@ -181,7 +158,9 @@ class BusStopRepositoryImpl constructor(
                 }
                 else -> {
                     val sourceBusStop = getBusStop(busStopCode = sourceBusStopCode)
+                        ?: throw Exception("No bus stop found for code $sourceBusStopCode")
                     val destinationBusStop = getBusStop(busStopCode = destinationBusStopCode)
+                        ?: throw Exception("No bus stop found for code $sourceBusStopCode")
 
                     DirectBusesResult.Success(
                         directBusList = directBusEntityList.map {

@@ -1,7 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.busstopdata
 
+import io.github.amanshuraikwar.nxtbuz.commonkmm.Bus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.localdatasource.BusStopEntity
+import io.github.amanshuraikwar.nxtbuz.localdatasource.OperatingBusEntity
 import io.github.amanshuraikwar.testutil.FakeCoroutinesDispatcherProvider
 import io.github.amanshuraikwar.testutil.FakeLocalDataSource
 import io.github.amanshuraikwar.testutil.FakePreferenceStorage
@@ -10,6 +12,7 @@ import io.github.amanshuraikwar.testutil.runTest
 import kotlinx.coroutines.flow.collect
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class BusStopRepositoryTest {
 
@@ -509,7 +512,7 @@ class BusStopRepositoryTest {
 
         runTest {
             assertEquals(
-               1042,
+                1042,
                 repo.getBusStopQueryLimit()
             )
         }
@@ -617,6 +620,183 @@ class BusStopRepositoryTest {
             assertEquals(
                 1,
                 repo.getMaxDistanceOfClosesBusStop()
+            )
+        }
+    }
+
+    @Test
+    fun `get bus stop and the bus stop & operating bus stops are in local storage`() {
+        val repo = BusStopRepositoryImpl(
+            localDataSource = FakeLocalDataSource().apply {
+                runTest {
+                    insertBusStops(
+                        listOf(
+                            BusStopEntity(
+                                code = "01039",
+                                roadName = "Nth Bridge Rd",
+                                description = "Bugis Cube",
+                                latitude = 1.29820784139683,
+                                longitude = 103.85549139837407
+                            ),
+                            BusStopEntity(
+                                code = "01059",
+                                roadName = "Victoria St",
+                                description = "Bugis Stn Exit B",
+                                latitude = 1.30075679526626,
+                                longitude = 103.85611040457583
+                            ),
+                        )
+                    )
+
+                    insertOperatingBuses(
+                        listOf(
+                            OperatingBusEntity(
+                                busStopCode = "01059",
+                                busServiceNumber = "961",
+                                wdFirstBus = null,
+                                wdLastBus = null,
+                                satFirstBus = null,
+                                satLastBus = null,
+                                sunFirstBus = null,
+                                sunLastBus = null,
+                            ),
+                            OperatingBusEntity(
+                                busStopCode = "01059",
+                                busServiceNumber = "106",
+                                wdFirstBus = null,
+                                wdLastBus = null,
+                                satFirstBus = null,
+                                satLastBus = null,
+                                sunFirstBus = null,
+                                sunLastBus = null,
+                            ),
+                            OperatingBusEntity(
+                                busStopCode = "01049",
+                                busServiceNumber = "77",
+                                wdFirstBus = null,
+                                wdLastBus = null,
+                                satFirstBus = null,
+                                satLastBus = null,
+                                sunFirstBus = null,
+                                sunLastBus = null,
+                            )
+                        )
+                    )
+                }
+            },
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            assertEquals(
+                BusStop(
+                    code = "01059",
+                    roadName = "Victoria St",
+                    description = "Bugis Stn Exit B",
+                    latitude = 1.30075679526626,
+                    longitude = 103.85611040457583,
+                    operatingBusList = listOf(
+                        Bus(serviceNumber = "961"),
+                        Bus(serviceNumber = "106"),
+                    )
+                ),
+                repo.getBusStop(
+                    busStopCode = "01059"
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `get bus stop and the bus stop & no operating bus stops are in local storage`() {
+        val repo = BusStopRepositoryImpl(
+            localDataSource = FakeLocalDataSource().apply {
+                runTest {
+                    insertBusStops(
+                        listOf(
+                            BusStopEntity(
+                                code = "01039",
+                                roadName = "Nth Bridge Rd",
+                                description = "Bugis Cube",
+                                latitude = 1.29820784139683,
+                                longitude = 103.85549139837407
+                            ),
+                            BusStopEntity(
+                                code = "01059",
+                                roadName = "Victoria St",
+                                description = "Bugis Stn Exit B",
+                                latitude = 1.30075679526626,
+                                longitude = 103.85611040457583
+                            ),
+                        )
+                    )
+                }
+            },
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            assertEquals(
+                BusStop(
+                    code = "01059",
+                    roadName = "Victoria St",
+                    description = "Bugis Stn Exit B",
+                    latitude = 1.30075679526626,
+                    longitude = 103.85611040457583,
+                    operatingBusList = listOf()
+                ),
+                repo.getBusStop(
+                    busStopCode = "01059"
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `get bus stop and the bus stop is not in local storage`() {
+        val repo = BusStopRepositoryImpl(
+            localDataSource = FakeLocalDataSource().apply {
+                runTest {
+                    insertBusStops(
+                        listOf(
+                            BusStopEntity(
+                                code = "01039",
+                                roadName = "Nth Bridge Rd",
+                                description = "Bugis Cube",
+                                latitude = 1.29820784139683,
+                                longitude = 103.85549139837407
+                            ),
+                            BusStopEntity(
+                                code = "01059",
+                                roadName = "Victoria St",
+                                description = "Bugis Stn Exit B",
+                                latitude = 1.30075679526626,
+                                longitude = 103.85611040457583
+                            ),
+                        )
+                    )
+                }
+            },
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            assertNull(
+                repo.getBusStop(
+                    busStopCode = "01060"
+                )
             )
         }
     }
