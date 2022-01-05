@@ -26,9 +26,7 @@ interface BusStopRepository {
         newMaxDistance: Int
     )
 
-    suspend fun searchBusStops(query: String, limit: Int): List<BusStop>
-
-    suspend fun getBusStop(busStopCode: String): BusStop
+    suspend fun getBusStop(busStopCode: String): BusStop?
 
     suspend fun getCloseBusStops(
         lat: Double,
