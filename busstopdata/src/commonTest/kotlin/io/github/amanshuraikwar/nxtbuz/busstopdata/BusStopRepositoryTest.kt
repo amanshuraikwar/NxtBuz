@@ -2,7 +2,9 @@ package io.github.amanshuraikwar.nxtbuz.busstopdata
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.Bus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.DirectBus
 import io.github.amanshuraikwar.nxtbuz.localdatasource.BusStopEntity
+import io.github.amanshuraikwar.nxtbuz.localdatasource.DirectBusEntity
 import io.github.amanshuraikwar.nxtbuz.localdatasource.OperatingBusEntity
 import io.github.amanshuraikwar.testutil.FakeCoroutinesDispatcherProvider
 import io.github.amanshuraikwar.testutil.FakeLocalDataSource
@@ -797,6 +799,100 @@ class BusStopRepositoryTest {
                 repo.getBusStop(
                     busStopCode = "01060"
                 )
+            )
+        }
+    }
+
+    @Test
+    fun `set direct buses is stored in local storage`() {
+        val localDataSource = FakeLocalDataSource()
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            repo.setDirectBuses(
+                listOf(
+                    DirectBus(
+                        sourceBusStopCode = "12345",
+                        sourceBusStopDescription = "Source bus stop 12345",
+                        destinationBusStopCode = "23456",
+                        destinationBusStopDescription = "Destination bus stop 23456",
+                        busServiceNumber = "961M",
+                        stops = 17,
+                        distance = 15.46
+                    ),
+                    DirectBus(
+                        sourceBusStopCode = "34567",
+                        sourceBusStopDescription = "Source bus stop 34567",
+                        destinationBusStopCode = "45678",
+                        destinationBusStopDescription = "Destination bus stop v",
+                        busServiceNumber = "77",
+                        stops = 12,
+                        distance = 11.13
+                    ),
+                )
+            )
+
+            assertEquals(
+                listOf(
+                    DirectBusEntity(
+                        sourceBusStopCode = "12345",
+                        destinationBusStopCode = "23456",
+                        hasDirectBus = true,
+                        busServiceNumber = "961M",
+                        stops = 17,
+                        distance = 15.46
+                    ),
+                    DirectBusEntity(
+                        sourceBusStopCode = "34567",
+                        destinationBusStopCode = "45678",
+                        hasDirectBus = true,
+                        busServiceNumber = "77",
+                        stops = 12,
+                        distance = 11.13
+                    ),
+                ),
+                localDataSource.findAllDirectBuses()
+            )
+        }
+    }
+
+    @Test
+    fun `set no direct buses is stored in local storage`() {
+        val localDataSource = FakeLocalDataSource()
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            repo.setNoDirectBusesFor(
+                sourceBusStopCode = "12345",
+                destinationBusStopCode = "23456",
+            )
+
+            assertEquals(
+                listOf(
+                    DirectBusEntity(
+                        sourceBusStopCode = "12345",
+                        destinationBusStopCode = "23456",
+                        hasDirectBus = false,
+                        busServiceNumber = "no-service",
+                        stops = -1,
+                        distance = -1.0
+                    ),
+                ),
+                localDataSource.findAllDirectBuses()
             )
         }
     }

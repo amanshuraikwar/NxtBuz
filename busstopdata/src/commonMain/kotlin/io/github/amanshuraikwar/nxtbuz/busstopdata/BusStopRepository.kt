@@ -120,8 +120,8 @@ class BusStopRepositoryImpl constructor(
         }
     }
 
-    override suspend fun getBusStop(busStopCode: String): BusStop? =
-        withContext(dispatcherProvider.io) {
+    override suspend fun getBusStop(busStopCode: String): BusStop? {
+        return withContext(dispatcherProvider.io) {
             localDataSource
                 .findBusStopByCode(busStopCode)
                 ?.let { busStopEntity ->
@@ -137,6 +137,44 @@ class BusStopRepositoryImpl constructor(
                     )
                 }
         }
+    }
+
+    override suspend fun setDirectBuses(directBusList: List<DirectBus>) {
+        withContext(dispatcherProvider.io) {
+            localDataSource.insertDirectBuses(
+                directBusList = directBusList.map {
+                    DirectBusEntity(
+                        sourceBusStopCode = it.sourceBusStopCode,
+                        destinationBusStopCode = it.destinationBusStopCode,
+                        hasDirectBus = true,
+                        busServiceNumber = it.busServiceNumber,
+                        stops = it.stops,
+                        distance = it.distance
+                    )
+                }
+            )
+        }
+    }
+
+    override suspend fun setNoDirectBusesFor(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String
+    ) {
+        withContext(dispatcherProvider.io) {
+            localDataSource.insertDirectBuses(
+                listOf(
+                    DirectBusEntity(
+                        sourceBusStopCode = sourceBusStopCode,
+                        destinationBusStopCode = destinationBusStopCode,
+                        hasDirectBus = false,
+                        busServiceNumber = "no-service",
+                        stops = -1,
+                        distance = -1.0
+                    )
+                )
+            )
+        }
+    }
 
     override suspend fun getDirectBuses(
         sourceBusStopCode: String,
@@ -177,43 +215,6 @@ class BusStopRepositoryImpl constructor(
                     )
                 }
             }
-        }
-    }
-
-    override suspend fun setDirectBuses(directBusList: List<DirectBus>) {
-        withContext(dispatcherProvider.io) {
-            localDataSource.insertDirectBuses(
-                directBusList = directBusList.map {
-                    DirectBusEntity(
-                        sourceBusStopCode = it.sourceBusStopCode,
-                        destinationBusStopCode = it.destinationBusStopCode,
-                        hasDirectBus = true,
-                        busServiceNumber = it.busServiceNumber,
-                        stops = it.stops,
-                        distance = it.distance
-                    )
-                }
-            )
-        }
-    }
-
-    override suspend fun setNoDirectBusesFor(
-        sourceBusStopCode: String,
-        destinationBusStopCode: String
-    ) {
-        withContext(dispatcherProvider.io) {
-            localDataSource.insertDirectBuses(
-                listOf(
-                    DirectBusEntity(
-                        sourceBusStopCode = sourceBusStopCode,
-                        destinationBusStopCode = destinationBusStopCode,
-                        hasDirectBus = false,
-                        busServiceNumber = "no-service",
-                        stops = -1,
-                        distance = -1.0
-                    )
-                )
-            )
         }
     }
 
