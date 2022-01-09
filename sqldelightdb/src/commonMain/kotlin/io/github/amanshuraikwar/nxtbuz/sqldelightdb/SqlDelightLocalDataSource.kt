@@ -421,6 +421,36 @@ class SqlDelightLocalDataSource internal constructor(
         }
     }
 
+    override suspend fun deleteDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String
+    ) {
+        withContext(ioDispatcher) {
+            nxtBuzDb
+                .directBusEntityQueries
+                .deleteBySourceAndDenstinationBusStopCode(
+                    destinationBusStopCode = destinationBusStopCode,
+                    sourceBusStopCode = sourceBusStopCode,
+                )
+        }
+    }
+
+    override suspend fun deleteDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String,
+        busServiceNumber: String
+    ) {
+        withContext(ioDispatcher) {
+            nxtBuzDb
+                .directBusEntityQueries
+                .deleteBySourceAndDenstinationBusStopCodeAndBusServiceNumber(
+                    busServiceNumber = busServiceNumber,
+                    destinationBusStopCode = destinationBusStopCode,
+                    sourceBusStopCode = sourceBusStopCode,
+                )
+        }
+    }
+
     companion object {
         fun createInstance(
             dbFactory: DbFactory,
