@@ -55,4 +55,15 @@ interface LocalDataSource {
     suspend fun insertDirectBuses(directBusList: List<DirectBusEntity>)
 
     suspend fun findAllDirectBuses(): List<DirectBusEntity>
+
+    suspend fun deleteDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String,
+    )
+
+    suspend fun deleteDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String,
+        busServiceNumber: String
+    )
 }

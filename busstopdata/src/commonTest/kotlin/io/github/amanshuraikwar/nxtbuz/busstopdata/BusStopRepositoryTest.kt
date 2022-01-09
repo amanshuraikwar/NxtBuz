@@ -3,6 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.busstopdata
 import io.github.amanshuraikwar.nxtbuz.commonkmm.Bus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.DirectBus
+import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.DirectBusesResult
 import io.github.amanshuraikwar.nxtbuz.localdatasource.BusStopEntity
 import io.github.amanshuraikwar.nxtbuz.localdatasource.DirectBusEntity
 import io.github.amanshuraikwar.nxtbuz.localdatasource.OperatingBusEntity
@@ -893,6 +894,370 @@ class BusStopRepositoryTest {
                     ),
                 ),
                 localDataSource.findAllDirectBuses()
+            )
+        }
+    }
+
+    @Test
+    fun `set direct buses is stored in local storage and removing old ones`() {
+        val localDataSource = FakeLocalDataSource()
+
+        runTest {
+            localDataSource.insertDirectBuses(
+                listOf(
+                    DirectBusEntity(
+                        sourceBusStopCode = "12345",
+                        destinationBusStopCode = "23456",
+                        hasDirectBus = true,
+                        busServiceNumber = "106",
+                        stops = 17,
+                        distance = 15.46
+                    ),
+                    DirectBusEntity(
+                        sourceBusStopCode = "34567",
+                        destinationBusStopCode = "45678",
+                        hasDirectBus = true,
+                        busServiceNumber = "12",
+                        stops = 12,
+                        distance = 11.13
+                    ),
+                )
+            )
+        }
+
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            repo.setDirectBuses(
+                listOf(
+                    DirectBus(
+                        sourceBusStopCode = "12345",
+                        sourceBusStopDescription = "Source bus stop 12345",
+                        destinationBusStopCode = "23456",
+                        destinationBusStopDescription = "Destination bus stop 23456",
+                        busServiceNumber = "961M",
+                        stops = 17,
+                        distance = 15.46
+                    ),
+                    DirectBus(
+                        sourceBusStopCode = "34567",
+                        sourceBusStopDescription = "Source bus stop 34567",
+                        destinationBusStopCode = "45678",
+                        destinationBusStopDescription = "Destination bus stop v",
+                        busServiceNumber = "77",
+                        stops = 12,
+                        distance = 11.13
+                    ),
+                )
+            )
+
+            assertEquals(
+                listOf(
+                    DirectBusEntity(
+                        sourceBusStopCode = "12345",
+                        destinationBusStopCode = "23456",
+                        hasDirectBus = true,
+                        busServiceNumber = "961M",
+                        stops = 17,
+                        distance = 15.46
+                    ),
+                    DirectBusEntity(
+                        sourceBusStopCode = "34567",
+                        destinationBusStopCode = "45678",
+                        hasDirectBus = true,
+                        busServiceNumber = "77",
+                        stops = 12,
+                        distance = 11.13
+                    ),
+                ),
+                localDataSource.findAllDirectBuses()
+            )
+        }
+    }
+
+    @Test
+    fun `set no direct buses is stored in local storage and removing old ones`() {
+        val localDataSource = FakeLocalDataSource()
+
+        runTest {
+            localDataSource.insertDirectBuses(
+                listOf(
+                    DirectBusEntity(
+                        sourceBusStopCode = "12345",
+                        destinationBusStopCode = "23456",
+                        hasDirectBus = true,
+                        busServiceNumber = "106",
+                        stops = 17,
+                        distance = 15.46
+                    ),
+                    DirectBusEntity(
+                        sourceBusStopCode = "34567",
+                        destinationBusStopCode = "45678",
+                        hasDirectBus = true,
+                        busServiceNumber = "12",
+                        stops = 12,
+                        distance = 11.13
+                    ),
+                )
+            )
+        }
+
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            repo.setNoDirectBusesFor(
+                sourceBusStopCode = "12345",
+                destinationBusStopCode = "23456",
+            )
+
+            assertEquals(
+                listOf(
+                    DirectBusEntity(
+                        sourceBusStopCode = "34567",
+                        destinationBusStopCode = "45678",
+                        hasDirectBus = true,
+                        busServiceNumber = "12",
+                        stops = 12,
+                        distance = 11.13
+                    ),
+                    DirectBusEntity(
+                        sourceBusStopCode = "12345",
+                        destinationBusStopCode = "23456",
+                        hasDirectBus = false,
+                        busServiceNumber = "no-service",
+                        stops = -1,
+                        distance = -1.0
+                    ),
+                ),
+                localDataSource.findAllDirectBuses()
+            )
+        }
+    }
+
+    @Test
+    fun `get direct buses no cached yet`() {
+        val localDataSource = FakeLocalDataSource()
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            assertEquals(
+                DirectBusesResult.NotCachedYet,
+                repo.getDirectBuses(
+                    sourceBusStopCode = "12345",
+                    destinationBusStopCode = "23456",
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `get direct buses no direct buses`() {
+        val localDataSource = FakeLocalDataSource()
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            repo.setNoDirectBusesFor(
+                sourceBusStopCode = "12345",
+                destinationBusStopCode = "23456"
+            )
+            assertEquals(
+                DirectBusesResult.NoDirectBuses,
+                repo.getDirectBuses(
+                    sourceBusStopCode = "12345",
+                    destinationBusStopCode = "23456",
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `get direct buses - direct buses`() {
+        val localDataSource = FakeLocalDataSource()
+
+        runTest {
+            localDataSource.insertBusStops(
+                listOf(
+                    BusStopEntity(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56
+                    ),
+                    BusStopEntity(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56
+                    )
+                )
+            )
+        }
+
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            repo.setDirectBuses(
+                listOf(
+                    DirectBus(
+                        sourceBusStopCode = "12345",
+                        sourceBusStopDescription = "Source bus stop 12345",
+                        destinationBusStopCode = "23456",
+                        destinationBusStopDescription = "Destination bus stop 23456",
+                        busServiceNumber = "961M",
+                        stops = 17,
+                        distance = 15.46
+                    ),
+                    DirectBus(
+                        sourceBusStopCode = "12345",
+                        sourceBusStopDescription = "Source bus stop 12345",
+                        destinationBusStopCode = "23456",
+                        destinationBusStopDescription = "Destination bus stop 23456",
+                        busServiceNumber = "77",
+                        stops = 12,
+                        distance = 11.13
+                    ),
+                )
+            )
+            assertEquals(
+                DirectBusesResult.Success(
+                    directBusList = listOf(
+                        DirectBus(
+                            sourceBusStopCode = "12345",
+                            sourceBusStopDescription = "Source bus stop 12345",
+                            destinationBusStopCode = "23456",
+                            destinationBusStopDescription = "Destination bus stop 23456",
+                            busServiceNumber = "961M",
+                            stops = 17,
+                            distance = 15.46
+                        ),
+                        DirectBus(
+                            sourceBusStopCode = "12345",
+                            sourceBusStopDescription = "Source bus stop 12345",
+                            destinationBusStopCode = "23456",
+                            destinationBusStopDescription = "Destination bus stop 23456",
+                            busServiceNumber = "77",
+                            stops = 12,
+                            distance = 11.13
+                        ),
+                    )
+                ),
+                repo.getDirectBuses(
+                    sourceBusStopCode = "12345",
+                    destinationBusStopCode = "23456",
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `get cached direct buses stop permutations count`() {
+        val localDataSource = FakeLocalDataSource()
+
+        runTest {
+            localDataSource.insertDirectBuses(
+                listOf(
+                    DirectBusEntity(
+                        sourceBusStopCode = "12345",
+                        destinationBusStopCode = "23456",
+                        hasDirectBus = true,
+                        busServiceNumber = "106",
+                        stops = 17,
+                        distance = 15.46
+                    ),
+                    DirectBusEntity(
+                        sourceBusStopCode = "12345",
+                        destinationBusStopCode = "23456",
+                        hasDirectBus = true,
+                        busServiceNumber = "77",
+                        stops = 17,
+                        distance = 15.46
+                    ),
+                    DirectBusEntity(
+                        sourceBusStopCode = "12345",
+                        destinationBusStopCode = "23456",
+                        hasDirectBus = true,
+                        busServiceNumber = "108",
+                        stops = 17,
+                        distance = 15.46
+                    ),
+                    DirectBusEntity(
+                        sourceBusStopCode = "34567",
+                        destinationBusStopCode = "45678",
+                        hasDirectBus = true,
+                        busServiceNumber = "12",
+                        stops = 12,
+                        distance = 11.13
+                    ),
+                    DirectBusEntity(
+                        sourceBusStopCode = "34567",
+                        destinationBusStopCode = "45678",
+                        hasDirectBus = true,
+                        busServiceNumber = "9",
+                        stops = 12,
+                        distance = 11.13
+                    ),
+                    DirectBusEntity(
+                        sourceBusStopCode = "45678",
+                        destinationBusStopCode = "56789",
+                        hasDirectBus = false,
+                        busServiceNumber = "no-service",
+                        stops = -1,
+                        distance = -1.0
+                    ),
+                )
+            )
+        }
+
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            assertEquals(
+                3,
+                repo.getCachedDirectBusesStopPermutationsCount()
             )
         }
     }
