@@ -67,11 +67,26 @@ class BusStopRepositoryImpl constructor(
     override suspend fun getCloseBusStops(
         latitude: Double,
         longitude: Double,
-        limit: Int
+        limit: Int,
+        metres: Int?
     ): List<BusStop> {
         return withContext(dispatcherProvider.io) {
             localDataSource
                 .findCloseBusStops(latitude, longitude, limit)
+                .let {
+                    if (metres != null) {
+                        it.filter { busStopEntity ->
+                            MapUtil.measureDistanceMetres(
+                                lat1 = latitude,
+                                lng1 = longitude,
+                                lat2 = busStopEntity.latitude,
+                                lng2 = busStopEntity.longitude
+                            ) <= metres
+                        }
+                    } else {
+                        it
+                    }
+                }
                 .distinctBy { it.code }
                 .map { busStopEntity ->
                     async(dispatcherProvider.pool8) {
@@ -242,47 +257,6 @@ class BusStopRepositoryImpl constructor(
                     it.sourceBusStopCode + "->" + it.destinationBusStopCode
                 }
                 .size
-        }
-    }
-
-    override suspend fun getCloseBusStops(
-        lat: Double,
-        lng: Double,
-        max: Int,
-        maxDistanceMetres: Int,
-    ): List<BusStop> {
-        return withContext(dispatcherProvider.io) {
-            localDataSource.findCloseBusStops(
-                lat = lat,
-                lng = lng,
-                limit = max,
-            )
-                .filter { busStopEntity ->
-                    MapUtil.measureDistanceMetres(
-                        lat1 = lat,
-                        lng1 = lng,
-                        lat2 = busStopEntity.latitude,
-                        lng2 = busStopEntity.longitude
-                    ) <= maxDistanceMetres
-                }
-                .distinctBy { it.code }
-                .map { busStopEntity ->
-                    async(dispatcherProvider.pool8) {
-                        BusStop(
-                            busStopEntity.code,
-                            busStopEntity.roadName,
-                            busStopEntity.description,
-                            busStopEntity.latitude,
-                            busStopEntity.longitude,
-                            localDataSource
-                                .findOperatingBuses(busStopEntity.code)
-                                .map {
-                                    Bus(it.busServiceNumber)
-                                }
-                        )
-                    }
-                }
-                .awaitAll()
         }
     }
 }

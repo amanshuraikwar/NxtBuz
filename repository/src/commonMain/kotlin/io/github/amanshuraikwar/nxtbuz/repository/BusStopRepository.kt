@@ -11,7 +11,8 @@ interface BusStopRepository {
     suspend fun getCloseBusStops(
         latitude: Double,
         longitude: Double,
-        limit: Int
+        limit: Int,
+        metres: Int? = null
     ): List<BusStop>
 
     suspend fun getBusStopQueryLimit(): Int
@@ -27,13 +28,6 @@ interface BusStopRepository {
     )
 
     suspend fun getBusStop(busStopCode: String): BusStop?
-
-    suspend fun getCloseBusStops(
-        lat: Double,
-        lng: Double,
-        max: Int,
-        maxDistanceMetres: Int,
-    ): List<BusStop>
 
     suspend fun getDirectBuses(
         sourceBusStopCode: String,
