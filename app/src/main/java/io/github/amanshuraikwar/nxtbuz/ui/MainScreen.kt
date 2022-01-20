@@ -38,7 +38,6 @@ import io.github.amanshuraikwar.nxtbuz.ui.model.MainScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
 
 @ExperimentalAnimationApi
-@ExperimentalComposeUiApi
 @ExperimentalAnimatedInsets
 @ExperimentalMaterialApi
 @Composable

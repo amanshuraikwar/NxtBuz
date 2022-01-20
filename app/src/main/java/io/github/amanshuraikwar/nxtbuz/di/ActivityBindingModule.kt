@@ -1,6 +1,8 @@
 package io.github.amanshuraikwar.nxtbuz.di
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ExperimentalMaterialApi
+import com.google.accompanist.insets.ExperimentalAnimatedInsets
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import io.github.amanshuraikwar.nxtbuz.busroute.di.BusRouteModule
@@ -26,6 +28,9 @@ import io.github.amanshuraikwar.nxtbuz.ui.di.MainModule
  * specified modules and be aware of a scope annotation [@ActivityScoped].
  * When Dagger.Android annotation processor runs it will create 2 subcomponents for us.
  */
+@ExperimentalAnimationApi
+@ExperimentalAnimatedInsets
+@ExperimentalMaterialApi
 @Module
 @Suppress("UNUSED")
 abstract class ActivityBindingModule {

@@ -1,10 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import com.google.accompanist.insets.ExperimentalAnimatedInsets
@@ -19,7 +18,6 @@ import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
 
 @ExperimentalAnimationApi
 @ExperimentalAnimatedInsets
-@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
 fun ContentNavGraph(

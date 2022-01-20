@@ -8,7 +8,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalsScreenState
-import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
@@ -23,10 +22,15 @@ import io.github.amanshuraikwar.nxtbuz.domain.map.PushMapEventUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.IsStarredUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class BusStopArrivalsViewModel @Inject constructor(
@@ -86,7 +90,7 @@ class BusStopArrivalsViewModel @Inject constructor(
             } else {
                 _screenState.emit(BusStopArrivalsScreenState.Fetching)
 
-                busStop = getBusStopUseCase(busStopCode)
+                busStop = getBusStopUseCase(busStopCode) ?: return@launch
 
                 busArrivalListLock.withLock {
                     listItems = SnapshotStateList()
