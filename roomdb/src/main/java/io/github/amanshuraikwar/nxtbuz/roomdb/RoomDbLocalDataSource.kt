@@ -103,6 +103,10 @@ class RoomDbLocalDataSource internal constructor(
         }
     }
 
+    override suspend fun getAllBusStops(): List<BusStopEntity> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun insertOperatingBuses(operatingBusList: List<OperatingBusEntity>) {
         withContext(ioDispatcher) {
             appDatabase.operatingBusDao.insertAll(
@@ -340,6 +344,21 @@ class RoomDbLocalDataSource internal constructor(
 
     override suspend fun findAllDirectBuses(): List<DirectBusEntity> {
         return emptyList()
+    }
+
+    override suspend fun deleteDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String,
+        busServiceNumber: String
+    ) {
+        TODO("Not yet implemented")
     }
 
     companion object {

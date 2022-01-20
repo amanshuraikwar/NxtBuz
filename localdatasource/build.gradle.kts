@@ -25,7 +25,9 @@ kotlin {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        frameworkName = "localdatasource"
+        framework {
+            baseName = "localdatasource"
+        }
         podfile = project.file("../NxtBuz/Podfile")
     }
     

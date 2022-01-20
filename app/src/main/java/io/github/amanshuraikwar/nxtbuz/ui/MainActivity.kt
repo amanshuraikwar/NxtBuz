@@ -4,25 +4,26 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModelProvider
 import com.google.accompanist.insets.ExperimentalAnimatedInsets
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.BusRouteViewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsViewModel
-import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzApp
-import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.location.LocationUtil
-import io.github.amanshuraikwar.nxtbuz.common.util.setupSystemBars
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
+import io.github.amanshuraikwar.nxtbuz.common.util.setupSystemBars
 import io.github.amanshuraikwar.nxtbuz.common.util.startSettingsActivity
 import io.github.amanshuraikwar.nxtbuz.common.util.viewModelProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMapViewModel
 import io.github.amanshuraikwar.nxtbuz.map.ui.recenter.RecenterViewModel
 import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupViewModel
@@ -31,6 +32,9 @@ import io.github.amanshuraikwar.nxtbuz.starred.StarredViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@ExperimentalAnimationApi
+@ExperimentalAnimatedInsets
+@ExperimentalMaterialApi
 class MainActivity : DaggerAppCompatActivity() {
 
     @Inject
@@ -84,10 +88,7 @@ class MainActivity : DaggerAppCompatActivity() {
         viewModelProvider(viewModelFactory)
     }
 
-    @ExperimentalAnimationApi
-    @ExperimentalAnimatedInsets
-    @ExperimentalMaterialApi
-    @ExperimentalComposeUiApi
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupSystemBars(

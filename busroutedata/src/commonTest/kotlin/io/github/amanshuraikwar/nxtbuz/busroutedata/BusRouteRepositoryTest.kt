@@ -471,7 +471,6 @@ class BusRouteRepositoryTest {
 
     @Test
     fun `setup populates the correct bus route data in local storage, local storage is initially empty`() {
-
         val localDataSource = FakeLocalDataSource()
 
         val repo = BusRouteRepositoryImpl(

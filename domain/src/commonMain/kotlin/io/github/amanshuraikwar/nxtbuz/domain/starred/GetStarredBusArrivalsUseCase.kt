@@ -32,7 +32,7 @@ open class GetStarredBusArrivalsUseCase(
             busStopCodeBusServiceNumberSetMap
                 .map { (busStopCode, starredBusServiceSet) ->
                     async {
-                        val busStop = getBusStopUseCase(busStopCode)
+                        val busStop = getBusStopUseCase(busStopCode) ?: return@async null
 
                         getBusArrivalsUseCase(busStopCode)
                             .filter {
@@ -60,6 +60,7 @@ open class GetStarredBusArrivalsUseCase(
                     }
                 }
                 .awaitAll()
+                .filterNotNull()
                 .flatten()
                 .reversed()
         }

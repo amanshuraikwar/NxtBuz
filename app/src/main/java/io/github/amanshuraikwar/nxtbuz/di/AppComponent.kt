@@ -1,5 +1,8 @@
 package io.github.amanshuraikwar.nxtbuz.di
 
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ExperimentalMaterialApi
+import com.google.accompanist.insets.ExperimentalAnimatedInsets
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -33,6 +36,9 @@ import javax.inject.Singleton
  * [AndroidSupportInjectionModule] is the module from Dagger.Android that helps with the
  * generation and location of subcomponents.
  */
+@ExperimentalAnimationApi
+@ExperimentalAnimatedInsets
+@ExperimentalMaterialApi
 @Singleton
 @Component(
     modules = [

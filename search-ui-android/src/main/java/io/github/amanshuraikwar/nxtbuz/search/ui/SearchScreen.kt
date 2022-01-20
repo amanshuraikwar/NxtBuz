@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material.Surface
-import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
@@ -17,7 +21,6 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchState
 
 @ExperimentalAnimatedInsets
-@ExperimentalComposeUiApi
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
