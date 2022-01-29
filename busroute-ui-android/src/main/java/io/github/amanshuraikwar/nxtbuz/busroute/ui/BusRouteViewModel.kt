@@ -23,8 +23,8 @@ import io.github.amanshuraikwar.nxtbuz.domain.arrivals.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.PushMapEventUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.IsStarredUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.IsBusServiceStarredUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusServiceStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -43,8 +43,8 @@ class BusRouteViewModel @Inject constructor(
     private val getBusRouteUseCase: GetBusRouteUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
     private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
-    private val isStarredUseCase: IsStarredUseCase,
-    private val toggleStar: ToggleBusStopStarUseCase,
+    private val isStarredUseCase: IsBusServiceStarredUseCase,
+    private val toggleStar: ToggleBusServiceStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
     private val mapUtil: MapUtil,

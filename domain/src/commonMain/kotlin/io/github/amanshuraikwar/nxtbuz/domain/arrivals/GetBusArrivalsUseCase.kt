@@ -14,10 +14,7 @@ open class GetBusArrivalsUseCase constructor(
     suspend operator fun invoke(busStopCode: String): List<BusStopArrivalResult> {
         return coroutineScope {
             val starredBusServiceNumberSetDeferred = async(start = CoroutineStart.DEFAULT) {
-                starredBusArrivalRepository.getStarredBusServices()
-                    .filter {
-                        it.busStopCode == busStopCode
-                    }
+                starredBusArrivalRepository.getStarredBusServices(atBusStopCode = busStopCode)
                     .map {
                         it.busServiceNumber
                     }
@@ -44,7 +41,7 @@ open class GetBusArrivalsUseCase constructor(
     ): BusStopArrivalResult {
         return coroutineScope {
             val isStarred = async(start = CoroutineStart.DEFAULT) {
-                starredBusArrivalRepository.isStarred(busStopCode, busServiceNumber)
+                starredBusArrivalRepository.isBusServiceStarred(busStopCode, busServiceNumber)
             }
 
             BusStopArrivalResult(

@@ -2,13 +2,19 @@ package io.github.amanshuraikwar.nxtbuz.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -157,7 +163,7 @@ fun MainScreen(
                             },
                             onBusStopSelected = { busStop ->
                                 mainViewModel.onBusStopClick(
-                                    busStop = busStop,
+                                    busStopCode = busStop.code,
                                     pushBackStack = false
                                 )
                             }
@@ -224,8 +230,8 @@ fun MainScreen(
                             ContentNavGraph(
                                 navigationState = screenState.navigationState,
                                 showBottomSheet = false,
-                                onBusStopClick = { busStop ->
-                                    mainViewModel.onBusStopClick(busStop)
+                                onBusStopClick = { busStopCode ->
+                                    mainViewModel.onBusStopClick(busStopCode)
                                 },
                                 onBusServiceClick = { busStopCode, busServiceNumber ->
                                     mainViewModel.onBusServiceClick(busStopCode, busServiceNumber)
@@ -248,7 +254,7 @@ fun MainScreen(
                                 },
                                 onBusStopSelected = { busStop ->
                                     mainViewModel.onBusStopClick(
-                                        busStop = busStop,
+                                        busStopCode = busStop.code,
                                         pushBackStack = false
                                     )
                                 }

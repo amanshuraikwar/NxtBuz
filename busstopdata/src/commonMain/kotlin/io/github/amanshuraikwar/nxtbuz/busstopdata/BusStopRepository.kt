@@ -13,11 +13,16 @@ import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusStopItemDto
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
 import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class BusStopRepositoryImpl constructor(
@@ -26,6 +31,14 @@ class BusStopRepositoryImpl constructor(
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : BusStopRepository {
+    private val coroutineScope: CoroutineScope by lazy {
+        // We use supervisor scope because we don't want
+        // the child coroutines to cancel all the parent coroutines
+        CoroutineScope(SupervisorJob() + dispatcherProvider.computation)
+    }
+
+    private val busStopUpdate = MutableSharedFlow<BusStop>()
+
     override fun setup(): Flow<Double> {
         return flow {
             emit(0.0)
@@ -54,7 +67,8 @@ class BusStopRepositoryImpl constructor(
                             roadName = it.roadName,
                             description = it.description,
                             latitude = it.lat,
-                            longitude = it.lng
+                            longitude = it.lng,
+                            starred = false
                         )
                     }
             )
@@ -91,15 +105,16 @@ class BusStopRepositoryImpl constructor(
                 .map { busStopEntity ->
                     async(dispatcherProvider.pool8) {
                         BusStop(
-                            busStopEntity.code,
-                            busStopEntity.roadName,
-                            busStopEntity.description,
-                            busStopEntity.latitude,
-                            busStopEntity.longitude,
-                            localDataSource.findOperatingBuses(busStopEntity.code)
+                            code = busStopEntity.code,
+                            roadName = busStopEntity.roadName,
+                            description = busStopEntity.description,
+                            latitude = busStopEntity.latitude,
+                            longitude = busStopEntity.longitude,
+                            operatingBusList = localDataSource.findOperatingBuses(busStopEntity.code)
                                 .map {
                                     Bus(it.busServiceNumber)
-                                }
+                                },
+                            isStarred = busStopEntity.starred
                         )
                     }
                 }
@@ -141,17 +156,87 @@ class BusStopRepositoryImpl constructor(
                 .findBusStopByCode(busStopCode)
                 ?.let { busStopEntity ->
                     BusStop(
-                        busStopEntity.code,
-                        busStopEntity.roadName,
-                        busStopEntity.description,
-                        busStopEntity.latitude,
-                        busStopEntity.longitude,
-                        localDataSource
+                        code = busStopEntity.code,
+                        roadName = busStopEntity.roadName,
+                        description = busStopEntity.description,
+                        latitude = busStopEntity.latitude,
+                        longitude = busStopEntity.longitude,
+                        operatingBusList = localDataSource
                             .findOperatingBuses(busStopEntity.code)
-                            .map { Bus(it.busServiceNumber) }
+                            .map { Bus(it.busServiceNumber) },
+                        isStarred = busStopEntity.starred
                     )
                 }
         }
+    }
+
+    override suspend fun getStarredBusStops(): List<BusStop> {
+        return withContext(dispatcherProvider.io) {
+            localDataSource
+                .findAllStarredBusStops()
+                .map { busStopEntity ->
+                    BusStop(
+                        code = busStopEntity.code,
+                        roadName = busStopEntity.roadName,
+                        description = busStopEntity.description,
+                        latitude = busStopEntity.latitude,
+                        longitude = busStopEntity.longitude,
+                        operatingBusList = localDataSource
+                            .findOperatingBuses(busStopEntity.code)
+                            .map { Bus(it.busServiceNumber) },
+                        isStarred = busStopEntity.starred
+                    )
+                }
+        }
+    }
+
+    override suspend fun toggleBusStopStar(busStopCode: String, toggleTo: Boolean?): Boolean {
+        return withContext(dispatcherProvider.computation) {
+            val busStopEntity =
+                localDataSource.findBusStopByCode(busStopCode) ?: return@withContext false
+
+            if (toggleTo != null) {
+                if (toggleTo != busStopEntity.starred) {
+                    if (toggleTo) {
+                        localDataSource.updateBusStop(
+                            busStop = busStopEntity.copy(starred = toggleTo)
+                        )
+                    } else {
+                        localDataSource.updateBusStop(
+                            busStop = busStopEntity.copy(starred = toggleTo)
+                        )
+                    }
+
+                    coroutineScope.launch {
+                        busStopUpdate.emit(
+                            getBusStop(busStopCode = busStopCode) ?: return@launch
+                        )
+                    }
+                }
+            } else {
+                localDataSource.updateBusStop(
+                    busStop = busStopEntity.copy(starred = !busStopEntity.starred)
+                )
+
+                coroutineScope.launch {
+                    busStopUpdate.emit(
+                        getBusStop(busStopCode = busStopCode) ?: return@launch
+                    )
+                }
+            }
+
+            return@withContext true
+        }
+    }
+
+    override suspend fun isBusStopStarred(busStopCode: String): Boolean {
+        return withContext(dispatcherProvider.computation) {
+            localDataSource.findBusStopByCode(busStopCode = busStopCode)?.starred ?: false
+        }
+    }
+
+    override suspend fun busStopUpdates(): SharedFlow<BusStop> {
+        return busStopUpdate
     }
 
     override suspend fun setDirectBuses(directBusList: List<DirectBus>) {

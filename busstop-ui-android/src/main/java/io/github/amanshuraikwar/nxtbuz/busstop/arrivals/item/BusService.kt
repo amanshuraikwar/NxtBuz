@@ -22,10 +22,12 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 
 @Composable
 fun BusService(
+    modifier: Modifier = Modifier,
     busServiceNumber: String,
     busType: BusType,
 ) {
     Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -67,9 +69,11 @@ fun BusService(
 
 @Composable
 fun BusService(
+    modifier: Modifier = Modifier,
     busServiceNumber: String,
 ) {
     Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(

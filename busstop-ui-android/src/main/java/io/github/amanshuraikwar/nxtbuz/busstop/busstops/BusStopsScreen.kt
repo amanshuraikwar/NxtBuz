@@ -1,6 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.busstops
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,7 +8,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -20,7 +23,6 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.Header
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
 import io.github.amanshuraikwar.nxtbuz.common.compose.rememberNxtBuzBottomSheetState
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
-import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -30,7 +32,7 @@ fun BusStopsScreen(
     vm: BusStopsViewModel,
     bottomSheetBgOffset: Dp,
     showBottomSheet: Boolean,
-    onBusStopClick: (busStop: BusStop) -> Unit = {},
+    onBusStopClick: (busStopCode: String) -> Unit,
 ) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
         BottomSheetValue.Collapsed
@@ -60,6 +62,7 @@ fun BusStopsScreen(
                 state = screenState,
                 padding = padding,
                 onBusStopClick = onBusStopClick,
+                onBusStopStarToggle = vm::onBusStopStarToggle,
                 onRetry = {
                     vm.fetchBusStops()
                 },
@@ -77,6 +80,7 @@ fun BusStopsScreen(
                 state = screenState,
                 padding = PaddingValues(),
                 onBusStopClick = onBusStopClick,
+                onBusStopStarToggle = vm::onBusStopStarToggle,
                 onRetry = {
                     vm.fetchBusStops()
                 },
@@ -93,7 +97,8 @@ fun BusStopsScreen(
 fun BusStopsView(
     state: BusStopsScreenState,
     padding: PaddingValues,
-    onBusStopClick: (busStop: BusStop) -> Unit = {},
+    onBusStopClick: (busStopCode: String) -> Unit,
+    onBusStopStarToggle: (busStopCode: String, newStarState: Boolean) -> Unit,
     onRetry: () -> Unit = {},
     onUseDefaultLocation: () -> Unit = {}
 ) {
@@ -119,7 +124,8 @@ fun BusStopsView(
                 NearbyBusStops(
                     state.listItems,
                     padding,
-                    onBusStopClick
+                    onBusStopClick,
+                    onBusStopStarToggle
                 )
             }
         }
@@ -140,7 +146,8 @@ fun BusStopsView(
 fun NearbyBusStops(
     listItems: List<BusStopsItemData>,
     padding: PaddingValues,
-    onBusStopClick: (busStop: BusStop) -> Unit = {},
+    onBusStopClick: (busStopCode: String) -> Unit,
+    onBusStopStarToggle: (busStopCode: String, newStarState: Boolean) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
@@ -169,12 +176,17 @@ fun NearbyBusStops(
             when (item) {
                 is BusStopsItemData.BusStop -> {
                     BusStopItem(
-                        modifier = Modifier.clickable {
+                        data = item,
+                        onClick = {
                             coroutineScope.launch {
-                                onBusStopClick(item.busStop)
+                                onBusStopClick(item.busStopCode)
                             }
                         },
-                        data = item
+                        onStarToggle = { newStarState ->
+                            coroutineScope.launch {
+                                onBusStopStarToggle(item.busStopCode, newStarState)
+                            }
+                        }
                     )
                 }
                 is BusStopsItemData.Header -> {
