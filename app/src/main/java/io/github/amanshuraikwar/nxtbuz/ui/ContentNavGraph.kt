@@ -23,7 +23,7 @@ import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
 fun ContentNavGraph(
     navigationState: NavigationState,
     showBottomSheet: Boolean,
-    onBusStopClick: (BusStop) -> Unit,
+    onBusStopClick: (busStopCode: String) -> Unit,
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
     bottomSheetBgOffset: Dp,
     busRouteViewModel: BusRouteViewModel,

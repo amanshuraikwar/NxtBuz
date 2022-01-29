@@ -21,14 +21,15 @@ class SqlDelightLocalDataSource internal constructor(
                 busStopList
                     .distinctBy { it.code }
                     .forEach {
-                        nxtBuzDb.busStopEntityQueries.insert(
+                        nxtBuzDb.busStopEntityQueries.insertOrReplace(
                             BusStopSqlDelightEntity(
                                 it.code,
                                 it.roadName,
                                 it.description,
                                 it.description.toSearchDescriptionHint(),
                                 it.latitude,
-                                it.longitude
+                                it.longitude,
+                                it.starred
                             )
                         )
                     }
@@ -62,6 +63,7 @@ class SqlDelightLocalDataSource internal constructor(
                         busStopEntity.description,
                         busStopEntity.latitude,
                         busStopEntity.longitude,
+                        busStopEntity.starred
                     )
                 }
         }
@@ -85,6 +87,7 @@ class SqlDelightLocalDataSource internal constructor(
                         busStopEntity.description,
                         busStopEntity.latitude,
                         busStopEntity.longitude,
+                        busStopEntity.starred
                     )
                 }
         }
@@ -104,6 +107,7 @@ class SqlDelightLocalDataSource internal constructor(
                         busStopEntity.description,
                         busStopEntity.latitude,
                         busStopEntity.longitude,
+                        busStopEntity.starred
                     )
                 }
         }
@@ -111,15 +115,54 @@ class SqlDelightLocalDataSource internal constructor(
 
     override suspend fun getAllBusStops(): List<BusStopEntity> {
         return withContext(ioDispatcher) {
-            nxtBuzDb.busStopEntityQueries.findAll().executeAsList().map { busStopEntity ->
-                BusStopEntity(
-                    busStopEntity.code,
-                    busStopEntity.roadName,
-                    busStopEntity.description,
-                    busStopEntity.latitude,
-                    busStopEntity.longitude,
+            nxtBuzDb.busStopEntityQueries
+                .findAll()
+                .executeAsList()
+                .map { busStopEntity ->
+                    BusStopEntity(
+                        busStopEntity.code,
+                        busStopEntity.roadName,
+                        busStopEntity.description,
+                        busStopEntity.latitude,
+                        busStopEntity.longitude,
+                        busStopEntity.starred
+                    )
+                }
+        }
+    }
+
+    override suspend fun updateBusStop(busStop: BusStopEntity) {
+        withContext(ioDispatcher) {
+            nxtBuzDb.busStopEntityQueries.insertOrReplace(
+                BusStopSqlDelightEntity(
+                    busStop.code,
+                    busStop.roadName,
+                    busStop.description,
+                    busStop.description.toSearchDescriptionHint(),
+                    busStop.latitude,
+                    busStop.longitude,
+                    busStop.starred
                 )
-            }
+            )
+        }
+    }
+
+    override suspend fun findAllStarredBusStops(): List<BusStopEntity> {
+        return withContext(ioDispatcher) {
+            nxtBuzDb
+                .busStopEntityQueries
+                .findAllStarredBusStops()
+                .executeAsList()
+                .map { busStopEntity ->
+                    BusStopEntity(
+                        busStopEntity.code,
+                        busStopEntity.roadName,
+                        busStopEntity.description,
+                        busStopEntity.latitude,
+                        busStopEntity.longitude,
+                        busStopEntity.starred
+                    )
+                }
         }
     }
 
@@ -285,7 +328,7 @@ class SqlDelightLocalDataSource internal constructor(
         }
     }
 
-    override suspend fun insertStarredBuses(starredBusList: List<StarredBusStopEntity>) {
+    override suspend fun insertStarredBuses(starredBusList: List<StarredBusServiceEntity>) {
         withContext(ioDispatcher) {
             starredBusList.forEach {
                 nxtBuzDb.starredBusServiceEntityQueries
@@ -299,13 +342,13 @@ class SqlDelightLocalDataSource internal constructor(
         }
     }
 
-    override suspend fun findStarredBuses(busStopCode: String): List<StarredBusStopEntity> {
+    override suspend fun findStarredBuses(busStopCode: String): List<StarredBusServiceEntity> {
         return withContext(ioDispatcher) {
             nxtBuzDb.starredBusServiceEntityQueries
                 .findByBusStopCode(busStopCode = busStopCode)
                 .executeAsList()
                 .map {
-                    StarredBusStopEntity(
+                    StarredBusServiceEntity(
                         busServiceNumber = it.busServiceNumber,
                         busStopCode = it.busStopCode
                     )
@@ -316,7 +359,7 @@ class SqlDelightLocalDataSource internal constructor(
     override suspend fun findStarredBus(
         busStopCode: String,
         busServiceNumber: String
-    ): StarredBusStopEntity? {
+    ): StarredBusServiceEntity? {
         return withContext(ioDispatcher) {
             nxtBuzDb.starredBusServiceEntityQueries
                 .findByBusStopCodeAndBusServiceNumber(
@@ -325,7 +368,7 @@ class SqlDelightLocalDataSource internal constructor(
                 )
                 .executeAsOneOrNull()
                 ?.let {
-                    StarredBusStopEntity(
+                    StarredBusServiceEntity(
                         busServiceNumber = it.busServiceNumber,
                         busStopCode = it.busStopCode
                     )
@@ -343,13 +386,13 @@ class SqlDelightLocalDataSource internal constructor(
         }
     }
 
-    override suspend fun findAllStarredBuses(): List<StarredBusStopEntity> {
+    override suspend fun findAllStarredBuses(): List<StarredBusServiceEntity> {
         return withContext(ioDispatcher) {
             nxtBuzDb.starredBusServiceEntityQueries
                 .findAll()
                 .executeAsList()
                 .map {
-                    StarredBusStopEntity(
+                    StarredBusServiceEntity(
                         busServiceNumber = it.busServiceNumber,
                         busStopCode = it.busStopCode
                     )

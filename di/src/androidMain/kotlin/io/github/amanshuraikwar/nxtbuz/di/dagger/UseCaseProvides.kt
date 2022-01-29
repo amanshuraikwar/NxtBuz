@@ -157,10 +157,10 @@ class UseCaseProvides {
     }
 
     @Provides
-    fun provideToggleBusStopStarUseCase(
+    fun provideToggleBusServiceStarUseCase(
         repo: StarredBusArrivalRepository
-    ): ToggleBusStopStarUseCase {
-        return ToggleBusStopStarUseCase(
+    ): ToggleBusServiceStarUseCase {
+        return ToggleBusServiceStarUseCase(
             repo = repo
         )
     }
@@ -202,8 +202,8 @@ class UseCaseProvides {
     @Provides
     fun provideIsStarredUseCase(
         repo: StarredBusArrivalRepository
-    ): IsStarredUseCase {
-        return IsStarredUseCase(
+    ): IsBusServiceStarredUseCase {
+        return IsBusServiceStarredUseCase(
             repo = repo
         )
     }
@@ -423,6 +423,15 @@ class UseCaseProvides {
     ): UpdatePlayStoreReviewTimeUseCase {
         return UpdatePlayStoreReviewTimeUseCase(
             userRepository = userRepository
+        )
+    }
+
+    @Provides
+    fun provideToggleBusStopStarUseCase(
+        repo: BusStopRepository
+    ): ToggleBusStopStarUseCase {
+        return ToggleBusStopStarUseCase(
+            repo = repo
         )
     }
 }

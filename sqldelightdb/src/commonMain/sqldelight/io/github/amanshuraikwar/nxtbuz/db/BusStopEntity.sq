@@ -4,11 +4,12 @@ CREATE TABLE BusStopEntity (
     description TEXT NOT NULL,
     descriptionSearchKey TEXT NOT NULL,
     latitude REAL NOT NULL,
-    longitude REAL NOT NULL
+    longitude REAL NOT NULL,
+    starred INTEGER AS Boolean NOT NULL DEFAULT 0
 );
 
-insert:
-INSERT INTO BusStopEntity
+insertOrReplace:
+INSERT OR REPLACE INTO BusStopEntity
 VALUES ?;
 
 deleteAll:
@@ -28,6 +29,9 @@ SELECT * FROM BusStopEntity WHERE (((latitude-:latitude)*(latitude-:latitude))+(
 
 searchLikeDescription:
 SELECT * FROM BusStopEntity WHERE descriptionSearchKey LIKE '%' || :descriptionHint || '%' LIMIT :limit;
+
+findAllStarredBusStops:
+SELECT * FROM BusStopEntity WHERE starred = 1;
 
 
 

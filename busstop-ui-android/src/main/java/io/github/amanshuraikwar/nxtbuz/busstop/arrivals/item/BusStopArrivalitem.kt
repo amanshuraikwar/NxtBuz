@@ -1,35 +1,34 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material.icons.rounded.StarBorder
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
-import io.github.amanshuraikwar.nxtbuz.common.util.toArrivalString
+import io.github.amanshuraikwar.nxtbuz.common.compose.StarIndicatorView
+import io.github.amanshuraikwar.nxtbuz.common.compose.SwipeableStarButtonView
 
 @ExperimentalAnimationApi
 @Composable
 fun BusStopArrivalItem(
     modifier: Modifier = Modifier,
     data: BusStopArrivalListItemData.BusStopArrival,
-    onStarToggle: (newToggleState: Boolean) -> Unit = {}
+    onStarToggle: (newToggleState: Boolean) -> Unit,
+    onClick: () -> Unit
 ) {
-    Box(
+    SwipeableStarButtonView(
         modifier = modifier,
-        contentAlignment = Alignment.CenterEnd
+        starred = data.starred,
+        onItemClick = onClick,
+        onStarToggle = onStarToggle
     ) {
         Row(
             modifier = Modifier
@@ -38,18 +37,31 @@ fun BusStopArrivalItem(
                     top = 16.dp,
                     start = 16.dp,
                     bottom = 16.dp,
-                    end = 88.dp
+                    end = 16.dp
                 )
         ) {
             when (data) {
                 is BusStopArrivalListItemData.BusStopArrival.Arriving -> {
-                    BusService(
-                        busServiceNumber = data.busServiceNumber,
-                        busType = data.busType
-                    )
+                    Box(
+                        contentAlignment = Alignment.BottomEnd
+                    ) {
+                        BusService(
+                            modifier
+                                .padding(
+                                    bottom = 4.dp,
+                                    end = 4.dp
+                                ),
+                            busServiceNumber = data.busServiceNumber,
+                            busType = data.busType
+                        )
+
+                        StarIndicatorView(
+                            isStarred = data.starred
+                        )
+                    }
 
                     Column(
-                        modifier = Modifier.padding(top = 4.dp, start = 16.dp)
+                        modifier = Modifier.padding(top = 4.dp, start = 12.dp)
                     ) {
                         BusArrival(
                             arrival = data.arrival,
@@ -79,27 +91,6 @@ fun BusStopArrivalItem(
                     }
                 }
             }
-        }
-
-        CompositionLocalProvider(
-            LocalIndication provides rememberRipple(color = MaterialTheme.colors.star)
-        ) {
-            Icon(
-                imageVector = if (data.starred) {
-                    Icons.Rounded.Star
-                } else {
-                    Icons.Rounded.StarBorder
-                },
-                contentDescription = "Star",
-                tint = MaterialTheme.colors.star,
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .clip(shape = MaterialTheme.shapes.small)
-                    .clickable {
-                        onStarToggle(!data.starred)
-                    }
-                    .padding(16.dp)
-            )
         }
     }
 }

@@ -6,10 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.UserState
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.CleanupLocationUpdatesUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.ShouldShowMapUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetUserStateUseCase
 import io.github.amanshuraikwar.nxtbuz.settings.ui.delegate.AppThemeDelegate
@@ -20,6 +18,8 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.util.*
 import javax.inject.Inject
 
@@ -44,6 +44,8 @@ class MainViewModel @Inject constructor(
         MutableStateFlow<MainScreenState>(MainScreenState.Fetching)
     val screenState: StateFlow<MainScreenState> = _screenState
 
+    private val mutex = Mutex()
+
     private val backStack = Stack<NavigationState>()
     private var showMap = false
 
@@ -57,7 +59,7 @@ class MainViewModel @Inject constructor(
                     _screenState.value = MainScreenState.Setup
                 }
                 UserState.SetupComplete -> {
-                    synchronized(_screenState) {
+                    mutex.withLock {
                         when (val currentState = _screenState.value) {
                             MainScreenState.Fetching,
                             MainScreenState.Setup -> {
@@ -88,27 +90,31 @@ class MainViewModel @Inject constructor(
     }
 
     @Synchronized
-    fun onBusStopClick(busStop: BusStop, pushBackStack: Boolean = true) {
-        synchronized(_screenState) {
-            val currentState = _screenState.value
-            if (currentState is MainScreenState.Success) {
-                val currentNavState = currentState.navigationState
-                if (currentNavState is NavigationState.BusStopArrivals) {
-                    if (currentNavState.busStop == busStop) {
-                        return
+    fun onBusStopClick(busStopCode: String, pushBackStack: Boolean = true) {
+        viewModelScope.launch(coroutineContext) {
+            val busStop = busStopUseCase.invoke(busStopCode = busStopCode) ?: return@launch
+
+            mutex.withLock {
+                val currentState = _screenState.value
+                if (currentState is MainScreenState.Success) {
+                    val currentNavState = currentState.navigationState
+                    if (currentNavState is NavigationState.BusStopArrivals) {
+                        if (currentNavState.busStop.code == busStopCode) {
+                            return@launch
+                        }
                     }
                 }
-            }
 
-            if (pushBackStack) {
-                pushBackStack()
-            }
+                if (pushBackStack) {
+                    pushBackStack()
+                }
 
-            _screenState.value = MainScreenState.Success(
-                showMap = showMap,
-                navigationState = NavigationState.BusStopArrivals(busStop = busStop),
-                showBackBtn = backStack.isNotEmpty()
-            )
+                _screenState.value = MainScreenState.Success(
+                    showMap = showMap,
+                    navigationState = NavigationState.BusStopArrivals(busStop = busStop),
+                    showBackBtn = backStack.isNotEmpty()
+                )
+            }
         }
     }
 
@@ -175,7 +181,7 @@ class MainViewModel @Inject constructor(
                 lat = latLng.latitude,
                 lng = latLng.longitude
             )?.let { busStop ->
-                onBusStopClick(busStop)
+                onBusStopClick(busStop.code)
             }
         }
     }

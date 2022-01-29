@@ -8,16 +8,22 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsScreenState
-import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.location.PermissionStatus
 import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationSettingsState
+import io.github.amanshuraikwar.nxtbuz.common.model.location.PermissionStatus
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
+import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.location.*
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationSettingStateUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionDeniedPermanentlyUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionStatusUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,6 +44,7 @@ class BusStopsViewModel @Inject constructor(
     private val navigationUtil: NavigationUtil,
     private val getLastKnownLocationUseCase: GetLastKnownLocationUseCase,
     private val locationPermissionDeniedPermanentlyUseCase: LocationPermissionDeniedPermanentlyUseCase,
+    private val toggleBusStopStarUseCase: ToggleBusStopStarUseCase,
     dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, th ->
@@ -53,6 +60,9 @@ class BusStopsViewModel @Inject constructor(
     private val _screenState = MutableStateFlow<BusStopsScreenState>(BusStopsScreenState.Fetching)
     val screenState: StateFlow<BusStopsScreenState> = _screenState
 
+    private var listenStarUpdatesJob: Job? = null
+    private val busStopListLock = Mutex()
+
     fun fetchBusStops(
         useDefaultLocation: Boolean = false,
         waitForSettings: Boolean = false
@@ -60,6 +70,8 @@ class BusStopsViewModel @Inject constructor(
         FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
         FirebaseCrashlytics.getInstance().setCustomKey("useDefaultLocation", useDefaultLocation)
         FirebaseCrashlytics.getInstance().setCustomKey("waitForSettings", waitForSettings)
+
+        listenToggleStarUpdate()
 
         viewModelScope.launch(coroutineContext) {
             _screenState.value = BusStopsScreenState.Fetching
@@ -214,6 +226,7 @@ class BusStopsViewModel @Inject constructor(
             busStopList.map { busStop ->
                 BusStopsItemData.BusStop(
                     id = "bus-stops-screen-${busStop.code}",
+                    busStopCode = busStop.code,
                     busStopDescription = busStop.description,
                     busStopInfo = "${busStop.roadName} • ${busStop.code}",
                     operatingBuses = busStop.operatingBusList
@@ -231,7 +244,7 @@ class BusStopsViewModel @Inject constructor(
                             }
                             "$first  $second"
                         },
-                    busStop = busStop
+                    isStarred = busStop.isStarred
                 )
             }
         )
@@ -278,6 +291,64 @@ class BusStopsViewModel @Inject constructor(
     private fun failed() {
         viewModelScope.launch(coroutineContext) {
             _screenState.emit(BusStopsScreenState.Failed)
+        }
+    }
+
+    fun onBusStopStarToggle(
+        busStopCode: String,
+        newStarState: Boolean
+    ) {
+        viewModelScope.launch(coroutineContext) {
+            toggleBusStopStarUseCase(busStopCode = busStopCode, toggleTo = newStarState)
+        }
+    }
+
+    private fun listenToggleStarUpdate() {
+        listenStarUpdatesJob?.cancel()
+        listenStarUpdatesJob = null
+        listenStarUpdatesJob = viewModelScope.launch(coroutineContext) {
+            toggleBusStopStarUseCase.updates()
+                .collect { busStop ->
+                    busStopListLock.withLock {
+                        val listItemIndex =
+                            listItems.indexOfFirst {
+                                it is BusStopsItemData.BusStop
+                                        && it.busStopCode == busStop.code
+                            }
+
+                        if (listItemIndex != -1) {
+                            when (listItems[listItemIndex]) {
+                                is BusStopsItemData.BusStop -> {
+                                    listItems[listItemIndex] = BusStopsItemData.BusStop(
+                                        id = "bus-stops-screen-${busStop.code}",
+                                        busStopCode = busStop.code,
+                                        busStopDescription = busStop.description,
+                                        busStopInfo = "${busStop.roadName} • ${busStop.code}",
+                                        operatingBuses = busStop.operatingBusList
+                                            .map { it.serviceNumber }
+                                            .reduceRight { next, total ->
+                                                val first = when (total.length) {
+                                                    2 -> "$total  "
+                                                    3 -> "$total "
+                                                    else -> total
+                                                }
+                                                val second = when (next.length) {
+                                                    2 -> "$next  "
+                                                    3 -> "$next "
+                                                    else -> next
+                                                }
+                                                "$first  $second"
+                                            },
+                                        isStarred = busStop.isStarred
+                                    )
+                                }
+                                else -> {
+                                    // do nothing
+                                }
+                            }
+                        }
+                    }
+                }
         }
     }
 }

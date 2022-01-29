@@ -19,8 +19,8 @@ import io.github.amanshuraikwar.nxtbuz.domain.arrivals.BusStopArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.domain.arrivals.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.PushMapEventUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.IsStarredUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.IsBusServiceStarredUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusServiceStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -35,9 +35,9 @@ import javax.inject.Inject
 
 class BusStopArrivalsViewModel @Inject constructor(
     private val getBusStopUseCase: GetBusStopUseCase,
-    private val isStarredUseCase: IsStarredUseCase,
+    private val isStarredUseCase: IsBusServiceStarredUseCase,
     private val getBusArrivalsUseCase: GetBusArrivalsUseCase,
-    private val toggleStar: ToggleBusStopStarUseCase,
+    private val toggleStar: ToggleBusServiceStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
     private val navigationUtil: NavigationUtil,
@@ -174,6 +174,9 @@ class BusStopArrivalsViewModel @Inject constructor(
                                     is BusStopArrivalListItemData.BusStopArrival.NotArriving -> {
                                         listItems[listItemIndex] =
                                             listItem.copy(starred = toggleStarUpdate.newStarState)
+                                    }
+                                    else -> {
+                                        // do nothing
                                     }
                                 }
                             }

@@ -3,14 +3,23 @@ package io.github.amanshuraikwar.nxtbuz.busstop.arrivals
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -19,7 +28,12 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopArrivalItem
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopHeaderItem
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalsScreenState
-import io.github.amanshuraikwar.nxtbuz.common.compose.*
+import io.github.amanshuraikwar.nxtbuz.common.compose.FailedView
+import io.github.amanshuraikwar.nxtbuz.common.compose.FetchingView
+import io.github.amanshuraikwar.nxtbuz.common.compose.Header
+import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
+import io.github.amanshuraikwar.nxtbuz.common.compose.expandProgressFraction
+import io.github.amanshuraikwar.nxtbuz.common.compose.rememberNxtBuzBottomSheetState
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import kotlinx.coroutines.launch
@@ -260,19 +274,20 @@ fun BusStopArrivalsView(
             when (item) {
                 is BusStopArrivalListItemData.BusStopArrival -> {
                     BusStopArrivalItem(
-                        modifier = Modifier.clickable {
+                        modifier = Modifier,
+                        data = item,
+                        onStarToggle = {
+                            onStarToggle(
+                                item.busServiceNumber, it
+                            )
+                        },
+                        onClick = {
                             coroutineScope.launch {
                                 onBusServiceClick(
                                     item.busStop.code,
                                     item.busServiceNumber
                                 )
                             }
-                        },
-                        data = item,
-                        onStarToggle = {
-                            onStarToggle(
-                                item.busServiceNumber, it
-                            )
                         }
                     )
                 }

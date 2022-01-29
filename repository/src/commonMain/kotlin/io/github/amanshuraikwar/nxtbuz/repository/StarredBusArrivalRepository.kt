@@ -1,28 +1,26 @@
 package io.github.amanshuraikwar.nxtbuz.repository
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusService
-import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleStarUpdate
+import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleBusServiceStarUpdate
 import kotlinx.coroutines.flow.SharedFlow
 
 interface StarredBusArrivalRepository {
-    val toggleStarUpdate: SharedFlow<ToggleStarUpdate>
+    val toggleBusServiceStarUpdate: SharedFlow<ToggleBusServiceStarUpdate>
     val toggleShouldShowErrorArrivals: SharedFlow<Boolean>
 
     suspend fun shouldShowErrorStarredBusArrivals(): Boolean
 
     suspend fun setShouldShowErrorStarredBusArrivals(shouldShow: Boolean)
 
-    suspend fun getStarredBusServices(): List<StarredBusService>
+    suspend fun getStarredBusServices(atBusStopCode: String? = null): List<StarredBusService>
 
-    suspend fun toggleBusStopStar(busStopCode: String, busServiceNumber: String)
-
-    suspend fun toggleBusStopStar(
+    suspend fun toggleBusServiceStar(
         busStopCode: String,
         busServiceNumber: String,
-        toggleTo: Boolean
+        toggleTo: Boolean? = null
     )
 
-    suspend fun isStarred(
+    suspend fun isBusServiceStarred(
         busStopCode: String,
         busServiceNumber: String,
     ): Boolean

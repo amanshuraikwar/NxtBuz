@@ -1,12 +1,12 @@
 package io.github.amanshuraikwar.nxtbuz.domain
 
 import io.github.amanshuraikwar.nxtbuz.domain.model.IosResult
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusServiceStarUseCase
 import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
 
-class IosToggleBusStopStarUseCase constructor(
+class IosToggleBusServiceStarUseCase constructor(
     repo: StarredBusArrivalRepository
-) : ToggleBusStopStarUseCase(
+) : ToggleBusServiceStarUseCase(
     repo = repo
 ) {
     operator fun invoke(

@@ -3,9 +3,9 @@
 package io.github.amanshuraikwar.nxtbuz.starreddata
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusService
-import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleStarUpdate
+import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleBusServiceStarUpdate
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
-import io.github.amanshuraikwar.nxtbuz.localdatasource.StarredBusStopEntity
+import io.github.amanshuraikwar.nxtbuz.localdatasource.StarredBusServiceEntity
 import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
 import io.github.amanshuraikwar.testutil.FakeCoroutinesDispatcherProvider
 import io.github.amanshuraikwar.testutil.FakeLocalDataSource
@@ -63,23 +63,23 @@ class StarredBusArrivalRepositoryTest {
     fun `getting correct stored starred bus services`() {
         runTest {
             coEvery { localDataSource.findAllStarredBuses() } returns listOf(
-                StarredBusStopEntity(
+                StarredBusServiceEntity(
                     busStopCode = "11401",
                     busServiceNumber = "106"
                 ),
-                StarredBusStopEntity(
+                StarredBusServiceEntity(
                     busStopCode = "11401",
                     busServiceNumber = "61"
                 ),
-                StarredBusStopEntity(
+                StarredBusServiceEntity(
                     busStopCode = "11379",
                     busServiceNumber = "145"
                 ),
-                StarredBusStopEntity(
+                StarredBusServiceEntity(
                     busStopCode = "11181",
                     busServiceNumber = "111"
                 ),
-                StarredBusStopEntity(
+                StarredBusServiceEntity(
                     busStopCode = "11379",
                     busServiceNumber = "200"
                 ),
@@ -125,7 +125,7 @@ class StarredBusArrivalRepositoryTest {
 
             val deferred = launch {
                 assertEquals(
-                    ToggleStarUpdate(
+                    ToggleBusServiceStarUpdate(
                         busStopCode = "11401",
                         busServiceNumber = "106",
                         newStarState = true
@@ -151,14 +151,14 @@ class StarredBusArrivalRepositoryTest {
                     busStopCode = "11401",
                     busServiceNumber = "106"
                 )
-            } returns StarredBusStopEntity(
+            } returns StarredBusServiceEntity(
                 busStopCode = "11401",
                 busServiceNumber = "106"
             )
 
             val deferred = launch {
                 assertEquals(
-                    ToggleStarUpdate(
+                    ToggleBusServiceStarUpdate(
                         busStopCode = "11401",
                         busServiceNumber = "106",
                         newStarState = false
@@ -188,7 +188,7 @@ class StarredBusArrivalRepositoryTest {
 
             val deferred = launch {
                 assertEquals(
-                    ToggleStarUpdate(
+                    ToggleBusServiceStarUpdate(
                         busStopCode = "11401",
                         busServiceNumber = "106",
                         newStarState = true
@@ -215,14 +215,14 @@ class StarredBusArrivalRepositoryTest {
                     busStopCode = "11401",
                     busServiceNumber = "106"
                 )
-            } returns StarredBusStopEntity(
+            } returns StarredBusServiceEntity(
                 busStopCode = "11401",
                 busServiceNumber = "106"
             )
 
             val deferred = launch {
                 assertEquals(
-                    ToggleStarUpdate(
+                    ToggleBusServiceStarUpdate(
                         busStopCode = "11401",
                         busServiceNumber = "106",
                         newStarState = false
@@ -249,7 +249,7 @@ class StarredBusArrivalRepositoryTest {
                     busStopCode = "11401",
                     busServiceNumber = "106"
                 )
-            } returns StarredBusStopEntity(
+            } returns StarredBusServiceEntity(
                 busStopCode = "11401",
                 busServiceNumber = "106"
             )

@@ -4,6 +4,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.DirectBus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.goinghome.DirectBusesResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 
 interface BusStopRepository {
     fun setup(): Flow<Double>
@@ -28,6 +29,22 @@ interface BusStopRepository {
     )
 
     suspend fun getBusStop(busStopCode: String): BusStop?
+
+    suspend fun getStarredBusStops(): List<BusStop>
+
+    /**
+     * @return true if a bus stop exists with [busStopCode], false if it doesn't
+     */
+    suspend fun toggleBusStopStar(
+        busStopCode: String,
+        toggleTo: Boolean? = null
+    ): Boolean
+
+    suspend fun isBusStopStarred(
+        busStopCode: String,
+    ): Boolean
+
+    suspend fun busStopUpdates(): SharedFlow<BusStop>
 
     suspend fun getDirectBuses(
         sourceBusStopCode: String,
