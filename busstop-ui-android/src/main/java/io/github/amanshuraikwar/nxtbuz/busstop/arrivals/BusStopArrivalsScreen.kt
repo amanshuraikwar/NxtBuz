@@ -121,7 +121,8 @@ fun BusStopArrivalsScreen(
                 },
                 onGoToBusStopClicked = {
                     vm.onGoToBusStopClicked()
-                }
+                },
+                onBusStopStarToggle = vm::onBusStopStarToggle
             )
         }
     } else {
@@ -145,7 +146,8 @@ fun BusStopArrivalsScreen(
                 },
                 onGoToBusStopClicked = {
                     vm.onGoToBusStopClicked()
-                }
+                },
+                onBusStopStarToggle = vm::onBusStopStarToggle
             )
         }
     }
@@ -162,6 +164,7 @@ fun BusStopArrivalsScreenStateView(
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
     onStarToggle: (busServiceNumber: String, newToggleState: Boolean) -> Unit,
     onGoToBusStopClicked: () -> Unit,
+    onBusStopStarToggle: (busStopCode: String, newStarState: Boolean) -> Unit,
 ) {
     Crossfade(targetState = screenState) { state ->
         when (state) {
@@ -177,7 +180,11 @@ fun BusStopArrivalsScreenStateView(
                             busStopDescription = header.busStopDescription,
                             busStopRoadName = header.busStopRoadName,
                             busStopCode = header.busStopCode,
-                            onGoToBusStopClicked = onGoToBusStopClicked
+                            onGoToBusStopClicked = onGoToBusStopClicked,
+                            starred = header.starred,
+                            onStarToggle = {
+                                onBusStopStarToggle(header.busStopCode, it)
+                            }
                         )
                     }
 
@@ -210,7 +217,11 @@ fun BusStopArrivalsScreenStateView(
                         busStopDescription = state.header.busStopDescription,
                         busStopRoadName = state.header.busStopRoadName,
                         busStopCode = state.header.busStopCode,
-                        onGoToBusStopClicked = onGoToBusStopClicked
+                        onGoToBusStopClicked = onGoToBusStopClicked,
+                        starred = state.header.starred,
+                        onStarToggle = {
+                            onBusStopStarToggle(state.header.busStopCode, it)
+                        }
                     )
 
                     Divider()
@@ -223,7 +234,8 @@ fun BusStopArrivalsScreenStateView(
                                 listItems = listItems,
                                 onBusServiceClick = onBusServiceClick,
                                 onStarToggle = onStarToggle,
-                                onGoToBusStopClicked = onGoToBusStopClicked
+                                onGoToBusStopClicked = onGoToBusStopClicked,
+                                onBusStopStarToggle = onBusStopStarToggle
                             )
                         }
                     }
@@ -241,6 +253,7 @@ fun BusStopArrivalsView(
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
     onStarToggle: (busServiceNumber: String, newToggleState: Boolean) -> Unit,
     onGoToBusStopClicked: () -> Unit,
+    onBusStopStarToggle: (busStopCode: String, newStarState: Boolean) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = remember {
@@ -302,6 +315,10 @@ fun BusStopArrivalsView(
                         busStopRoadName = item.busStopRoadName,
                         busStopCode = item.busStopCode,
                         onGoToBusStopClicked = onGoToBusStopClicked,
+                        starred = item.starred,
+                        onStarToggle = {
+                            onBusStopStarToggle(item.busStopCode, it)
+                        }
                     )
                 }
             }
