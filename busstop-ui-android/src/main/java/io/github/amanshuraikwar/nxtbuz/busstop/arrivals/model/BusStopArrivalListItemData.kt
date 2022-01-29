@@ -1,7 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model
 
-import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusLoad
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusLoad
 import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 
 sealed class BusStopArrivalListItemData {
@@ -102,5 +105,26 @@ sealed class BusStopArrivalListItemData {
         val busStopDescription: String,
         val busStopRoadName: String,
         val busStopCode: String,
-    ) : BusStopArrivalListItemData()
+        private val _starred: MutableState<Boolean>,
+    ) : BusStopArrivalListItemData() {
+        val starred: Boolean by _starred
+
+        fun updateStarred(newValue: Boolean) {
+            _starred.value = newValue
+        }
+
+        constructor(
+            id: String,
+            busStopDescription: String,
+            busStopRoadName: String,
+            busStopCode: String,
+            starred: Boolean,
+        ) : this(
+            id = id,
+            busStopDescription = busStopDescription,
+            busStopRoadName = busStopRoadName,
+            busStopCode = busStopCode,
+            _starred = mutableStateOf(starred),
+        )
+    }
 }
