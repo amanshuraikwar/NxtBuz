@@ -7,18 +7,56 @@ import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.domain.arrivals.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.busstop.*
-import io.github.amanshuraikwar.nxtbuz.domain.location.*
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetNearbyGoingHomeBusesUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetOperatingBusServicesUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetStarredBusStopsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.MaxDistanceOfClosesBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.CleanupLocationUpdatesUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationAvailabilityUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationSettingStateUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationUpdatesUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionDeniedPermanentlyUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionStatusUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.DefaultMapZoomUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.PushMapEventUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.ShouldShowMapUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.search.SearchUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.*
-import io.github.amanshuraikwar.nxtbuz.domain.user.*
+import io.github.amanshuraikwar.nxtbuz.domain.starred.AlertStarredBusArrivalsFrequency
+import io.github.amanshuraikwar.nxtbuz.domain.starred.AlertStarredBusArrivalsMinutes
+import io.github.amanshuraikwar.nxtbuz.domain.starred.GetStarredBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.GetStarredBusServicesUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.IsBusServiceStarredUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ShouldAlertStarredBusArrivals
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusServiceStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.DoSetupUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetForcedThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetHomeBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetUseSystemThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetUserStateUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.RefreshThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.SetForcedThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.SetHomeBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.SetUseSystemThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.ShouldStartPlayStoreReviewUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.UpdatePlayStoreReviewTimeUseCase
 import io.github.amanshuraikwar.nxtbuz.locationdata.LocationEmitter
 import io.github.amanshuraikwar.nxtbuz.locationdata.LocationRepository
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
-import io.github.amanshuraikwar.nxtbuz.repository.*
+import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.repository.SearchRepository
+import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Named
@@ -432,6 +470,15 @@ class UseCaseProvides {
     ): ToggleBusStopStarUseCase {
         return ToggleBusStopStarUseCase(
             repo = repo
+        )
+    }
+
+    @Provides
+    fun provideGetStarredBusStopsUseCase(
+        repo: BusStopRepository
+    ): GetStarredBusStopsUseCase {
+        return GetStarredBusStopsUseCase(
+            busStopRepository = repo
         )
     }
 }

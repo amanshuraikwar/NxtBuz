@@ -13,9 +13,11 @@ import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationSettingsSta
 import io.github.amanshuraikwar.nxtbuz.common.model.location.PermissionStatus
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetStarredBusStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.DefaultLocationUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCase
@@ -40,6 +42,7 @@ class BusStopsViewModel @Inject constructor(
     private val getDefaultLocationUseCase: DefaultLocationUseCase,
     private val getLocationSettingStateUseCase: GetLocationSettingStateUseCase,
     private val locationPermissionStatusUseCase: LocationPermissionStatusUseCase,
+    private val getStarredBusStopsUseCase: GetStarredBusStopsUseCase,
     private val permissionUtil: PermissionUtil,
     private val navigationUtil: NavigationUtil,
     private val getLastKnownLocationUseCase: GetLastKnownLocationUseCase,
@@ -63,26 +66,18 @@ class BusStopsViewModel @Inject constructor(
     private var listenStarUpdatesJob: Job? = null
     private val busStopListLock = Mutex()
 
-    fun fetchBusStops(
-        useDefaultLocation: Boolean = false,
+    init {
+        listenToggleStarUpdate()
+    }
+
+    fun fetchNearbyBusStops(
         waitForSettings: Boolean = false
     ) {
         FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
-        FirebaseCrashlytics.getInstance().setCustomKey("useDefaultLocation", useDefaultLocation)
         FirebaseCrashlytics.getInstance().setCustomKey("waitForSettings", waitForSettings)
 
-        listenToggleStarUpdate()
-
         viewModelScope.launch(coroutineContext) {
-            _screenState.value = BusStopsScreenState.Fetching
-
-            if (useDefaultLocation) {
-
-                val (lat, lng) = getDefaultLocationUseCase()
-                emitBusStops(lat, lng, "Near Default Location")
-                return@launch
-
-            }
+            _screenState.value = BusStopsScreenState.NearbyBusStops.Fetching
 
             if (waitForSettings) {
                 var count = 0
@@ -99,17 +94,15 @@ class BusStopsViewModel @Inject constructor(
 
             when (val locationOutput = getLastKnownLocationUseCase()) {
                 is LocationOutput.Error -> {
-                    _screenState.value = BusStopsScreenState.LocationError(
+                    _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
                         title = "Something went wrong while getting your location :(",
                         primaryButtonText = "RETRY",
                         onPrimaryButtonClick = {
-                            fetchBusStops()
+                            fetchNearbyBusStops()
                         },
                         secondaryButtonText = "USE DEFAULT LOCATION",
                         onSecondaryButtonClick = {
-                            fetchBusStops(
-                                useDefaultLocation = true
-                            )
+                            fetchNearDefaultLocationBusStops()
                         }
                     )
                     return@launch
@@ -117,7 +110,7 @@ class BusStopsViewModel @Inject constructor(
                 is LocationOutput.PermissionsNotGranted -> {
                     when (locationOutput.permissionStatus) {
                         PermissionStatus.DENIED -> {
-                            _screenState.value = BusStopsScreenState.LocationError(
+                            _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
                                 title = "We need location permission to get nearby bus stops :)",
                                 primaryButtonText = "GIVE PERMISSION",
                                 onPrimaryButtonClick = {
@@ -125,9 +118,7 @@ class BusStopsViewModel @Inject constructor(
                                 },
                                 secondaryButtonText = "USE DEFAULT LOCATION",
                                 onSecondaryButtonClick = {
-                                    fetchBusStops(
-                                        useDefaultLocation = true
-                                    )
+                                    fetchNearDefaultLocationBusStops()
                                 }
                             )
                         }
@@ -135,7 +126,7 @@ class BusStopsViewModel @Inject constructor(
                             // do nothing
                         }
                         PermissionStatus.DENIED_PERMANENTLY -> {
-                            _screenState.value = BusStopsScreenState.LocationError(
+                            _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
                                 title = "We need location permission to get nearby bus stops :)",
                                 primaryButtonText = "GO TO SETTINGS",
                                 onPrimaryButtonClick = {
@@ -143,9 +134,7 @@ class BusStopsViewModel @Inject constructor(
                                 },
                                 secondaryButtonText = "USE DEFAULT LOCATION",
                                 onSecondaryButtonClick = {
-                                    fetchBusStops(
-                                        useDefaultLocation = true
-                                    )
+                                    fetchNearDefaultLocationBusStops()
                                 }
                             )
                         }
@@ -158,7 +147,7 @@ class BusStopsViewModel @Inject constructor(
                 }
                 is LocationOutput.SettingsNotEnabled -> {
                     locationPermissionDeniedPermanentlyUseCase(false)
-                    _screenState.value = BusStopsScreenState.LocationError(
+                    _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
                         title = "Location is not turned on :(",
                         primaryButtonText = if (locationOutput.settingsState?.exception != null) {
                             "ENABLE LOCATION"
@@ -170,25 +159,31 @@ class BusStopsViewModel @Inject constructor(
                             if (ex != null) {
                                 askForSettingsChange(ex)
                             } else {
-                                fetchBusStops(
+                                fetchNearbyBusStops(
                                     waitForSettings = true
                                 )
                             }
                         },
                         secondaryButtonText = "USE DEFAULT LOCATION",
                         onSecondaryButtonClick = {
-                            fetchBusStops(
-                                useDefaultLocation = true
-                            )
+                            fetchNearDefaultLocationBusStops()
                         }
                     )
                     return@launch
                 }
             }
-            emitBusStops(
-                location.lat,
-                location.lng,
+
+            val listItems = getListItems(
+                getBusStopsUseCase(
+                    lat = location.lat,
+                    lon = location.lng,
+                    limit = busStopsQueryLimitUseCase()
+                ),
                 "Bus Stops Nearby"
+            )
+
+            _screenState.emit(
+                BusStopsScreenState.NearbyBusStops.Success(listItems = listItems)
             )
         }
     }
@@ -196,22 +191,15 @@ class BusStopsViewModel @Inject constructor(
     private fun goToAppSettings() {
         viewModelScope.launch {
             navigationUtil.goToAppSettings()
-            fetchBusStops()
+            fetchNearbyBusStops()
         }
     }
 
-    private suspend fun emitBusStops(
-        lat: Double,
-        lng: Double,
+    private suspend fun getListItems(
+        busStopList: List<BusStop>,
         headerTitle: String,
-    ) {
+    ): List<BusStopsItemData> {
         val listItems = SnapshotStateList<BusStopsItemData>()
-
-        val busStopList = getBusStopsUseCase(
-            lat = lat,
-            lon = lng,
-            limit = busStopsQueryLimitUseCase()
-        )
 
         if (busStopList.isNotEmpty()) {
             listItems.add(
@@ -253,7 +241,7 @@ class BusStopsViewModel @Inject constructor(
             this@BusStopsViewModel.listItems = listItems
         }
 
-        _screenState.emit(BusStopsScreenState.Success(this@BusStopsViewModel.listItems))
+        return this@BusStopsViewModel.listItems
     }
 
     private fun askForSettingsChange(exception: ResolvableApiException) {
@@ -261,7 +249,7 @@ class BusStopsViewModel @Inject constructor(
             val result = permissionUtil.askForSettingsChange(exception)
             Log.d(TAG, "askForSettingsChange: $result")
             if (result) {
-                fetchBusStops(
+                fetchNearbyBusStops(
                     waitForSettings = true
                 )
             }
@@ -284,7 +272,7 @@ class BusStopsViewModel @Inject constructor(
                 }
             }
             locationPermissionStatusUseCase.refresh()
-            fetchBusStops()
+            fetchNearbyBusStops()
         }
     }
 
@@ -319,28 +307,24 @@ class BusStopsViewModel @Inject constructor(
                         if (listItemIndex != -1) {
                             when (listItems[listItemIndex]) {
                                 is BusStopsItemData.BusStop -> {
-                                    listItems[listItemIndex] = BusStopsItemData.BusStop(
-                                        id = "bus-stops-screen-${busStop.code}",
-                                        busStopCode = busStop.code,
-                                        busStopDescription = busStop.description,
-                                        busStopInfo = "${busStop.roadName} • ${busStop.code}",
-                                        operatingBuses = busStop.operatingBusList
-                                            .map { it.serviceNumber }
-                                            .reduceRight { next, total ->
-                                                val first = when (total.length) {
-                                                    2 -> "$total  "
-                                                    3 -> "$total "
-                                                    else -> total
-                                                }
-                                                val second = when (next.length) {
-                                                    2 -> "$next  "
-                                                    3 -> "$next "
-                                                    else -> next
-                                                }
-                                                "$first  $second"
-                                            },
-                                        isStarred = busStop.isStarred
-                                    )
+                                    if (_screenState.value is BusStopsScreenState.NearbyBusStops
+                                        || _screenState.value
+                                                is BusStopsScreenState.DefaultLocationBusStops
+                                    ) {
+                                        listItems[listItemIndex] = busStop.toItem()
+                                    }
+
+                                    if (_screenState.value is BusStopsScreenState.StarredBusStops) {
+                                        if (busStop.isStarred) {
+                                            listItems.add(busStop.toItem())
+                                        } else {
+                                            listItems.removeAt(listItemIndex)
+                                        }
+
+                                        if (listItems.size == 1) {
+                                            fetchStarredBusStops()
+                                        }
+                                    }
                                 }
                                 else -> {
                                     // do nothing
@@ -349,6 +333,62 @@ class BusStopsViewModel @Inject constructor(
                         }
                     }
                 }
+        }
+    }
+
+    private fun BusStop.toItem(): BusStopsItemData.BusStop {
+        return BusStopsItemData.BusStop(
+            id = "bus-stops-screen-$code",
+            busStopCode = code,
+            busStopDescription = description,
+            busStopInfo = "$roadName • $code",
+            operatingBuses = operatingBusList
+                .map { it.serviceNumber }
+                .reduceRight { next, total ->
+                    val first = when (total.length) {
+                        2 -> "$total  "
+                        3 -> "$total "
+                        else -> total
+                    }
+                    val second = when (next.length) {
+                        2 -> "$next  "
+                        3 -> "$next "
+                        else -> next
+                    }
+                    "$first  $second"
+                },
+            isStarred = isStarred
+        )
+    }
+
+    fun fetchStarredBusStops() {
+        viewModelScope.launch(coroutineContext) {
+            _screenState.emit(BusStopsScreenState.StarredBusStops.Fetching)
+            val listItems = getListItems(
+                getStarredBusStopsUseCase(),
+                "Starred bus stops"
+            )
+            _screenState.emit(
+                BusStopsScreenState.StarredBusStops.Success(listItems = listItems)
+            )
+        }
+    }
+
+    fun fetchNearDefaultLocationBusStops() {
+        viewModelScope.launch(coroutineContext) {
+            _screenState.emit(BusStopsScreenState.DefaultLocationBusStops.Fetching)
+            val (lat, lng) = getDefaultLocationUseCase()
+            val listItems = getListItems(
+                getBusStopsUseCase(
+                    lat = lat,
+                    lon = lng,
+                    limit = busStopsQueryLimitUseCase()
+                ),
+                "Near Default Location"
+            )
+            _screenState.emit(
+                BusStopsScreenState.DefaultLocationBusStops.Success(listItems = listItems)
+            )
         }
     }
 }

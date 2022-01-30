@@ -1,8 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -24,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
@@ -47,7 +43,7 @@ fun BusStopHeaderItem(
         modifier = modifier,
     ) {
         Box(
-            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
+            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
         ) {
             Box(
                 contentAlignment = Alignment.BottomEnd
@@ -104,77 +100,35 @@ fun BusStopHeaderItem(
                         .fillMaxWidth()
                         .padding(top = 2.dp)
                 )
-            }
-        }
 
-        Row(
-            modifier = Modifier
-                .padding(start = 72.dp)
-                .padding(end = 16.dp)
-                .padding(bottom = 16.dp, top = 8.dp)
-        ) {
-            BusStopHeaderButton(
-                imageVector = Icons.Rounded.Directions,
-                text = "Directions",
-                onClick = onGoToBusStopClicked
-            )
+                Row(
+                    modifier = Modifier
+                        .padding(top = 12.dp)
+                ) {
+                    BusStopHeaderButton(
+                        imageVector = if (starred) {
+                            Icons.Rounded.Star
+                        } else {
+                            Icons.Rounded.StarOutline
+                        },
+                        text = if (starred) {
+                            "UN-STAR"
+                        } else {
+                            "STAR"
+                        },
+                        onClick = {
+                            onStarToggle(!starred)
+                        }
+                    )
 
-            BusStopHeaderButton(
-                modifier = Modifier.padding(start = 12.dp),
-                imageVector = if (starred) {
-                    Icons.Rounded.Star
-                } else {
-                    Icons.Rounded.StarOutline
-                },
-                text = if (starred) {
-                    "Un-Star"
-                } else {
-                    "Star"
-                },
-                onClick = {
-                    onStarToggle(!starred)
+                    BusStopHeaderButton(
+                        modifier = Modifier.padding(start = 12.dp),
+                        imageVector = Icons.Rounded.Directions,
+                        text = "DIRECTIONS",
+                        onClick = onGoToBusStopClicked
+                    )
                 }
-            )
-        }
-    }
-}
-
-@Composable
-fun BusStopHeaderButton(
-    modifier: Modifier = Modifier,
-    imageVector: ImageVector,
-    text: String,
-    onClick: () -> Unit
-) {
-    Surface(
-        modifier = modifier,
-        border = BorderStroke(1.dp, MaterialTheme.colors.onSurface),
-        shape = RoundedCornerShape(percent = 50),
-    ) {
-        Row(
-            modifier = Modifier
-                .clickable(onClick = onClick)
-                .padding(horizontal = 4.dp)
-                .clip(RoundedCornerShape(percent = 50)),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = imageVector,
-                contentDescription = text,
-                tint = MaterialTheme.colors.onSurface,
-                modifier = Modifier
-                    .padding(4.dp)
-                    .size(16.dp)
-            )
-
-            Text(
-                modifier = Modifier
-                    .padding(end = 4.dp, start = 2.dp)
-                    .padding(bottom = 4.dp, top = 2.dp),
-                text = text,
-                style = MaterialTheme.typography.button,
-                color = MaterialTheme.colors.onSurface
-            )
+            }
         }
     }
 }
