@@ -5,13 +5,29 @@ sealed class BusStopsScreenState {
 
     object Failed : BusStopsScreenState()
 
-    data class LocationError(
-        val title: String,
-        val primaryButtonText: String,
-        val onPrimaryButtonClick: () -> Unit,
-        val secondaryButtonText: String,
-        val onSecondaryButtonClick: () -> Unit
-    ) : BusStopsScreenState()
+    sealed class NearbyBusStops : BusStopsScreenState() {
+        object Fetching : NearbyBusStops()
 
-    data class Success(val listItems: List<BusStopsItemData>) : BusStopsScreenState()
+        data class LocationError(
+            val title: String,
+            val primaryButtonText: String,
+            val onPrimaryButtonClick: () -> Unit,
+            val secondaryButtonText: String,
+            val onSecondaryButtonClick: () -> Unit
+        ) : NearbyBusStops()
+
+        data class Success(val listItems: List<BusStopsItemData>) : NearbyBusStops()
+    }
+
+    sealed class DefaultLocationBusStops : BusStopsScreenState() {
+        object Fetching : DefaultLocationBusStops()
+
+        data class Success(val listItems: List<BusStopsItemData>) : DefaultLocationBusStops()
+    }
+
+    sealed class StarredBusStops : BusStopsScreenState() {
+        object Fetching : StarredBusStops()
+
+        data class Success(val listItems: List<BusStopsItemData>) : StarredBusStops()
+    }
 }
