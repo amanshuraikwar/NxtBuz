@@ -12,7 +12,12 @@ actual class SettingsFactory(
         }
     }
 
-    companion object {
+    actual companion object {
         private const val PREFS_NAME = "io.github.amanshuraikwar.nxtbuz"
+        // added _1 because we want to force rebuild the db
+        private const val PREF_ONBOARDING = "pref_onboarding_1"
+        actual fun prefOnboardingKey(): String {
+            return PREF_ONBOARDING
+        }
     }
 }
