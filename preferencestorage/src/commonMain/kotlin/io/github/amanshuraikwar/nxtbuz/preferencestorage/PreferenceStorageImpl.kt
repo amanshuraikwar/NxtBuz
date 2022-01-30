@@ -2,7 +2,11 @@ package io.github.amanshuraikwar.nxtbuz.preferencestorage
 
 import com.russhwolf.settings.Settings
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
-import io.github.amanshuraikwar.nxtbuz.preferencestorage.helper.*
+import io.github.amanshuraikwar.nxtbuz.preferencestorage.helper.BooleanPreference
+import io.github.amanshuraikwar.nxtbuz.preferencestorage.helper.IntPreference
+import io.github.amanshuraikwar.nxtbuz.preferencestorage.helper.LongPreference
+import io.github.amanshuraikwar.nxtbuz.preferencestorage.helper.ObjectPreference
+import io.github.amanshuraikwar.nxtbuz.preferencestorage.helper.StringPreference
 
 internal class PreferenceStorageImpl(
     private val settingsFactory: () -> Settings = { Settings() }
@@ -13,7 +17,7 @@ internal class PreferenceStorageImpl(
 
     override var onboardingCompleted by BooleanPreference(
         settings,
-        PREF_ONBOARDING,
+        SettingsFactory.prefOnboardingKey(),
         false
     )
 
@@ -90,7 +94,6 @@ internal class PreferenceStorageImpl(
     )
 
     companion object {
-        const val PREF_ONBOARDING = "pref_onboarding"
         const val PREF_BUS_STOPS_QUERY_LIMIT = "pref_bus_stops_query_limit"
         const val PREF_DEFAULT_LOCATION = "pref_default_location"
         const val PREF_MAX_DISTANCE_OF_CLOSEST_BUS_STOP = "pref_max_distance_of_closest_bus_stop"
