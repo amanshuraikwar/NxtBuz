@@ -4,45 +4,52 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.busstop.R
+import io.github.amanshuraikwar.nxtbuz.common.compose.StarIndicatorView
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
-import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 
 @Composable
 fun BusService(
     modifier: Modifier = Modifier,
     busServiceNumber: String,
-    busType: BusType,
+    starred: Boolean
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        BusService(
+            Modifier
+                .padding(
+                    bottom = 4.dp,
+                    end = 4.dp
+                ),
+            busServiceNumber = busServiceNumber,
+        )
+
+        StarIndicatorView(
+            isStarred = starred
+        )
+    }
+}
+
+@Composable
+fun BusService(
+    modifier: Modifier = Modifier,
+    busServiceNumber: String,
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource(
-                when (busType) {
-                    BusType.SD -> R.drawable.ic_bus_normal_16
-                    BusType.DD -> R.drawable.ic_bus_dd_16
-                    BusType.BD -> R.drawable.ic_bus_feeder_16
-                }
-            ),
-            modifier = Modifier.size(16.dp),
-            contentDescription = "Bus Type",
-            tint = MaterialTheme.colors.onSurface
-        )
-
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -68,7 +75,32 @@ fun BusService(
 }
 
 @Composable
-fun BusService(
+fun BusServiceDisabled(
+    modifier: Modifier = Modifier,
+    busServiceNumber: String,
+    starred: Boolean
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        BusServiceDisabled(
+            Modifier
+                .padding(
+                    bottom = 4.dp,
+                    end = 4.dp
+                ),
+            busServiceNumber = busServiceNumber,
+        )
+
+        StarIndicatorView(
+            isStarred = starred
+        )
+    }
+}
+
+@Composable
+fun BusServiceDisabled(
     modifier: Modifier = Modifier,
     busServiceNumber: String,
 ) {
@@ -76,13 +108,6 @@ fun BusService(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_bus_normal_16),
-            modifier = Modifier.size(16.dp),
-            contentDescription = "Bus Type",
-            tint = MaterialTheme.colors.onSurface.medium
-        )
-
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier

@@ -236,10 +236,10 @@ class BusStopArrivalsViewModel @Inject constructor(
                                         busServiceNumber = busArrival.busServiceNumber,
                                         destinationBusStopDescription =
                                         arrivals.nextArrivingBus.destination.busStopDescription,
-                                        arrival = arrivals.nextArrivingBus.arrival,
-                                        busType = arrivals.nextArrivingBus.type,
-                                        wheelchairAccess = arrivals.nextArrivingBus.wheelchairAccess,
-                                        busLoad = arrivals.nextArrivingBus.load,
+                                        arrivingBusList = mutableListOf(arrivals.nextArrivingBus)
+                                            .apply {
+                                                addAll(arrivals.followingArrivingBusList)
+                                            },
                                         busStop = busStop,
                                         starred = isStarredUseCase(
                                             busServiceNumber = busArrival.busServiceNumber,
@@ -274,13 +274,13 @@ class BusStopArrivalsViewModel @Inject constructor(
                             when (arrivals) {
                                 is BusArrivals.Arriving -> {
                                     listItems[listItemIndex] = listItem.copy(
-                                        arrival = arrivals.nextArrivingBus.arrival,
                                         destinationBusStopDescription =
                                         arrivals.nextArrivingBus.destination.busStopDescription,
-                                        busType = arrivals.nextArrivingBus.type,
-                                        wheelchairAccess = arrivals.nextArrivingBus.wheelchairAccess,
-                                        busLoad = arrivals.nextArrivingBus.load,
                                         busStop = busStop,
+                                        arrivingBusList = mutableListOf(arrivals.nextArrivingBus)
+                                            .apply {
+                                                addAll(arrivals.followingArrivingBusList)
+                                            },
                                         starred = isStarredUseCase(
                                             busServiceNumber = busArrival.busServiceNumber,
                                             busStopCode = busArrival.busStopCode,
@@ -323,11 +323,10 @@ class BusStopArrivalsViewModel @Inject constructor(
                                             busServiceNumber = listItem.busServiceNumber,
                                             destinationBusStopDescription =
                                             arrivals.nextArrivingBus.destination.busStopDescription,
-                                            arrival = arrivals.nextArrivingBus.arrival,
-                                            busType = arrivals.nextArrivingBus.type,
-                                            wheelchairAccess =
-                                            arrivals.nextArrivingBus.wheelchairAccess,
-                                            busLoad = arrivals.nextArrivingBus.load,
+                                            arrivingBusList = mutableListOf(arrivals.nextArrivingBus)
+                                                .apply {
+                                                    addAll(arrivals.followingArrivingBusList)
+                                                },
                                             busStop = busStop,
                                             starred = isStarredUseCase(
                                                 busServiceNumber = busArrival.busServiceNumber,
