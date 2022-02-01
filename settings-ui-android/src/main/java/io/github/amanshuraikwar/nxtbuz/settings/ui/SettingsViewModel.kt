@@ -5,13 +5,21 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
-import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
+import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.ShouldShowMapUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.user.*
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetForcedThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetLaunchBusStopPageUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetUseSystemThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.SetForcedThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.SetLaunchBusStopPageUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.SetUseSystemThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.ShouldStartPlayStoreReviewUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.UpdatePlayStoreReviewTimeUseCase
 import io.github.amanshuraikwar.nxtbuz.settings.ui.delegate.AppThemeDelegate
 import io.github.amanshuraikwar.nxtbuz.settings.ui.delegate.AppThemeDelegateImpl
 import io.github.amanshuraikwar.nxtbuz.settings.ui.model.SettingsItemData
@@ -34,6 +42,8 @@ class SettingsViewModel @Inject constructor(
     private val setUseSystemThemeUseCase: SetUseSystemThemeUseCase,
     private val shouldStartPlayStoreReviewUseCase: ShouldStartPlayStoreReviewUseCase,
     private val updatePlayStoreReviewTimeUseCase: UpdatePlayStoreReviewTimeUseCase,
+    private val getLaunchBusStopPageUseCase: GetLaunchBusStopPageUseCase,
+    private val setLaunchBusStopPageUseCase: SetLaunchBusStopPageUseCase,
     private val navigationUtil: NavigationUtil,
     appThemeDelegateImpl: AppThemeDelegateImpl,
     dispatcherProvider: CoroutinesDispatcherProvider
@@ -194,6 +204,37 @@ class SettingsViewModel @Inject constructor(
                                     listItems[index] = item.copy(selectedIndex = selectedIndex)
                                 }
                             busStopsQueryLimitUseCase(newValue)
+                        }
+                    }
+                )
+            )
+
+            val launchBusStopPageCheckedIndex = when (getLaunchBusStopPageUseCase()) {
+                LaunchBusStopsPage.NearBy -> 0
+                LaunchBusStopsPage.Starred -> 1
+                else -> 1
+            }
+
+            listItems.add(
+                SettingsItemData.RadioGroup(
+                    id = "launch-bus-stops-page",
+                    title = "Launch bus stops page",
+                    description = "Bus stops page displayed when the app is launched",
+                    options = listOf("Nearby Bus Stops", "Starred Bus Stops"),
+                    selectedIndex = launchBusStopPageCheckedIndex,
+                    onClick = { selectedIndex ->
+                        viewModelScope.launch {
+                            val newValue = when (selectedIndex) {
+                                0 -> LaunchBusStopsPage.NearBy
+                                1 -> LaunchBusStopsPage.Starred
+                                else -> LaunchBusStopsPage.NearBy
+                            }
+                            listItems
+                                .findFirst<SettingsItemData.RadioGroup>("launch-bus-stops-page")
+                                ?.let { (index, item) ->
+                                    listItems[index] = item.copy(selectedIndex = selectedIndex)
+                                }
+                            setLaunchBusStopPageUseCase(newValue)
                         }
                     }
                 )

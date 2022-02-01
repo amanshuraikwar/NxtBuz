@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.repository
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
+import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.UserState
 import kotlinx.coroutines.flow.Flow
 
@@ -34,4 +35,8 @@ interface UserRepository {
     suspend fun setHomeBusStopCode(busStopCode: String)
 
     suspend fun getHomeBusStopCode(): String?
+
+    suspend fun setLaunchBusStopsPage(launchBusStopsPage: LaunchBusStopsPage)
+
+    suspend fun getLaunchBusStopsPage(): LaunchBusStopsPage
 }

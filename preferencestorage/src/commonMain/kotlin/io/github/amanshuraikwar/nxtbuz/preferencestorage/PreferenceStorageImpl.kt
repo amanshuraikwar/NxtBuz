@@ -2,6 +2,8 @@ package io.github.amanshuraikwar.nxtbuz.preferencestorage
 
 import com.russhwolf.settings.Settings
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
+import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
+import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage.Companion.toLaunchBusStopPage
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.helper.BooleanPreference
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.helper.IntPreference
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.helper.LongPreference
@@ -93,6 +95,16 @@ internal class PreferenceStorageImpl(
         settings, PREF_HOME_BUS_STOP_CODE, ""
     )
 
+    override var launchBusStopsPage by ObjectPreference(
+        settings,
+        PREF_LAUNCH_BUS_STOPS_PAGE,
+        LaunchBusStopsPage.NearBy,
+        { it.toString() },
+        { str ->
+            str?.toLaunchBusStopPage()
+        }
+    )
+
     companion object {
         const val PREF_BUS_STOPS_QUERY_LIMIT = "pref_bus_stops_query_limit"
         const val PREF_DEFAULT_LOCATION = "pref_default_location"
@@ -107,5 +119,6 @@ internal class PreferenceStorageImpl(
         const val PREF_USE_SYSTEM_THEME = "pref_use_system_theme"
         const val PREF_SETUP_COMPLETE_TIME_MILLIS = "pref_setup_complete_time_millis"
         const val PREF_HOME_BUS_STOP_CODE = "pref_home_bus_stop_code"
+        const val PREF_LAUNCH_BUS_STOPS_PAGE = "pref_home_bus_stop_code"
     }
 }
