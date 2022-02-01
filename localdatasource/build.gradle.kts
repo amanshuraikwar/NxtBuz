@@ -68,4 +68,10 @@ android {
         minSdk = Libs.minSdk
         targetSdk = Libs.targetSdk
     }
+
+    buildTypes {
+        release {
+            consumerProguardFile("consumer-rules.pro")
+        }
+    }
 }
