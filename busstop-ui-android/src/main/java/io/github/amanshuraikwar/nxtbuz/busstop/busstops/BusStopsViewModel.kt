@@ -15,6 +15,7 @@ import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetStarredBusStopsUseCase
@@ -24,6 +25,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCa
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationSettingStateUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionDeniedPermanentlyUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionStatusUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetLaunchBusStopPageUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -48,6 +50,7 @@ class BusStopsViewModel @Inject constructor(
     private val getLastKnownLocationUseCase: GetLastKnownLocationUseCase,
     private val locationPermissionDeniedPermanentlyUseCase: LocationPermissionDeniedPermanentlyUseCase,
     private val toggleBusStopStarUseCase: ToggleBusStopStarUseCase,
+    private val getLaunchBusStopPageUseCase: GetLaunchBusStopPageUseCase,
     dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, th ->
@@ -68,6 +71,19 @@ class BusStopsViewModel @Inject constructor(
 
     init {
         listenToggleStarUpdate()
+    }
+
+    fun init() {
+        viewModelScope.launch(coroutineContext) {
+            when(getLaunchBusStopPageUseCase()) {
+                LaunchBusStopsPage.NearBy -> {
+                    fetchNearbyBusStops(waitForSettings = false)
+                }
+                LaunchBusStopsPage.Starred -> {
+                    fetchStarredBusStops()
+                }
+            }
+        }
     }
 
     fun fetchNearbyBusStops(

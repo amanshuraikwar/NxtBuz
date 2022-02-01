@@ -39,12 +39,14 @@ import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.DoSetupUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetForcedThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetHomeBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetLaunchBusStopPageUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetUseSystemThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetUserStateUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.RefreshThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.SetForcedThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.SetHomeBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.SetLaunchBusStopPageUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.SetUseSystemThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.ShouldStartPlayStoreReviewUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.UpdatePlayStoreReviewTimeUseCase
@@ -479,6 +481,24 @@ class UseCaseProvides {
     ): GetStarredBusStopsUseCase {
         return GetStarredBusStopsUseCase(
             busStopRepository = repo
+        )
+    }
+
+    @Provides
+    fun provideGetLaunchBusStopPageUseCase(
+        repo: UserRepository
+    ): GetLaunchBusStopPageUseCase {
+        return GetLaunchBusStopPageUseCase(
+            userRepository = repo
+        )
+    }
+
+    @Provides
+    fun provideSetLaunchBusStopPageUseCase(
+        repo: UserRepository
+    ): SetLaunchBusStopPageUseCase {
+        return SetLaunchBusStopPageUseCase(
+            userRepository = repo
         )
     }
 }

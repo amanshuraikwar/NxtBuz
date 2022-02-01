@@ -3,6 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.preferencestorage
 import com.russhwolf.settings.Settings
 import io.github.amanshuraikwar.nxtbuz.commonkmm.AlertFrequency
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
+import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
 
 /**
  * Storage for app and user preferences.
@@ -22,6 +23,7 @@ interface PreferenceStorage {
     var useSystemTheme: Boolean
     var playStoreReviewTimeMillis: Long
     var homeBusStopCode: String
+    var launchBusStopsPage: LaunchBusStopsPage
 
     companion object {
         fun create(settings: Settings): PreferenceStorage {

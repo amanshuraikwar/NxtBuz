@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
@@ -25,16 +26,21 @@ fun BusStopHeaderButton(
     imageVector: ImageVector,
     text: String,
     onClick: () -> Unit,
-    selected: Boolean = false
+    selected: Boolean = false,
+    outlineColor: Color = MaterialTheme.colors.outline,
+    selectedColor: Color = MaterialTheme.colors.primary,
+    onSelectedColor: Color = MaterialTheme.colors.onPrimary,
+    unSelectedColor: Color = MaterialTheme.colors.surface,
+    onUnSelectedColor: Color = MaterialTheme.colors.onSurface.medium,
 ) {
     Surface(
         modifier = modifier,
-        border = BorderStroke(1.dp, MaterialTheme.colors.outline),
+        border = BorderStroke(1.dp, outlineColor),
         shape = RoundedCornerShape(percent = 50),
         color = if (selected) {
-            MaterialTheme.colors.primary
+            selectedColor
         } else {
-            MaterialTheme.colors.surface
+            unSelectedColor
         }
     ) {
         Row(
@@ -48,9 +54,9 @@ fun BusStopHeaderButton(
                 imageVector = imageVector,
                 contentDescription = text,
                 tint = if (selected) {
-                    MaterialTheme.colors.onPrimary
+                    onSelectedColor
                 } else {
-                    MaterialTheme.colors.onSurface.medium
+                    onUnSelectedColor
                 },
                 modifier = Modifier
                     .padding(4.dp)
@@ -64,9 +70,9 @@ fun BusStopHeaderButton(
                 text = text,
                 style = MaterialTheme.typography.button,
                 color = if (selected) {
-                    MaterialTheme.colors.onPrimary
+                    onSelectedColor
                 } else {
-                    MaterialTheme.colors.onSurface.medium
+                    onUnSelectedColor
                 }
             )
         }
