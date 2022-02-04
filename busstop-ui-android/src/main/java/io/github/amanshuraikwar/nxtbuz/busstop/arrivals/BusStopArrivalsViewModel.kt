@@ -8,7 +8,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalsScreenState
-import io.github.amanshuraikwar.nxtbuz.common.model.*
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
@@ -19,23 +18,30 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusStopArrival
 import io.github.amanshuraikwar.nxtbuz.domain.arrivals.BusStopArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.domain.arrivals.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.busstop.ToggleBusStopStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.PushMapEventUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.IsStarredUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.IsBusServiceStarredUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusServiceStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class BusStopArrivalsViewModel @Inject constructor(
     private val getBusStopUseCase: GetBusStopUseCase,
-    private val isStarredUseCase: IsStarredUseCase,
+    private val isStarredUseCase: IsBusServiceStarredUseCase,
     private val getBusArrivalsUseCase: GetBusArrivalsUseCase,
-    private val toggleStar: ToggleBusStopStarUseCase,
+    private val toggleStar: ToggleBusServiceStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
+    private val toggleBusStopStarUseCase: ToggleBusStopStarUseCase,
     private val navigationUtil: NavigationUtil,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
@@ -58,6 +64,7 @@ class BusStopArrivalsViewModel @Inject constructor(
     internal var bottomSheetInit = false
     private var loop: BusStopArrivalsLoop? = null
     private var listenStarUpdatesJob: Job? = null
+    private var listenBusStopStarUpdatesJob: Job? = null
 
     fun init(busStopCode: String) {
         FirebaseCrashlytics.getInstance().setCustomKey(
@@ -72,6 +79,8 @@ class BusStopArrivalsViewModel @Inject constructor(
                     listItems = SnapshotStateList()
                 }
 
+                busStop = getBusStopUseCase(busStopCode) ?: return@launch
+
                 _screenState.emit(
                     BusStopArrivalsScreenState.Success(
                         BusStopArrivalListItemData.BusStopHeader(
@@ -79,6 +88,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                             busStopCode = busStop.code,
                             busStopDescription = busStop.description,
                             busStopRoadName = busStop.roadName,
+                            starred = busStop.isStarred
                         ),
                         listItems
                     )
@@ -86,7 +96,7 @@ class BusStopArrivalsViewModel @Inject constructor(
             } else {
                 _screenState.emit(BusStopArrivalsScreenState.Fetching)
 
-                busStop = getBusStopUseCase(busStopCode)
+                busStop = getBusStopUseCase(busStopCode) ?: return@launch
 
                 busArrivalListLock.withLock {
                     listItems = SnapshotStateList()
@@ -99,6 +109,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                             busStopCode = busStop.code,
                             busStopDescription = busStop.description,
                             busStopRoadName = busStop.roadName,
+                            starred = busStop.isStarred
                         ),
                         listItems
                     )
@@ -110,6 +121,7 @@ class BusStopArrivalsViewModel @Inject constructor(
             }
 
             listenToggleStarUpdate()
+            listenToggleBusStopStarUpdate()
             waitForBottomSheetInit()
             startListeningArrivals()
 
@@ -171,6 +183,9 @@ class BusStopArrivalsViewModel @Inject constructor(
                                         listItems[listItemIndex] =
                                             listItem.copy(starred = toggleStarUpdate.newStarState)
                                     }
+                                    else -> {
+                                        // do nothing
+                                    }
                                 }
                             }
                         }
@@ -189,6 +204,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                             busStopDescription = description,
                             busStopRoadName = roadName,
                             id = "bus-stop-arrivals-screen-$code-header",
+                            starred = isStarred
                         )
                     }
                 )
@@ -220,10 +236,10 @@ class BusStopArrivalsViewModel @Inject constructor(
                                         busServiceNumber = busArrival.busServiceNumber,
                                         destinationBusStopDescription =
                                         arrivals.nextArrivingBus.destination.busStopDescription,
-                                        arrival = arrivals.nextArrivingBus.arrival,
-                                        busType = arrivals.nextArrivingBus.type,
-                                        wheelchairAccess = arrivals.nextArrivingBus.wheelchairAccess,
-                                        busLoad = arrivals.nextArrivingBus.load,
+                                        arrivingBusList = mutableListOf(arrivals.nextArrivingBus)
+                                            .apply {
+                                                addAll(arrivals.followingArrivingBusList)
+                                            },
                                         busStop = busStop,
                                         starred = isStarredUseCase(
                                             busServiceNumber = busArrival.busServiceNumber,
@@ -258,13 +274,13 @@ class BusStopArrivalsViewModel @Inject constructor(
                             when (arrivals) {
                                 is BusArrivals.Arriving -> {
                                     listItems[listItemIndex] = listItem.copy(
-                                        arrival = arrivals.nextArrivingBus.arrival,
                                         destinationBusStopDescription =
                                         arrivals.nextArrivingBus.destination.busStopDescription,
-                                        busType = arrivals.nextArrivingBus.type,
-                                        wheelchairAccess = arrivals.nextArrivingBus.wheelchairAccess,
-                                        busLoad = arrivals.nextArrivingBus.load,
                                         busStop = busStop,
+                                        arrivingBusList = mutableListOf(arrivals.nextArrivingBus)
+                                            .apply {
+                                                addAll(arrivals.followingArrivingBusList)
+                                            },
                                         starred = isStarredUseCase(
                                             busServiceNumber = busArrival.busServiceNumber,
                                             busStopCode = busArrival.busStopCode,
@@ -307,11 +323,10 @@ class BusStopArrivalsViewModel @Inject constructor(
                                             busServiceNumber = listItem.busServiceNumber,
                                             destinationBusStopDescription =
                                             arrivals.nextArrivingBus.destination.busStopDescription,
-                                            arrival = arrivals.nextArrivingBus.arrival,
-                                            busType = arrivals.nextArrivingBus.type,
-                                            wheelchairAccess =
-                                            arrivals.nextArrivingBus.wheelchairAccess,
-                                            busLoad = arrivals.nextArrivingBus.load,
+                                            arrivingBusList = mutableListOf(arrivals.nextArrivingBus)
+                                                .apply {
+                                                    addAll(arrivals.followingArrivingBusList)
+                                                },
                                             busStop = busStop,
                                             starred = isStarredUseCase(
                                                 busServiceNumber = busArrival.busServiceNumber,
@@ -388,6 +403,8 @@ class BusStopArrivalsViewModel @Inject constructor(
         bottomSheetInit = false
         listenStarUpdatesJob?.cancel()
         listenStarUpdatesJob = null
+        listenBusStopStarUpdatesJob?.cancel()
+        listenBusStopStarUpdatesJob = null
         _screenState.value = BusStopArrivalsScreenState.Fetching
     }
 
@@ -410,6 +427,30 @@ class BusStopArrivalsViewModel @Inject constructor(
     fun onGoToBusStopClicked() {
         busStop?.let { busStop ->
             navigationUtil.goTo(busStop.latitude, busStop.longitude)
+        }
+    }
+
+    fun onBusStopStarToggle(busStopCode: String, newStarState: Boolean) {
+        viewModelScope.launch(coroutineContext) {
+            toggleBusStopStarUseCase(busStopCode = busStopCode, toggleTo = newStarState)
+        }
+    }
+
+    private fun listenToggleBusStopStarUpdate() {
+        listenBusStopStarUpdatesJob?.cancel()
+        listenBusStopStarUpdatesJob = null
+        listenBusStopStarUpdatesJob = viewModelScope.launch(coroutineContext) {
+            toggleBusStopStarUseCase.updates()
+                .collect { busStop ->
+                    busArrivalListLock.withLock {
+                        (_screenState.value as? BusStopArrivalsScreenState.Success)
+                            ?.header
+                            ?.takeIf {
+                                it.busStopCode == busStop.code
+                            }
+                            ?.updateStarred(busStop.isStarred)
+                    }
+                }
         }
     }
 

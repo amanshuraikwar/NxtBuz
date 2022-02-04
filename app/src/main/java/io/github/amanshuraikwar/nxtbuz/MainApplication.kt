@@ -2,12 +2,18 @@ package io.github.amanshuraikwar.nxtbuz
 
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.github.amanshuraikwar.nxtbuz.di.DaggerAppComponent
 import androidx.work.Configuration
+import com.google.accompanist.insets.ExperimentalAnimatedInsets
 
+@ExperimentalAnimationApi
+@ExperimentalAnimatedInsets
+@ExperimentalMaterialApi
 class MainApplication : DaggerApplication(), Configuration.Provider {
     override fun onCreate() {
 

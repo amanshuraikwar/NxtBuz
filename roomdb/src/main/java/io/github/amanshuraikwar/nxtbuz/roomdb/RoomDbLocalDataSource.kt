@@ -1,7 +1,12 @@
 package io.github.amanshuraikwar.nxtbuz.roomdb
 
 import android.content.Context
-import io.github.amanshuraikwar.nxtbuz.localdatasource.*
+import io.github.amanshuraikwar.nxtbuz.localdatasource.BusRouteEntity
+import io.github.amanshuraikwar.nxtbuz.localdatasource.BusStopEntity
+import io.github.amanshuraikwar.nxtbuz.localdatasource.DirectBusEntity
+import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
+import io.github.amanshuraikwar.nxtbuz.localdatasource.OperatingBusEntity
+import io.github.amanshuraikwar.nxtbuz.localdatasource.StarredBusServiceEntity
 import io.github.amanshuraikwar.nxtbuz.roomdb.model.BusRouteRoomDbEntity
 import io.github.amanshuraikwar.nxtbuz.roomdb.model.BusStopRoomDbEntity
 import io.github.amanshuraikwar.nxtbuz.roomdb.model.OperatingBusRoomDbEntity
@@ -57,6 +62,7 @@ class RoomDbLocalDataSource internal constructor(
                         busStopEntity.description,
                         busStopEntity.latitude,
                         busStopEntity.longitude,
+                        false
                     )
                 }
         }
@@ -79,6 +85,7 @@ class RoomDbLocalDataSource internal constructor(
                         busStopEntity.description,
                         busStopEntity.latitude,
                         busStopEntity.longitude,
+                        false
                     )
                 }
         }
@@ -98,9 +105,22 @@ class RoomDbLocalDataSource internal constructor(
                         busStopEntity.description,
                         busStopEntity.latitude,
                         busStopEntity.longitude,
+                        false
                     )
                 }
         }
+    }
+
+    override suspend fun getAllBusStops(): List<BusStopEntity> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateBusStop(busStop: BusStopEntity) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun findAllStarredBusStops(): List<BusStopEntity> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun insertOperatingBuses(operatingBusList: List<OperatingBusEntity>) {
@@ -256,7 +276,7 @@ class RoomDbLocalDataSource internal constructor(
         }
     }
 
-    override suspend fun insertStarredBuses(starredBusList: List<StarredBusStopEntity>) {
+    override suspend fun insertStarredBuses(starredBusList: List<StarredBusServiceEntity>) {
         withContext(ioDispatcher) {
             appDatabase.starredBusStopsDao
                 .insertAll(
@@ -270,12 +290,12 @@ class RoomDbLocalDataSource internal constructor(
         }
     }
 
-    override suspend fun findStarredBuses(busStopCode: String): List<StarredBusStopEntity> {
+    override suspend fun findStarredBuses(busStopCode: String): List<StarredBusServiceEntity> {
         return withContext(ioDispatcher) {
             appDatabase.starredBusStopsDao
                 .findByBusStopCode(busStopCode = busStopCode)
                 .map {
-                    StarredBusStopEntity(
+                    StarredBusServiceEntity(
                         busServiceNumber = it.busServiceNumber,
                         busStopCode = it.busStopCode
                     )
@@ -286,7 +306,7 @@ class RoomDbLocalDataSource internal constructor(
     override suspend fun findStarredBus(
         busStopCode: String,
         busServiceNumber: String
-    ): StarredBusStopEntity? {
+    ): StarredBusServiceEntity? {
         return withContext(ioDispatcher) {
             appDatabase.starredBusStopsDao
                 .findByBusStopCodeAndBusServiceNumber(
@@ -295,7 +315,7 @@ class RoomDbLocalDataSource internal constructor(
                 )
                 .getOrNull(0)
                 ?.let {
-                    StarredBusStopEntity(
+                    StarredBusServiceEntity(
                         busServiceNumber = it.busServiceNumber,
                         busStopCode = it.busStopCode
                     )
@@ -314,12 +334,12 @@ class RoomDbLocalDataSource internal constructor(
         }
     }
 
-    override suspend fun findAllStarredBuses(): List<StarredBusStopEntity> {
+    override suspend fun findAllStarredBuses(): List<StarredBusServiceEntity> {
         return withContext(ioDispatcher) {
             appDatabase.starredBusStopsDao
                 .findAll()
                 .map {
-                    StarredBusStopEntity(
+                    StarredBusServiceEntity(
                         busServiceNumber = it.busServiceNumber,
                         busStopCode = it.busStopCode
                     )
@@ -340,6 +360,21 @@ class RoomDbLocalDataSource internal constructor(
 
     override suspend fun findAllDirectBuses(): List<DirectBusEntity> {
         return emptyList()
+    }
+
+    override suspend fun deleteDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String,
+        busServiceNumber: String
+    ) {
+        TODO("Not yet implemented")
     }
 
     companion object {

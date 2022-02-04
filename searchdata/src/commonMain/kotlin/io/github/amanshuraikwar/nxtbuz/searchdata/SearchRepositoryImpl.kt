@@ -1,6 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.searchdata
 
-import io.github.amanshuraikwar.nxtbuz.commonkmm.*
+import io.github.amanshuraikwar.nxtbuz.commonkmm.Bus
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusService
+import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.SearchResult
+import io.github.amanshuraikwar.nxtbuz.commonkmm.toSearchDescriptionHint
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.repository.SearchRepository
 import kotlinx.coroutines.async
@@ -16,10 +21,7 @@ class SearchRepositoryImpl constructor(
 
             val busStopList =
                 localDataSource.findBusStopsByDescription(
-                    query
-                        .lowercase()
-                        .trim()
-                        .replace(Regex("[^a-z0-9]"), ""),
+                    query.toSearchDescriptionHint(),
                     limit
                 )
                     .map { busStopEntity ->
@@ -34,7 +36,8 @@ class SearchRepositoryImpl constructor(
                                     .findOperatingBuses(
                                         busStopCode = busStopEntity.code
                                     )
-                                    .map { Bus(it.busServiceNumber) }
+                                    .map { Bus(it.busServiceNumber) },
+                                isStarred = busStopEntity.starred
                             )
                         }
                     }

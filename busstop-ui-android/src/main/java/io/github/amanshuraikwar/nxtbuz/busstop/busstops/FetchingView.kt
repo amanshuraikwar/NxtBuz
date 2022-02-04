@@ -14,12 +14,13 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 @Composable
 fun FetchingView(
     modifier: Modifier = Modifier,
+    message: String,
 ) {
     Column(
         modifier
     ) {
         Text(
-            text = "Loading nearby bus stops...",
+            text = message,
             style = MaterialTheme.typography.h6Bold,
             color = MaterialTheme.colors.onSurface,
             modifier = Modifier

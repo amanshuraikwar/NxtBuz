@@ -1,11 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.busstops
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.WrongLocation
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
 fun NoBusStopsErrorView(
+    icon: ImageVector,
     title: String,
     primaryButtonText: String,
     onPrimaryButtonClick: () -> Unit,
@@ -13,7 +13,7 @@ fun NoBusStopsErrorView(
     onSecondaryButtonClick: () -> Unit
 ) {
     ErrorView(
-        icon = Icons.Rounded.WrongLocation,
+        icon = icon,
         title = title,
         primaryButtonText = primaryButtonText,
         onPrimaryButtonClick = onPrimaryButtonClick,

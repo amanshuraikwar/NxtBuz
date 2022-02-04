@@ -3,6 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.userdata
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.commonkmm.SystemThemeHelper
+import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.UserState
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
@@ -11,9 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 
-class UserRepositoryImpl constructor(
-    private val preferenceStorage: PreferenceStorage,
-    private val dispatcherProvider: CoroutinesDispatcherProvider,
+open class UserRepositoryImpl constructor(
+    protected val preferenceStorage: PreferenceStorage,
+    protected val dispatcherProvider: CoroutinesDispatcherProvider,
     private val systemThemeHelper: SystemThemeHelper
 ) : UserRepository {
     private var theme: NxtBuzTheme
@@ -40,30 +41,31 @@ class UserRepositoryImpl constructor(
         return useSystemTheme
     }
 
-    override suspend fun getUserState(): UserState = withContext(dispatcherProvider.io) {
-        return@withContext if (preferenceStorage.onboardingCompleted) {
-            UserState.SetupComplete
-        } else {
-            UserState.New
+    override suspend fun getUserState(): UserState {
+        return withContext(dispatcherProvider.io) {
+            if (preferenceStorage.onboardingCompleted) {
+                UserState.SetupComplete
+            } else {
+                UserState.New
+            }
         }
     }
 
-    override suspend fun markSetupComplete() = withContext(dispatcherProvider.io) {
-        updatePlayStoreReviewTime()
-        preferenceStorage.onboardingCompleted = true
+    override suspend fun markSetupComplete() {
+        withContext(dispatcherProvider.io) {
+            preferenceStorage.onboardingCompleted = true
+        }
     }
 
     override suspend fun markSetupIncomplete() = withContext(dispatcherProvider.io) {
-        preferenceStorage.playStoreReviewTimeMillis = -1L
         preferenceStorage.onboardingCompleted = false
     }
 
     override suspend fun shouldStartPlayStoreReview(): Boolean {
         return withContext(dispatcherProvider.io) {
-            preferenceStorage.playStoreReviewTimeMillis != -1L &&
-                    ((Clock.System.now().toEpochMilliseconds() -
-                            preferenceStorage.playStoreReviewTimeMillis) /
-                            (1000 * 60 * 60 * 24 * 7) > 1)
+            preferenceStorage.onboardingCompleted &&
+                    (Clock.System.now().toEpochMilliseconds() -
+                            preferenceStorage.playStoreReviewTimeMillis) >= 1000 * 60 * 60 * 24 * 7
         }
     }
 
@@ -135,6 +137,18 @@ class UserRepositoryImpl constructor(
     override suspend fun getHomeBusStopCode(): String? {
         return withContext(dispatcherProvider.io) {
             preferenceStorage.homeBusStopCode.takeIf { it != "" }
+        }
+    }
+
+    override suspend fun setLaunchBusStopsPage(launchBusStopsPage: LaunchBusStopsPage) {
+        return withContext(dispatcherProvider.io) {
+            preferenceStorage.launchBusStopsPage = launchBusStopsPage
+        }
+    }
+
+    override suspend fun getLaunchBusStopsPage(): LaunchBusStopsPage {
+        return withContext(dispatcherProvider.io) {
+            preferenceStorage.launchBusStopsPage
         }
     }
 }

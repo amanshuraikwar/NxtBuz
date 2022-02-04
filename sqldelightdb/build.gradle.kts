@@ -8,7 +8,7 @@ plugins {
     id("com.squareup.sqldelight")
 }
 
-version = "1.0"
+version = Libs.kmmLibVersion
 
 sqldelight {
     database("NxtBuzDb") {
@@ -19,27 +19,29 @@ sqldelight {
 }
 
 kotlin {
-    android()
+    android {}
 
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
-        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
-            ::iosArm64
-        else
-            ::iosX64
-
+    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
+        System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
+        System.getenv("NATIVE_ARCH")
+            ?.startsWith("arm") == true -> ::iosSimulatorArm64  // available to KT 1.5.30
+        else -> ::iosX64
+    }
     iosTarget("ios") {}
 
     cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
+        summary = "Local data storage module using sqldelight"
+        homepage = Libs.appHomePage
         ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        frameworkName = "sqldelightdb"
-        podfile = project.file("../NxtBuz/Podfile")
+        framework {
+            baseName = "sqldelightdb"
+        }
     }
-    
+
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":common"))
                 implementation(project(":localdatasource"))
                 implementation(Libs.Coroutines.core)
             }

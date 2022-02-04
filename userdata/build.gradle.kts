@@ -1,5 +1,5 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
@@ -7,25 +7,26 @@ plugins {
     id("com.android.library")
 }
 
-version = "1.0"
+version = Libs.kmmLibVersion
 
 kotlin {
-    android()
+    android {}
 
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
-        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
-            ::iosArm64
-        else
-            ::iosX64
-
+    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
+        System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
+        System.getenv("NATIVE_ARCH")
+            ?.startsWith("arm") == true -> ::iosSimulatorArm64  // available to KT 1.5.30
+        else -> ::iosX64
+    }
     iosTarget("ios") {}
 
     cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
+        summary = "Business module for user data"
+        homepage = Libs.appHomePage
         ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        frameworkName = "userdata"
-        podfile = project.file("../NxtBuz/Podfile")
+        framework {
+            baseName = "userdata"
+        }
     }
 
     sourceSets {
@@ -42,8 +43,10 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                implementation(project(":test-util"))
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation(Libs.mockk)
             }
         }
         val androidMain by getting

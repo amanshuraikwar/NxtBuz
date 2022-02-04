@@ -19,6 +19,7 @@ kotlin {
             ::iosX64
 
     iosTarget("ios") {}
+    iosSimulatorArm64()
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -44,6 +45,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation(project(":test-util"))
             }
         }
         val androidMain by getting
@@ -55,6 +57,12 @@ kotlin {
         }
         val iosMain by getting
         val iosTest by getting
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Test by getting {
+            dependsOn(iosTest)
+        }
     }
 }
 

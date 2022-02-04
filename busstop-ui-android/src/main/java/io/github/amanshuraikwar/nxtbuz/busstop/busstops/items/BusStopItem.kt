@@ -1,47 +1,72 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.busstops.items
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
+import io.github.amanshuraikwar.nxtbuz.common.compose.StarIndicatorView
+import io.github.amanshuraikwar.nxtbuz.common.compose.SwipeableStarButtonView
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
+import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
 import java.util.*
 
 @Composable
 fun BusStopItem(
     modifier: Modifier = Modifier,
     data: BusStopsItemData.BusStop,
+    onClick: () -> Unit,
+    onStarToggle: (newStarState: Boolean) -> Unit
 ) {
-    Box(
+    SwipeableStarButtonView(
         modifier = modifier,
+        starred = data.isStarred,
+        onItemClick = onClick,
+        onStarToggle = onStarToggle
     ) {
-        Surface(
-            modifier = Modifier
-                .padding(
-                    start = 16.dp,
-                    top = 16.dp,
-                    bottom = 16.dp
-                ),
-            color = MaterialTheme.colors.primary,
-            shape = MaterialTheme.shapes.small
+        Box(
+            contentAlignment = Alignment.BottomEnd
         ) {
-            Icon(
-                painter = painterResource(
-                    R.drawable.ic_bus_stop_24
-                ),
+            Surface(
                 modifier = Modifier
-                    .padding(8.dp)
-                    .size(24.dp),
-                contentDescription = "Bus Stop",
-                tint = MaterialTheme.colors.onPrimary
+                    .padding(
+                        start = 16.dp,
+                        top = 16.dp,
+                        bottom = 16.dp,
+                        end = 16.dp
+                    ),
+                color = MaterialTheme.colors.primary,
+                shape = MaterialTheme.shapes.small
+            ) {
+                Icon(
+                    painter = painterResource(
+                        R.drawable.ic_bus_stop_24
+                    ),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(24.dp),
+                    contentDescription = "Bus Stop",
+                    tint = MaterialTheme.colors.onPrimary
+                )
+            }
+
+            StarIndicatorView(
+                Modifier
+                    .padding(bottom = 12.dp, end = 12.dp),
+                isStarred = data.isStarred
             )
         }
 
@@ -76,5 +101,24 @@ fun BusStopItem(
                 lineHeight = 20.sp,
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun BusStopItemPreview() {
+    PreviewSurface(darkTheme = true) {
+        BusStopItem(
+            data = BusStopsItemData.BusStop(
+                id = "bus-stops-screen-12345",
+                busStopCode = "123456",
+                busStopDescription = "Opp Blk 19",
+                busStopInfo = "Jln Jurong Kechil • 123456",
+                operatingBuses = "961M 77  88 162",
+                isStarred = true
+            ),
+            onClick = {},
+            onStarToggle = {}
+        )
     }
 }

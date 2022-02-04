@@ -9,28 +9,32 @@ import io.github.amanshuraikwar.nxtbuz.busroute.R
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteHeaderData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteScreenState
-import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.common.model.*
-import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusStopArrival
-import io.github.amanshuraikwar.nxtbuz.commonkmm.busroute.BusRoute
-import io.github.amanshuraikwar.nxtbuz.commonkmm.busroute.BusRouteNode
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.map.MapUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusStopArrival
+import io.github.amanshuraikwar.nxtbuz.commonkmm.busroute.BusRoute
+import io.github.amanshuraikwar.nxtbuz.commonkmm.busroute.BusRouteNode
 import io.github.amanshuraikwar.nxtbuz.domain.arrivals.BusServiceArrivalsLoop
 import io.github.amanshuraikwar.nxtbuz.domain.arrivals.GetBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busroute.GetBusRouteUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.map.PushMapEventUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.IsStarredUseCase
-import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusStopStarUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.IsBusServiceStarredUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusServiceStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 private const val TAG = "BusRouteViewModel"
@@ -39,8 +43,8 @@ class BusRouteViewModel @Inject constructor(
     private val getBusRouteUseCase: GetBusRouteUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
     private val getBusBusArrivalsUseCase: GetBusArrivalsUseCase,
-    private val isStarredUseCase: IsStarredUseCase,
-    private val toggleStar: ToggleBusStopStarUseCase,
+    private val isStarredUseCase: IsBusServiceStarredUseCase,
+    private val toggleStar: ToggleBusServiceStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
     private val pushMapEventUseCase: PushMapEventUseCase,
     private val mapUtil: MapUtil,
@@ -80,7 +84,7 @@ class BusRouteViewModel @Inject constructor(
         viewModelScope.launch(coroutineContext) {
             _screenState.emit(BusRouteScreenState.Fetching)
 
-            val busStop = getBusStopUseCase(busStopCode)
+            val busStop = getBusStopUseCase(busStopCode) ?: return@launch
 
             listItemsLock.withLock {
                 addBusStopMapMarker(busStop = busStop)

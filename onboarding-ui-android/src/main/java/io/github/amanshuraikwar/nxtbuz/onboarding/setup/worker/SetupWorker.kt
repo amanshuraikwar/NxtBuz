@@ -3,7 +3,16 @@ package io.github.amanshuraikwar.nxtbuz.onboarding.setup.worker
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.asFlow
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.CoroutineWorker
+import androidx.work.ExistingWorkPolicy
+import androidx.work.ForegroundInfo
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.android.HasAndroidInjector
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
@@ -11,7 +20,6 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.user.SetupState
 import io.github.amanshuraikwar.nxtbuz.domain.user.DoSetupUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

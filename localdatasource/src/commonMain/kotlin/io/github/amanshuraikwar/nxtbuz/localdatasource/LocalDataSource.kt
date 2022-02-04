@@ -11,6 +11,12 @@ interface LocalDataSource {
 
     suspend fun findBusStopByCode(busStopCode: String): BusStopEntity?
 
+    suspend fun getAllBusStops(): List<BusStopEntity>
+
+    suspend fun updateBusStop(busStop: BusStopEntity)
+
+    suspend fun findAllStarredBusStops(): List<BusStopEntity>
+
     suspend fun insertOperatingBuses(operatingBusList: List<OperatingBusEntity>)
 
     suspend fun findOperatingBuses(busStopCode: String): List<OperatingBusEntity>
@@ -32,18 +38,20 @@ interface LocalDataSource {
 
     suspend fun deleteAllBusRoutes()
 
-    suspend fun insertStarredBuses(starredBusList: List<StarredBusStopEntity>)
+    //region starred buses
+    suspend fun insertStarredBuses(starredBusList: List<StarredBusServiceEntity>)
 
-    suspend fun findStarredBuses(busStopCode: String): List<StarredBusStopEntity>
+    suspend fun findStarredBuses(busStopCode: String): List<StarredBusServiceEntity>
 
     suspend fun findStarredBus(
         busStopCode: String,
         busServiceNumber: String
-    ): StarredBusStopEntity?
+    ): StarredBusServiceEntity?
 
     suspend fun deleteStarredBus(busStopCode: String, busServiceNumber: String)
 
-    suspend fun findAllStarredBuses(): List<StarredBusStopEntity>
+    suspend fun findAllStarredBuses(): List<StarredBusServiceEntity>
+    //endregion
 
     suspend fun findDirectBuses(
         sourceBusStopCode: String,
@@ -53,4 +61,15 @@ interface LocalDataSource {
     suspend fun insertDirectBuses(directBusList: List<DirectBusEntity>)
 
     suspend fun findAllDirectBuses(): List<DirectBusEntity>
+
+    suspend fun deleteDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String,
+    )
+
+    suspend fun deleteDirectBuses(
+        sourceBusStopCode: String,
+        destinationBusStopCode: String,
+        busServiceNumber: String
+    )
 }

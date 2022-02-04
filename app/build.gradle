@@ -13,7 +13,6 @@ def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
-
     signingConfigs {
         release {
             storeFile file(localProperties['keystore.file.path'])
@@ -73,7 +72,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            applicationIdSuffix ".release"
+            applicationIdSuffix ".internal"
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.release']
             buildConfigField "String", "ltaAccountKey", "\""+localProperties['lta.account.key.release']+"\""
             manifestPlaceholders = [ appName : APP_NAME_INTERNAL]

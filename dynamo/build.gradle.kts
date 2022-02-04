@@ -20,6 +20,7 @@ kotlin {
             ::iosX64
 
     iosTarget("ios") {}
+    iosSimulatorArm64()
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -32,8 +33,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(Libs.multiplatformSettings)
-                implementation(Libs.multiplatformSettingsNoArg)
+                implementation(Libs.MultiplatformSettings.lib)
+                implementation(Libs.MultiplatformSettings.noArg)
 
                 with(Libs.Ktor) {
                     implementation(clientCore)
@@ -71,6 +72,12 @@ kotlin {
             }
         }
         val iosTest by getting
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Test by getting {
+            dependsOn(iosTest)
+        }
     }
 }
 
@@ -80,5 +87,11 @@ android {
     defaultConfig {
         minSdk = Libs.minSdk
         targetSdk = Libs.targetSdk
+    }
+
+    buildTypes {
+        release {
+            consumerProguardFile("consumer-rules.pro")
+        }
     }
 }

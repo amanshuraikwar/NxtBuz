@@ -22,3 +22,6 @@ SELECT * FROM DirectBusEntity WHERE sourceBusStopCode = :sourceBusStopCode AND d
 
 deleteBySourceAndDenstinationBusStopCode:
 DELETE FROM DirectBusEntity WHERE sourceBusStopCode = :sourceBusStopCode AND destinationBusStopCode = :destinationBusStopCode;
+
+deleteBySourceAndDenstinationBusStopCodeAndBusServiceNumber:
+DELETE FROM DirectBusEntity WHERE sourceBusStopCode = :sourceBusStopCode AND destinationBusStopCode = :destinationBusStopCode AND busServiceNumber = :busServiceNumber;

@@ -12,7 +12,7 @@ class IosGetBusStopUseCase constructor(
 ) {
     operator fun invoke(
         busStopCode: String,
-        callback: (IosResult<BusStop>) -> Unit
+        callback: (IosResult<BusStop?>) -> Unit
     ) {
         callback from {
             invoke(busStopCode = busStopCode)

@@ -12,7 +12,6 @@ import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
@@ -23,7 +22,7 @@ class StarredViewModel @Inject constructor(
     private val getStarredBusServicesUseCase: GetStarredBusServicesUseCase,
     private val getBusArrivalsUseCase: GetBusArrivalsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
-    private val toggleStar: ToggleBusStopStarUseCase,
+    private val toggleStar: ToggleBusServiceStarUseCase,
     private val toggleStarUpdateUseCase: ToggleStarUpdateUseCase,
     private val showErrorStarredBusArrivalsUseCase: ShowErrorStarredBusArrivalsUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider

@@ -45,7 +45,7 @@ open class GetNearbyGoingHomeBusesUseCase(
             val homeBusStopList =
                 busStopRepository
                     .getBusStop(homeBusStopCode)
-                    .let { busStop ->
+                    ?.let { busStop ->
                         mutableListOf(busStop)
                             .apply {
                                 addAll(
@@ -57,6 +57,10 @@ open class GetNearbyGoingHomeBusesUseCase(
                                         )
                                 )
                             }
+                    }
+                    ?: run {
+                        emit(GoingHomeBusResult.HomeBusStopNotSet)
+                        return@flow
                     }
 
             val sourceBusStopList = busStopRepository.getCloseBusStops(

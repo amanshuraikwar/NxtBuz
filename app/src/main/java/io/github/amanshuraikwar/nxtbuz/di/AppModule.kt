@@ -1,6 +1,9 @@
 package io.github.amanshuraikwar.nxtbuz.di
 
 import android.content.Context
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ExperimentalMaterialApi
+import com.google.accompanist.insets.ExperimentalAnimatedInsets
 import dagger.Module
 import dagger.Provides
 import io.github.amanshuraikwar.nxtbuz.BuildConfig
@@ -16,6 +19,9 @@ import javax.inject.Singleton
  * Define here all objects that are shared throughout the app, like SharedPreferences, navigators or
  * others. If some of those objects are singletons, they should be annotated with `@Singleton`.
  */
+@ExperimentalAnimationApi
+@ExperimentalAnimatedInsets
+@ExperimentalMaterialApi
 @Module
 class AppModule {
     @Provides
