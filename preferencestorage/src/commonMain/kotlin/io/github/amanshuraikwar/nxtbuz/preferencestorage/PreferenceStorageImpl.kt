@@ -19,7 +19,13 @@ internal class PreferenceStorageImpl(
 
     override var onboardingCompleted by BooleanPreference(
         settings,
-        SettingsFactory.prefOnboardingKey(),
+        PREF_ONBOARDING,
+        false
+    )
+
+    override var sqlDelightAndroidMigrationComplete by BooleanPreference(
+        settings,
+        PREF_SQL_DELIGHT_ANDROID_MIGRATION_COMPLETE,
         false
     )
 
@@ -106,13 +112,17 @@ internal class PreferenceStorageImpl(
     )
 
     companion object {
+        private const val PREF_ONBOARDING = "pref_onboarding"
         const val PREF_BUS_STOPS_QUERY_LIMIT = "pref_bus_stops_query_limit"
+        const val PREF_SQL_DELIGHT_ANDROID_MIGRATION_COMPLETE =
+            "pref_sql_delight_android_migration_complete"
         const val PREF_DEFAULT_LOCATION = "pref_default_location"
         const val PREF_MAX_DISTANCE_OF_CLOSEST_BUS_STOP = "pref_max_distance_of_closest_bus_stop"
         const val PREF_SHOW_ERROR_STARRED_BUS_ARRIVALS = "show_error_bus_arrivals"
         const val PREF_ALERT_STARRED_BUS_ARRIVALS = "alert_starred_bus_arrivals"
         const val PREF_ALERT_STARRED_BUS_ARRIVALS_MINUTES = "alert_starred_bus_arrivals_minutes"
-        const val PREF_ALERT_STARRED_BUS_ARRIVALS_FREQUENCY = "alert_starred_bus_arrivals_frequency"
+        const val PREF_ALERT_STARRED_BUS_ARRIVALS_FREQUENCY =
+            "alert_starred_bus_arrivals_frequency"
         const val PREF_SHOW_MAP = "show_map"
         const val PREF_PERMISSION_DENIED_PERMANENTLY = "permission_denied_permanently"
         const val PREF_THEME = "pref_theme"

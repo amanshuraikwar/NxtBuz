@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 
-class UserRepositoryImpl constructor(
-    private val preferenceStorage: PreferenceStorage,
-    private val dispatcherProvider: CoroutinesDispatcherProvider,
+open class UserRepositoryImpl constructor(
+    protected val preferenceStorage: PreferenceStorage,
+    protected val dispatcherProvider: CoroutinesDispatcherProvider,
     private val systemThemeHelper: SystemThemeHelper
 ) : UserRepository {
     private var theme: NxtBuzTheme
@@ -41,16 +41,20 @@ class UserRepositoryImpl constructor(
         return useSystemTheme
     }
 
-    override suspend fun getUserState(): UserState = withContext(dispatcherProvider.io) {
-        return@withContext if (preferenceStorage.onboardingCompleted) {
-            UserState.SetupComplete
-        } else {
-            UserState.New
+    override suspend fun getUserState(): UserState {
+        return withContext(dispatcherProvider.io) {
+            if (preferenceStorage.onboardingCompleted) {
+                UserState.SetupComplete
+            } else {
+                UserState.New
+            }
         }
     }
 
-    override suspend fun markSetupComplete() = withContext(dispatcherProvider.io) {
-        preferenceStorage.onboardingCompleted = true
+    override suspend fun markSetupComplete() {
+        withContext(dispatcherProvider.io) {
+            preferenceStorage.onboardingCompleted = true
+        }
     }
 
     override suspend fun markSetupIncomplete() = withContext(dispatcherProvider.io) {
