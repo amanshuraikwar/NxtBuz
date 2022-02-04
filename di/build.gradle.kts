@@ -67,6 +67,7 @@ kotlin {
                 api(project(":locationdata-android"))
 
                 implementation(project(":sqldelightdb"))
+                implementation(project(":roomdb"))
 
                 implementation(Libs.Dagger.library)
                 configurations.get("kapt").dependencies.add(implementation(Libs.Dagger.compiler))

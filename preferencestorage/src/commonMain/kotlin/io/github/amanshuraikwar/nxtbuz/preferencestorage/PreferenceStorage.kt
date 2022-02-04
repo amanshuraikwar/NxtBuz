@@ -10,6 +10,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
  */
 interface PreferenceStorage {
     var onboardingCompleted: Boolean
+    var sqlDelightAndroidMigrationComplete: Boolean
     var busStopsQueryLimit: Int
     var defaultLocation: Pair<Double, Double>
     var maxDistanceOfClosestBusStop: Int

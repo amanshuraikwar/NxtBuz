@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class StarredBusArrivalRepositoryImpl constructor(
+open class StarredBusArrivalRepositoryImpl constructor(
     private val localDataSource: LocalDataSource,
-    private val preferenceStorage: PreferenceStorage,
+    protected val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : StarredBusArrivalRepository {
     private val coroutineScope: CoroutineScope by lazy {
@@ -48,6 +48,13 @@ class StarredBusArrivalRepositoryImpl constructor(
     }
 
     override suspend fun getStarredBusServices(
+        atBusStopCode: String?
+    ): List<StarredBusService> {
+        return getStarredBusServices(localDataSource, atBusStopCode)
+    }
+
+    protected suspend fun getStarredBusServices(
+        localDataSource: LocalDataSource,
         atBusStopCode: String?
     ): List<StarredBusService> {
         return withContext(dispatcherProvider.computation) {

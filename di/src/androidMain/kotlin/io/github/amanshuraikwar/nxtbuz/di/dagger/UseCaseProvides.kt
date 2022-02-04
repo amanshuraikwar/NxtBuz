@@ -290,12 +290,14 @@ class UseCaseProvides {
     fun provideDoSetupUseCase(
         userRepository: UserRepository,
         busStopRepository: BusStopRepository,
-        busRouteRepository: BusRouteRepository
+        busRouteRepository: BusRouteRepository,
+        starredBusArrivalRepository: StarredBusArrivalRepository
     ): DoSetupUseCase {
         return DoSetupUseCase(
             userRepository = userRepository,
             busStopRepository = busStopRepository,
-            busRouteRepository = busRouteRepository
+            busRouteRepository = busRouteRepository,
+            starredBusArrivalRepository = starredBusArrivalRepository,
         )
     }
 
