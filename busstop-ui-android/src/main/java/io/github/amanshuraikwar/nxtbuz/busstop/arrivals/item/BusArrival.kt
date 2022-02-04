@@ -14,15 +14,19 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
 import io.github.amanshuraikwar.nxtbuz.common.compose.VerticalInOutAnimatedContent
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.directions
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.outline
@@ -33,8 +37,8 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 @Composable
 fun BusArrival(
     arrival: Int,
-    busLoad: BusLoad,
-    busType: BusType,
+    busLoad: BusLoad?,
+    busType: BusType?,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -64,7 +68,13 @@ fun BusArrival(
                             targetValue = if (arrival == 0) {
                                 MaterialTheme.colors.directions
                             } else {
-                                MaterialTheme.colors.onSurface
+                                MaterialTheme.colors.onSurface.let {
+                                    if (arrival == -1) {
+                                        it.disabled
+                                    } else {
+                                        it
+                                    }
+                                }
                             }
                         ).value,
                         modifier = Modifier
@@ -80,30 +90,59 @@ fun BusArrival(
             modifier = Modifier.padding(top = 4.dp)
         ) {
             Icon(
-                painter = painterResource(
-                    when (busType) {
-                        BusType.SD -> R.drawable.ic_bus_normal_16
-                        BusType.DD -> R.drawable.ic_bus_dd_16
-                        BusType.BD -> R.drawable.ic_bus_feeder_16
-                    }
-                ),
+                painter = if (busType != null) {
+                    painterResource(
+                        when (busType) {
+                            BusType.SD -> R.drawable.ic_bus_normal_16
+                            BusType.DD -> R.drawable.ic_bus_dd_16
+                            BusType.BD -> R.drawable.ic_bus_feeder_16
+                        }
+                    )
+                } else {
+                    rememberVectorPainter(image = Icons.Rounded.RemoveCircle)
+                },
                 modifier = Modifier
-                    .size(16.dp),
+                    .size(16.dp)
+                    .let {
+                        if (busLoad != null) {
+                            it.padding(1.dp)
+                        } else {
+                            it
+                        }
+                    },
                 contentDescription = "Bus Type",
-                tint = MaterialTheme.colors.onSurface
+                tint = MaterialTheme.colors.onSurface.let {
+                    if (busType == null) {
+                        it.disabled
+                    } else {
+                        it
+                    }
+                }
             )
 
             Icon(
-                painter = painterResource(
-                    when (busLoad) {
-                        BusLoad.SEA -> R.drawable.ic_bus_load_1_16
-                        BusLoad.SDA -> R.drawable.ic_bus_load_2_16
-                        BusLoad.LSD -> R.drawable.ic_bus_load_3_16
-                    }
-                ),
-                modifier = Modifier.size(16.dp),
+                painter = if (busLoad != null) {
+                    painterResource(
+                        when (busLoad) {
+                            BusLoad.SEA -> R.drawable.ic_bus_load_1_16
+                            BusLoad.SDA -> R.drawable.ic_bus_load_2_16
+                            BusLoad.LSD -> R.drawable.ic_bus_load_3_16
+                        }
+                    )
+                } else {
+                    rememberVectorPainter(image = Icons.Rounded.RemoveCircle)
+                },
+                modifier = Modifier
+                    .padding(start = 1.dp)
+                    .size(16.dp),
                 contentDescription = "Bus Load",
-                tint = MaterialTheme.colors.onSurface
+                tint = MaterialTheme.colors.onSurface.let {
+                    if (busLoad == null) {
+                        it.disabled
+                    } else {
+                        it
+                    }
+                }
             )
         }
     }

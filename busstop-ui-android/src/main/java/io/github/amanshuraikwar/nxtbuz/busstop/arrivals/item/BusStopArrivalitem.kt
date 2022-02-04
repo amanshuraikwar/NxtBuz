@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
 import io.github.amanshuraikwar.nxtbuz.common.compose.SwipeableStarButtonView
-import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusLoad
 import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 
 @ExperimentalAnimationApi
@@ -51,7 +50,6 @@ fun BusStopArrivalItem(
                     Column {
                         BusService(
                             busServiceNumber = data.busServiceNumber,
-                            //busType = BusType.BD,
                             starred = data.starred
                         )
 
@@ -67,9 +65,9 @@ fun BusStopArrivalItem(
                     ) {
                         BusArrival(
                             arrival = data.arrivingBusList.getOrNull(0)?.arrival ?: -1,
-                            busLoad = data.arrivingBusList.getOrNull(0)?.load ?: BusLoad.SEA,
+                            busLoad = data.arrivingBusList.getOrNull(0)?.load,
                             busType =
-                            data.arrivingBusList.getOrNull(0)?.type ?: BusType.SD
+                            data.arrivingBusList.getOrNull(0)?.type
                         )
 
                         Icon(
@@ -80,9 +78,9 @@ fun BusStopArrivalItem(
 
                         BusArrival(
                             arrival = data.arrivingBusList.getOrNull(1)?.arrival ?: -1,
-                            busLoad = data.arrivingBusList.getOrNull(1)?.load ?: BusLoad.SEA,
+                            busLoad = data.arrivingBusList.getOrNull(1)?.load,
                             busType =
-                            data.arrivingBusList.getOrNull(0)?.type ?: BusType.SD
+                            data.arrivingBusList.getOrNull(1)?.type
                         )
 
                         Icon(
@@ -93,9 +91,9 @@ fun BusStopArrivalItem(
 
                         BusArrival(
                             arrival = data.arrivingBusList.getOrNull(2)?.arrival ?: -1,
-                            busLoad = data.arrivingBusList.getOrNull(2)?.load ?: BusLoad.SEA,
+                            busLoad = data.arrivingBusList.getOrNull(2)?.load,
                             busType =
-                            data.arrivingBusList.getOrNull(0)?.type ?: BusType.SD
+                            data.arrivingBusList.getOrNull(2)?.type
                         )
                     }
 
