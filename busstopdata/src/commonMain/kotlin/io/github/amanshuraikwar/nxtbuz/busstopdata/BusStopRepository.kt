@@ -170,26 +170,6 @@ class BusStopRepositoryImpl constructor(
         }
     }
 
-    override suspend fun getStarredBusStops(): List<BusStop> {
-        return withContext(dispatcherProvider.io) {
-            localDataSource
-                .findAllStarredBusStops()
-                .map { busStopEntity ->
-                    BusStop(
-                        code = busStopEntity.code,
-                        roadName = busStopEntity.roadName,
-                        description = busStopEntity.description,
-                        latitude = busStopEntity.latitude,
-                        longitude = busStopEntity.longitude,
-                        operatingBusList = localDataSource
-                            .findOperatingBuses(busStopEntity.code)
-                            .map { Bus(it.busServiceNumber) },
-                        isStarred = busStopEntity.starred
-                    )
-                }
-        }
-    }
-
     override suspend fun toggleBusStopStar(busStopCode: String, toggleTo: Boolean?): Boolean {
         return withContext(dispatcherProvider.computation) {
             val busStopEntity =
@@ -232,6 +212,26 @@ class BusStopRepositoryImpl constructor(
     override suspend fun isBusStopStarred(busStopCode: String): Boolean {
         return withContext(dispatcherProvider.computation) {
             localDataSource.findBusStopByCode(busStopCode = busStopCode)?.starred ?: false
+        }
+    }
+
+    override suspend fun getStarredBusStops(): List<BusStop> {
+        return withContext(dispatcherProvider.io) {
+            localDataSource
+                .findAllStarredBusStops()
+                .map { busStopEntity ->
+                    BusStop(
+                        code = busStopEntity.code,
+                        roadName = busStopEntity.roadName,
+                        description = busStopEntity.description,
+                        latitude = busStopEntity.latitude,
+                        longitude = busStopEntity.longitude,
+                        operatingBusList = localDataSource
+                            .findOperatingBuses(busStopEntity.code)
+                            .map { Bus(it.busServiceNumber) },
+                        isStarred = busStopEntity.starred
+                    )
+                }
         }
     }
 

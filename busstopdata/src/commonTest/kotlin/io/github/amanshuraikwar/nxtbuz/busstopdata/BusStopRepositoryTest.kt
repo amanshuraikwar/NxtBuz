@@ -1,3 +1,5 @@
+@file:Suppress("IllegalIdentifier")
+
 package io.github.amanshuraikwar.nxtbuz.busstopdata
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.Bus
@@ -11,8 +13,10 @@ import io.github.amanshuraikwar.testutil.FakeCoroutinesDispatcherProvider
 import io.github.amanshuraikwar.testutil.FakeLocalDataSource
 import io.github.amanshuraikwar.testutil.FakePreferenceStorage
 import io.github.amanshuraikwar.testutil.FakeRemoteDataSource
+import io.github.amanshuraikwar.testutil.joinWithExpiry
 import io.github.amanshuraikwar.testutil.runTest
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -131,42 +135,48 @@ class BusStopRepositoryTest {
                         roadName = "Victoria St",
                         description = "Hotel Grand Pacific",
                         latitude = 1.29684825487647,
-                        longitude = 103.85253591654006
+                        longitude = 103.85253591654006,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "01013",
                         roadName = "Victoria St",
                         description = "St. Joseph's Ch",
                         latitude = 1.29770970610083,
-                        longitude = 103.8532247463225
+                        longitude = 103.8532247463225,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "01019",
                         roadName = "Victoria St",
                         description = "Bras Basah Cplx",
                         latitude = 1.29698951191332,
-                        longitude = 103.85302201172507
+                        longitude = 103.85302201172507,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "01029",
                         roadName = "Nth Bridge Rd",
                         description = "Opp Natl Lib",
                         latitude = 1.2966729849642,
-                        longitude = 103.85441422464267
+                        longitude = 103.85441422464267,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "01039",
                         roadName = "Nth Bridge Rd",
                         description = "Bugis Cube",
                         latitude = 1.29820784139683,
-                        longitude = 103.85549139837407
+                        longitude = 103.85549139837407,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "01059",
                         roadName = "Victoria St",
                         description = "Bugis Stn Exit B",
                         latitude = 1.30075679526626,
-                        longitude = 103.85611040457583
+                        longitude = 103.85611040457583,
+                        starred = false,
                     ),
                 ),
                 localDataSource.getAllBusStops()
@@ -185,14 +195,16 @@ class BusStopRepositoryTest {
                         roadName = "poopoo st",
                         description = "Cuis Buge",
                         latitude = 1.0974,
-                        longitude = 100.24
+                        longitude = 100.24,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "23456",
                         roadName = "helohelo st",
                         description = "Cubis Nts Itxe C",
                         latitude = 1.572,
-                        longitude = 101.24
+                        longitude = 101.24,
+                        starred = false,
                     ),
                 )
             )
@@ -305,42 +317,48 @@ class BusStopRepositoryTest {
                         roadName = "Victoria St",
                         description = "Hotel Grand Pacific",
                         latitude = 1.29684825487647,
-                        longitude = 103.85253591654006
+                        longitude = 103.85253591654006,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "01013",
                         roadName = "Victoria St",
                         description = "St. Joseph's Ch",
                         latitude = 1.29770970610083,
-                        longitude = 103.8532247463225
+                        longitude = 103.8532247463225,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "01019",
                         roadName = "Victoria St",
                         description = "Bras Basah Cplx",
                         latitude = 1.29698951191332,
-                        longitude = 103.85302201172507
+                        longitude = 103.85302201172507,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "01029",
                         roadName = "Nth Bridge Rd",
                         description = "Opp Natl Lib",
                         latitude = 1.2966729849642,
-                        longitude = 103.85441422464267
+                        longitude = 103.85441422464267,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "01039",
                         roadName = "Nth Bridge Rd",
                         description = "Bugis Cube",
                         latitude = 1.29820784139683,
-                        longitude = 103.85549139837407
+                        longitude = 103.85549139837407,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "01059",
                         roadName = "Victoria St",
                         description = "Bugis Stn Exit B",
                         latitude = 1.30075679526626,
-                        longitude = 103.85611040457583
+                        longitude = 103.85611040457583,
+                        starred = false,
                     ),
                 ),
                 localDataSource.getAllBusStops()
@@ -372,70 +390,80 @@ class BusStopRepositoryTest {
                         roadName = "5",
                         description = "5",
                         latitude = 1.0,
-                        longitude = 5.916079783099616
+                        longitude = 5.916079783099616,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "2",
                         roadName = "2",
                         description = "2",
                         latitude = 1.0,
-                        longitude = 2.8284271247461903
+                        longitude = 2.8284271247461903,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "6",
                         roadName = "6",
                         description = "6",
                         latitude = 1.0,
-                        longitude = 6.928203230275509
+                        longitude = 6.928203230275509,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "9",
                         roadName = "9",
                         description = "9",
                         latitude = 1.0,
-                        longitude = 9.9498743710662
+                        longitude = 9.9498743710662,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "1",
                         roadName = "1",
                         description = "1",
                         latitude = 1.0,
-                        longitude = 1.7320508075688772
+                        longitude = 1.7320508075688772,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "0",
                         roadName = "0",
                         description = "0",
                         latitude = 1.0,
-                        longitude = 0.0
+                        longitude = 0.0,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "4",
                         roadName = "4",
                         description = "4",
                         latitude = 1.0,
-                        longitude = 4.898979485566356
+                        longitude = 4.898979485566356,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "3",
                         roadName = "3",
                         description = "3",
                         latitude = 1.0,
-                        longitude = 3.872983346207417
+                        longitude = 3.872983346207417,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "8",
                         roadName = "8",
                         description = "8",
                         latitude = 1.0,
-                        longitude = 8.94427190999916
+                        longitude = 8.94427190999916,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "7",
                         roadName = "7",
                         description = "7",
                         latitude = 1.0,
-                        longitude = 7.937253933193772
+                        longitude = 7.937253933193772,
+                        starred = false,
                     ),
                 )
             )
@@ -460,6 +488,7 @@ class BusStopRepositoryTest {
                         latitude = 1.0,
                         longitude = 0.0,
                         operatingBusList = listOf(),
+                        isStarred = false,
                     ),
                     BusStop(
                         code = "1",
@@ -468,6 +497,7 @@ class BusStopRepositoryTest {
                         latitude = 1.0,
                         longitude = 1.7320508075688772,
                         operatingBusList = listOf(),
+                        isStarred = false,
                     ),
                     BusStop(
                         code = "2",
@@ -476,6 +506,7 @@ class BusStopRepositoryTest {
                         latitude = 1.0,
                         longitude = 2.8284271247461903,
                         operatingBusList = listOf(),
+                        isStarred = false,
                     ),
                     BusStop(
                         code = "3",
@@ -484,6 +515,7 @@ class BusStopRepositoryTest {
                         latitude = 1.0,
                         longitude = 3.872983346207417,
                         operatingBusList = listOf(),
+                        isStarred = false,
                     ),
                     BusStop(
                         code = "4",
@@ -492,6 +524,7 @@ class BusStopRepositoryTest {
                         latitude = 1.0,
                         longitude = 4.898979485566356,
                         operatingBusList = listOf(),
+                        isStarred = false,
                     ),
                 ),
                 repo.getCloseBusStops(0.0, 0.0, 5)
@@ -556,70 +589,80 @@ class BusStopRepositoryTest {
                         roadName = "5",
                         description = "5",
                         latitude = 1.0,
-                        longitude = 5.916079783099616
+                        longitude = 5.916079783099616,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "2",
                         roadName = "2",
                         description = "2",
                         latitude = 1.0,
-                        longitude = 2.8284271247461903
+                        longitude = 2.8284271247461903,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "6",
                         roadName = "6",
                         description = "6",
                         latitude = 1.0,
-                        longitude = 6.928203230275509
+                        longitude = 6.928203230275509,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "9",
                         roadName = "9",
                         description = "9",
                         latitude = 1.0,
-                        longitude = 9.9498743710662
+                        longitude = 9.9498743710662,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "1",
                         roadName = "1",
                         description = "1",
                         latitude = 1.0,
-                        longitude = 1.7320508075688772
+                        longitude = 1.7320508075688772,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "0",
                         roadName = "0",
                         description = "0",
                         latitude = 1.0,
-                        longitude = 0.0
+                        longitude = 0.0,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "4",
                         roadName = "4",
                         description = "4",
                         latitude = 1.0,
-                        longitude = 4.898979485566356
+                        longitude = 4.898979485566356,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "3",
                         roadName = "3",
                         description = "3",
                         latitude = 1.0,
-                        longitude = 3.872983346207417
+                        longitude = 3.872983346207417,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "8",
                         roadName = "8",
                         description = "8",
                         latitude = 1.0,
-                        longitude = 8.94427190999916
+                        longitude = 8.94427190999916,
+                        starred = false,
                     ),
                     BusStopEntity(
                         code = "7",
                         roadName = "7",
                         description = "7",
                         latitude = 1.0,
-                        longitude = 7.937253933193772
+                        longitude = 7.937253933193772,
+                        starred = false,
                     ),
                 )
             )
@@ -644,6 +687,7 @@ class BusStopRepositoryTest {
                         latitude = 1.0,
                         longitude = 0.0,
                         operatingBusList = listOf(),
+                        isStarred = false,
                     ),
                     BusStop(
                         code = "1",
@@ -652,6 +696,7 @@ class BusStopRepositoryTest {
                         latitude = 1.0,
                         longitude = 1.7320508075688772,
                         operatingBusList = listOf(),
+                        isStarred = false,
                     ),
                 ),
                 repo.getCloseBusStops(0.0, 0.0, 5, metres = 333943)
@@ -799,14 +844,16 @@ class BusStopRepositoryTest {
                                 roadName = "Nth Bridge Rd",
                                 description = "Bugis Cube",
                                 latitude = 1.29820784139683,
-                                longitude = 103.85549139837407
+                                longitude = 103.85549139837407,
+                                starred = false
                             ),
                             BusStopEntity(
                                 code = "01059",
                                 roadName = "Victoria St",
                                 description = "Bugis Stn Exit B",
                                 latitude = 1.30075679526626,
-                                longitude = 103.85611040457583
+                                longitude = 103.85611040457583,
+                                starred = false
                             ),
                         )
                     )
@@ -865,7 +912,8 @@ class BusStopRepositoryTest {
                     operatingBusList = listOf(
                         Bus(serviceNumber = "961"),
                         Bus(serviceNumber = "106"),
-                    )
+                    ),
+                    isStarred = false
                 ),
                 repo.getBusStop(
                     busStopCode = "01059"
@@ -886,14 +934,16 @@ class BusStopRepositoryTest {
                                 roadName = "Nth Bridge Rd",
                                 description = "Bugis Cube",
                                 latitude = 1.29820784139683,
-                                longitude = 103.85549139837407
+                                longitude = 103.85549139837407,
+                                starred = false
                             ),
                             BusStopEntity(
                                 code = "01059",
                                 roadName = "Victoria St",
                                 description = "Bugis Stn Exit B",
                                 latitude = 1.30075679526626,
-                                longitude = 103.85611040457583
+                                longitude = 103.85611040457583,
+                                starred = false
                             ),
                         )
                     )
@@ -914,7 +964,8 @@ class BusStopRepositoryTest {
                     description = "Bugis Stn Exit B",
                     latitude = 1.30075679526626,
                     longitude = 103.85611040457583,
-                    operatingBusList = listOf()
+                    operatingBusList = listOf(),
+                    isStarred = false
                 ),
                 repo.getBusStop(
                     busStopCode = "01059"
@@ -935,14 +986,16 @@ class BusStopRepositoryTest {
                                 roadName = "Nth Bridge Rd",
                                 description = "Bugis Cube",
                                 latitude = 1.29820784139683,
-                                longitude = 103.85549139837407
+                                longitude = 103.85549139837407,
+                                starred = false
                             ),
                             BusStopEntity(
                                 code = "01059",
                                 roadName = "Victoria St",
                                 description = "Bugis Stn Exit B",
                                 latitude = 1.30075679526626,
-                                longitude = 103.85611040457583
+                                longitude = 103.85611040457583,
+                                starred = false
                             ),
                         )
                     )
@@ -1270,14 +1323,16 @@ class BusStopRepositoryTest {
                         roadName = "123456 road name",
                         description = "Source bus stop 12345",
                         latitude = 1.23,
-                        longitude = 4.56
+                        longitude = 4.56,
+                        starred = false
                     ),
                     BusStopEntity(
                         code = "23456",
                         roadName = "234567 road name",
                         description = "Destination bus stop 23456",
                         latitude = 1.23,
-                        longitude = 4.56
+                        longitude = 4.56,
+                        starred = false
                     )
                 )
             )
@@ -1419,6 +1474,515 @@ class BusStopRepositoryTest {
                 3,
                 repo.getCachedDirectBusesStopPermutationsCount()
             )
+        }
+    }
+
+    @Test
+    fun `toggle bus stop star, bus stop exists, is stored in local db`() {
+        val localDataSource = FakeLocalDataSource()
+
+        runTest {
+            localDataSource.insertBusStops(
+                listOf(
+                    BusStopEntity(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    ),
+                    BusStopEntity(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    )
+                )
+            )
+        }
+
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            assertEquals(
+                expected = true,
+                repo.toggleBusStopStar(
+                    busStopCode = "12345"
+                )
+            )
+
+            assertEquals(
+                expected = true,
+                repo.toggleBusStopStar(
+                    busStopCode = "23456"
+                )
+            )
+
+            assertEquals(
+                listOf(
+                    BusStopEntity(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = true
+                    ),
+                    BusStopEntity(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = true
+                    )
+                ),
+                localDataSource.getAllBusStops()
+            )
+
+            assertEquals(
+                expected = true,
+                repo.toggleBusStopStar(
+                    busStopCode = "23456"
+                )
+            )
+
+            assertEquals(
+                listOf(
+                    BusStopEntity(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = true
+                    ),
+                    BusStopEntity(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    )
+                ),
+                localDataSource.getAllBusStops()
+            )
+        }
+    }
+
+    @Test
+    fun `toggle bus stop star, bus stop does not exists, is not stored in local db`() {
+        val localDataSource = FakeLocalDataSource()
+
+        runTest {
+            localDataSource.insertBusStops(
+                listOf(
+                    BusStopEntity(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    ),
+                    BusStopEntity(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    )
+                )
+            )
+        }
+
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            assertEquals(
+                expected = false,
+                repo.toggleBusStopStar(
+                    busStopCode = "11111"
+                )
+            )
+
+            assertEquals(
+                expected = false,
+                repo.toggleBusStopStar(
+                    busStopCode = "22222"
+                )
+            )
+
+            assertEquals(
+                listOf(
+                    BusStopEntity(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    ),
+                    BusStopEntity(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    )
+                ),
+                localDataSource.getAllBusStops()
+            )
+        }
+    }
+
+    @Test
+    fun `toggle bus stop star, using toggleTo param, bus stop exists, is stored in local db`() {
+        val localDataSource = FakeLocalDataSource()
+
+        runTest {
+            localDataSource.insertBusStops(
+                listOf(
+                    BusStopEntity(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    ),
+                    BusStopEntity(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    )
+                )
+            )
+        }
+
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            assertEquals(
+                expected = true,
+                repo.toggleBusStopStar(
+                    busStopCode = "12345",
+                    toggleTo = true
+                )
+            )
+
+            assertEquals(
+                expected = true,
+                repo.toggleBusStopStar(
+                    busStopCode = "23456",
+                    toggleTo = false
+                )
+            )
+
+            assertEquals(
+                BusStopEntity(
+                    code = "12345",
+                    roadName = "123456 road name",
+                    description = "Source bus stop 12345",
+                    latitude = 1.23,
+                    longitude = 4.56,
+                    starred = true
+                ),
+                localDataSource.findBusStopByCode("12345")
+            )
+
+            assertEquals(
+                BusStopEntity(
+                    code = "23456",
+                    roadName = "234567 road name",
+                    description = "Destination bus stop 23456",
+                    latitude = 1.23,
+                    longitude = 4.56,
+                    starred = false
+                ),
+                localDataSource.findBusStopByCode("23456")
+            )
+        }
+    }
+
+    @Test
+    fun `is bus stop starred`() {
+        val localDataSource = FakeLocalDataSource()
+
+        runTest {
+            localDataSource.insertBusStops(
+                listOf(
+                    BusStopEntity(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = true
+                    ),
+                    BusStopEntity(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    ),
+                    BusStopEntity(
+                        code = "34567",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = true
+                    )
+                )
+            )
+        }
+
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            assertEquals(
+                expected = true,
+                repo.isBusStopStarred(
+                    busStopCode = "12345",
+                )
+            )
+
+            assertEquals(
+                expected = false,
+                repo.isBusStopStarred(
+                    busStopCode = "23456",
+                )
+            )
+
+            assertEquals(
+                expected = true,
+                repo.isBusStopStarred(
+                    busStopCode = "34567",
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `get starred bus stops`() {
+        val localDataSource = FakeLocalDataSource()
+
+        runTest {
+            localDataSource.insertBusStops(
+                listOf(
+                    BusStopEntity(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = true
+                    ),
+                    BusStopEntity(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    ),
+                    BusStopEntity(
+                        code = "34567",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = true
+                    )
+                )
+            )
+        }
+
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            assertEquals(
+                expected = listOf(
+                    BusStop(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        operatingBusList = listOf(),
+                        isStarred = true
+                    ),
+                    BusStop(
+                        code = "34567",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        operatingBusList = listOf(),
+                        isStarred = true
+                    )
+                ),
+                repo.getStarredBusStops()
+            )
+        }
+    }
+
+    @Test
+    fun `bus stop update`() {
+        val localDataSource = FakeLocalDataSource()
+
+        runTest {
+            localDataSource.insertBusStops(
+                listOf(
+                    BusStopEntity(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = true
+                    ),
+                    BusStopEntity(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = false
+                    ),
+                    BusStopEntity(
+                        code = "34567",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        starred = true
+                    )
+                )
+            )
+        }
+
+        val repo = BusStopRepositoryImpl(
+            localDataSource = localDataSource,
+            remoteDataSource = FakeRemoteDataSource {
+                ""
+            },
+            preferenceStorage = FakePreferenceStorage(),
+            dispatcherProvider = FakeCoroutinesDispatcherProvider
+        )
+
+        runTest {
+            var deferred = launch {
+                assertEquals(
+                    BusStop(
+                        code = "12345",
+                        roadName = "123456 road name",
+                        description = "Source bus stop 12345",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        operatingBusList = emptyList(),
+                        isStarred = false
+                    ),
+                    repo.busStopUpdates().first()
+                )
+            }
+
+            repo.toggleBusStopStar(
+                busStopCode = "12345",
+            )
+
+            assertEquals(true, deferred.joinWithExpiry(3000))
+
+            deferred = launch {
+                assertEquals(
+                    BusStop(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        operatingBusList = emptyList(),
+                        isStarred = true
+                    ),
+                    repo.busStopUpdates().first()
+                )
+            }
+
+            repo.toggleBusStopStar(
+                busStopCode = "23456",
+            )
+
+            assertEquals(true, deferred.joinWithExpiry(3000))
+
+            deferred = launch {
+                assertEquals(
+                    BusStop(
+                        code = "23456",
+                        roadName = "234567 road name",
+                        description = "Destination bus stop 23456",
+                        latitude = 1.23,
+                        longitude = 4.56,
+                        operatingBusList = emptyList(),
+                        isStarred = true
+                    ),
+                    repo.busStopUpdates().first()
+                )
+            }
+
+            // should not trigger flow update
+            repo.toggleBusStopStar(
+                busStopCode = "23456",
+                toggleTo = true
+            )
+
+            assertEquals(false, deferred.joinWithExpiry(3000))
         }
     }
 }

@@ -1,3 +1,5 @@
+@file:Suppress("IllegalIdentifier")
+
 package io.github.amanshuraikwar.nxtbuz.searchdata
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.Bus
@@ -29,14 +31,16 @@ class SearchRepositoryTest {
                         roadName = "Holland Ave",
                         description = "Holland V Stn/Blk12",
                         latitude = 0.0,
-                        longitude = 0.0
+                        longitude = 0.0,
+                        starred = false
                     ),
                     BusStopEntity(
                         code = "11381",
                         roadName = "Holland Dr",
                         description = "Blk 10A",
                         latitude = 0.0,
-                        longitude = 0.0
+                        longitude = 0.0,
+                        starred = false
                     )
                 )
             )
@@ -104,7 +108,8 @@ class SearchRepositoryTest {
                             operatingBusList = listOf(
                                 Bus(serviceNumber = "106"),
                                 Bus(serviceNumber = "61"),
-                            )
+                            ),
+                            isStarred = false
                         )
                     )
                 ),
@@ -129,7 +134,8 @@ class SearchRepositoryTest {
                             operatingBusList = listOf(
                                 Bus(serviceNumber = "106"),
                                 Bus(serviceNumber = "61"),
-                            )
+                            ),
+                            isStarred = false
                         )
                     )
                 ),
@@ -154,7 +160,8 @@ class SearchRepositoryTest {
                             operatingBusList = listOf(
                                 Bus(serviceNumber = "106"),
                                 Bus(serviceNumber = "61"),
-                            )
+                            ),
+                            isStarred = false
                         )
                     )
                 ),
@@ -179,7 +186,8 @@ class SearchRepositoryTest {
                             operatingBusList = listOf(
                                 Bus(serviceNumber = "106"),
                                 Bus(serviceNumber = "61"),
-                            )
+                            ),
+                            isStarred = false
                         )
                     )
                 ),
@@ -204,7 +212,8 @@ class SearchRepositoryTest {
                             operatingBusList = listOf(
                                 Bus(serviceNumber = "106"),
                                 Bus(serviceNumber = "61"),
-                            )
+                            ),
+                            isStarred = false
                         )
                     )
                 ),
@@ -229,7 +238,8 @@ class SearchRepositoryTest {
                             operatingBusList = listOf(
                                 Bus(serviceNumber = "106"),
                                 Bus(serviceNumber = "61"),
-                            )
+                            ),
+                            isStarred = false
                         )
                     )
                 ),

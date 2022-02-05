@@ -130,11 +130,11 @@ class StarredBusArrivalRepositoryTest {
                         busServiceNumber = "106",
                         newStarState = true
                     ),
-                    repo.toggleStarUpdate.first()
+                    repo.toggleBusServiceStarUpdate.first()
                 )
             }
 
-            repo.toggleBusStopStar(
+            repo.toggleBusServiceStar(
                 busStopCode = "11401",
                 busServiceNumber = "106"
             )
@@ -163,11 +163,11 @@ class StarredBusArrivalRepositoryTest {
                         busServiceNumber = "106",
                         newStarState = false
                     ),
-                    repo.toggleStarUpdate.first()
+                    repo.toggleBusServiceStarUpdate.first()
                 )
             }
 
-            repo.toggleBusStopStar(
+            repo.toggleBusServiceStar(
                 busStopCode = "11401",
                 busServiceNumber = "106"
             )
@@ -193,11 +193,11 @@ class StarredBusArrivalRepositoryTest {
                         busServiceNumber = "106",
                         newStarState = true
                     ),
-                    repo.toggleStarUpdate.first()
+                    repo.toggleBusServiceStarUpdate.first()
                 )
             }
 
-            repo.toggleBusStopStar(
+            repo.toggleBusServiceStar(
                 busStopCode = "11401",
                 busServiceNumber = "106",
                 toggleTo = true
@@ -227,11 +227,11 @@ class StarredBusArrivalRepositoryTest {
                         busServiceNumber = "106",
                         newStarState = false
                     ),
-                    repo.toggleStarUpdate.first()
+                    repo.toggleBusServiceStarUpdate.first()
                 )
             }
 
-            repo.toggleBusStopStar(
+            repo.toggleBusServiceStar(
                 busStopCode = "11401",
                 busServiceNumber = "106",
                 toggleTo = false
@@ -256,7 +256,7 @@ class StarredBusArrivalRepositoryTest {
 
             assertEquals(
                 true,
-                repo.isStarred(
+                repo.isBusServiceStarred(
                     busStopCode = "11401",
                     busServiceNumber = "106"
                 )
@@ -276,7 +276,7 @@ class StarredBusArrivalRepositoryTest {
 
             assertEquals(
                 false,
-                repo.isStarred(
+                repo.isBusServiceStarred(
                     busStopCode = "11401",
                     busServiceNumber = "106"
                 )
@@ -295,7 +295,7 @@ class StarredBusArrivalRepositoryTest {
         )
 
         runTest {
-            repo.toggleBusStopStar(
+            repo.toggleBusServiceStar(
                 busStopCode = "11401",
                 busServiceNumber = "106",
                 toggleTo = true
@@ -303,7 +303,7 @@ class StarredBusArrivalRepositoryTest {
 
             assertEquals(
                 expected = true,
-                actual = repo.isStarred(
+                actual = repo.isBusServiceStarred(
                     busStopCode = "11401",
                     busServiceNumber = "106"
                 )
@@ -322,13 +322,13 @@ class StarredBusArrivalRepositoryTest {
         )
 
         runTest {
-            repo.toggleBusStopStar(
+            repo.toggleBusServiceStar(
                 busStopCode = "11401",
                 busServiceNumber = "106",
                 toggleTo = true
             )
 
-            repo.toggleBusStopStar(
+            repo.toggleBusServiceStar(
                 busStopCode = "11406",
                 busServiceNumber = "961",
                 toggleTo = true

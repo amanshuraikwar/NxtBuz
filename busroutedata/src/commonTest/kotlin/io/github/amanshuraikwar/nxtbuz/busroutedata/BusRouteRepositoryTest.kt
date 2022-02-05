@@ -1,3 +1,5 @@
+@file:Suppress("IllegalIdentifier")
+
 package io.github.amanshuraikwar.nxtbuz.busroutedata
 
 import io.github.amanshuraikwar.nxtbuz.localdatasource.BusRouteEntity
@@ -7,7 +9,6 @@ import io.github.amanshuraikwar.testutil.FakeCoroutinesDispatcherProvider
 import io.github.amanshuraikwar.testutil.FakeLocalDataSource
 import io.github.amanshuraikwar.testutil.FakeRemoteDataSource
 import io.github.amanshuraikwar.testutil.runTest
-import kotlinx.coroutines.flow.collect
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
