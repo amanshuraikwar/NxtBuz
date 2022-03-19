@@ -33,6 +33,8 @@ kotlin {
         }
     }
 
+    iosSimulatorArm64()
+
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
@@ -70,6 +72,12 @@ kotlin {
         }
         val iosMain by getting
         val iosTest by getting
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Test by getting {
+            dependsOn(iosTest)
+        }
     }
 }
 

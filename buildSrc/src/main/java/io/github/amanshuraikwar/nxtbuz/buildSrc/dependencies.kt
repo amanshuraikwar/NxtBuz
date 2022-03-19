@@ -8,19 +8,27 @@ object Libs {
     const val targetSdk = 31
 
     const val iosMinDeploymentTarget = "14.1"
+    const val appHomePage = "https://amanshuraikwar.github.io/nextbus"
+    const val kmmLibVersion = "1.0"
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.2"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.2.0-alpha07"
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 
-    const val multiplatformSettings = "com.russhwolf:multiplatform-settings:0.8.1"
-    const val multiplatformSettingsNoArg = "com.russhwolf:multiplatform-settings-no-arg:0.8.1"
+    const val mockk = "io.mockk:mockk:1.8.13.kotlin13"
+
+    object MultiplatformSettings {
+        private const val version = "0.8.1"
+        const val lib = "com.russhwolf:multiplatform-settings:$version"
+        const val noArg = "com.russhwolf:multiplatform-settings-no-arg:$version"
+        const val test = "com.russhwolf:multiplatform-settings-test:$version"
+    }
 
     object Google {
-        const val material = "com.google.android.material:material:1.4.0-rc01"
-        const val analytics = "com.google.firebase:firebase-analytics:17.4.0"
-        const val crashlytics = "com.google.firebase:firebase-crashlytics:17.1.1"
-        const val crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.5.2"
-        const val gmsGoogleServices = "com.google.gms:google-services:4.3.3"
+        const val material = "com.google.android.material:material:1.6.0-alpha01"
+        const val analytics = "com.google.firebase:firebase-analytics:20.0.2"
+        const val crashlytics = "com.google.firebase:firebase-crashlytics:18.2.6"
+        const val crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.8.1"
+        const val gmsGoogleServices = "com.google.gms:google-services:4.3.10"
         const val playServicesMap = "com.google.android.gms:play-services-maps:17.0.0"
         const val playServicesLocation = "com.google.android.gms:play-services-location:17.0.0"
         const val gmsOssLicenses = "com.google.android.gms:oss-licenses-plugin:0.10.4"
@@ -30,28 +38,32 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.5.21"
+        private const val version = "1.6.10"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
     }
 
     object KotlinX {
-        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.1"
+        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.1"
         const val serializationCore = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1"
         const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1"
         const val serializationGradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.10"
     }
 
     object Coroutines {
-        private const val version = "1.5.2-native-mt"
+        private const val version = "1.6.0-native-mt"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+        // TODO-amanshuraikwar (02 Nov 2021 04:09:19 PM): do not use this in KMM common module
+        //  this is JVM only dependency for now
+        //  Ref: https://github.com/Kotlin/kotlinx.coroutines/issues/1996
+        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
     }
 
     object AndroidX {
         object Work {
-            private const val version = "2.7.0"
+            private const val version = "2.7.1"
             const val runtime = "androidx.work:work-runtime:$version"
             const val ktx = "androidx.work:work-runtime-ktx:$version"
         }
@@ -72,14 +84,14 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.3.0"
+            private const val version = "2.4.0"
             const val runtime = "androidx.room:room-runtime:$version"
             const val compiler = "androidx.room:room-compiler:$version"
             const val ktx = "androidx.room:room-ktx:$version"
         }
 
         object Compose {
-            const val version = "1.0.4"
+            const val version = "1.2.0-alpha01"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -87,7 +99,7 @@ object Libs {
             const val materialIcons = "androidx.compose.material:material-icons-core:$version"
             const val materialIconsExtended =
                 "androidx.compose.material:material-icons-extended:$version"
-            const val activity = "androidx.activity:activity-compose:1.3.1"
+            const val activity = "androidx.activity:activity-compose:1.4.0"
 
             val all = listOf(
                 ui,
@@ -102,7 +114,7 @@ object Libs {
     }
 
     object Dagger {
-        private const val version = "2.34.1"
+        private const val version = "2.40.5"
         const val library = "com.google.dagger:dagger:$version"
         const val androidSupport = "com.google.dagger:dagger-android-support:$version"
         const val compiler = "com.google.dagger:dagger-compiler:$version"
@@ -121,13 +133,15 @@ object Libs {
     }
 
     object Accompanist {
-        const val insets = "com.google.accompanist:accompanist-insets:0.15.0"
+        const val insets = "com.google.accompanist:accompanist-insets:0.24.0-alpha"
     }
 
     object SqlDelight {
-        const val gradlePlugin = "com.squareup.sqldelight:gradle-plugin:1.5.0"
-        const val androidDriver = "com.squareup.sqldelight:android-driver:1.5.0"
-        const val nativeDriver = "com.squareup.sqldelight:native-driver:1.5.0"
+        private const val version = "1.5.3"
+        const val gradlePlugin = "com.squareup.sqldelight:gradle-plugin:$version"
+        const val androidDriver = "com.squareup.sqldelight:android-driver:$version"
+        const val nativeDriver = "com.squareup.sqldelight:native-driver:$version"
+        const val jvmDriver = "com.squareup.sqldelight:sqlite-driver:$version"
     }
 
     object Ktor {
@@ -141,5 +155,6 @@ object Libs {
         const val clientIos = "io.ktor:ktor-client-ios:$version"
         const val clientCio = "io.ktor:ktor-client-cio:$version"
         const val clientJs = "io.ktor:ktor-client-js:$version"
+        const val clientMock = "io.ktor:ktor-client-mock:$version"
     }
 }

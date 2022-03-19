@@ -1,8 +1,10 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model
 
-import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusLoad
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
-import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
+import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.ArrivingBus
 
 sealed class BusStopArrivalListItemData {
     data class Header(
@@ -22,27 +24,18 @@ sealed class BusStopArrivalListItemData {
             busStop: BusStop,
             starred: Boolean,
             val destinationBusStopDescription: String,
-            val busLoad: BusLoad,
-            val wheelchairAccess: Boolean,
-            val busType: BusType,
-            val arrival: Int,
+            val arrivingBusList: List<ArrivingBus>
         ) : BusStopArrival(busServiceNumber, busStop, starred) {
             fun copy(
-                arrival: Int,
                 busStop: BusStop,
                 destinationBusStopDescription: String,
-                busType: BusType,
-                wheelchairAccess: Boolean,
-                busLoad: BusLoad,
+                arrivingBusList: List<ArrivingBus>,
                 starred: Boolean,
             ): Arriving {
                 return Arriving(
                     busServiceNumber = busServiceNumber,
                     destinationBusStopDescription = destinationBusStopDescription,
-                    busLoad = busLoad,
-                    wheelchairAccess = wheelchairAccess,
-                    busType = busType,
-                    arrival = arrival,
+                    arrivingBusList = arrivingBusList,
                     busStop = busStop,
                     starred = starred
                 )
@@ -54,10 +47,7 @@ sealed class BusStopArrivalListItemData {
                 return Arriving(
                     busServiceNumber = busServiceNumber,
                     destinationBusStopDescription = destinationBusStopDescription,
-                    busLoad = busLoad,
-                    wheelchairAccess = wheelchairAccess,
-                    busType = busType,
-                    arrival = arrival,
+                    arrivingBusList = arrivingBusList,
                     busStop = busStop,
                     starred = starred
                 )
@@ -102,5 +92,26 @@ sealed class BusStopArrivalListItemData {
         val busStopDescription: String,
         val busStopRoadName: String,
         val busStopCode: String,
-    ) : BusStopArrivalListItemData()
+        private val _starred: MutableState<Boolean>,
+    ) : BusStopArrivalListItemData() {
+        val starred: Boolean by _starred
+
+        fun updateStarred(newValue: Boolean) {
+            _starred.value = newValue
+        }
+
+        constructor(
+            id: String,
+            busStopDescription: String,
+            busStopRoadName: String,
+            busStopCode: String,
+            starred: Boolean,
+        ) : this(
+            id = id,
+            busStopDescription = busStopDescription,
+            busStopRoadName = busStopRoadName,
+            busStopCode = busStopCode,
+            _starred = mutableStateOf(starred),
+        )
+    }
 }

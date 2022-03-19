@@ -13,7 +13,7 @@ open class GetHomeBusStopUseCase(
             busStop = busStopRepository.getBusStop(
                 userRepository.getHomeBusStopCode()
                     ?: return HomeBusStopResult.NotSet
-            )
+            ) ?: return HomeBusStopResult.NotSet
         )
     }
 }

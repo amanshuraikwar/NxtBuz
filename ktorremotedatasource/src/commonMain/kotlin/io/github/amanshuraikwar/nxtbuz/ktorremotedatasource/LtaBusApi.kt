@@ -3,13 +3,17 @@ package io.github.amanshuraikwar.nxtbuz.ktorremotedatasource
 import io.github.amanshuraikwar.nxtbuz.ktorremotedatasource.model.BusArrivalsResponseDto
 import io.github.amanshuraikwar.nxtbuz.ktorremotedatasource.model.BusRoutesResponseDto
 import io.github.amanshuraikwar.nxtbuz.ktorremotedatasource.model.BusStopsResponseDto
-import io.ktor.client.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.observer.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.utils.io.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.features.observer.ResponseObserver
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.parameter
+import io.ktor.http.UrlEncodingOption
+import io.ktor.utils.io.readUTF8Line
 import kotlinx.serialization.json.Json
 
 internal class LtaBusApi internal constructor(
@@ -86,12 +90,46 @@ internal class LtaBusApi internal constructor(
             }
         }
 
-        internal fun createInstance(
+        private fun createHttpClient(
+            engine: HttpClientEngine,
+            json: Json = createJson(),
+            enableNetworkLogs: Boolean
+        ) = HttpClient(engine) {
+            install(JsonFeature) {
+                serializer = KotlinxSerializer(json)
+            }
+
+            if (enableNetworkLogs) {
+                install(ResponseObserver) {
+                    onResponse { response ->
+                        println("Response: $response")
+                        println("Response: ${response.content.readUTF8Line()}")
+                    }
+                }
+            }
+        }
+
+        fun createInstance(
             addLoggingInterceptors: Boolean,
             ltaAccountKey: String,
         ): LtaBusApi {
             return LtaBusApi(
                 client = createHttpClient(enableNetworkLogs = addLoggingInterceptors),
+                baseUrl = ENDPOINT,
+                ltaAccountKey = ltaAccountKey
+            )
+        }
+
+        fun createInstance(
+            engine: HttpClientEngine,
+            addLoggingInterceptors: Boolean,
+            ltaAccountKey: String,
+        ): LtaBusApi {
+            return LtaBusApi(
+                client = createHttpClient(
+                    engine = engine,
+                    enableNetworkLogs = addLoggingInterceptors
+                ),
                 baseUrl = ENDPOINT,
                 ltaAccountKey = ltaAccountKey
             )

@@ -2,36 +2,39 @@ package io.github.amanshuraikwar.nxtbuz.starreddata
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.StarredBusService
-import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleStarUpdate
+import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleBusServiceStarUpdate
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
-import io.github.amanshuraikwar.nxtbuz.localdatasource.StarredBusStopEntity
+import io.github.amanshuraikwar.nxtbuz.localdatasource.StarredBusServiceEntity
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class StarredBusArrivalRepositoryImpl constructor(
+open class StarredBusArrivalRepositoryImpl constructor(
     private val localDataSource: LocalDataSource,
-    private val preferenceStorage: PreferenceStorage,
+    protected val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : StarredBusArrivalRepository {
-
     private val coroutineScope: CoroutineScope by lazy {
         // We use supervisor scope because we don't want
         // the child coroutines to cancel all the parent coroutines
-        CoroutineScope(SupervisorJob() + dispatcherProvider.arrivalService)
+        CoroutineScope(SupervisorJob() + dispatcherProvider.computation)
     }
 
-    private val _toggleStarUpdate = MutableSharedFlow<ToggleStarUpdate>()
-    override val toggleStarUpdate: SharedFlow<ToggleStarUpdate> = _toggleStarUpdate
+    private val _toggleBusServiceStarUpdate = MutableSharedFlow<ToggleBusServiceStarUpdate>()
+    override val toggleBusServiceStarUpdate = _toggleBusServiceStarUpdate
 
     private val _toggleShouldShowErrorArrivals = MutableSharedFlow<Boolean>()
-    override val toggleShouldShowErrorArrivals: SharedFlow<Boolean> = _toggleShouldShowErrorArrivals
+    override val toggleShouldShowErrorArrivals = _toggleShouldShowErrorArrivals
 
-    override suspend fun shouldShowErrorStarredBusArrivals(): Boolean =
-        withContext(dispatcherProvider.io) {
+    override suspend fun shouldShowErrorStarredBusArrivals(): Boolean {
+        return withContext(dispatcherProvider.io) {
             preferenceStorage.showErrorStarredBusArrivals
         }
+    }
 
     override suspend fun setShouldShowErrorStarredBusArrivals(shouldShow: Boolean) {
         withContext(dispatcherProvider.io) {
@@ -44,10 +47,25 @@ class StarredBusArrivalRepositoryImpl constructor(
         }
     }
 
-    override suspend fun getStarredBusServices(): List<StarredBusService> {
+    override suspend fun getStarredBusServices(
+        atBusStopCode: String?
+    ): List<StarredBusService> {
+        return getStarredBusServices(localDataSource, atBusStopCode)
+    }
+
+    protected suspend fun getStarredBusServices(
+        localDataSource: LocalDataSource,
+        atBusStopCode: String?
+    ): List<StarredBusService> {
         return withContext(dispatcherProvider.computation) {
             localDataSource
-                .findAllStarredBuses()
+                .run {
+                    if (atBusStopCode == null) {
+                        findAllStarredBuses()
+                    } else {
+                        findStarredBuses(busStopCode = atBusStopCode)
+                    }
+                }
                 .map { starredBusStopEntity ->
                     StarredBusService(
                         busStopCode = starredBusStopEntity.busStopCode,
@@ -57,77 +75,69 @@ class StarredBusArrivalRepositoryImpl constructor(
         }
     }
 
-    override suspend fun toggleBusStopStar(busStopCode: String, busServiceNumber: String) {
-        withContext(dispatcherProvider.io) {
-            val isAlreadyStarred = localDataSource.findStarredBus(
-                busStopCode = busStopCode,
-                busServiceNumber = busServiceNumber,
-            ) != null
-
-            if (isAlreadyStarred) {
-                localDataSource.deleteStarredBus(
-                    busStopCode = busStopCode,
-                    busServiceNumber = busServiceNumber
-                )
-
-            } else {
-                localDataSource.insertStarredBuses(
-                    listOf(
-                        StarredBusStopEntity(
-                            busStopCode,
-                            busServiceNumber
-                        )
-                    )
-                )
-            }
-
-            coroutineScope.launch {
-                _toggleStarUpdate.emit(
-                    ToggleStarUpdate(
-                        busStopCode,
-                        busServiceNumber,
-                        !isAlreadyStarred
-                    )
-                )
-            }
-        }
-    }
-
-    override suspend fun toggleBusStopStar(
+    override suspend fun toggleBusServiceStar(
         busStopCode: String,
         busServiceNumber: String,
-        toggleTo: Boolean
+        toggleTo: Boolean?
     ) {
-        withContext(dispatcherProvider.io) {
-            val isAlreadyStarred =
-                localDataSource.findStarredBus(
-                    busStopCode = busStopCode,
-                    busServiceNumber = busServiceNumber,
-                ) != null
+        withContext<Unit>(dispatcherProvider.computation) {
+            val isAlreadyStarred = isBusServiceStarred(
+                busStopCode = busStopCode,
+                busServiceNumber = busServiceNumber,
+            )
 
-            if (toggleTo != isAlreadyStarred) {
-                if (toggleTo) {
+            if (toggleTo != null) {
+                if (toggleTo != isAlreadyStarred) {
+                    if (toggleTo) {
+                        localDataSource.insertStarredBuses(
+                            listOf(
+                                StarredBusServiceEntity(
+                                    busStopCode,
+                                    busServiceNumber
+                                )
+                            )
+                        )
+                    } else {
+                        localDataSource.deleteStarredBus(
+                            busStopCode = busStopCode,
+                            busServiceNumber = busServiceNumber,
+                        )
+                    }
+
+                    coroutineScope.launch {
+                        _toggleBusServiceStarUpdate.emit(
+                            ToggleBusServiceStarUpdate(
+                                busStopCode,
+                                busServiceNumber,
+                                toggleTo
+                            )
+                        )
+                    }
+                }
+            } else {
+                if (isAlreadyStarred) {
+                    localDataSource.deleteStarredBus(
+                        busStopCode = busStopCode,
+                        busServiceNumber = busServiceNumber
+                    )
+
+                } else {
                     localDataSource.insertStarredBuses(
                         listOf(
-                            StarredBusStopEntity(
+                            StarredBusServiceEntity(
                                 busStopCode,
                                 busServiceNumber
                             )
                         )
                     )
-                } else {
-                    localDataSource.deleteStarredBus(
-                        busStopCode = busStopCode,
-                        busServiceNumber = busServiceNumber,
-                    )
                 }
 
                 coroutineScope.launch {
-                    _toggleStarUpdate.emit(
-                        ToggleStarUpdate(
+                    _toggleBusServiceStarUpdate.emit(
+                        ToggleBusServiceStarUpdate(
                             busStopCode,
                             busServiceNumber,
-                            toggleTo
+                            !isAlreadyStarred
                         )
                     )
                 }
@@ -135,14 +145,15 @@ class StarredBusArrivalRepositoryImpl constructor(
         }
     }
 
-    override suspend fun isStarred(
+    override suspend fun isBusServiceStarred(
         busStopCode: String,
         busServiceNumber: String,
-    ): Boolean = withContext(dispatcherProvider.io) {
-        return@withContext localDataSource
-            .findStarredBus(
+    ): Boolean {
+        return withContext(dispatcherProvider.computation) {
+            localDataSource.findStarredBus(
                 busStopCode = busStopCode,
                 busServiceNumber = busServiceNumber
             ) != null
+        }
     }
 }

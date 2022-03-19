@@ -6,6 +6,7 @@ data class BusStop(
     val description: String,
     val latitude: Double,
     val longitude: Double,
-    val operatingBusList: List<Bus>
+    val operatingBusList: List<Bus>,
+    val isStarred: Boolean
 )
 

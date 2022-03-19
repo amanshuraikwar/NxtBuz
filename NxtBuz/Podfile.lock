@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: "../iosUmbrella"
 
 SPEC CHECKSUMS:
-  iosUmbrella: d5574965a78e06cf358ef6d0735f14068ee5211e
+  iosUmbrella: 9e84118b85ad435d18fed84eac85f3cdee1df8bd
 
 PODFILE CHECKSUM: 5d31ee33e16ed80b2d7b9d1732b076eb77db0ef0
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

@@ -8,14 +8,10 @@ open class GetBusStopsUseCase constructor(
 ) {
     suspend operator fun invoke(lat: Double, lon: Double, limit: Int): List<BusStop> {
         return busStopRepository.getCloseBusStops(
-            lat = lat,
-            lng = lon,
-            max = limit,
-            maxDistanceMetres = 500
+            latitude = lat,
+            longitude = lon,
+            limit = limit,
+            metres = 500
         )
-    }
-
-    suspend operator fun invoke(query: String, limit: Int): List<BusStop> {
-        return busStopRepository.searchBusStops(query, limit)
     }
 }
