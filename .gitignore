@@ -244,3 +244,5 @@ app/release
 # https://github.com/johnno1962/injectionforxcode
 
 **/iOSInjectionProject/
+
+app/google-services.json
