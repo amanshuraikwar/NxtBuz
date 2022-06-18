@@ -4,7 +4,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 apply from: "$project.rootDir/git_version.gradle"
@@ -102,6 +101,8 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -171,6 +172,8 @@ dependencies {
 
     implementation Libs.Google.analytics
     implementation Libs.Google.crashlytics
+    
+    coreLibraryDesugaring Libs.coreLibDesugaring
 }
 
 apply plugin: 'com.google.gms.google-services'
