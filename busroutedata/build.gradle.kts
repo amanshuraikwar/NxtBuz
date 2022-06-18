@@ -48,7 +48,12 @@ kotlin {
                 implementation(project(":test-util"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                // add explicit dependency for desugaring to work
+                implementation(Libs.KotlinX.datetime)
+            }
+        }
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
@@ -72,5 +77,12 @@ android {
     defaultConfig {
         minSdk = Libs.minSdk
         targetSdk = Libs.targetSdk
+    }
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }

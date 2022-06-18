@@ -11,7 +11,9 @@ object Libs {
     const val appHomePage = "https://amanshuraikwar.github.io/nextbus"
     const val kmmLibVersion = "1.0"
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.2.0-alpha07"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.1.2"
+    const val coreLibDesugaring = "com.android.tools:desugar_jdk_libs:1.1.5"
+
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
 
     const val mockk = "io.mockk:mockk:1.8.13.kotlin13"
@@ -45,7 +47,7 @@ object Libs {
     }
 
     object KotlinX {
-        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.1"
+        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.2"
         const val serializationCore = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1"
         const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1"
         const val serializationGradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.10"
@@ -66,12 +68,6 @@ object Libs {
             private const val version = "2.7.1"
             const val runtime = "androidx.work:work-runtime:$version"
             const val ktx = "androidx.work:work-runtime-ktx:$version"
-        }
-
-        object Navigation {
-            private const val version = "2.3.3"
-            const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
-            const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
         }
 
         const val coreKtx = "androidx.core:core-ktx:1.3.0-rc01"
