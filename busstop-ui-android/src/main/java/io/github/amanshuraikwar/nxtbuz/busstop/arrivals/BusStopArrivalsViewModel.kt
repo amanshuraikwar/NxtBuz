@@ -350,6 +350,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                                 }
                             }
                         }
+                        else -> {}
                     }
                 }
             }
@@ -376,6 +377,7 @@ class BusStopArrivalsViewModel @Inject constructor(
                         is BusStopArrivalListItemData.BusStopArrival.NotArriving -> {
                             listItems[listItemIndex] = listItem.copy(starred = newToggleState)
                         }
+                        else -> {}
                     }
 
                     val busStopCode = busStop?.code

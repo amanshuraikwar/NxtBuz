@@ -5,30 +5,10 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
+    id("io.github.amanshuraikwar.config")
 }
 
-version = "1.0"
-
 kotlin {
-    android()
-
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
-        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
-            ::iosArm64
-        else
-            ::iosX64
-
-    iosTarget("ios") {}
-    iosSimulatorArm64()
-
-    cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        frameworkName = "busroutedata"
-        // set path to your ios project podfile, e.g. podfile = project.file("../iosApp/Podfile")
-    }
-    
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -62,27 +42,5 @@ kotlin {
         }
         val iosMain by getting
         val iosTest by getting
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
-        }
-    }
-}
-
-android {
-    compileSdk = Libs.compileSdk
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = Libs.minSdk
-        targetSdk = Libs.targetSdk
-    }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }

@@ -1,25 +1,21 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'test_util'
     spec.version                  = '1.0'
-    spec.homepage                 = 'https://amanshuraikwar.github.io/nextbus'
-    spec.source                   = { :git => "Not Published", :tag => "Cocoapods/#{spec.name}/#{spec.version}" }
+    spec.homepage                 = 'This should be a link to the project: test-util'
+    spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'Util module for kmm shared unit tests'
-
-    spec.vendored_frameworks      = "build/cocoapods/framework/test-util.framework"
-    spec.libraries                = "c++"
-    spec.module_name              = "#{spec.name}_umbrella"
-
+    spec.summary                  = 'KMM shared module for project: test-util'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/test-util.framework'
+    spec.libraries                = 'c++'
     spec.ios.deployment_target = '14.1'
-
                 
-
+                
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':test-util',
-        'PRODUCT_MODULE_NAME' => 'test_util',
+        'PRODUCT_MODULE_NAME' => 'test-util',
     }
-
+                
     spec.script_phases = [
         {
             :name => 'Build test_util',
@@ -35,8 +31,9 @@ Pod::Spec.new do |spec|
                 "$REPO_ROOT/../gradlew" -p "$REPO_ROOT" $KOTLIN_PROJECT_PATH:syncFramework \
                     -Pkotlin.native.cocoapods.platform=$PLATFORM_NAME \
                     -Pkotlin.native.cocoapods.archs="$ARCHS" \
-                    -Pkotlin.native.cocoapods.configuration=$CONFIGURATION
+                    -Pkotlin.native.cocoapods.configuration="$CONFIGURATION"
             SCRIPT
         }
     ]
+                
 end

@@ -1,25 +1,21 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'busarrivaldata'
     spec.version                  = '1.0'
-    spec.homepage                 = 'Link to the Shared Module homepage'
-    spec.source                   = { :git => "Not Published", :tag => "Cocoapods/#{spec.name}/#{spec.version}" }
+    spec.homepage                 = 'This should be a link to the project: busarrivaldata'
+    spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'Some description for the Shared Module'
-
-    spec.vendored_frameworks      = "build/cocoapods/framework/busarrivaldata.framework"
-    spec.libraries                = "c++"
-    spec.module_name              = "#{spec.name}_umbrella"
-
+    spec.summary                  = 'KMM shared module for project: busarrivaldata'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/busarrivaldata.framework'
+    spec.libraries                = 'c++'
     spec.ios.deployment_target = '14.1'
-
                 
-
+                
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':busarrivaldata',
         'PRODUCT_MODULE_NAME' => 'busarrivaldata',
     }
-
+                
     spec.script_phases = [
         {
             :name => 'Build busarrivaldata',
@@ -35,8 +31,9 @@ Pod::Spec.new do |spec|
                 "$REPO_ROOT/../gradlew" -p "$REPO_ROOT" $KOTLIN_PROJECT_PATH:syncFramework \
                     -Pkotlin.native.cocoapods.platform=$PLATFORM_NAME \
                     -Pkotlin.native.cocoapods.archs="$ARCHS" \
-                    -Pkotlin.native.cocoapods.configuration=$CONFIGURATION
+                    -Pkotlin.native.cocoapods.configuration="$CONFIGURATION"
             SCRIPT
         }
     ]
+                
 end

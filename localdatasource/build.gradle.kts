@@ -1,36 +1,13 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
 
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
+    id("io.github.amanshuraikwar.config")
 }
 
-version = "1.0"
-
 kotlin {
-    android()
-
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
-        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
-            ::iosArm64
-        else
-            ::iosX64
-
-    iosTarget("ios") {}
-    iosSimulatorArm64()
-
-    cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        framework {
-            baseName = "localdatasource"
-        }
-        podfile = project.file("../NxtBuz/Podfile")
-    }
-    
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -52,26 +29,5 @@ kotlin {
         }
         val iosMain by getting
         val iosTest by getting
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
-        }
-    }
-}
-
-android {
-    compileSdk = Libs.compileSdk
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = Libs.minSdk
-        targetSdk = Libs.targetSdk
-    }
-
-    buildTypes {
-        release {
-            consumerProguardFile("consumer-rules.pro")
-        }
     }
 }
