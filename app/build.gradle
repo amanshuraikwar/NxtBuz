@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+apply plugin: 'io.github.amanshuraikwar.config'
 
 apply from: "$project.rootDir/git_version.gradle"
 
@@ -21,12 +22,8 @@ android {
         }
     }
 
-    compileSdkVersion buildConfig.compileSdk
-
     defaultConfig {
         applicationId names.applicationId
-        minSdkVersion buildConfig.minSdk
-        targetSdkVersion buildConfig.targetSdk
         versionCode gitVersionCode
         versionName gitVersionName
 
@@ -126,7 +123,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
+        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.compilerVersion
     }
 }
 

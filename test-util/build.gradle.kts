@@ -5,31 +5,10 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
+    id("io.github.amanshuraikwar.config")
 }
 
-version = Libs.kmmLibVersion
-
 kotlin {
-    android {}
-
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
-        System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
-        System.getenv("NATIVE_ARCH")
-            ?.startsWith("arm") == true -> ::iosSimulatorArm64 // available to KT 1.5.30
-        else -> ::iosX64
-    }
-    iosTarget("ios") {}
-
-    cocoapods {
-        summary = "Util module for kmm shared unit tests"
-        homepage = Libs.appHomePage
-        ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        framework {
-            baseName = "test-util"
-        }
-        podfile = project.file("../NxtBuz/Podfile")
-    }
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -54,14 +33,5 @@ kotlin {
             }
         }
         val iosMain by getting
-    }
-}
-
-android {
-    compileSdk = Libs.compileSdk
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = Libs.minSdk
-        targetSdk = Libs.targetSdk
     }
 }

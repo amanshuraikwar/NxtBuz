@@ -73,21 +73,22 @@ object Libs {
         const val coreKtx = "androidx.core:core-ktx:1.3.0-rc01"
 
         object Lifecycle {
-            private const val version = "2.2.0"
+            private const val version = "2.6.0-alpha01"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
         }
 
         object Room {
-            private const val version = "2.4.0"
+            private const val version = "2.5.0-alpha02"
             const val runtime = "androidx.room:room-runtime:$version"
             const val compiler = "androidx.room:room-compiler:$version"
             const val ktx = "androidx.room:room-ktx:$version"
         }
 
         object Compose {
-            const val version = "1.2.0-alpha01"
+            const val compilerVersion = "1.3.0-rc02"
+            const val version = "1.3.0-alpha02"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -95,7 +96,7 @@ object Libs {
             const val materialIcons = "androidx.compose.material:material-icons-core:$version"
             const val materialIconsExtended =
                 "androidx.compose.material:material-icons-extended:$version"
-            const val activity = "androidx.activity:activity-compose:1.4.0"
+            const val activity = "androidx.activity:activity-compose:1.6.0-alpha05"
 
             val all = listOf(
                 ui,
@@ -110,7 +111,7 @@ object Libs {
     }
 
     object Dagger {
-        private const val version = "2.40.5"
+        private const val version = "2.43.2"
         const val library = "com.google.dagger:dagger:$version"
         const val androidSupport = "com.google.dagger:dagger-android-support:$version"
         const val compiler = "com.google.dagger:dagger-compiler:$version"

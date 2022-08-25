@@ -69,6 +69,7 @@ fun BusArrivalItem(
                                     lastUpdatedOn = state.lastUpdatedOn
                                 )
                             }
+                            else -> {}
                         }
                     }
                 }
