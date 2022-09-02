@@ -57,6 +57,8 @@ dependencies {
     implementation Libs.Accompanist.insets
 
     implementation Libs.Google.crashlytics
+
+    implementation Libs.KotlinX.datetime
 }
 
 repositories {
