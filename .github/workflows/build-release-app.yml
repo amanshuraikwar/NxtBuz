@@ -32,7 +32,8 @@ jobs:
         id: decode_google_services_json
         uses: timheuer/base64-to-file@v1
         with:
-          fileName: 'app/google-services.json'
+          fileDir: './app/'
+          fileName: 'google-services.json'
           encodedString: ${{ secrets.GOOGLE_SERVICES_JSON }}
 
       - name: Build App
@@ -46,4 +47,6 @@ jobs:
           echo "keystore.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
           echo "keystore.key.alias=${{ secrets.RELEASE_KEYSTORE_KEY_ALIAS }}" >> local.properties
           echo "keystore.key.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
+          cat nxtbuz_release
+          cat app/google-services.json
           ./gradlew assembleRelease
