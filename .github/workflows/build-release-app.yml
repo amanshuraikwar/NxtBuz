@@ -23,30 +23,37 @@ jobs:
 
       - name: Decode Keystore
         id: decode_keystore
-        uses: timheuer/base64-to-file@v1
-        with:
-          fileName: 'nxtbuz_release'
-          encodedString: ${{ secrets.RELEASE_KEYSTORE }}
+        env:
+          ENCODED_STRING: ${{ secrets.RELEASE_KEYSTORE }}
+        run: |
+          echo "${RUNNER_TEMP}"
+          TMP_KEYSTORE_FILE_PATH="${RUNNER_TEMP}"/keystore
+          mkdir "${TMP_KEYSTORE_FILE_PATH}"
+          echo "${TMP_KEYSTORE_FILE_PATH}"
+          echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/nxtbuz_release_keystore.jks
+          cat "${TMP_KEYSTORE_FILE_PATH}"/nxtbuz_release_keystore.jks
 
       - name: Decode Google Services Json
         id: decode_google_services_json
-        uses: timheuer/base64-to-file@v1
-        with:
-          fileDir: './app/'
-          fileName: 'google-services.json'
-          encodedString: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        env:
+          ENCODED_STRING: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          echo "${RUNNER_TEMP}"
+          echo $ENCODED_STRING | base64 -di > "${RUNNER_TEMP}"/app/google-services.json
+          cat "${RUNNER_TEMP}"/app/google-services.json
 
       - name: Build App
         run: |
           touch local.properties
+          echo "${RUNNER_TEMP}"
           echo "lta.account.key.debug=${{ secrets.LTA_ACCOUNT_KEY_DEBUG }}" >> local.properties
           echo "lta.account.key.release=${{ secrets.LTA_ACCOUNT_KEY_RELEASE }}" >> local.properties
           echo "google.maps.api.key.debug=${{ secrets.GOOGLE_MAPS_API_KEY_DEBUG }}" >> local.properties
           echo "google.maps.api.key.release=${{ secrets.GOOGLE_MAPS_API_KEY_RELEASE }}" >> local.properties
-          echo "keystore.file.path=nxtbuz_release" >> local.properties
+          echo "keystore.file.path=${RUNNER_TEMP}/keystore/nxtbuz_release_keystore.jks" >> local.properties
           echo "keystore.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
           echo "keystore.key.alias=${{ secrets.RELEASE_KEYSTORE_KEY_ALIAS }}" >> local.properties
           echo "keystore.key.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
-          cat nxtbuz_release
-          cat app/google-services.json
+          cat "${RUNNER_TEMP}"/keystore/nxtbuz_release_keystore.jks
+          cat "${RUNNER_TEMP}"/app/google-services.json
           ./gradlew assembleRelease
