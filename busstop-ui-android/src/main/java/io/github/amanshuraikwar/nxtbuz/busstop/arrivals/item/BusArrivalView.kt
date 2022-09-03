@@ -1,10 +1,8 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -19,13 +17,10 @@ import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
-import io.github.amanshuraikwar.nxtbuz.common.compose.VerticalInOutAnimatedContent
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.directions
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
@@ -35,7 +30,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 
 @ExperimentalAnimationApi
 @Composable
-fun BusArrival(
+fun BusArrivalView(
     arrival: Int,
     busLoad: BusLoad?,
     busType: BusType?,
@@ -47,42 +42,7 @@ fun BusArrival(
             border = BorderStroke(1.dp, MaterialTheme.colors.outline),
             shape = RoundedCornerShape(16.dp)
         ) {
-            VerticalInOutAnimatedContent(
-                targetValue = arrival
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Arr",
-                        style = MaterialTheme.typography.h6Bold,
-                        modifier = Modifier
-                            .alpha(0f)
-                            .padding(8.dp)
-                    )
-
-                    Text(
-                        text = arrival.toArrivalString(),
-                        style = MaterialTheme.typography.h6Bold,
-                        color = animateColorAsState(
-                            targetValue = if (arrival == 0) {
-                                MaterialTheme.colors.directions
-                            } else {
-                                MaterialTheme.colors.onSurface.let {
-                                    if (arrival == -1) {
-                                        it.disabled
-                                    } else {
-                                        it
-                                    }
-                                }
-                            }
-                        ).value,
-                        modifier = Modifier
-                            .animateContentSize()
-                            .padding(8.dp)
-                    )
-                }
-            }
+            ArrivalTimeView(arrivalInMin = arrival)
         }
 
         Row(
@@ -149,7 +109,7 @@ fun BusArrival(
 }
 
 @Composable
-fun BusArrival(
+fun BusArrivalView(
     arrival: String,
 ) {
     Row(
@@ -161,13 +121,5 @@ fun BusArrival(
             color = MaterialTheme.colors.onSurface.medium,
             modifier = Modifier.animateContentSize()
         )
-    }
-}
-
-fun Int.toArrivalString(): String {
-    return when {
-        this < 0 -> "--"
-        this > 0 -> String.format("%02d", this)
-        else -> "Arr"
     }
 }
