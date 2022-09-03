@@ -1,5 +1,7 @@
 # Next Bus SG
 
+![](https://github.com/amanshuraikwar/nxtbuz/actions/workflows/bundle-release-app.yml/badge.svg)
+
 A multi-platform bus arrival timing app for Singapore built with Jetpack Compose, Swift UI and KMM.
 
 <img  width="100%"  src="assets/NxtBuzBannerIllustration.png">
