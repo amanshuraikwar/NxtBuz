@@ -42,6 +42,7 @@ jobs:
       - name: Build App
         run: |
           touch local.properties
+          echo $GITHUB_WORKSPACE
           pwd
           ls -al
           ls -al app
@@ -49,7 +50,7 @@ jobs:
           echo "lta.account.key.release=${{ secrets.LTA_ACCOUNT_KEY_RELEASE }}" >> local.properties
           echo "google.maps.api.key.debug=${{ secrets.GOOGLE_MAPS_API_KEY_DEBUG }}" >> local.properties
           echo "google.maps.api.key.release=${{ secrets.GOOGLE_MAPS_API_KEY_RELEASE }}" >> local.properties
-          echo "keystore.file.path=nxtbuz_release" >> local.properties
+          echo "keystore.file.path=$GITHUB_WORKSPACE/nxtbuz_release" >> local.properties
           echo "keystore.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
           echo "keystore.key.alias=${{ secrets.RELEASE_KEYSTORE_KEY_ALIAS }}" >> local.properties
           echo "keystore.key.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
