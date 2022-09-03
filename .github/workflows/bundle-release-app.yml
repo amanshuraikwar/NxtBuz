@@ -1,4 +1,4 @@
-name: Build Release App
+name: Bundle Release App
 
 on:
   workflow_dispatch:
@@ -42,10 +42,6 @@ jobs:
       - name: Build App
         run: |
           touch local.properties
-          echo $GITHUB_WORKSPACE
-          pwd
-          ls -al
-          ls -al app
           echo "lta.account.key.debug=${{ secrets.LTA_ACCOUNT_KEY_DEBUG }}" >> local.properties
           echo "lta.account.key.release=${{ secrets.LTA_ACCOUNT_KEY_RELEASE }}" >> local.properties
           echo "google.maps.api.key.debug=${{ secrets.GOOGLE_MAPS_API_KEY_DEBUG }}" >> local.properties
@@ -54,9 +50,7 @@ jobs:
           echo "keystore.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
           echo "keystore.key.alias=${{ secrets.RELEASE_KEYSTORE_KEY_ALIAS }}" >> local.properties
           echo "keystore.key.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
-          cat nxtbuz_release
-          cat app/google-services.json
-          ./gradlew assembleRelease
+          ./gradlew bundleRelease
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
