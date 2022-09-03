@@ -57,3 +57,9 @@ jobs:
           cat nxtbuz_release
           cat app/google-services.json
           ./gradlew assembleRelease
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Built files
+          path: app/build/outputs
