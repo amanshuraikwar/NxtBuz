@@ -79,20 +79,23 @@ fun BusStopArrivalItem(
             when (data) {
                 is BusStopArrivalListItemData.BusStopArrival.Arriving -> {
                     ArrivingBusView(
-                        busServiceView = {
+                        data = data,
+                        busServiceView = { busServiceNumber, isStarred ->
                             BusService(
-                                busServiceNumber = data.busServiceNumber,
-                                starred = data.starred
+                                busServiceNumber = busServiceNumber,
+                                starred = isStarred
                             )
                         },
-                        busDestinationView = {
-                            BusDestination(
-                                destinationBusStopDescription = data.destinationBusStopDescription
+                        busDestinationView = { busDestination ->
+                            BusDestinationView(
+                                destinationBusStopDescription = busDestination
                             )
                         },
-                        busTimingsView = {
-                            BusTimingsView(
-                                data = data
+                        busArrivalView = { arrival, busLoad, busType ->
+                            BusArrivalView(
+                                arrival = arrival,
+                                busLoad = busLoad,
+                                busType = busType
                             )
                         }
                     )
@@ -106,7 +109,7 @@ fun BusStopArrivalItem(
                     Column(
                         modifier = Modifier.padding(top = 4.dp, start = 16.dp)
                     ) {
-                        BusArrival(
+                        BusArrivalView(
                             arrival = data.reason,
                         )
                     }
