@@ -39,4 +39,5 @@ jobs:
           echo "keystore.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
           echo "keystore.key.alias=${{ secrets.RELEASE_KEYSTORE_KEY_ALIAS }}" >> local.properties
           echo "keystore.key.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }} > app/google-services.json"
           ./gradlew assembleRelease
