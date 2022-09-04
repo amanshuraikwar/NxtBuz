@@ -18,7 +18,8 @@ fun BusRoutePreviousItem(
         BusRouteListItemData.BusRouteNode.Position.MIDDLE,
     arrivalState: BusRouteListItemData.ArrivalState,
     onExpand: () -> Unit = {},
-    onCollapse: () -> Unit = {}
+    onCollapse: () -> Unit = {},
+    onAvatarClick: () -> Unit = {}
 ) {
     Column(
         Modifier
@@ -38,6 +39,7 @@ fun BusRoutePreviousItem(
             bottomBarColor = MaterialTheme.colors.onSurface,
             busStopDescriptionStyle = MaterialTheme.typography.body2,
             position = position,
+            onAvatarClick = onAvatarClick,
         )
 
         BusArrivalItem(

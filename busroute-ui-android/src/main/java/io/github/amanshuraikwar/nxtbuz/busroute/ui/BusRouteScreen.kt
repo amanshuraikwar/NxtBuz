@@ -48,6 +48,7 @@ fun BusRouteScreen(
     bottomSheetBgOffset: Dp,
     vm: BusRouteViewModel,
     showBottomSheet: Boolean,
+    onBusStopClick: (busStopCode: String) -> Unit,
 ) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
@@ -110,7 +111,8 @@ fun BusRouteScreen(
                 },
                 onCollapse = {
                     vm.onCollapse(collapsingBusStopCode = it)
-                }
+                },
+                onBusStopClick = onBusStopClick
             )
         }
     } else {
@@ -144,7 +146,8 @@ fun BusRouteScreen(
                 },
                 onCollapse = {
                     vm.onCollapse(collapsingBusStopCode = it)
-                }
+                },
+                onBusStopClick = onBusStopClick
             )
         }
     }
@@ -164,6 +167,7 @@ fun BusRouteArrivalsScreenStateView(
     onPreviousAllClicked: () -> Unit,
     onExpand: (busStopCode: String) -> Unit,
     onCollapse: (busStopCode: String) -> Unit,
+    onBusStopClick: (busStopCode: String) -> Unit,
 ) {
     Crossfade(targetState = screenState) { state ->
         when (state) {
@@ -226,6 +230,7 @@ fun BusRouteArrivalsScreenStateView(
                             onPreviousAllClicked = onPreviousAllClicked,
                             onExpand = onExpand,
                             onCollapse = onCollapse,
+                            onBusStopClick = onBusStopClick,
                         )
                     }
                 }
@@ -243,6 +248,7 @@ fun BusRouteArrivalsView(
     onPreviousAllClicked: () -> Unit,
     onExpand: (busStopCode: String) -> Unit,
     onCollapse: (busStopCode: String) -> Unit,
+    onBusStopClick: (busStopCode: String) -> Unit,
 ) {
     val lazyListState = remember {
         LazyListState(
@@ -304,6 +310,9 @@ fun BusRouteArrivalsView(
                         },
                         onCollapse = {
                             onCollapse(item.busStopCode)
+                        },
+                        onAvatarClick = {
+                            onBusStopClick(item.busStopCode)
                         }
                     )
                 }
@@ -317,6 +326,9 @@ fun BusRouteArrivalsView(
                         },
                         onCollapse = {
                             onCollapse(item.busStopCode)
+                        },
+                        onAvatarClick = {
+                            onBusStopClick(item.busStopCode)
                         }
                     )
                 }

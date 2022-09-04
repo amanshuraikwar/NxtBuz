@@ -38,6 +38,7 @@ fun ContentNavGraph(
                 bottomSheetBgOffset = bottomSheetBgOffset,
                 showBottomSheet = showBottomSheet,
                 modifier = Modifier.fillMaxSize(),
+                onBusStopClick = onBusStopClick,
             )
         }
         is NavigationState.BusStopArrivals -> {
