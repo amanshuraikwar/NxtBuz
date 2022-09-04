@@ -3,7 +3,13 @@ package io.github.amanshuraikwar.nxtbuz.busroute.ui
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -18,13 +24,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.BusService
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteHeaderData
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
-import java.util.*
+import java.util.Locale
 
 @Composable
 fun BusRouteHeader(
@@ -57,15 +64,17 @@ fun BusRouteHeader(
                 modifier = Modifier.padding(start = 16.dp),
             ) {
                 Text(
-                    text = data.destinationBusStopDescription,
+                    text = data.currentBusStopDescription,
                     style = MaterialTheme.typography.body1Bold,
                     color = MaterialTheme.colors.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
 
                 Spacer(modifier = Modifier.size(2.dp))
 
                 Text(
-                    text = "From ${data.originBusStopDescription}".toUpperCase(Locale.ROOT),
+                    text = "To ${data.destinationBusStopDescription}".toUpperCase(Locale.ROOT),
                     style = MaterialTheme.typography.overline,
                     color = MaterialTheme.colors.onSurface,
                 )

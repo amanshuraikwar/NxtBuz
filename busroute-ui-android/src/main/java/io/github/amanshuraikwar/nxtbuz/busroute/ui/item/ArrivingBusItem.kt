@@ -4,14 +4,10 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccessibleForward
-import androidx.compose.material.icons.rounded.NotAccessible
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +18,6 @@ import io.github.amanshuraikwar.nxtbuz.busroute.R
 import io.github.amanshuraikwar.nxtbuz.common.compose.VerticalInOutAnimatedContent
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.ArrivingBus
-import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusLoad
 import io.github.amanshuraikwar.nxtbuz.commonkmm.arrival.BusType
 
 @ExperimentalAnimationApi
@@ -60,35 +55,6 @@ fun ArrivingBusItem(
                     .animateContentSize()
             )
         }
-
-        Spacer(modifier = Modifier.size(8.dp))
-
-        Icon(
-            painter = painterResource(
-                when (arrivingBus.load) {
-                    BusLoad.SEA -> R.drawable.ic_bus_load_1_16
-                    BusLoad.SDA -> R.drawable.ic_bus_load_2_16
-                    BusLoad.LSD -> R.drawable.ic_bus_load_3_16
-                }
-            ),
-            modifier = Modifier.size(16.dp),
-            contentDescription = "Bus Load",
-            tint = contentColor
-        )
-
-
-        Icon(
-            imageVector = if (arrivingBus.wheelchairAccess) {
-                Icons.Rounded.AccessibleForward
-            } else {
-                Icons.Rounded.NotAccessible
-            },
-            modifier = Modifier
-                .size(16.dp)
-                .padding(1.dp),
-            contentDescription = "Wheelchair Access",
-            tint = contentColor
-        )
     }
 }
 
