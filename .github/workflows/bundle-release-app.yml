@@ -2,6 +2,9 @@ name: Bundle Release App
 
 on:
   workflow_dispatch:
+  push:
+    tags:
+      - '*'
 
 jobs:
   bundle-release-app:
@@ -26,18 +29,14 @@ jobs:
         env:
           ENCODED_STRING: ${{ secrets.RELEASE_KEYSTORE }}
         run: |
-          pwd
           echo $ENCODED_STRING | base64 -d > nxtbuz_release
-          cat nxtbuz_release
 
       - name: Decode Google Services Json
         id: decode_google_services_json
         env:
           ENCODED_STRING: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: |
-          pwd
           echo $ENCODED_STRING | base64 -d > app/google-services.json
-          cat app/google-services.json
 
       - name: Build App
         run: |
