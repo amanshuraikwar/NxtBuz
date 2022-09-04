@@ -43,11 +43,6 @@ abstract class ConfigPlugin : Plugin<Project> {
                 minSdk = 23
                 targetSdk = 32
             }
-//            buildTypes {
-//                release {
-//                    consumerProguardFile("consumer-rules.pro")
-//                }
-//            }
         }
     }
 
@@ -61,11 +56,11 @@ abstract class ConfigPlugin : Plugin<Project> {
                 minSdk = 23
                 targetSdk = 32
             }
-//            buildTypes {
-//                release {
-//                    consumerProguardFile("consumer-rules.pro")
-//                }
-//            }
+            buildTypes {
+                release {
+                    consumerProguardFile("consumer-rules.pro")
+                }
+            }
         }
     }
 
