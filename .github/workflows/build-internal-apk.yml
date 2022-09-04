@@ -2,9 +2,6 @@ name: Build Internal Apk
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - '*'
 
 jobs:
   build-internal-apk:
