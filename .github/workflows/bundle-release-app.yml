@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-unit-test-userdata-jvm:
+  bundle-release-app:
     runs-on: macos-11
     environment: Beta
     steps:
