@@ -1,7 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +17,8 @@ fun BusRouteNextItem(
         BusRouteListItemData.BusRouteNode.Position.MIDDLE,
     arrivalState: BusRouteListItemData.ArrivalState,
     onExpand: () -> Unit = {},
-    onCollapse: () -> Unit = {}
+    onCollapse: () -> Unit = {},
+    onAvatarClick: () -> Unit = {}
 ) {
     Column(
         Modifier
@@ -30,7 +30,6 @@ fun BusRouteNextItem(
                 }
             }
             .fillMaxWidth(),
-            //.animateContentSize(),
     ) {
         CircleAvatarItem(
             busStopDescription = busStopDescription,
@@ -39,6 +38,7 @@ fun BusRouteNextItem(
             bottomBarColor = MaterialTheme.colors.primary,
             busStopDescriptionStyle = MaterialTheme.typography.body2,
             position = position,
+            onAvatarClick = onAvatarClick
         )
 
         BusArrivalItem(

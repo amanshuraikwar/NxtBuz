@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -24,12 +25,14 @@ fun CircleAvatarItem(
     bottomBarColor: Color = circleColor,
     position: BusRouteListItemData.BusRouteNode.Position =
         BusRouteListItemData.BusRouteNode.Position.MIDDLE,
+    onAvatarClick: () -> Unit = {}
 ) {
     Layout(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         content = {
             Canvas(
-                modifier = Modifier,
+                modifier = Modifier.clickable(onClick = onAvatarClick),
             ) {
                 if (position != BusRouteListItemData.BusRouteNode.Position.ORIGIN) {
                     drawRect(
