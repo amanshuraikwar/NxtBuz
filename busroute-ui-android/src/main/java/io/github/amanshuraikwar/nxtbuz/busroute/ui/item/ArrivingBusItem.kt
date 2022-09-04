@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.busroute.ui.item
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -11,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -44,16 +46,26 @@ fun ArrivingBusItem(
 
         Spacer(modifier = Modifier.size(8.dp))
 
-        VerticalInOutAnimatedContent(
-            targetValue = arrivingBus.arrival
-        ) { value ->
+        Box(
+            contentAlignment = Alignment.Center
+        ) {
             Text(
-                text = value.toArrivalString(),
+                text = 0.toArrivalString(),
                 style = MaterialTheme.typography.h6Bold,
-                color = contentColor,
-                modifier = Modifier
-                    .animateContentSize()
+                modifier = Modifier.alpha(0f)
             )
+
+            VerticalInOutAnimatedContent(
+                targetValue = arrivingBus.arrival
+            ) { value ->
+                Text(
+                    text = value.toArrivalString(),
+                    style = MaterialTheme.typography.h6Bold,
+                    color = contentColor,
+                    modifier = Modifier
+                        .animateContentSize()
+                )
+            }
         }
     }
 }
