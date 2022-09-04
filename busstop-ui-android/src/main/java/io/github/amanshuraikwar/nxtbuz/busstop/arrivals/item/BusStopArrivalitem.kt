@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalListItemData
+import io.github.amanshuraikwar.nxtbuz.common.compose.BusArrivalView
 import io.github.amanshuraikwar.nxtbuz.common.compose.swipe.SwipeAction
 import io.github.amanshuraikwar.nxtbuz.common.compose.swipe.SwipeableActionsBox
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.onStar

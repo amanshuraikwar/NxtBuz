@@ -9,8 +9,17 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -21,7 +30,12 @@ import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.BusRoutePreviousAllItem
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.item.BusRoutePreviousItem
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteScreenState
-import io.github.amanshuraikwar.nxtbuz.common.compose.*
+import io.github.amanshuraikwar.nxtbuz.common.compose.FailedView
+import io.github.amanshuraikwar.nxtbuz.common.compose.FetchingView
+import io.github.amanshuraikwar.nxtbuz.common.compose.Header
+import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
+import io.github.amanshuraikwar.nxtbuz.common.compose.expandProgressFraction
+import io.github.amanshuraikwar.nxtbuz.common.compose.rememberNxtBuzBottomSheetState
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
 
 @ExperimentalAnimationApi
@@ -194,6 +208,12 @@ fun BusRouteArrivalsScreenStateView(
                             .padding(top = padding.calculateTopPadding()),
                         data = state.header,
                         onStarToggle = onStarToggle
+                    )
+
+                    Divider()
+
+                    CurrentBusStopArrivalsView(
+                        data = state.currentBusStopArrivalsData.value
                     )
 
                     Divider()

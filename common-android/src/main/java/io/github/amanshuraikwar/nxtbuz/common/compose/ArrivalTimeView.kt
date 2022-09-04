@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
+package io.github.amanshuraikwar.nxtbuz.common.compose
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.common.compose.VerticalInOutAnimatedContent
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.directions
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
@@ -29,7 +28,7 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-internal fun ArrivalTimeView(arrivalInMin: Int) {
+fun ArrivalTimeView(arrivalInMin: Int) {
     val borderColor by animateColorAsState(
         targetValue = if (arrivalInMin == 0) {
             MaterialTheme.colors.directions

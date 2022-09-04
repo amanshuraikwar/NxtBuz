@@ -1,6 +1,8 @@
 package io.github.amanshuraikwar.nxtbuz.busroute.ui
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +11,7 @@ import io.github.amanshuraikwar.nxtbuz.busroute.R
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteHeaderData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteScreenState
+import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.CurrentBusStopArrivalsData
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapEvent
 import io.github.amanshuraikwar.nxtbuz.common.model.map.MapMarker
 import io.github.amanshuraikwar.nxtbuz.common.util.TimeUtil
@@ -60,6 +63,7 @@ class BusRouteViewModel @Inject constructor(
     private val coroutineContext = errorHandler + dispatcherProvider.computation
 
     private var listItems = SnapshotStateList<BusRouteListItemData>()
+    lateinit var currentBusStopArrivalsDataState: MutableState<CurrentBusStopArrivalsData>
     lateinit var currentBusStop: BusStop
     lateinit var busRoute: BusRoute
     lateinit var busServiceNumber: String
@@ -98,6 +102,9 @@ class BusRouteViewModel @Inject constructor(
                 )
 
                 listItems = SnapshotStateList()
+                currentBusStopArrivalsDataState = mutableStateOf(
+                    CurrentBusStopArrivalsData()
+                )
 
                 starred = MutableStateFlow(
                     isStarredUseCase(
@@ -111,10 +118,11 @@ class BusRouteViewModel @Inject constructor(
                         header = BusRouteHeaderData(
                             busServiceNumber = busServiceNumber,
                             destinationBusStopDescription = busRoute.destinationBusStopDescription,
-                            originBusStopDescription = busRoute.originBusStopDescription,
+                            currentBusStopDescription = currentBusStop.description,
                             busStopCode = currentBusStop.code,
                             starred = starred
                         ),
+                        currentBusStopArrivalsData = currentBusStopArrivalsDataState,
                         listItems = listItems
                     )
                 )
@@ -352,6 +360,13 @@ class BusRouteViewModel @Inject constructor(
                     currentBusStop.code
                 )
                 listItemsLock.unlock()
+
+                withContext(dispatcherProvider.main) {
+                    currentBusStopArrivalsDataState.value =
+                        currentBusStopArrivalsDataState.value.copy(
+                            busArrivals = arrivalsLoopData.busStopArrival.busArrivals
+                        )
+                }
             } else {
                 primaryBusServiceArrivalsLoop?.stop()
             }
