@@ -51,6 +51,23 @@ jobs:
           echo "keystore.key.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
           ./gradlew bundleRelease
 
+      - name: Decode Service Account JSON
+        env:
+          ENCODED_STRING: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+        run: |
+          echo $ENCODED_STRING | base64 -d > service-account.json
+
+      - name: Upload to Google Play Console BETA track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: service-account.json
+          packageName: io.github.amanshuraikwar.nxtbuz
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: beta
+          status: draft
+          whatsNewDirectory: distribution/whatsnew
+          mappingFile: app/build/outputs/mapping/release/mapping.txt
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
