@@ -23,4 +23,19 @@ class RemoteDataSourceProvides {
             coroutinesDispatcherProvider = coroutinesDispatcherProvider
         )
     }
+
+    @Provides
+    @Singleton
+    @Named("nsApi")
+    fun provideNsApiRemoteDataSource(
+        @Named("nsApiSubscriptionKey") subscriptionKey: String,
+        @Named("isReleaseBuild") isReleaseBuild: Boolean,
+        coroutinesDispatcherProvider: CoroutinesDispatcherProvider
+    ): RemoteDataSource {
+        return RemoteDataSourceProvides.provideNsApiRemoteDataSource(
+            subscriptionKey = subscriptionKey,
+            addLoggingInterceptors = !isReleaseBuild,
+            coroutinesDispatcherProvider = coroutinesDispatcherProvider
+        )
+    }
 }

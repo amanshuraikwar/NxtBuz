@@ -17,12 +17,14 @@ object RepositoryProvides {
     fun provideBusStopRepository(
         localDataSource: LocalDataSource,
         remoteDataSource: RemoteDataSource,
+        nsApiRemoteDataSource: RemoteDataSource,
         preferenceStorage: PreferenceStorage,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): BusStopRepository {
         return BusStopRepositoryImpl(
             localDataSource = localDataSource,
             remoteDataSource = remoteDataSource,
+            nsApiRemoteDataSource = nsApiRemoteDataSource,
             preferenceStorage = preferenceStorage,
             dispatcherProvider = dispatcherProvider,
         )

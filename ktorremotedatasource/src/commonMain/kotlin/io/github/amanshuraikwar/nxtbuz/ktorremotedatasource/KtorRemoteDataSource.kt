@@ -6,6 +6,7 @@ import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusArrivalsResponseDto
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusRouteItemDto
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.BusStopItemDto
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
+import io.github.amanshuraikwar.nxtbuz.remotedatasource.StationItemDto
 import io.ktor.client.engine.HttpClientEngine
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -128,6 +129,10 @@ class KtorRemoteDataSource internal constructor(
                         }
                 }
         }
+    }
+
+    override suspend fun getTrainStations(skip: Int): List<StationItemDto> {
+        return emptyList()
     }
 
     companion object {

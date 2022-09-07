@@ -28,6 +28,7 @@ import kotlinx.coroutines.withContext
 class BusStopRepositoryImpl constructor(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource,
+    private val nsApiRemoteDataSource: RemoteDataSource,
     private val preferenceStorage: PreferenceStorage,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : BusStopRepository {

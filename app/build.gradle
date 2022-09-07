@@ -61,6 +61,7 @@ android {
             applicationIdSuffix ".release"
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.release']
             buildConfigField "String", "ltaAccountKey", "\""+localProperties['lta.account.key.release']+"\""
+            buildConfigField "String", "nsApiSubscriptionKey", "\""+localProperties['nsapi.subscription.key.release']+"\""
             manifestPlaceholders = [ appName : APP_NAME_RELEASE]
             debuggable false
         }
@@ -71,6 +72,7 @@ android {
             applicationIdSuffix ".internal"
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.release']
             buildConfigField "String", "ltaAccountKey", "\""+localProperties['lta.account.key.release']+"\""
+            buildConfigField "String", "nsApiSubscriptionKey", "\""+localProperties['nsapi.subscription.key.release']+"\""
             manifestPlaceholders = [ appName : APP_NAME_INTERNAL]
             debuggable true
             matchingFallbacks = ['release']
@@ -79,6 +81,7 @@ android {
             applicationIdSuffix ".debug"
             resValue "string", "google_maps_key", localProperties['google.maps.api.key.debug']
             buildConfigField "String", "ltaAccountKey", "\""+localProperties['lta.account.key.debug']+"\""
+            buildConfigField "String", "nsApiSubscriptionKey", "\""+localProperties['nsapi.subscription.key.debug']+"\""
             manifestPlaceholders = [ appName : APP_NAME_DEBUG]
             debuggable true
         }

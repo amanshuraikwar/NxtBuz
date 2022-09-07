@@ -28,12 +28,14 @@ class RepositoryProvides {
     fun provideBusStopRepository(
         localDataSource: LocalDataSource,
         remoteDataSource: RemoteDataSource,
+        @Named("nsApi") nsApiRemoteDataSource: RemoteDataSource,
         preferenceStorage: PreferenceStorage,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): BusStopRepository {
         return RepositoryProvides.provideBusStopRepository(
             localDataSource = localDataSource,
             remoteDataSource = remoteDataSource,
+            nsApiRemoteDataSource = nsApiRemoteDataSource,
             preferenceStorage = preferenceStorage,
             dispatcherProvider = dispatcherProvider,
         )

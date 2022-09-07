@@ -9,4 +9,6 @@ interface RemoteDataSource {
     ): BusArrivalsResponseDto
 
     suspend fun getBusRoutes(skip: Int = 0): List<BusRouteItemDto>
+
+    suspend fun getTrainStations(skip: Int = 0): List<StationItemDto>
 }
