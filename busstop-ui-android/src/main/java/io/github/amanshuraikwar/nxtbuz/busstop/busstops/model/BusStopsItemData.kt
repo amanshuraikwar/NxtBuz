@@ -14,4 +14,15 @@ sealed class BusStopsItemData {
         val operatingBuses: String,
         val isStarred: Boolean,
     ) : BusStopsItemData()
+
+    // TODO-amanshuraikwar (12 Sep 2022 04:23:20 PM):
+    //  add support for stop type
+    data class TrainStop(
+        val id: String,
+        val code: String,
+        val name: String,
+        val hasDepartureTimes: Boolean,
+        val hasTravelAssistance: Boolean,
+        val isStarred: Boolean,
+    ) : BusStopsItemData()
 }

@@ -102,7 +102,8 @@ fun BusStopsScreen(
                     },
                     onUseDefaultLocation = {
                         vm.fetchNearDefaultLocationBusStops()
-                    }
+                    },
+                    onStopsFilterClick = vm::onStopsFilterClick
                 )
             }
         } else {
@@ -130,7 +131,8 @@ fun BusStopsScreen(
                     },
                     onUseDefaultLocation = {
                         vm.fetchNearDefaultLocationBusStops()
-                    }
+                    },
+                    onStopsFilterClick = vm::onStopsFilterClick
                 )
             }
         }

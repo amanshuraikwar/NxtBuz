@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import java.util.*
 
 @Composable
-fun Header(
+fun HeaderView(
     modifier: Modifier = Modifier,
     title: String
 ) {

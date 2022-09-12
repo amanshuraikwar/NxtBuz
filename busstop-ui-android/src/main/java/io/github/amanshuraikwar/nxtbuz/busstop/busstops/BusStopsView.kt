@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.busstops
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.rounded.WrongLocation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsScreenState
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.StopsFilter
 
 @ExperimentalMaterialApi
 @Composable
@@ -20,7 +22,8 @@ fun BusStopsView(
     onBusStopClick: (busStopCode: String) -> Unit,
     onBusStopStarToggle: (busStopCode: String, newStarState: Boolean) -> Unit,
     onRetry: () -> Unit = {},
-    onUseDefaultLocation: () -> Unit = {}
+    onUseDefaultLocation: () -> Unit = {},
+    onStopsFilterClick: (StopsFilter) -> Unit = {}
 ) {
     when (state) {
         BusStopsScreenState.Failed -> {
@@ -34,13 +37,54 @@ fun BusStopsView(
                 "Fetching..."
             )
         }
-        BusStopsScreenState.NearbyBusStops.Fetching -> {
-            FetchingView(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues = padding),
-                "Fetching nearby bus stops..."
-            )
+        is BusStopsScreenState.NearbyBusStops -> {
+            Column(
+                Modifier.fillMaxWidth()
+            ) {
+                StopsFilterView(
+                    filter = state.filter,
+                    onStopsFilterClick = onStopsFilterClick
+                )
+
+                when (state) {
+                    is BusStopsScreenState.NearbyBusStops.Fetching -> {
+                        FetchingView(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(paddingValues = padding),
+                            "Fetching nearby bus stops..."
+                        )
+                    }
+                    is BusStopsScreenState.NearbyBusStops.LocationError -> {
+                        LocationErrorView(
+                            title = state.title,
+                            primaryButtonText = state.primaryButtonText,
+                            onPrimaryButtonClick = state.onPrimaryButtonClick,
+                            secondaryButtonText = state.secondaryButtonText,
+                            onSecondaryButtonClick = state.onSecondaryButtonClick
+                        )
+                    }
+                    is BusStopsScreenState.NearbyBusStops.Success -> {
+                        if (state.listItems.isEmpty()) {
+                            NoBusStopsErrorView(
+                                icon = Icons.Rounded.WrongLocation,
+                                title = "There seem to be no bus stops near you :(",
+                                primaryButtonText = "RETRY",
+                                onPrimaryButtonClick = onRetry,
+                                secondaryButtonText = "USE DEFAULT LOCATION",
+                                onSecondaryButtonClick = onUseDefaultLocation
+                            )
+                        } else {
+                            NearbyBusStopsView(
+                                state.listItems,
+                                padding,
+                                onBusStopClick,
+                                onBusStopStarToggle
+                            )
+                        }
+                    }
+                }
+            }
         }
         BusStopsScreenState.DefaultLocationBusStops.Fetching -> {
             FetchingView(
@@ -58,34 +102,6 @@ fun BusStopsView(
                 "Fetching starred bus stops..."
             )
         }
-        is BusStopsScreenState.NearbyBusStops.Success -> {
-            if (state.listItems.isEmpty()) {
-                NoBusStopsErrorView(
-                    icon = Icons.Rounded.WrongLocation,
-                    title = "There seem to be no bus stops near you :(",
-                    primaryButtonText = "RETRY",
-                    onPrimaryButtonClick = onRetry,
-                    secondaryButtonText = "USE DEFAULT LOCATION",
-                    onSecondaryButtonClick = onUseDefaultLocation
-                )
-            } else {
-                NearbyBusStops(
-                    state.listItems,
-                    padding,
-                    onBusStopClick,
-                    onBusStopStarToggle
-                )
-            }
-        }
-        is BusStopsScreenState.NearbyBusStops.LocationError -> {
-            LocationErrorView(
-                title = state.title,
-                primaryButtonText = state.primaryButtonText,
-                onPrimaryButtonClick = state.onPrimaryButtonClick,
-                secondaryButtonText = state.secondaryButtonText,
-                onSecondaryButtonClick = state.onSecondaryButtonClick
-            )
-        }
         is BusStopsScreenState.DefaultLocationBusStops.Success -> {
             if (state.listItems.isEmpty()) {
                 NoBusStopsErrorView(
@@ -97,11 +113,11 @@ fun BusStopsView(
                     onSecondaryButtonClick = onUseDefaultLocation
                 )
             } else {
-                NearbyBusStops(
+                NearbyBusStopsView(
                     state.listItems,
                     padding,
                     onBusStopClick,
-                    onBusStopStarToggle
+                    onBusStopStarToggle,
                 )
             }
         }
@@ -116,11 +132,11 @@ fun BusStopsView(
                     onSecondaryButtonClick = onUseDefaultLocation
                 )
             } else {
-                NearbyBusStops(
+                NearbyBusStopsView(
                     state.listItems,
                     padding,
                     onBusStopClick,
-                    onBusStopStarToggle
+                    onBusStopStarToggle,
                 )
             }
         }

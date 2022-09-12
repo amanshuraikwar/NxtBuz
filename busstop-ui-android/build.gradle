@@ -60,7 +60,3 @@ dependencies {
 
     implementation Libs.KotlinX.datetime
 }
-
-repositories {
-    mavenCentral()
-}

@@ -8,19 +8,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.busstop.busstops.items.BusStopItem
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.items.BusStopItemView
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.items.TrainStopItemView
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
-import io.github.amanshuraikwar.nxtbuz.common.compose.Header
+import io.github.amanshuraikwar.nxtbuz.common.compose.HeaderView
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun NearbyBusStops(
+fun NearbyBusStopsView(
     listItems: List<BusStopsItemData>,
     padding: PaddingValues,
     onBusStopClick: (busStopCode: String) -> Unit,
-    onBusStopStarToggle: (busStopCode: String, newStarState: Boolean) -> Unit
+    onBusStopStarToggle: (busStopCode: String, newStarState: Boolean) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
@@ -42,13 +43,14 @@ fun NearbyBusStops(
                 when (item) {
                     is BusStopsItemData.BusStop -> item.id
                     is BusStopsItemData.Header -> item.id
+                    is BusStopsItemData.TrainStop -> item.id
                 }
             },
             errorKey = "bus-route-arrivals-error-key",
         ) { _, item ->
             when (item) {
                 is BusStopsItemData.BusStop -> {
-                    BusStopItem(
+                    BusStopItemView(
                         data = item,
                         onClick = {
                             coroutineScope.launch {
@@ -63,7 +65,14 @@ fun NearbyBusStops(
                     )
                 }
                 is BusStopsItemData.Header -> {
-                    Header(title = item.title)
+                    HeaderView(title = item.title)
+                }
+                is BusStopsItemData.TrainStop -> {
+                    TrainStopItemView(
+                        data = item,
+                        onClick = { /*TODO*/ },
+                        onStarToggle = {}
+                    )
                 }
             }
         }

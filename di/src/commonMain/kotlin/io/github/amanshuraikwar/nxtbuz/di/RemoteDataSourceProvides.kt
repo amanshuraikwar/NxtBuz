@@ -16,16 +16,4 @@ object RemoteDataSourceProvides {
             ioDispatcher = coroutinesDispatcherProvider.io
         )
     }
-
-    fun provideNsApiRemoteDataSource(
-        subscriptionKey: String,
-        addLoggingInterceptors: Boolean,
-        coroutinesDispatcherProvider: CoroutinesDispatcherProvider
-    ): RemoteDataSource {
-        return NsApiRemoteDataSource.createInstance(
-            subscriptionKey = subscriptionKey,
-            addLoggingInterceptors = addLoggingInterceptors,
-            ioDispatcher = coroutinesDispatcherProvider.io,
-        )
-    }
 }

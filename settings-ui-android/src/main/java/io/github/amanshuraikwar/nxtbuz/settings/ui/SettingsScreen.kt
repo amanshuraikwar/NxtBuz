@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.statusBarsPadding
-import io.github.amanshuraikwar.nxtbuz.common.compose.Header
+import io.github.amanshuraikwar.nxtbuz.common.compose.HeaderView
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
 import io.github.amanshuraikwar.nxtbuz.settings.ui.model.SettingsItemData
@@ -107,7 +107,7 @@ fun SettingsScreen(
                         RadioGroupSettingItem(radioGroup = item)
                     }
                     is SettingsItemData.Header -> {
-                        Header(
+                        HeaderView(
                             Modifier.padding(top = 8.dp),
                             title = item.title
                         )

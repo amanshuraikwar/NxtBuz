@@ -16,7 +16,7 @@ open class GetTrainStopsUseCase constructor(
                         lat = lat,
                         lng = lon,
                         maxStops = limit,
-                        maxDistanceMetres = 500
+                        maxDistanceMetres = 5_000
                     )
                 )
             }
