@@ -6,13 +6,23 @@ plugins {
     id("com.android.library")
     kotlin("plugin.serialization")
     id("io.github.amanshuraikwar.config")
+    id("com.squareup.sqldelight")
+}
+
+sqldelight {
+    database("NsApiDb") {
+        packageName = "io.github.amanshuraikwar.nsapi.db"
+        sourceFolders = listOf("sqldelight")
+        version = 1
+    }
 }
 
 kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":remotedatasource"))
+                implementation(project(":repository"))
+                implementation(project(":preferencestorage"))
 
                 with(Libs.Ktor) {
                     implementation(clientCore)
@@ -25,16 +35,23 @@ kotlin {
                     implementation(serializationCore)
                     implementation(serializationJson)
                 }
+
+                with(Libs.MultiplatformSettings) {
+                    implementation(lib)
+                    implementation(noArg)
+                }
             }
         }
         val androidMain by getting {
             dependencies {
                 implementation(Libs.Ktor.clientAndroid)
+                implementation(Libs.SqlDelight.androidDriver)
             }
         }
         val iosMain by getting {
             dependencies {
                 implementation(Libs.Ktor.clientIos)
+                implementation(Libs.SqlDelight.nativeDriver)
             }
         }
     }

@@ -36,6 +36,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.starred.ShouldAlertStarredBusArriv
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusServiceStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.DoSetupUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetForcedThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetHomeBusStopUseCase
@@ -58,6 +59,7 @@ import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
 import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.repository.SearchRepository
 import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
 import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -501,6 +503,15 @@ class UseCaseProvides {
     ): SetLaunchBusStopPageUseCase {
         return SetLaunchBusStopPageUseCase(
             userRepository = repo
+        )
+    }
+
+    @Provides
+    fun provideGetTrainStopsUseCase(
+        @Named("nsApi") nsApiTrainsStopRepository: TrainStopRepository
+    ): GetTrainStopsUseCase {
+        return GetTrainStopsUseCase(
+            trainStopRepositories = listOf(nsApiTrainsStopRepository)
         )
     }
 }

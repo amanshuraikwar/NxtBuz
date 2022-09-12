@@ -3,6 +3,7 @@ package io.github.amanshuraikwar.nxtbuz.di.dagger
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import io.github.amanshuraikwar.nsapi.provider.NsApiFactory
 import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
 import io.github.amanshuraikwar.nxtbuz.commonkmm.AndroidSystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
@@ -15,6 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
 import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.repository.SearchRepository
 import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
 import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepositoryAndroidImpl
 import io.github.amanshuraikwar.nxtbuz.userdata.UserRepositoryAndroidImpl
@@ -28,14 +30,12 @@ class RepositoryProvides {
     fun provideBusStopRepository(
         localDataSource: LocalDataSource,
         remoteDataSource: RemoteDataSource,
-        @Named("nsApi") nsApiRemoteDataSource: RemoteDataSource,
         preferenceStorage: PreferenceStorage,
         dispatcherProvider: CoroutinesDispatcherProvider
     ): BusStopRepository {
         return RepositoryProvides.provideBusStopRepository(
             localDataSource = localDataSource,
             remoteDataSource = remoteDataSource,
-            nsApiRemoteDataSource = nsApiRemoteDataSource,
             preferenceStorage = preferenceStorage,
             dispatcherProvider = dispatcherProvider,
         )
@@ -108,6 +108,25 @@ class RepositoryProvides {
         return RepositoryProvides.provideSearchRepository(
             localDataSource = localDataSource,
             dispatcherProvider = dispatcherProvider,
+        )
+    }
+
+    @Singleton
+    @Provides
+    @Named("nsApi")
+    fun provideNsApiTrainStopRepository(
+        @ApplicationContext context: Context,
+        dispatcherProvider: CoroutinesDispatcherProvider,
+        @Named("isReleaseBuild") isReleaseBuild: Boolean,
+        @Named("nsApiSubscriptionKey") subscriptionKey: String,
+    ): TrainStopRepository {
+        return RepositoryProvides.provideNsApiTrainStopRepository(
+            NsApiFactory(
+                context = context,
+                dispatcherProvider = dispatcherProvider,
+                subscriptionKey = subscriptionKey,
+                addLoggingInterceptors = !isReleaseBuild
+            )
         )
     }
 }
