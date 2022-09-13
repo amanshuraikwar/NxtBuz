@@ -16,7 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
-import io.github.amanshuraikwar.nxtbuz.commonkmm.TrainStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
@@ -533,8 +533,10 @@ class BusStopsViewModel @Inject constructor(
             }
 
             val trainStops = getTrainStopsUseCase(
-                lat = location.lat,
-                lon = location.lng,
+//                lat = location.lat,
+//                lon = location.lng,
+                lat = 52.3676,
+                lon = 4.9041,
                 limit = busStopsQueryLimitUseCase()
             )
 

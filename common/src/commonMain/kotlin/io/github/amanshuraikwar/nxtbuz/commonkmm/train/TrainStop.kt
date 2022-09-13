@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.commonkmm
+package io.github.amanshuraikwar.nxtbuz.commonkmm.train
 
 data class TrainStop(
     val type: String,

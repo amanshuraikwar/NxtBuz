@@ -6,10 +6,16 @@ import io.github.amanshuraikwar.nsapi.db.NsApiDb
 import io.github.amanshuraikwar.nsapi.db.NsTrainStationEntity
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.MapUtil
-import io.github.amanshuraikwar.nxtbuz.commonkmm.TrainStop
 import io.github.amanshuraikwar.nxtbuz.commonkmm.toSearchDescriptionHint
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDeparture
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
 import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 
 internal class NsApiRepository(
     private val settingsFactory: () -> Settings,
@@ -67,7 +73,7 @@ internal class NsApiRepository(
                 .map { nsTrainStationEntity ->
                     TrainStop(
                         type = nsTrainStationEntity.stationType,
-                        code = nsTrainStationEntity.code,
+                        code = TRAIN_STOP_CODE_PREFIX + nsTrainStationEntity.code,
                         hasFacilities = nsTrainStationEntity.hasFacilities,
                         hasDepartureTimes = nsTrainStationEntity.hasDepartureTimes,
                         hasTravelAssistance = nsTrainStationEntity.hasTravelAssistance,
@@ -78,6 +84,71 @@ internal class NsApiRepository(
                     )
                 }
         }
+    }
+
+    override suspend fun containsStop(code: String): Boolean {
+        return code.startsWith(TRAIN_STOP_CODE_PREFIX)
+    }
+
+    override suspend fun getTrainDepartures(trainStopCode: String): List<TrainDeparture> {
+        return withContext(dispatcherProvider.io) {
+            val departures = mutableListOf<TrainDeparture>()
+
+            val arrivalDeferred = async {
+                nsApi.getTrainArrivals(stationCode = trainStopCode)
+            }
+            val departuresDeferred = async {
+                nsApi.getTrainDepartures(stationCode = trainStopCode)
+            }
+
+            val arrivalsMap = arrivalDeferred.await()
+                .payload
+                .arrivals
+                .groupBy { arrivalDto ->
+                    arrivalDto.product.number
+                }
+                .mapValues {
+                    it.value[0]
+                }
+
+            departuresDeferred.await()
+                .payload
+                .departures
+                .forEach { departureDto ->
+                    val arrivalDto = arrivalsMap[departureDto.product.number] ?: return@forEach
+
+                    departures.add(
+                        TrainDeparture(
+                            id = departureDto.product.number,
+                            destinationTrainStopName = departureDto.direction,
+                            track = departureDto.plannedTrack,
+                            trainCategoryName = departureDto.product.shortCategoryName,
+                            cancelled = departuresDeferred.isCancelled,
+                            plannedArrivalInstant = arrivalDto.plannedDateTime.toAmsterdamInstant(),
+                            actualArrivalInstant = arrivalDto.actualDateTime.toAmsterdamInstant(),
+                            plannedDepartureInstant = departureDto.plannedDateTime.toAmsterdamInstant(),
+                            actualDepartureInstant = departureDto.actualDateTime.toAmsterdamInstant(),
+                            delayedByMinutes =
+                            departureDto
+                                .actualDateTime
+                                .toAmsterdamInstant().minus(
+                                    departureDto
+                                        .plannedDateTime
+                                        .toAmsterdamInstant()
+                                )
+                                .inWholeMinutes.toInt()
+                        )
+                    )
+                }
+
+            departures
+        }
+    }
+
+    private fun String.toAmsterdamInstant(): Instant {
+        val (localDateTimeString, _) = split("+")
+        return LocalDateTime.parse(localDateTimeString)
+            .toInstant(TimeZone.of("Europe/Amsterdam"))
     }
 
     private suspend fun fetchAndCacheLocally() {
@@ -123,5 +194,6 @@ internal class NsApiRepository(
 
     companion object {
         private const val PREF_TRAIN_STOPS_CACHED_LOCALLY = "TRAIN_STOPS_CACHED_LOCALLY"
+        private const val TRAIN_STOP_CODE_PREFIX = "NS-API-TRAIN-"
     }
 }

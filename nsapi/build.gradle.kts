@@ -40,6 +40,8 @@ kotlin {
                     implementation(lib)
                     implementation(noArg)
                 }
+
+                implementation(Libs.KotlinX.datetime)
             }
         }
         val androidMain by getting {

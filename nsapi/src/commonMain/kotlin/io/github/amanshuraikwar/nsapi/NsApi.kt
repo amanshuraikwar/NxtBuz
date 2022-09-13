@@ -1,5 +1,7 @@
 package io.github.amanshuraikwar.nsapi
 
+import io.github.amanshuraikwar.nsapi.model.ArrivalsResponseDto
+import io.github.amanshuraikwar.nsapi.model.DeparturesResponseDto
 import io.github.amanshuraikwar.nsapi.model.StationsResponseDto
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
@@ -9,6 +11,7 @@ import io.ktor.client.features.observer.ResponseObserver
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.utils.io.readUTF8Line
 import kotlinx.serialization.json.Json
 
@@ -24,13 +27,49 @@ internal class NsApi(
     }
 
     suspend fun getStations(): StationsResponseDto {
-        return client.get("$baseUrl/stations") {
+        return client.get("$baseUrl/reisinformatie-api/api/v2/stations") {
             addSubscriptionKey()
         }
     }
 
+    /**
+     * @param trainCode (ritnummer) Code/identifier of the train
+     */
+//    suspend fun getTrainInfo(trainCode: String, stationCode: String): {
+//        return client.get("$baseUrl/virtual-train-api/api/v1/trein/$trainCode/$stationCode") {
+//            addSubscriptionKey()
+//        }
+//    }
+
+    suspend fun getTrainDepartures(stationCode: String): DeparturesResponseDto {
+        return client.get("$baseUrl/reisinformatie-api/api/v2/departures") {
+            addSubscriptionKey()
+            url {
+                parameter("station", stationCode)
+            }
+        }
+    }
+
+    suspend fun getTrainArrivals(stationCode: String): ArrivalsResponseDto {
+        return client.get("$baseUrl/reisinformatie-api/api/v2/arrivals") {
+            addSubscriptionKey()
+            url {
+                parameter("station", stationCode)
+            }
+        }
+    }
+
+//    suspend fun getTrainJourneyDetails(trainCode: String): {
+//        return client.get("$baseUrl/reisinformatie-api/api/v2/journey") {
+//            addSubscriptionKey()
+//            url {
+//                parameter("train", trainCode)
+//            }
+//        }
+//    }
+
     companion object {
-        private const val ENDPOINT = "https://gateway.apiportal.ns.nl/reisinformatie-api/api/v2"
+        private const val ENDPOINT = "https://gateway.apiportal.ns.nl"
 
         private fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }
 

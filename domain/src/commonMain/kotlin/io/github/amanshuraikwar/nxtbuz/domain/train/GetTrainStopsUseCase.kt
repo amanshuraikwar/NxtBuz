@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.train
 
-import io.github.amanshuraikwar.nxtbuz.commonkmm.TrainStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
 import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
 
 open class GetTrainStopsUseCase constructor(

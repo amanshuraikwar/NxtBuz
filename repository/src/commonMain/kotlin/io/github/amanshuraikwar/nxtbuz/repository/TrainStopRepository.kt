@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.repository
 
-import io.github.amanshuraikwar.nxtbuz.commonkmm.TrainStop
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDeparture
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
 
 /**
  * Every regional api provider must implement this interface to support providing train stops
@@ -16,6 +17,10 @@ interface TrainStopRepository {
         maxStops: Int,
         maxDistanceMetres: Int? = null
     ): List<TrainStop>
+
+    suspend fun containsStop(code: String): Boolean
+
+    suspend fun getTrainDepartures(trainStopCode: String): List<TrainDeparture>
 
     interface Factory {
         fun create(): TrainStopRepository
