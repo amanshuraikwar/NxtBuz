@@ -1,5 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.train.departures
 
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDepartureStatus
+
 internal sealed class ScreenState {
     object Fetching : ScreenState()
     data class Success(
@@ -19,7 +21,7 @@ internal sealed class ListItemData {
         val destinationTrainStopName: String,
         val track: String,
         val trainCategoryName: String,
-        val cancelled: Boolean,
+        val departureStatus: TrainDepartureStatus,
         val plannedArrival: String,
         val actualArrival: String,
         val plannedDeparture: String,

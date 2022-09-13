@@ -7,10 +7,14 @@ data class TrainDeparture(
     val destinationTrainStopName: String,
     val track: String,
     val trainCategoryName: String,
-    val cancelled: Boolean,
     val plannedArrivalInstant: Instant,
     val actualArrivalInstant: Instant,
     val plannedDepartureInstant: Instant,
     val actualDepartureInstant: Instant,
     val delayedByMinutes: Int,
+    val departureStatus: TrainDepartureStatus,
 )
+
+enum class TrainDepartureStatus {
+    INCOMING, ON_STATION, CANCELLED, UNKNOWN
+}

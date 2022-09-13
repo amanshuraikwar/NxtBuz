@@ -73,7 +73,7 @@ class TrainDeparturesViewModel @Inject constructor(
             destinationTrainStopName = destinationTrainStopName,
             track = track,
             trainCategoryName = trainCategoryName,
-            cancelled = cancelled,
+            departureStatus = departureStatus,
             plannedArrival = plannedArrivalInstant.formatArrivalInstant(),
             actualArrival = actualArrivalInstant.formatArrivalInstant(),
             plannedDeparture = plannedDepartureInstant.formatArrivalInstant(),

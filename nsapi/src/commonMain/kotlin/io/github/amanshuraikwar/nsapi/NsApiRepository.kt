@@ -8,6 +8,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.MapUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.toSearchDescriptionHint
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDeparture
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDepartureStatus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
 import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
 import kotlinx.coroutines.async
@@ -114,7 +115,20 @@ internal class NsApiRepository(
                             destinationTrainStopName = departureDto.direction,
                             track = departureDto.plannedTrack,
                             trainCategoryName = departureDto.product.shortCategoryName,
-                            cancelled = departuresDeferred.isCancelled,
+                            departureStatus = when {
+                                departureDto.cancelled -> {
+                                    TrainDepartureStatus.CANCELLED
+                                }
+                                departureDto.departureStatus == "ON_STATION" -> {
+                                    TrainDepartureStatus.ON_STATION
+                                }
+                                departureDto.departureStatus == "INCOMING" -> {
+                                    TrainDepartureStatus.INCOMING
+                                }
+                                else -> {
+                                    TrainDepartureStatus.UNKNOWN
+                                }
+                            },
                             plannedArrivalInstant = arrivalDto.plannedDateTime.toAmsterdamInstant(),
                             actualArrivalInstant = arrivalDto.actualDateTime.toAmsterdamInstant(),
                             plannedDepartureInstant = departureDto.plannedDateTime.toAmsterdamInstant(),
