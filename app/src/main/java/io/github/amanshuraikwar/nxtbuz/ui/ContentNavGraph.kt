@@ -13,6 +13,8 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.BusStopArrivalsViewModel
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsScreen
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.BusStopsViewModel
+import io.github.amanshuraikwar.nxtbuz.train.departures.TrainDeparturesScreenView
+import io.github.amanshuraikwar.nxtbuz.train.departures.TrainDeparturesViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
 
 @ExperimentalAnimationApi
@@ -23,11 +25,13 @@ fun ContentNavGraph(
     navigationState: NavigationState,
     showBottomSheet: Boolean,
     onBusStopClick: (busStopCode: String) -> Unit,
+    onTrainStopClick: (trainsStopCode: String) -> Unit,
     onBusServiceClick: (busStopCode: String, busServiceNumber: String) -> Unit,
     bottomSheetBgOffset: Dp,
     busRouteViewModel: BusRouteViewModel,
     busStopArrivalsViewModel: BusStopArrivalsViewModel,
     busStopsViewModel: BusStopsViewModel,
+    trainDeparturesViewModel: TrainDeparturesViewModel
 ) {
     when (navigationState) {
         is NavigationState.BusRoute -> {
@@ -58,10 +62,19 @@ fun ContentNavGraph(
                 bottomSheetBgOffset = bottomSheetBgOffset,
                 showBottomSheet = showBottomSheet,
                 modifier = Modifier.fillMaxSize(),
+                onTrainStopClick = onTrainStopClick
             )
         }
         NavigationState.Search -> {
             // do nothing
+        }
+        is NavigationState.TrainStopDepartures -> {
+            TrainDeparturesScreenView(
+                trainStopCode = navigationState.trainStopCode,
+                vm = trainDeparturesViewModel,
+                bottomSheetBgOffset = bottomSheetBgOffset,
+                showBottomSheet =showBottomSheet
+            )
         }
     }
 }

@@ -16,6 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.search.SearchModule
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsActivity
 import io.github.amanshuraikwar.nxtbuz.settings.ui.SettingsModule
 import io.github.amanshuraikwar.nxtbuz.starred.StarredModule
+import io.github.amanshuraikwar.nxtbuz.train.departures.di.TrainUiModule
 import io.github.amanshuraikwar.nxtbuz.ui.MainActivity
 import io.github.amanshuraikwar.nxtbuz.ui.di.MainModule
 
@@ -46,7 +47,8 @@ abstract class ActivityBindingModule {
             SearchModule::class,
             StarredModule::class,
             CoroutineModule::class,
-            UseCaseProvides::class
+            UseCaseProvides::class,
+            TrainUiModule::class
         ]
     )
     internal abstract fun c(): MainActivity

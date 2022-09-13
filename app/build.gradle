@@ -142,6 +142,7 @@ dependencies {
     implementation project(':map-ui-android')
     implementation project(':busstop-ui-android')
     implementation project(':busroute-ui-android')
+    implementation project(':train-ui-android')
 
     // theme modules
     debugImplementation project(':basetheme-ui-android')

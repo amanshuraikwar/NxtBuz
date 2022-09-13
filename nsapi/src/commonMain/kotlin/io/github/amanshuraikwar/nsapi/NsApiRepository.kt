@@ -71,17 +71,7 @@ internal class NsApiRepository(
                 }
                 .distinctBy { it.code }
                 .map { nsTrainStationEntity ->
-                    TrainStop(
-                        type = nsTrainStationEntity.stationType,
-                        code = TRAIN_STOP_CODE_PREFIX + nsTrainStationEntity.code,
-                        hasFacilities = nsTrainStationEntity.hasFacilities,
-                        hasDepartureTimes = nsTrainStationEntity.hasDepartureTimes,
-                        hasTravelAssistance = nsTrainStationEntity.hasTravelAssistance,
-                        name = nsTrainStationEntity.nameLong,
-                        lat = nsTrainStationEntity.latitude,
-                        lng = nsTrainStationEntity.longitude,
-                        starred = nsTrainStationEntity.starred
-                    )
+                    nsTrainStationEntity.toTrainStop()
                 }
         }
     }
@@ -91,14 +81,15 @@ internal class NsApiRepository(
     }
 
     override suspend fun getTrainDepartures(trainStopCode: String): List<TrainDeparture> {
+        val trainStationCode = trainStopCode.drop(TRAIN_STOP_CODE_PREFIX.length)
         return withContext(dispatcherProvider.io) {
             val departures = mutableListOf<TrainDeparture>()
 
             val arrivalDeferred = async {
-                nsApi.getTrainArrivals(stationCode = trainStopCode)
+                nsApi.getTrainArrivals(stationCode = trainStationCode)
             }
             val departuresDeferred = async {
-                nsApi.getTrainDepartures(stationCode = trainStopCode)
+                nsApi.getTrainDepartures(stationCode = trainStationCode)
             }
 
             val arrivalsMap = arrivalDeferred.await()
@@ -145,10 +136,35 @@ internal class NsApiRepository(
         }
     }
 
+    override suspend fun getTrainStop(code: String): TrainStop? {
+        return withContext(dispatcherProvider.io) {
+            nsApiDb
+                .nsTrainStationEntityQueries
+                .findByCode(code = code.drop(TRAIN_STOP_CODE_PREFIX.length))
+                .executeAsList()
+                .getOrNull(0)
+                ?.toTrainStop()
+        }
+    }
+
     private fun String.toAmsterdamInstant(): Instant {
         val (localDateTimeString, _) = split("+")
         return LocalDateTime.parse(localDateTimeString)
             .toInstant(TimeZone.of("Europe/Amsterdam"))
+    }
+
+    private fun NsTrainStationEntity.toTrainStop(): TrainStop {
+        return TrainStop(
+            type = stationType,
+            code = TRAIN_STOP_CODE_PREFIX + code,
+            hasFacilities = hasFacilities,
+            hasDepartureTimes = hasDepartureTimes,
+            hasTravelAssistance = hasTravelAssistance,
+            name = nameLong,
+            lat = latitude,
+            lng = longitude,
+            starred = starred
+        )
     }
 
     private suspend fun fetchAndCacheLocally() {

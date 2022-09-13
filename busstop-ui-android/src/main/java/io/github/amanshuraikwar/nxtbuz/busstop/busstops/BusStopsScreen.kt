@@ -54,6 +54,7 @@ fun BusStopsScreen(
     bottomSheetBgOffset: Dp,
     showBottomSheet: Boolean,
     onBusStopClick: (busStopCode: String) -> Unit,
+    onTrainStopClick: (trainsStopCode: String) -> Unit,
 ) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
         BottomSheetValue.Collapsed
@@ -103,7 +104,8 @@ fun BusStopsScreen(
                     onUseDefaultLocation = {
                         vm.fetchNearDefaultLocationBusStops()
                     },
-                    onStopsFilterClick = vm::onStopsFilterClick
+                    onStopsFilterClick = vm::onStopsFilterClick,
+                    onTrainStopClick = onTrainStopClick
                 )
             }
         } else {
@@ -132,7 +134,8 @@ fun BusStopsScreen(
                     onUseDefaultLocation = {
                         vm.fetchNearDefaultLocationBusStops()
                     },
-                    onStopsFilterClick = vm::onStopsFilterClick
+                    onStopsFilterClick = vm::onStopsFilterClick,
+                    onTrainStopClick = onTrainStopClick
                 )
             }
         }

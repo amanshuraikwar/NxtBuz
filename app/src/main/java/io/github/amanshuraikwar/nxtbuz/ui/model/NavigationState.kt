@@ -9,6 +9,10 @@ sealed class NavigationState {
         val busStop: BusStop
     ) : NavigationState()
 
+    data class TrainStopDepartures(
+        val trainStopCode: String
+    ) : NavigationState()
+
     data class BusRoute(
         val busStopCode: String,
         val busServiceNumber: String,

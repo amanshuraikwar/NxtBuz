@@ -1,11 +1,11 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'sqldelightdb'
-    spec.version                  = '2'
-    spec.homepage                 = 'https://amanshuraikwar.github.io/nextbus'
+    spec.version                  = '1.0'
+    spec.homepage                 = 'This should be a link to the project: sqldelightdb'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'Local data storage module using sqldelight'
+    spec.summary                  = 'KMM shared module for project: sqldelightdb'
     spec.vendored_frameworks      = 'build/cocoapods/framework/sqldelightdb.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target = '14.1'

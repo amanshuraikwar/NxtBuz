@@ -22,6 +22,7 @@ fun NearbyBusStopsView(
     padding: PaddingValues,
     onBusStopClick: (busStopCode: String) -> Unit,
     onBusStopStarToggle: (busStopCode: String, newStarState: Boolean) -> Unit,
+    onTrainStopClick: (trainsStopCode: String) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
@@ -70,7 +71,9 @@ fun NearbyBusStopsView(
                 is BusStopsItemData.TrainStop -> {
                     TrainStopItemView(
                         data = item,
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            onTrainStopClick(item.code)
+                        },
                         onStarToggle = {}
                     )
                 }

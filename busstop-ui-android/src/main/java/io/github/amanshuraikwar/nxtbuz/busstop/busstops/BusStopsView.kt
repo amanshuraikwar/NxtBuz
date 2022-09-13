@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.GpsOff
@@ -20,6 +21,7 @@ fun BusStopsView(
     state: BusStopsScreenState,
     padding: PaddingValues,
     onBusStopClick: (busStopCode: String) -> Unit,
+    onTrainStopClick: (trainsStopCode: String) -> Unit,
     onBusStopStarToggle: (busStopCode: String, newStarState: Boolean) -> Unit,
     onRetry: () -> Unit = {},
     onUseDefaultLocation: () -> Unit = {},
@@ -45,6 +47,8 @@ fun BusStopsView(
                     filter = state.filter,
                     onStopsFilterClick = onStopsFilterClick
                 )
+
+                Divider()
 
                 when (state) {
                     is BusStopsScreenState.NearbyBusStops.Fetching -> {
@@ -79,7 +83,8 @@ fun BusStopsView(
                                 state.listItems,
                                 padding,
                                 onBusStopClick,
-                                onBusStopStarToggle
+                                onBusStopStarToggle,
+                                onTrainStopClick
                             )
                         }
                     }
@@ -118,6 +123,7 @@ fun BusStopsView(
                     padding,
                     onBusStopClick,
                     onBusStopStarToggle,
+                    onTrainStopClick
                 )
             }
         }
@@ -137,6 +143,7 @@ fun BusStopsView(
                     padding,
                     onBusStopClick,
                     onBusStopStarToggle,
+                    onTrainStopClick
                 )
             }
         }

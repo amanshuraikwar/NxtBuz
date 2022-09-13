@@ -22,6 +22,8 @@ interface TrainStopRepository {
 
     suspend fun getTrainDepartures(trainStopCode: String): List<TrainDeparture>
 
+    suspend fun getTrainStop(code: String): TrainStop?
+
     interface Factory {
         fun create(): TrainStopRepository
     }

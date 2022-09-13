@@ -6,9 +6,8 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     id("com.squareup.sqldelight")
+    id("io.github.amanshuraikwar.config")
 }
-
-version = Libs.kmmLibVersion
 
 sqldelight {
     database("NxtBuzDb") {
@@ -19,25 +18,6 @@ sqldelight {
 }
 
 kotlin {
-    android {}
-
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
-        System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
-        System.getenv("NATIVE_ARCH")
-            ?.startsWith("arm") == true -> ::iosSimulatorArm64  // available to KT 1.5.30
-        else -> ::iosX64
-    }
-    iosTarget("ios") {}
-
-    cocoapods {
-        summary = "Local data storage module using sqldelight"
-        homepage = Libs.appHomePage
-        ios.deploymentTarget = Libs.iosMinDeploymentTarget
-        framework {
-            baseName = "sqldelightdb"
-        }
-    }
-
     sourceSets {
         val commonMain by getting {
             dependencies {
