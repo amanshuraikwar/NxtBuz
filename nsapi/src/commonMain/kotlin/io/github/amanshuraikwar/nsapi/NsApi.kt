@@ -3,6 +3,9 @@ package io.github.amanshuraikwar.nsapi
 import io.github.amanshuraikwar.nsapi.model.ArrivalsResponseDto
 import io.github.amanshuraikwar.nsapi.model.DeparturesResponseDto
 import io.github.amanshuraikwar.nsapi.model.StationsResponseDto
+import io.github.amanshuraikwar.nsapi.model.TrainCrowdForecastStationDto
+import io.github.amanshuraikwar.nsapi.model.TrainInfoDto
+import io.github.amanshuraikwar.nsapi.model.TrainJourneyDetailsResponseDto
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.features.json.JsonFeature
@@ -32,15 +35,6 @@ internal class NsApi(
         }
     }
 
-    /**
-     * @param trainCode (ritnummer) Code/identifier of the train
-     */
-//    suspend fun getTrainInfo(trainCode: String, stationCode: String): {
-//        return client.get("$baseUrl/virtual-train-api/api/v1/trein/$trainCode/$stationCode") {
-//            addSubscriptionKey()
-//        }
-//    }
-
     suspend fun getTrainDepartures(stationCode: String): DeparturesResponseDto {
         return client.get("$baseUrl/reisinformatie-api/api/v2/departures") {
             addSubscriptionKey()
@@ -59,14 +53,61 @@ internal class NsApi(
         }
     }
 
-//    suspend fun getTrainJourneyDetails(trainCode: String): {
-//        return client.get("$baseUrl/reisinformatie-api/api/v2/journey") {
-//            addSubscriptionKey()
-//            url {
-//                parameter("train", trainCode)
-//            }
-//        }
-//    }
+    /**
+     * Get train crowd info for a train code
+     *
+     * Also known as:
+     * https://apiportal.ns.nl/docs/services/virtual-train-api/operations/getTreinInfo_1/console
+     */
+    suspend fun getTrainCrowdForecast(trainCode: String): List<TrainCrowdForecastStationDto> {
+        return client.get("$baseUrl/virtual-train-api/api/v1/prognose/$trainCode") {
+            addSubscriptionKey()
+        }
+    }
+
+    /**
+     * Get train information about multiple trains
+     * Includes rolling stock images and information
+     *
+     * Also known as:
+     * https://apiportal.ns.nl/docs/services/virtual-train-api/operations/getTreinInformatie_2/console
+     */
+    suspend fun getTrainInformation(
+        trainCodes: List<String>,
+        stationCodes: List<String>
+    ): List<TrainInfoDto> {
+        return client.get("$baseUrl/virtual-train-api/api/v1/trein") {
+            addSubscriptionKey()
+            url {
+                parameter("ids", trainCodes.fold("") { r, t -> "$r,$t" }.drop(1))
+                parameter("stations", stationCodes.fold("") { r, t -> "$r,$t" }.drop(1))
+                // options:
+                // platformitems -> platform info
+                // zitplaats -> seat
+                // cta -> cta ????
+                // drukte -> rush
+                // druktev2 -> pressurev2
+                parameter("features", "zitplaats")
+                // don't get all stations
+                parameter("all", "false")
+            }
+        }
+    }
+
+    /**
+     * Get train route / journey details
+     *
+     * Also known as:
+     * https://apiportal.ns.nl/docs/services/reisinformatie-api/operations/getJourneyDetail/console
+     */
+    suspend fun getTrainJourneyDetails(trainCode: String): TrainJourneyDetailsResponseDto {
+        return client.get("$baseUrl/reisinformatie-api/api/v2/journey") {
+            addSubscriptionKey()
+            url {
+                parameter("train", trainCode)
+            }
+        }
+    }
 
     companion object {
         private const val ENDPOINT = "https://gateway.apiportal.ns.nl"

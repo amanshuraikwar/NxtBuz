@@ -192,6 +192,8 @@ internal class NsApiRepository(
                     NsTrainStationEntity(
                         stationType = stationDto.stationType,
                         code = stationDto.code,
+                        evaCode = stationDto.EVACode,
+                        uicCode = stationDto.UICCode,
                         hasFacilities = stationDto.heeftFaciliteiten,
                         hasDepartureTimes = stationDto.heeftVertrektijden,
                         hasTravelAssistance = stationDto.heeftReisassistentie,

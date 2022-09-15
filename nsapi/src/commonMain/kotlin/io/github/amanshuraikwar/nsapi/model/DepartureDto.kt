@@ -3,18 +3,18 @@ package io.github.amanshuraikwar.nsapi.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DeparturesResponseDto(
+internal data class DeparturesResponseDto(
     val payload: DeparturesDto
 )
 
 @Serializable
-data class DeparturesDto(
+internal data class DeparturesDto(
     val source: String,
     val departures: List<DepartureDto>
 )
 
 @Serializable
-data class DepartureDto(
+internal data class DepartureDto(
     val direction: String,
     val name: String,
     val plannedDateTime: String,
@@ -31,7 +31,7 @@ data class DepartureDto(
 )
 
 @Serializable
-data class DepartureProductDto(
+internal data class DepartureProductDto(
     val number: String,
     val categoryCode: String,
     val shortCategoryName: String,
@@ -42,13 +42,13 @@ data class DepartureProductDto(
 )
 
 @Serializable
-data class DepartureRouteStationDto(
+internal data class DepartureRouteStationDto(
     val uicCode: String,
     val mediumName: String
 )
 
 @Serializable
-data class DepartureMessageDto(
+internal data class DepartureMessageDto(
     val message: String,
     val style: String
 )
