@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.github.amanshuraikwar.nxtbuz.common.compose.StarDirectionsView
 import io.github.amanshuraikwar.nxtbuz.common.compose.StarIndicatorView
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
@@ -72,7 +73,7 @@ internal fun TrainStopHeaderView(
             )
 
             Row(
-                Modifier.padding(top = 8.dp),
+                Modifier.padding(top = 6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
@@ -133,6 +134,14 @@ internal fun TrainStopHeaderView(
 //                    modifier = Modifier.padding(start = 8.dp)
                 )
             }
+
+            StarDirectionsView(
+                modifier = Modifier
+                    .padding(top = 12.dp),
+                starred = data.starred,
+                onStarToggle = { },
+                onGoToClick = { }
+            )
         }
     }
 }

@@ -1,10 +1,16 @@
 package io.github.amanshuraikwar.nxtbuz.train.departures
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,6 +22,16 @@ internal fun DeparturesView(
     modifier: Modifier = Modifier,
     listItems: List<ListItemData>,
 ) {
+    val infiniteTransition = rememberInfiniteTransition()
+    val infiniteAnimatingAlpha by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(400, delayMillis = 600),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
     val lazyListState = remember {
         LazyListState(
             0,
@@ -47,7 +63,8 @@ internal fun DeparturesView(
             when (item) {
                 is ListItemData.Departure -> {
                     TrainDepartureView(
-                        data = item
+                        data = item,
+                        infiniteAnimatingAlpha = infiniteAnimatingAlpha
                     )
                 }
                 is ListItemData.Header -> {

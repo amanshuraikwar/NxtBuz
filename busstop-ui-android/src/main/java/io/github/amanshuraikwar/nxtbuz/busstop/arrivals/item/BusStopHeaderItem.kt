@@ -1,10 +1,8 @@
 package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
 
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,26 +12,18 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Directions
-import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material.icons.rounded.StarOutline
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.busstop.R
+import io.github.amanshuraikwar.nxtbuz.common.compose.StarDirectionsView
 import io.github.amanshuraikwar.nxtbuz.common.compose.StarIndicatorView
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.directions
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
-import java.util.*
+import java.util.Locale
 
 @Composable
 fun BusStopHeaderItem(
@@ -107,47 +97,13 @@ fun BusStopHeaderItem(
                         .padding(top = 2.dp)
                 )
 
-                Row(
+                StarDirectionsView(
                     modifier = Modifier
-                        .padding(top = 12.dp)
-                ) {
-                    CompositionLocalProvider(
-                        LocalIndication provides rememberRipple(color = MaterialTheme.colors.star)
-                    ) {
-                        BusStopHeaderButton(
-                            imageVector = if (starred) {
-                                Icons.Rounded.Star
-                            } else {
-                                Icons.Rounded.StarOutline
-                            },
-                            text = if (starred) {
-                                "UN-STAR"
-                            } else {
-                                "STAR"
-                            },
-                            onClick = {
-                                onStarToggle(!starred)
-                            },
-                            outlineColor = MaterialTheme.colors.star.disabled,
-                            onUnSelectedColor = MaterialTheme.colors.star
-                        )
-                    }
-
-                    CompositionLocalProvider(
-                        LocalIndication provides rememberRipple(
-                            color = MaterialTheme.colors.directions
-                        )
-                    ) {
-                        BusStopHeaderButton(
-                            modifier = Modifier.padding(start = 12.dp),
-                            imageVector = Icons.Rounded.Directions,
-                            text = "DIRECTIONS",
-                            onClick = onGoToBusStopClicked,
-                            outlineColor = MaterialTheme.colors.directions.disabled,
-                            onUnSelectedColor = MaterialTheme.colors.directions
-                        )
-                    }
-                }
+                        .padding(top = 12.dp),
+                    starred = starred,
+                    onStarToggle = onStarToggle,
+                    onGoToClick = onGoToBusStopClicked
+                )
             }
         }
     }

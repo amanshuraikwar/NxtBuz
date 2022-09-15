@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item
+package io.github.amanshuraikwar.nxtbuz.common.compose
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -21,7 +21,7 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.outline
 
 @Composable
-fun BusStopHeaderButton(
+fun HeaderButton(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
     text: String,

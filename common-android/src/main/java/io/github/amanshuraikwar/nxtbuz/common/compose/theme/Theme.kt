@@ -74,7 +74,7 @@ val Colors.directions: Color
     get() = if (isLight) green else greenLighter
 
 val Colors.onDirections: Color
-    get() = if (isLight) this.onSurface else this.onPrimary
+    get() = if (isLight) this.surface else this.onPrimary
 
 @Composable
 fun NxtBuzTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {

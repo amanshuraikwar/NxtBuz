@@ -35,7 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.navigationBarsPadding
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopHeaderButton
+import io.github.amanshuraikwar.nxtbuz.common.compose.HeaderButton
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsScreenState
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
 import io.github.amanshuraikwar.nxtbuz.common.compose.rememberNxtBuzBottomSheetState
@@ -164,7 +164,7 @@ fun BusStopsScreen(
                             .horizontalScroll(rememberScrollState())
                             .fillMaxWidth()
                     ) {
-                        BusStopHeaderButton(
+                        HeaderButton(
                             Modifier.padding(vertical = 8.dp, horizontal = 8.dp),
                             imageVector = Icons.Rounded.NearMe,
                             text = "Nearby",
@@ -177,7 +177,7 @@ fun BusStopsScreen(
                         CompositionLocalProvider(
                             LocalIndication provides rememberRipple(color = MaterialTheme.colors.star)
                         ) {
-                            BusStopHeaderButton(
+                            HeaderButton(
                                 Modifier.padding(vertical = 8.dp, horizontal = 8.dp),
                                 imageVector = Icons.Rounded.Star,
                                 text = "Starred",
@@ -197,7 +197,7 @@ fun BusStopsScreen(
                                 color = MaterialTheme.colors.directions
                             )
                         ) {
-                            BusStopHeaderButton(
+                            HeaderButton(
                                 Modifier.padding(vertical = 8.dp, horizontal = 8.dp),
                                 imageVector = Icons.Rounded.GpsFixed,
                                 text = "Near Default Location",

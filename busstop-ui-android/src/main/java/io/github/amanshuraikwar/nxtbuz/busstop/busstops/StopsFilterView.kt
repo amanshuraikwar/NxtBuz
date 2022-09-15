@@ -11,7 +11,7 @@ import androidx.compose.material.icons.rounded.Train
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.item.BusStopHeaderButton
+import io.github.amanshuraikwar.nxtbuz.common.compose.HeaderButton
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.StopsFilter
 
 @Composable
@@ -25,7 +25,7 @@ fun StopsFilterView(
             .horizontalScroll(rememberScrollState())
             .fillMaxWidth()
     ) {
-        BusStopHeaderButton(
+        HeaderButton(
             Modifier.padding(vertical = 8.dp, horizontal = 8.dp),
             imageVector = Icons.Rounded.DirectionsBus,
             text = "Bus Stops",
@@ -35,7 +35,7 @@ fun StopsFilterView(
             selected = filter == StopsFilter.BUS_STOPS_ONLY
         )
 
-        BusStopHeaderButton(
+        HeaderButton(
             Modifier.padding(vertical = 8.dp, horizontal = 8.dp),
             imageVector = Icons.Rounded.Train,
             text = "Train Stops",
