@@ -20,9 +20,11 @@ sealed class BusStopsItemData {
     data class TrainStop(
         val id: String,
         val code: String,
+        val codeToDisplay: String,
         val name: String,
         val hasDepartureTimes: Boolean,
         val hasTravelAssistance: Boolean,
+        val hasFacilities: Boolean,
         val isStarred: Boolean,
     ) : BusStopsItemData()
 }

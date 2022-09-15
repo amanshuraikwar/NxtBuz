@@ -4,17 +4,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.NotAccessible
+import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.material.icons.rounded.Train
+import androidx.compose.material.icons.rounded.Wc
+import androidx.compose.material.icons.rounded.WheelchairPickup
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +28,8 @@ import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
 import io.github.amanshuraikwar.nxtbuz.common.compose.StarIndicatorView
 import io.github.amanshuraikwar.nxtbuz.common.compose.swipe.SwipeAction
 import io.github.amanshuraikwar.nxtbuz.common.compose.swipe.SwipeableActionsBox
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.onStar
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.star
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
@@ -60,40 +66,29 @@ fun TrainStopItemView(
         backgroundUntilSwipeThreshold = MaterialTheme.colors.onStar
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .background(MaterialTheme.colors.surface)
                 .fillMaxWidth(),
         ) {
-            Box(
-                contentAlignment = Alignment.BottomEnd
-            ) {
-                Surface(
-                    modifier = Modifier
-                        .padding(
-                            start = 16.dp,
-                            top = 16.dp,
-                            bottom = 16.dp,
-                            end = 16.dp
-                        ),
-                    color = MaterialTheme.colors.primary,
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Train,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .size(24.dp),
-                        contentDescription = "Bus Stop",
-                        tint = MaterialTheme.colors.onPrimary
+            Icon(
+                imageVector = Icons.Rounded.Train,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .background(
+                        color = MaterialTheme.colors.primary,
+                        shape = MaterialTheme.shapes.small
                     )
-                }
+                    .padding(8.dp)
+                    .size(24.dp),
+                contentDescription = "Train Stop",
+                tint = MaterialTheme.colors.onPrimary
+            )
 
-                StarIndicatorView(
-                    Modifier
-                        .padding(bottom = 12.dp, end = 12.dp),
-                    isStarred = data.isStarred
-                )
-            }
+            StarIndicatorView(
+                Modifier
+                    .padding(start = 42.dp, top = 42.dp),
+                isStarred = data.isStarred
+            )
 
             Column(
                 Modifier
@@ -107,24 +102,67 @@ fun TrainStopItemView(
             ) {
                 Text(
                     text = data.name,
-                    style = MaterialTheme.typography.subtitle1,
+                    style = MaterialTheme.typography.h6Bold,
                     color = MaterialTheme.colors.onSurface
                 )
 
-                Text(
-                    text = data.code.uppercase(Locale.ROOT),
-                    style = MaterialTheme.typography.overline,
-                    color = MaterialTheme.colors.onSurface,
-                    modifier = Modifier.padding(top = 2.dp)
-                )
+                Row(
+                    Modifier.padding(top = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        modifier = Modifier.size(16.dp),
+                        imageVector = if (data.hasTravelAssistance) {
+                            Icons.Rounded.WheelchairPickup
+                        } else {
+                            Icons.Rounded.NotAccessible
+                        },
+                        contentDescription = if (data.hasTravelAssistance) {
+                            "Has travel assistance"
+                        } else {
+                            "Does not have travel assistance"
+                        },
+                        tint = MaterialTheme.colors.onSurface.medium
+                    )
 
-//            Text(
-//                text = data.operatingBuses,
-//                style = MaterialTheme.typography.body1Bold,
-//                color = MaterialTheme.colors.primary,
-//                modifier = Modifier.padding(top = 8.dp),
-//                lineHeight = 20.sp,
-//            )
+                    if (data.hasFacilities) {
+                        Text(
+                            text = " • ",
+                            style = MaterialTheme.typography.body2,
+                            color = MaterialTheme.colors.onSurface.medium,
+                        )
+
+                        Icon(
+                            modifier = Modifier
+                                .size(16.dp),
+                            imageVector = Icons.Rounded.Wc,
+                            contentDescription = "Has facilities",
+                            tint = MaterialTheme.colors.onSurface.medium
+                        )
+                    }
+
+                    if (data.hasDepartureTimes) {
+                        Text(
+                            text = " • ",
+                            style = MaterialTheme.typography.body2,
+                            color = MaterialTheme.colors.onSurface.medium,
+                        )
+
+                        Icon(
+                            modifier = Modifier
+                                .size(16.dp),
+                            imageVector = Icons.Rounded.Schedule,
+                            contentDescription = "Has departure times",
+                            tint = MaterialTheme.colors.onSurface.medium
+                        )
+                    }
+
+                    Text(
+                        text = " • " + data.codeToDisplay.uppercase(Locale.ROOT),
+                        style = MaterialTheme.typography.body2,
+                        color = MaterialTheme.colors.onSurface.medium,
+                    )
+                }
             }
         }
     }
@@ -138,10 +176,12 @@ fun TrainStopItemPreview() {
             data = BusStopsItemData.TrainStop(
                 id = "train-stops-screen-12345",
                 code = "123456",
+                codeToDisplay = "123456",
                 name = "Opp Blk 19",
                 hasDepartureTimes = true,
                 hasTravelAssistance = true,
-                isStarred = true
+                isStarred = true,
+                hasFacilities = true
             ),
             onClick = {},
             onStarToggle = {}

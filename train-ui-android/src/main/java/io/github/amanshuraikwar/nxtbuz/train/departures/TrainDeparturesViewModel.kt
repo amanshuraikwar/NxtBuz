@@ -52,6 +52,7 @@ class TrainDeparturesViewModel @Inject constructor(
                     ScreenState.Success(
                         header = TrainStopHeader(
                             code = trainStop.code,
+                            codeToDisplay = trainStop.codeToDisplay,
                             hasFacilities = trainStop.hasFacilities,
                             hasDepartureTimes = trainStop.hasDepartureTimes,
                             hasTravelAssistance = trainStop.hasTravelAssistance,

@@ -576,10 +576,12 @@ class BusStopsViewModel @Inject constructor(
                 BusStopsItemData.TrainStop(
                     id = "train-stops-screen-${trainStop.code}",
                     code = trainStop.code,
+                    codeToDisplay = trainStop.codeToDisplay,
                     name = trainStop.name,
                     hasDepartureTimes = trainStop.hasDepartureTimes,
                     hasTravelAssistance = trainStop.hasTravelAssistance,
-                    isStarred = trainStop.starred
+                    isStarred = trainStop.starred,
+                    hasFacilities = trainStop.hasFacilities
                 )
             }
         )

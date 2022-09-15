@@ -171,6 +171,7 @@ internal class NsApiRepository(
         return TrainStop(
             type = stationType,
             code = TRAIN_STOP_CODE_PREFIX + code,
+            codeToDisplay = code,
             hasFacilities = hasFacilities,
             hasDepartureTimes = hasDepartureTimes,
             hasTravelAssistance = hasTravelAssistance,

@@ -32,6 +32,7 @@ internal sealed class ListItemData {
 
 internal data class TrainStopHeader(
     val code: String,
+    val codeToDisplay: String,
     val hasFacilities: Boolean,
     val hasDepartureTimes: Boolean,
     val hasTravelAssistance: Boolean,
