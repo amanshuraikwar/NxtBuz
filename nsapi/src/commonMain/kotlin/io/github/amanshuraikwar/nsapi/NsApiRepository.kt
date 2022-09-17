@@ -4,11 +4,21 @@ import com.russhwolf.settings.Settings
 import com.russhwolf.settings.set
 import io.github.amanshuraikwar.nsapi.db.NsApiDb
 import io.github.amanshuraikwar.nsapi.db.NsTrainStationEntity
+import io.github.amanshuraikwar.nsapi.model.TrainJourneyDetailsStopArrivalDto
+import io.github.amanshuraikwar.nsapi.model.TrainJourneyDetailsStopDepartureDto
+import io.github.amanshuraikwar.nsapi.model.TrainJourneyDetailsStopDto
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.MapUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.toSearchDescriptionHint
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainCrowdStatus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDeparture
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDepartureStatus
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDetails
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainFacility
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainRollingStock
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainRouteNode
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainRouteNodeTiming
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainRouteNodeType
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
 import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
 import kotlinx.coroutines.async
@@ -107,11 +117,11 @@ internal class NsApiRepository(
                 .payload
                 .departures
                 .forEach { departureDto ->
-                    val arrivalDto = arrivalsMap[departureDto.product.number] ?: return@forEach
+                    val arrivalDto = arrivalsMap[departureDto.product.number]
 
                     departures.add(
                         TrainDeparture(
-                            id = departureDto.product.number,
+                            trainCode = departureDto.product.number,
                             destinationTrainStopName = departureDto.direction,
                             track = departureDto.plannedTrack,
                             trainCategoryName = departureDto.product.shortCategoryName,
@@ -129,8 +139,10 @@ internal class NsApiRepository(
                                     TrainDepartureStatus.UNKNOWN
                                 }
                             },
-                            plannedArrivalInstant = arrivalDto.plannedDateTime.toAmsterdamInstant(),
-                            actualArrivalInstant = arrivalDto.actualDateTime.toAmsterdamInstant(),
+                            plannedArrivalInstant =
+                            arrivalDto?.plannedDateTime?.toAmsterdamInstant(),
+                            actualArrivalInstant =
+                            arrivalDto?.actualDateTime?.toAmsterdamInstant(),
                             plannedDepartureInstant = departureDto.plannedDateTime.toAmsterdamInstant(),
                             actualDepartureInstant = departureDto.actualDateTime.toAmsterdamInstant(),
                             delayedByMinutes =
@@ -161,25 +173,69 @@ internal class NsApiRepository(
         }
     }
 
-    private fun String.toAmsterdamInstant(): Instant {
-        val (localDateTimeString, _) = split("+")
-        return LocalDateTime.parse(localDateTimeString)
-            .toInstant(TimeZone.of("Europe/Amsterdam"))
+    override suspend fun supportsTrain(trainCode: String): Boolean {
+        // TODO-amanshuraikwar (18 Sep 2022 02:11:13 AM):
+        //  only support NL trains
+        return true
     }
 
-    private fun NsTrainStationEntity.toTrainStop(): TrainStop {
-        return TrainStop(
-            type = stationType,
-            code = TRAIN_STOP_CODE_PREFIX + code,
-            codeToDisplay = code,
-            hasFacilities = hasFacilities,
-            hasDepartureTimes = hasDepartureTimes,
-            hasTravelAssistance = hasTravelAssistance,
-            name = nameLong,
-            lat = latitude,
-            lng = longitude,
-            starred = starred
-        )
+    override suspend fun getTrainDetails(trainCode: String): TrainDetails {
+        return withContext(dispatcherProvider.io) {
+            val trainInfoDeferred = async {
+                nsApi.getTrainInformation(
+                    trainCodes = listOf(trainCode),
+                    stationCodes = listOf()
+                )
+            }
+
+            val trainJourneyDetailsInfoDefered = async {
+                nsApi.getTrainJourneyDetails(trainCode = trainCode)
+            }
+
+            val trainInfo = trainInfoDeferred.await()[0]
+            val trainJourneyDetails = trainJourneyDetailsInfoDefered.await().payload
+
+            // TODO: assuming train always as departure info
+            //       get it from somewhere safer
+            val trainCategoryName =
+                trainJourneyDetails.stops[0].departures[0].product.longCategoryName
+
+            val accumulatedFacilities = trainInfo
+                .materieeldelen
+                .fold(mutableSetOf<TrainFacility>()) { currentSet, trainInfoMaterialDto ->
+                    for (facility in trainInfoMaterialDto.faciliteiten) {
+                        currentSet.add(facility.toTrainFacility())
+                    }
+                    currentSet
+                }
+                .toList()
+
+            val rollingStock = trainInfo.materieeldelen.map { trainInfoMaterialDto ->
+                TrainRollingStock(
+                    type = trainInfoMaterialDto.type,
+                    facilities = trainInfoMaterialDto.faciliteiten.map { it.toTrainFacility() },
+                    imageUrl = trainInfoMaterialDto.afbeelding,
+                    width = trainInfoMaterialDto.breedte,
+                    height = trainInfoMaterialDto.hoogte,
+                )
+            }
+
+            val route = trainJourneyDetails.stops.mapIndexed { index, stopDto ->
+                stopDto.toTrainRouteNode(index)
+            }
+
+            TrainDetails(
+                trainCode = trainInfo.ritnummer.toString(),
+                trainCategoryName = trainCategoryName,
+                sourceTrainStopName = trainJourneyDetails.stops.first().stop.name,
+                destinationTrainStopName = trainJourneyDetails.stops.last().stop.name,
+                facilities = accumulatedFacilities,
+                rollingStock = rollingStock,
+                length = trainInfo.lengte,
+                lengthInMeters = trainInfo.lengteInMeters,
+                route = route
+            )
+        }
     }
 
     private suspend fun fetchAndCacheLocally() {
@@ -228,5 +284,146 @@ internal class NsApiRepository(
     companion object {
         private const val PREF_TRAIN_STOPS_CACHED_LOCALLY = "TRAIN_STOPS_CACHED_LOCALLY"
         private const val TRAIN_STOP_CODE_PREFIX = "NS-API-TRAIN-"
+
+        private fun String.toAmsterdamInstant(): Instant {
+            val (localDateTimeString, _) = split("+")
+            return LocalDateTime.parse(localDateTimeString)
+                .toInstant(TimeZone.of("Europe/Amsterdam"))
+        }
+
+        private fun NsTrainStationEntity.toTrainStop(): TrainStop {
+            return TrainStop(
+                type = stationType,
+                code = TRAIN_STOP_CODE_PREFIX + code,
+                codeToDisplay = code,
+                hasFacilities = hasFacilities,
+                hasDepartureTimes = hasDepartureTimes,
+                hasTravelAssistance = hasTravelAssistance,
+                name = nameLong,
+                lat = latitude,
+                lng = longitude,
+                starred = starred
+            )
+        }
+
+        private fun String.toTrainFacility(): TrainFacility {
+            return when (this) {
+                "TOILET" -> TrainFacility.TOILET
+                "STROOM" -> TrainFacility.POWER_SOCKETS
+                "WIFI" -> TrainFacility.WIFI
+                "STILTE" -> TrainFacility.QUIET_TRAIN
+                "FIETS" -> TrainFacility.BICYCLE
+                "TOEGANKELIJK" -> TrainFacility.WHEELCHAIR_ACCESSIBLE
+                else -> {
+                    throw IllegalArgumentException(
+                        "Unsupported facility $this"
+                    )
+                }
+            }
+        }
+
+        private fun List<TrainJourneyDetailsStopDepartureDto>.toTrainRouteNodeDepartureTiming(): TrainRouteNodeTiming {
+            return getOrNull(0)
+                ?.let { departureDto ->
+                    TrainRouteNodeTiming.Available(
+                        plannedInstant =
+                        departureDto.plannedTime.toAmsterdamInstant(),
+                        actualInstant =
+                        departureDto.actualTime?.toAmsterdamInstant(),
+                        delayedByMinutes =
+                        departureDto
+                            .actualTime
+                            ?.toAmsterdamInstant()
+                            ?.minus(
+                                departureDto
+                                    .plannedTime
+                                    .toAmsterdamInstant()
+                            )
+                            ?.inWholeMinutes
+                            ?.toInt()
+                            ?: 0,
+                        plannedTrack = departureDto.plannedTrack,
+                        actualTrack = departureDto.actualTrack,
+                        cancelled = departureDto.cancelled
+                    )
+                }
+                ?: TrainRouteNodeTiming.NoData
+        }
+
+        private fun List<TrainJourneyDetailsStopArrivalDto>.toTrainRouteNodeArrivalTiming(): TrainRouteNodeTiming {
+            return getOrNull(0)
+                ?.let { arrivalDto ->
+                    TrainRouteNodeTiming.Available(
+                        plannedInstant =
+                        arrivalDto.plannedTime.toAmsterdamInstant(),
+                        actualInstant =
+                        arrivalDto.actualTime?.toAmsterdamInstant(),
+                        delayedByMinutes =
+                        arrivalDto
+                            .actualTime
+                            ?.toAmsterdamInstant()
+                            ?.minus(
+                                arrivalDto
+                                    .plannedTime
+                                    .toAmsterdamInstant()
+                            )
+                            ?.inWholeMinutes
+                            ?.toInt()
+                            ?: 0,
+                        plannedTrack = arrivalDto.plannedTrack,
+                        actualTrack = arrivalDto.actualTrack,
+                        cancelled = arrivalDto.cancelled
+                    )
+                }
+                ?: TrainRouteNodeTiming.NoData
+        }
+
+        private fun TrainJourneyDetailsStopDto.toTrainRouteNode(index: Int): TrainRouteNode {
+            return TrainRouteNode(
+                index = index,
+                // assuming id is in the format CODE_0
+                trainStopCode = id.split("_")[0],
+                // only support NL stops
+                supportedStop = stop.countryCode == "NL",
+                trainStopName = stop.name,
+                countryCode = stop.countryCode,
+                type = when (status) {
+                    "ORIGIN" -> {
+                        TrainRouteNodeType.Origin(
+                            departureTiming = departures.toTrainRouteNodeDepartureTiming()
+                        )
+                    }
+                    "STOP" -> {
+                        TrainRouteNodeType.Stop(
+                            arrivalTiming = arrivals.toTrainRouteNodeArrivalTiming(),
+                            departureTiming = departures.toTrainRouteNodeDepartureTiming(),
+                        )
+                    }
+                    "PASSING" -> {
+                        TrainRouteNodeType.Passing
+                    }
+                    "DESTINATION" -> {
+                        TrainRouteNodeType.Destination(
+                            arrivalTiming = arrivals.toTrainRouteNodeArrivalTiming(),
+                        )
+                    }
+                    else -> {
+                        throw IllegalArgumentException(
+                            "Unsupported stop status $status"
+                        )
+                    }
+                },
+                crowdStatus =
+                departures
+                    .getOrNull(0)
+                    ?.crowdForecast
+                    ?.let { TrainCrowdStatus.valueOf(it) }
+                    ?: arrivals
+                        .getOrNull(0)
+                        ?.crowdForecast
+                        ?.let { TrainCrowdStatus.valueOf(it) }
+                    ?: TrainCrowdStatus.UNKNOWN
+            )
+        }
     }
 }

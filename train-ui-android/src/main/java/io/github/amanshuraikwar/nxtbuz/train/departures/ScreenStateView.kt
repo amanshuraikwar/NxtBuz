@@ -12,6 +12,7 @@ internal fun ScreenStateView(
     screenState: ScreenState,
     padding: PaddingValues = PaddingValues(),
     backgroundColor: Color,
+    onTrainClick: (trainCode: String) -> Unit,
 ) {
     when (screenState) {
         ScreenState.Fetching -> {
@@ -30,7 +31,8 @@ internal fun ScreenStateView(
                 Divider()
 
                 DeparturesView(
-                    listItems = screenState.listItems
+                    listItems = screenState.listItems,
+                    onTrainClick = onTrainClick
                 )
             }
         }

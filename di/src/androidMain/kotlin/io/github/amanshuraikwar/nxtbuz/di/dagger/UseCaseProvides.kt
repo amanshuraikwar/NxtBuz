@@ -37,6 +37,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrival
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusServiceStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainDeparturesUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainDetailsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopDeparturesUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopsUseCase
@@ -541,6 +542,15 @@ class UseCaseProvides {
         @Named("nsApi") nsApiTrainsStopRepository: TrainStopRepository
     ): GetTrainStopDeparturesUseCase {
         return GetTrainStopDeparturesUseCase(
+            trainStopRepositories = listOf(nsApiTrainsStopRepository)
+        )
+    }
+
+    @Provides
+    fun provideGetTrainDetailsUseCase(
+        @Named("nsApi") nsApiTrainsStopRepository: TrainStopRepository
+    ): GetTrainDetailsUseCase {
+        return GetTrainDetailsUseCase(
             trainStopRepositories = listOf(nsApiTrainsStopRepository)
         )
     }

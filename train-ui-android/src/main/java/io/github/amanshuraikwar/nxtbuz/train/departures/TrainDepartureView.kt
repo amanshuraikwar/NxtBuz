@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.train.departures
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,10 +32,14 @@ import java.util.Locale
 @Composable
 internal fun TrainDepartureView(
     data: ListItemData.Departure,
-    infiniteAnimatingAlpha: Float
+    infiniteAnimatingAlpha: Float,
+    onClick: (trainCode: String) -> Unit
 ) {
     Row(
         Modifier
+            .clickable {
+                onClick(data.id)
+            }
             .fillMaxWidth()
             .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -122,30 +127,97 @@ internal fun TrainDepartureView(
 fun ArrivalTimeView(
     modifier: Modifier = Modifier,
     trainDepartureStatus: TrainDepartureStatus,
-    plannedArrivalTime: String,
+    plannedArrivalTime: String?,
     delayByMinutes: Int,
 ) {
     when (trainDepartureStatus) {
-        TrainDepartureStatus.INCOMING, TrainDepartureStatus.UNKNOWN -> {
-            Row(modifier) {
-                Text(
-                    style = if (delayByMinutes == 0) {
-                        MaterialTheme.typography.body2
-                    } else {
-                        MaterialTheme.typography.body2.copy(
-                            textDecoration = TextDecoration.LineThrough,
-                        )
-                    },
-                    text = plannedArrivalTime,
-                    color = MaterialTheme.colors.onSurface.medium,
-                )
-
-                if (delayByMinutes > 0) {
+        TrainDepartureStatus.INCOMING -> {
+            if (plannedArrivalTime != null) {
+                Row(modifier) {
                     Text(
-                        text = "  ${delayByMinutes}m late",
-                        style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colors.error,
+                        style = if (delayByMinutes == 0) {
+                            MaterialTheme.typography.body2
+                        } else {
+                            MaterialTheme.typography.body2.copy(
+                                textDecoration = TextDecoration.LineThrough,
+                            )
+                        },
+                        text = plannedArrivalTime,
+                        color = MaterialTheme.colors.onSurface.medium,
                     )
+
+                    if (delayByMinutes > 0) {
+                        Text(
+                            text = "  ${delayByMinutes}m late",
+                            style = MaterialTheme.typography.body2.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = MaterialTheme.colors.error,
+                        )
+                    }
+                }
+            } else {
+                Row(modifier) {
+                    if (delayByMinutes == 0) {
+                        Text(
+                            style = MaterialTheme.typography.body2,
+                            text = "INCOMING",
+                            color = MaterialTheme.colors.onSurface.medium,
+                        )
+                    } else {
+                        Text(
+                            text = "${delayByMinutes}m late",
+                            style = MaterialTheme.typography.body2.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = MaterialTheme.colors.error,
+                        )
+                    }
+                }
+            }
+        }
+        TrainDepartureStatus.UNKNOWN -> {
+            if (plannedArrivalTime != null) {
+                Row(modifier) {
+                    Text(
+                        style = if (delayByMinutes == 0) {
+                            MaterialTheme.typography.body2
+                        } else {
+                            MaterialTheme.typography.body2.copy(
+                                textDecoration = TextDecoration.LineThrough,
+                            )
+                        },
+                        text = plannedArrivalTime,
+                        color = MaterialTheme.colors.onSurface.medium,
+                    )
+
+                    if (delayByMinutes > 0) {
+                        Text(
+                            text = "  ${delayByMinutes}m late",
+                            style = MaterialTheme.typography.body2.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = MaterialTheme.colors.error,
+                        )
+                    }
+                }
+            } else {
+                Row(modifier) {
+                    if (delayByMinutes == 0) {
+                        Text(
+                            style = MaterialTheme.typography.body2,
+                            text = "--",
+                            color = MaterialTheme.colors.onSurface.medium,
+                        )
+                    } else {
+                        Text(
+                            text = "${delayByMinutes}m late",
+                            style = MaterialTheme.typography.body2.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = MaterialTheme.colors.error,
+                        )
+                    }
                 }
             }
         }

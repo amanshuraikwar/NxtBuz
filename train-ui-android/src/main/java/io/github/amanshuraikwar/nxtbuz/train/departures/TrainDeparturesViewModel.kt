@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDeparture
+import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainDetailsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopDeparturesUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -25,7 +26,8 @@ private const val TAG = "TrainDeparturesVm"
 class TrainDeparturesViewModel @Inject constructor(
     private val dispatcherProvider: CoroutinesDispatcherProvider,
     private val getTrainStopUseCase: GetTrainStopUseCase,
-    private val getTrainStopDeparturesUseCase: GetTrainStopDeparturesUseCase
+    private val getTrainStopDeparturesUseCase: GetTrainStopDeparturesUseCase,
+    private val getTrainDetailsUseCase: GetTrainDetailsUseCase,
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
@@ -68,15 +70,21 @@ class TrainDeparturesViewModel @Inject constructor(
         }
     }
 
+    fun onTrainClick(trainCode: String) {
+        viewModelScope.launch(coroutineContext) {
+            Log.i(TAG, "onTrainClick: ${getTrainDetailsUseCase(trainCode)}")
+        }
+    }
+
     private fun TrainDeparture.toListItemData(): ListItemData.Departure {
         return ListItemData.Departure(
-            id = id,
+            id = trainCode,
             destinationTrainStopName = destinationTrainStopName,
             track = track,
             trainCategoryName = trainCategoryName,
             departureStatus = departureStatus,
-            plannedArrival = plannedArrivalInstant.formatArrivalInstant(),
-            actualArrival = actualArrivalInstant.formatArrivalInstant(),
+            plannedArrival = plannedArrivalInstant?.formatArrivalInstant(),
+            actualArrival = actualArrivalInstant?.formatArrivalInstant(),
             plannedDeparture = plannedDepartureInstant.formatArrivalInstant(),
             actualDeparture = actualDepartureInstant.formatArrivalInstant(),
             delayedByMinutes = delayedByMinutes,

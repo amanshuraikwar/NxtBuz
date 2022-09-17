@@ -80,7 +80,7 @@ internal class NsApi(
             addSubscriptionKey()
             url {
                 parameter("ids", trainCodes.fold("") { r, t -> "$r,$t" }.drop(1))
-                parameter("stations", stationCodes.fold("") { r, t -> "$r,$t" }.drop(1))
+                //parameter("stations", stationCodes.fold("") { r, t -> "$r,$t" }.drop(1))
                 // options:
                 // platformitems -> platform info
                 // zitplaats -> seat

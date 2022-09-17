@@ -53,6 +53,7 @@ fun TrainDeparturesScreenView(
                 screenState = screenState,
                 padding = padding,
                 backgroundColor = backgroundColor,
+                onTrainClick = vm::onTrainClick
             )
         }
     } else {
@@ -63,6 +64,7 @@ fun TrainDeparturesScreenView(
             ScreenStateView(
                 screenState = screenState,
                 backgroundColor = backgroundColor,
+                onTrainClick = vm::onTrainClick
             )
         }
     }

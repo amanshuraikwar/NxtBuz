@@ -21,6 +21,7 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
 internal fun DeparturesView(
     modifier: Modifier = Modifier,
     listItems: List<ListItemData>,
+    onTrainClick: (trainCode: String) -> Unit,
 ) {
     val infiniteTransition = rememberInfiniteTransition()
     val infiniteAnimatingAlpha by infiniteTransition.animateFloat(
@@ -64,7 +65,8 @@ internal fun DeparturesView(
                 is ListItemData.Departure -> {
                     TrainDepartureView(
                         data = item,
-                        infiniteAnimatingAlpha = infiniteAnimatingAlpha
+                        infiniteAnimatingAlpha = infiniteAnimatingAlpha,
+                        onClick = onTrainClick
                     )
                 }
                 is ListItemData.Header -> {

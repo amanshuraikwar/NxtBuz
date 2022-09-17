@@ -9,7 +9,7 @@ internal data class TrainJourneyDetailsResponseDto(
 
 @Serializable
 internal data class TrainJourneyDetailsDto(
-    val notes: List<String>,
+    val notes: List<TrainJourneyDetailsNoteDto>,
     val productNumbers: List<String>,
     val stops: List<TrainJourneyDetailsStopDto>,
     val allowCrowdReporting: Boolean,
@@ -17,25 +17,37 @@ internal data class TrainJourneyDetailsDto(
 )
 
 @Serializable
+internal data class TrainJourneyDetailsNoteDto(
+    val text: String,
+    val noteType: String,
+    val type: String,
+)
+
+@Serializable
 internal data class TrainJourneyDetailsStopDto(
+    // seems like this is suffixed by "_<digit>" ??
     val id: String,
     val stop: TrainJourneyDetailsStopDetailsDto,
     val previousStopId: List<String>,
     val nextStopId: List<String>,
-    val destination: String,
-    // ORIGIN, PASSING, STOP
+    val destination: String? = null,
+    // ORIGIN, PASSING, STOP, DESTINATION
     val status: String,
+    // seems contains 0 or 1 item only
     val arrivals: List<TrainJourneyDetailsStopArrivalDto>,
+    // seems contains 0 or 1 item only
     val departures: List<TrainJourneyDetailsStopDepartureDto>,
-    val actualStock: TrainJourneyDetailsStopStockDto,
-    val plannedStock: TrainJourneyDetailsStopStockDto,
-    val platformFeatures: List<String>,
-    val coachCrowdForecast: List<String>,
+    val actualStock: TrainJourneyDetailsStopStockDto? = null,
+    val plannedStock: TrainJourneyDetailsStopStockDto? = null,
+    // seems always empty?
+    val platformFeatures: List<String> = emptyList(),
+    // seems always empty?
+    val coachCrowdForecast: List<String> = emptyList(),
 )
 
 @Serializable
 internal data class TrainJourneyDetailsStopStockDto(
-    val trainType: String,
+    val trainType: String? = null,
     val numberOfSeats: Int,
     val numberOfParts: Int,
     val trainParts: List<TrainJourneyDetailsStopStockTrainPartDto>,
@@ -47,27 +59,27 @@ internal data class TrainJourneyDetailsStopStockTrainPartDto(
     val stockIdentifier: String,
     // WIFI, TOILET, STILTE, FIETS
     val facilities: List<String>,
-    val image: TrainJourneyDetailsStopStockTrainPartImageDto
+    val image: TrainJourneyDetailsStopStockTrainPartImageDto? = null
 )
 
 @Serializable
 internal data class TrainJourneyDetailsStopStockTrainPartImageDto(
-    val url: String
+    val uri: String
 )
 
 @Serializable
 internal data class TrainJourneyDetailsStopArrivalDto(
     val product: TrainJourneyDetailsStopProductDto,
     val origin: TrainJourneyDetailsStopDetailsDto,
-    val destination: TrainJourneyDetailsStopDetailsDto,
+    val destination: TrainJourneyDetailsStopDetailsDto? = null,
     val plannedTime: String,
-    val actualTime: String,
-    val delayInSeconds: Int,
+    val actualTime: String? = null,
+    val delayInSeconds: Int? = null,
     val plannedTrack: String,
-    val actualTrack: String,
+    val actualTrack: String? = null,
     val cancelled: Boolean,
-    val punctuality: Double,
-    // MEDIUM
+    val punctuality: Double? = null,
+    // MEDIUM, LOW, UNKNOWN
     val crowdForecast: String,
     val stockIdentifiers: List<String>
 )
@@ -76,14 +88,14 @@ internal data class TrainJourneyDetailsStopArrivalDto(
 internal data class TrainJourneyDetailsStopDepartureDto(
     val product: TrainJourneyDetailsStopProductDto,
     val origin: TrainJourneyDetailsStopDetailsDto,
-    val destination: TrainJourneyDetailsStopDetailsDto,
+    val destination: TrainJourneyDetailsStopDetailsDto? = null,
     val plannedTime: String,
-    val actualTime: String,
-    val delayInSeconds: Int,
+    val actualTime: String? = null,
+    val delayInSeconds: Int? = null,
     val plannedTrack: String,
-    val actualTrack: String,
+    val actualTrack: String? = null,
     val cancelled: Boolean,
-    // MEDIUM
+    // MEDIUM, UNKNOWN
     val crowdForecast: String,
     val stockIdentifiers: List<String>
 )
@@ -105,6 +117,8 @@ internal data class TrainJourneyDetailsStopDetailsDto(
     val name: String,
     val lng: Double,
     val lat: Double,
+    // NL -> The Netherlands
+    // D -> Deutschland / Germany
     val countryCode: String,
     val uicCode: String,
 )
