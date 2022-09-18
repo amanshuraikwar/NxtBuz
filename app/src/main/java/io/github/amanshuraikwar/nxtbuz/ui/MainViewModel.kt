@@ -66,6 +66,9 @@ class MainViewModel @Inject constructor(
                                 _screenState.value = MainScreenState.Success(
                                     showMap = showMap,
                                     navigationState = NavigationState.BusStops,
+//                                    navigationState = NavigationState.TrainDetails(
+//                                        trainCode = "4610"
+//                                    ),
                                     showBackBtn = backStack.isNotEmpty()
                                 )
                             }
@@ -218,6 +221,34 @@ class MainViewModel @Inject constructor(
                     showMap = showMap,
                     navigationState = NavigationState.TrainStopDepartures(
                         trainStopCode = trainStopCode
+                    ),
+                    showBackBtn = backStack.isNotEmpty()
+                )
+            }
+        }
+    }
+
+    fun onTrainClick(trainCode: String, pushBackStack: Boolean = true) {
+        viewModelScope.launch(coroutineContext) {
+            mutex.withLock {
+                val currentState = _screenState.value
+                if (currentState is MainScreenState.Success) {
+                    val currentNavState = currentState.navigationState
+                    if (currentNavState is NavigationState.TrainDetails) {
+                        if (currentNavState.trainCode == trainCode) {
+                            return@launch
+                        }
+                    }
+                }
+
+                if (pushBackStack) {
+                    pushBackStack()
+                }
+
+                _screenState.value = MainScreenState.Success(
+                    showMap = showMap,
+                    navigationState = NavigationState.TrainDetails(
+                        trainCode = trainCode
                     ),
                     showBackBtn = backStack.isNotEmpty()
                 )

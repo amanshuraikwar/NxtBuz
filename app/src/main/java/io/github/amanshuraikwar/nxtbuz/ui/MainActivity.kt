@@ -30,6 +30,7 @@ import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupViewModel
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchViewModel
 import io.github.amanshuraikwar.nxtbuz.starred.StarredViewModel
 import io.github.amanshuraikwar.nxtbuz.train.departures.TrainDeparturesViewModel
+import io.github.amanshuraikwar.nxtbuz.train.details.TrainDetailsViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -93,6 +94,10 @@ class MainActivity : DaggerAppCompatActivity() {
         viewModelProvider(viewModelFactory)
     }
 
+    private val trainDetailsViewModel: TrainDetailsViewModel by lazy {
+        viewModelProvider(viewModelFactory)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupSystemBars(
@@ -133,7 +138,8 @@ class MainActivity : DaggerAppCompatActivity() {
                     onSetupComplete = {
                         mainViewModel.onInit()
                     },
-                    trainDeparturesViewModel = trainDeparturesViewModel
+                    trainDeparturesViewModel = trainDeparturesViewModel,
+                    trainDetailsViewModel = trainDetailsViewModel,
                 )
             }
         }

@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.train.departures
+package io.github.amanshuraikwar.nxtbuz.train.details
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.BottomSheetValue
@@ -20,13 +20,12 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.rememberNxtBuzBottomSheetS
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun TrainDeparturesScreenView(
+fun TrainDetailsScreenView(
     modifier: Modifier = Modifier,
-    trainStopCode: String,
-    vm: TrainDeparturesViewModel,
+    trainCode: String,
+    vm: TrainDetailsViewModel,
     bottomSheetBgOffset: Dp,
     showBottomSheet: Boolean,
-    onTrainClick: (trainCode: String) -> Unit,
 ) {
     val bottomSheetState = rememberNxtBuzBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
@@ -39,8 +38,8 @@ fun TrainDeparturesScreenView(
         Color.Transparent
     }
 
-    DisposableEffect(key1 = trainStopCode) {
-        vm.init(trainStopCode = trainStopCode)
+    DisposableEffect(key1 = trainCode) {
+        vm.init(trainCode = trainCode)
         onDispose { }
     }
 
@@ -54,7 +53,7 @@ fun TrainDeparturesScreenView(
                 screenState = screenState,
                 padding = padding,
                 backgroundColor = backgroundColor,
-                onTrainClick = onTrainClick
+                onTrainClick = vm::onTrainClick
             )
         }
     } else {
@@ -65,7 +64,7 @@ fun TrainDeparturesScreenView(
             ScreenStateView(
                 screenState = screenState,
                 backgroundColor = backgroundColor,
-                onTrainClick = onTrainClick
+                onTrainClick = vm::onTrainClick
             )
         }
     }

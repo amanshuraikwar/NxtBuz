@@ -60,4 +60,6 @@ dependencies {
     implementation Libs.Google.crashlytics
 
     implementation Libs.KotlinX.datetime
+
+    implementation Libs.Coil.compose
 }

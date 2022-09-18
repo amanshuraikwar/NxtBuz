@@ -81,7 +81,7 @@ internal data class TrainJourneyDetailsStopArrivalDto(
     val punctuality: Double? = null,
     // MEDIUM, LOW, UNKNOWN
     val crowdForecast: String,
-    val stockIdentifiers: List<String>
+    val stockIdentifiers: List<String> = emptyList()
 )
 
 @Serializable
@@ -97,7 +97,7 @@ internal data class TrainJourneyDetailsStopDepartureDto(
     val cancelled: Boolean,
     // MEDIUM, UNKNOWN
     val crowdForecast: String,
-    val stockIdentifiers: List<String>
+    val stockIdentifiers: List<String> = emptyList()
 )
 
 @Serializable
