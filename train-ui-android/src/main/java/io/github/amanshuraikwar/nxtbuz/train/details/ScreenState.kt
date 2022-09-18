@@ -1,6 +1,8 @@
 package io.github.amanshuraikwar.nxtbuz.train.details
 
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainCrowdStatus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainFacility
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainRouteNodeType
 
 internal sealed class ScreenState {
     object Fetching : ScreenState()
@@ -28,9 +30,30 @@ internal data class RollingStockImage(
     val displayInfo: Boolean
 )
 
-sealed class ListItemData {
+internal sealed class ListItemData {
     data class Header(
         val id: String,
         val title: String
+    ) : ListItemData()
+
+    data class RouteNodeOrigin(
+        val trainStopCode: String,
+        val trainStopName: String,
+        val crowdStatus: TrainCrowdStatus,
+        val type: TrainRouteNodeType.Origin,
+    ) : ListItemData()
+
+    data class RouteNodeMiddle(
+        val trainStopCode: String,
+        val trainStopName: String,
+        val crowdStatus: TrainCrowdStatus,
+        val type: TrainRouteNodeType.Stop,
+    ) : ListItemData()
+
+    data class RouteNodeDestination(
+        val trainStopCode: String,
+        val trainStopName: String,
+        val crowdStatus: TrainCrowdStatus,
+        val type: TrainRouteNodeType.Destination,
     ) : ListItemData()
 }

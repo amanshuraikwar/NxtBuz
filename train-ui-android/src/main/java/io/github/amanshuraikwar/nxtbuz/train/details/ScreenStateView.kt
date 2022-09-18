@@ -28,12 +28,10 @@ internal fun ScreenStateView(
                     data = screenState.header
                 )
 
-                Divider()
-
-//                DeparturesView(
-//                    listItems = screenState.listItems,
-//                    onTrainClick = onTrainClick
-//                )
+                RouteView(
+                    listItems = screenState.listItems,
+                    onTrainRouteNodeClick = {}
+                )
             }
         }
     }

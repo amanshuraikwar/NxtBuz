@@ -1,7 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.commonkmm.train
 
-import kotlinx.datetime.Instant
-
 data class TrainDetails(
     val trainCode: String,
     val trainCategoryName: String,
@@ -31,8 +29,8 @@ enum class TrainCrowdStatus {
 
 sealed class TrainRouteNodeTiming {
     data class Available(
-        val plannedInstant: Instant,
-        val actualInstant: Instant?,
+        val plannedTime: String,
+        val actualTime: String?,
         val delayedByMinutes: Int,
         val plannedTrack: String,
         val actualTrack: String?,

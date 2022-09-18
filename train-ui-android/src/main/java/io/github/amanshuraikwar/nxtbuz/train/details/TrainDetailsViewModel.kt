@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainRouteNode
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainRouteNodeType
 import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainDetailsUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -83,7 +85,9 @@ class TrainDetailsViewModel @Inject constructor(
                             length = trainDetails.length,
                             lengthInMeters = trainDetails.lengthInMeters,
                         ),
-                        listItems = emptyList()
+                        listItems = trainDetails.route.mapNotNull { trainRouteNode ->
+                            trainRouteNode.toListItemData()
+                        }
                     )
                 )
             }
@@ -117,5 +121,35 @@ class TrainDetailsViewModel @Inject constructor(
         val datetimeInSystemZone = toLocalDateTime(TimeZone.currentSystemDefault())
         return DateTimeFormatter.ofPattern("hh:mm a")
             .format(datetimeInSystemZone.toJavaLocalDateTime())
+    }
+
+    private fun TrainRouteNode.toListItemData(): ListItemData? {
+        return when (val type = type) {
+            is TrainRouteNodeType.Destination -> {
+                ListItemData.RouteNodeDestination(
+                    trainStopCode = trainStopCode,
+                    trainStopName = trainStopName,
+                    crowdStatus = crowdStatus,
+                    type = type
+                )
+            }
+            is TrainRouteNodeType.Origin -> {
+                ListItemData.RouteNodeOrigin(
+                    trainStopCode = trainStopCode,
+                    trainStopName = trainStopName,
+                    crowdStatus = crowdStatus,
+                    type = type
+                )
+            }
+            TrainRouteNodeType.Passing -> null
+            is TrainRouteNodeType.Stop -> {
+                ListItemData.RouteNodeMiddle(
+                    trainStopCode = trainStopCode,
+                    trainStopName = trainStopName,
+                    crowdStatus = crowdStatus,
+                    type = type
+                )
+            }
+        }
     }
 }

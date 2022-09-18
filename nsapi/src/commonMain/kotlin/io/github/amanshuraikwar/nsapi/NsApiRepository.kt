@@ -27,6 +27,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 
 internal class NsApiRepository(
     private val settingsFactory: () -> Settings,
@@ -326,10 +327,10 @@ internal class NsApiRepository(
             return getOrNull(0)
                 ?.let { departureDto ->
                     TrainRouteNodeTiming.Available(
-                        plannedInstant =
-                        departureDto.plannedTime.toAmsterdamInstant(),
-                        actualInstant =
-                        departureDto.actualTime?.toAmsterdamInstant(),
+                        plannedTime =
+                        departureDto.plannedTime.toAmsterdamInstant().formatArrivalInstant(),
+                        actualTime =
+                        departureDto.actualTime?.toAmsterdamInstant()?.formatArrivalInstant(),
                         delayedByMinutes =
                         departureDto
                             .actualTime
@@ -354,10 +355,10 @@ internal class NsApiRepository(
             return getOrNull(0)
                 ?.let { arrivalDto ->
                     TrainRouteNodeTiming.Available(
-                        plannedInstant =
-                        arrivalDto.plannedTime.toAmsterdamInstant(),
-                        actualInstant =
-                        arrivalDto.actualTime?.toAmsterdamInstant(),
+                        plannedTime =
+                        arrivalDto.plannedTime.toAmsterdamInstant().formatArrivalInstant(),
+                        actualTime =
+                        arrivalDto.actualTime?.toAmsterdamInstant()?.formatArrivalInstant(),
                         delayedByMinutes =
                         arrivalDto
                             .actualTime
@@ -424,6 +425,27 @@ internal class NsApiRepository(
                         ?.let { TrainCrowdStatus.valueOf(it) }
                     ?: TrainCrowdStatus.UNKNOWN
             )
+        }
+
+        private fun Instant.formatArrivalInstant(): String {
+            val datetimeInSystemZone = toLocalDateTime(TimeZone.currentSystemDefault())
+            val hour = when (datetimeInSystemZone.hour) {
+                0, 12 -> "12"
+                in 1..9 -> "0${datetimeInSystemZone.hour}"
+                in 13..21 -> "0${datetimeInSystemZone.hour % 12}"
+                else -> "${datetimeInSystemZone.hour % 12}"
+            }
+            val a = when (datetimeInSystemZone.hour) {
+                in 0..11 -> "am"
+                in 12..23 -> "pm"
+                else -> throw IllegalArgumentException("Invalid hour $hour")
+            }
+            val minutes = when (datetimeInSystemZone.minute) {
+                in 0..9 -> "0${datetimeInSystemZone.minute}"
+                else -> "${datetimeInSystemZone.minute}"
+            }
+
+            return "$hour:$minutes $a"
         }
     }
 }
