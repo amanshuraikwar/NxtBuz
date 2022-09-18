@@ -86,7 +86,7 @@ class TrainDeparturesViewModel @Inject constructor(
             plannedArrival = plannedArrivalInstant?.formatArrivalInstant(),
             actualArrival = actualArrivalInstant?.formatArrivalInstant(),
             plannedDeparture = plannedDepartureInstant.formatArrivalInstant(),
-            actualDeparture = actualDepartureInstant.formatArrivalInstant(),
+            actualDeparture = actualDepartureInstant?.formatArrivalInstant(),
             delayedByMinutes = delayedByMinutes,
         )
     }

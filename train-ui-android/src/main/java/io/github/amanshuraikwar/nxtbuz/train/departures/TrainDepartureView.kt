@@ -61,27 +61,30 @@ internal fun TrainDepartureView(
                 modifier = Modifier.padding(top = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    modifier = Modifier
-                        .background(
-                            color = if (data.departureStatus == TrainDepartureStatus.CANCELLED) {
-                                MaterialTheme.colors.onSurface.medium
-                            } else {
-                                MaterialTheme.colors.primary
-                            },
-                            shape = RoundedCornerShape(4.dp)
-                        )
-                        .padding(horizontal = 4.dp, vertical = 1.dp),
-                    text = data.track.uppercase(Locale.ROOT),
-                    style = MaterialTheme.typography.body2.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    color = if (data.departureStatus == TrainDepartureStatus.CANCELLED) {
-                        MaterialTheme.colors.surface.medium
-                    } else {
-                        MaterialTheme.colors.onPrimary
-                    },
-                )
+                val track = data.track
+                if (track != null) {
+                    Text(
+                        modifier = Modifier
+                            .background(
+                                color = if (data.departureStatus == TrainDepartureStatus.CANCELLED) {
+                                    MaterialTheme.colors.onSurface.medium
+                                } else {
+                                    MaterialTheme.colors.primary
+                                },
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .padding(horizontal = 4.dp, vertical = 1.dp),
+                        text = track.uppercase(Locale.ROOT),
+                        style = MaterialTheme.typography.body2.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = if (data.departureStatus == TrainDepartureStatus.CANCELLED) {
+                            MaterialTheme.colors.surface.medium
+                        } else {
+                            MaterialTheme.colors.onPrimary
+                        },
+                    )
+                }
 
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
@@ -99,7 +102,7 @@ internal fun TrainDepartureView(
         ) {
             DepartureTimeView(
                 delayByMinutes = data.delayedByMinutes,
-                departureTime = data.actualDeparture,
+                departureTime = data.actualDeparture ?: data.plannedDeparture,
                 isCancelled = data.departureStatus == TrainDepartureStatus.CANCELLED
             )
 

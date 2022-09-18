@@ -74,33 +74,35 @@ internal fun TrainHeaderView(
             color = MaterialTheme.colors.onSurface.medium
         )
 
-        Row(
-            Modifier
-                .padding(top = 16.dp)
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            for (facility in data.facilities) {
-                Icon(
-                    modifier = Modifier
-                        .padding(end = 8.dp)
-                        .background(
-                            MaterialTheme.colors.primary,
-                            shape = RoundedCornerShape(6.dp),
-                        )
-                        .padding(2.dp)
-                        .size(18.dp),
-                    imageVector = when (facility) {
-                        TrainFacility.TOILET -> Icons.Rounded.Wc
-                        TrainFacility.POWER_SOCKETS -> Icons.Rounded.Power
-                        TrainFacility.WIFI -> Icons.Rounded.Wifi
-                        TrainFacility.QUIET_TRAIN -> Icons.Rounded.DoNotDisturbOnTotalSilence
-                        TrainFacility.BICYCLE -> Icons.Rounded.PedalBike
-                        TrainFacility.WHEELCHAIR_ACCESSIBLE -> Icons.Rounded.AccessibleForward
-                    },
-                    contentDescription = facility.toString(),
-                    tint = MaterialTheme.colors.onPrimary
-                )
+        if (data.facilities.isNotEmpty()) {
+            Row(
+                Modifier
+                    .padding(top = 16.dp)
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                for (facility in data.facilities) {
+                    Icon(
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .background(
+                                MaterialTheme.colors.primary,
+                                shape = RoundedCornerShape(6.dp),
+                            )
+                            .padding(2.dp)
+                            .size(18.dp),
+                        imageVector = when (facility) {
+                            TrainFacility.TOILET -> Icons.Rounded.Wc
+                            TrainFacility.POWER_SOCKETS -> Icons.Rounded.Power
+                            TrainFacility.WIFI -> Icons.Rounded.Wifi
+                            TrainFacility.QUIET_TRAIN -> Icons.Rounded.DoNotDisturbOnTotalSilence
+                            TrainFacility.BICYCLE -> Icons.Rounded.PedalBike
+                            TrainFacility.WHEELCHAIR_ACCESSIBLE -> Icons.Rounded.AccessibleForward
+                        },
+                        contentDescription = facility.toString(),
+                        tint = MaterialTheme.colors.onPrimary
+                    )
+                }
             }
         }
 

@@ -19,13 +19,13 @@ internal sealed class ListItemData {
     data class Departure(
         val id: String,
         val destinationTrainStopName: String,
-        val track: String,
+        val track: String?,
         val trainCategoryName: String,
         val departureStatus: TrainDepartureStatus,
         val plannedArrival: String?,
         val actualArrival: String?,
         val plannedDeparture: String,
-        val actualDeparture: String,
+        val actualDeparture: String?,
         val delayedByMinutes: Int,
     ) : ListItemData()
 }

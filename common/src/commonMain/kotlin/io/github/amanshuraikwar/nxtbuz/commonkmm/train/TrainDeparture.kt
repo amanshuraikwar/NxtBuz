@@ -5,14 +5,12 @@ import kotlinx.datetime.Instant
 data class TrainDeparture(
     val trainCode: String,
     val destinationTrainStopName: String,
-    val track: String,
+    val track: String?,
     val trainCategoryName: String,
-
     val plannedArrivalInstant: Instant?,
     val actualArrivalInstant: Instant?,
     val plannedDepartureInstant: Instant,
-    val actualDepartureInstant: Instant,
-
+    val actualDepartureInstant: Instant?,
     val delayedByMinutes: Int,
     val departureStatus: TrainDepartureStatus,
 )

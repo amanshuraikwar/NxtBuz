@@ -16,9 +16,9 @@ internal data class TrainInfoDto(
     val type: String? = null,
     // operator
     // for eg: NS
-    val vervoerder: String,
+    val vervoerder: String? = null,
     // track
-    val spoor: String,
+    val spoor: String? = null,
     // material info / rolling stock info
     val materieeldelen: List<TrainInfoMaterialDto>,
     // shortened
@@ -50,7 +50,7 @@ internal data class TrainInfoMaterialDto(
 
 @Serializable
 internal data class TrainInfoMaterialBakingDto(
-    val afbeelding: TrainInfoMaterialBakingImageDto
+    val afbeelding: TrainInfoMaterialBakingImageDto? = null
 )
 
 @Serializable

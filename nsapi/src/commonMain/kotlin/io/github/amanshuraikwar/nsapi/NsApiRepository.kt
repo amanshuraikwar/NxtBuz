@@ -39,6 +39,9 @@ internal class NsApiRepository(
         settingsFactory()
     }
 
+    // train code -> category name
+    private val trainCategoryNameCache = mutableMapOf<String, String>()
+
     override suspend fun supportsLocation(lat: Double, lng: Double): Boolean {
         // TODO-amanshuraikwar (11 Sep 2022 12:54:59 PM):
         //  update to check if location is inside or near The Netherlands
@@ -120,6 +123,9 @@ internal class NsApiRepository(
                 .forEach { departureDto ->
                     val arrivalDto = arrivalsMap[departureDto.product.number]
 
+                    trainCategoryNameCache[departureDto.product.number] =
+                        departureDto.product.longCategoryName
+
                     departures.add(
                         TrainDeparture(
                             trainCode = departureDto.product.number,
@@ -145,16 +151,19 @@ internal class NsApiRepository(
                             actualArrivalInstant =
                             arrivalDto?.actualDateTime?.toAmsterdamInstant(),
                             plannedDepartureInstant = departureDto.plannedDateTime.toAmsterdamInstant(),
-                            actualDepartureInstant = departureDto.actualDateTime.toAmsterdamInstant(),
+                            actualDepartureInstant = departureDto.actualDateTime?.toAmsterdamInstant(),
                             delayedByMinutes =
                             departureDto
                                 .actualDateTime
-                                .toAmsterdamInstant().minus(
+                                ?.toAmsterdamInstant()
+                                ?.minus(
                                     departureDto
                                         .plannedDateTime
                                         .toAmsterdamInstant()
                                 )
-                                .inWholeMinutes.toInt()
+                                ?.inWholeMinutes
+                                ?.toInt()
+                                ?: 0
                         )
                     )
                 }
@@ -198,8 +207,13 @@ internal class NsApiRepository(
 
             // TODO: assuming train always as departure info
             //       get it from somewhere safer
+            //       handle empty category name
             val trainCategoryName =
-                trainJourneyDetails.stops[0].departures[0].product.longCategoryName
+                trainJourneyDetails.stops
+                    .getOrNull(0)?.departures
+                    ?.getOrNull(0)?.product?.longCategoryName
+                    ?: trainCategoryNameCache[trainCode]?.let { "$it*" }
+                    ?: "Unknown Type"
 
             val accumulatedFacilities = trainInfo
                 .materieeldelen
