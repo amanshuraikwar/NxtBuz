@@ -4,9 +4,11 @@ import io.github.amanshuraikwar.nsapi.model.ArrivalsResponseDto
 import io.github.amanshuraikwar.nsapi.model.DeparturesResponseDto
 import io.github.amanshuraikwar.nsapi.model.StationsResponseDto
 import io.github.amanshuraikwar.nsapi.model.TrainCrowdForecastStationDto
-import io.github.amanshuraikwar.nsapi.model.TrainInfoDto
+import io.github.amanshuraikwar.nsapi.model.TrainInfoErrorResponseDto
+import io.github.amanshuraikwar.nsapi.model.TrainInfoResponseDto
 import io.github.amanshuraikwar.nsapi.model.TrainJourneyDetailsResponseDto
 import io.ktor.client.HttpClient
+import io.ktor.client.call.receive
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -15,6 +17,7 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
+import io.ktor.client.statement.HttpResponse
 import io.ktor.utils.io.readUTF8Line
 import kotlinx.serialization.json.Json
 
@@ -75,8 +78,10 @@ internal class NsApi(
     suspend fun getTrainInformation(
         trainCodes: List<String>,
         stationCodes: List<String>
-    ): List<TrainInfoDto> {
-        return client.get("$baseUrl/virtual-train-api/api/v1/trein") {
+    ): TrainInfoResponseDto {
+        val httpResponse = client.get<HttpResponse>(
+            "$baseUrl/virtual-train-api/api/v1/trein"
+        ) {
             addSubscriptionKey()
             url {
                 parameter("ids", trainCodes.fold("") { r, t -> "$r,$t" }.drop(1))
@@ -92,6 +97,16 @@ internal class NsApi(
                 parameter("all", "false")
             }
         }
+
+        if (httpResponse.status.value == 404) {
+            return TrainInfoResponseDto.Error(
+                httpResponse.receive<TrainInfoErrorResponseDto>().errors
+            )
+        }
+
+        return TrainInfoResponseDto.Success(
+            httpResponse.receive()
+        )
     }
 
     /**

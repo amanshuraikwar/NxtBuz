@@ -77,7 +77,7 @@ fun ContentNavGraph(
                 trainStopCode = navigationState.trainStopCode,
                 vm = trainDeparturesViewModel,
                 bottomSheetBgOffset = bottomSheetBgOffset,
-                showBottomSheet =showBottomSheet,
+                showBottomSheet = showBottomSheet,
                 onTrainClick = onTrainClick
             )
         }
@@ -86,7 +86,8 @@ fun ContentNavGraph(
                 trainCode = navigationState.trainCode,
                 vm = trainDetailsViewModel,
                 bottomSheetBgOffset = bottomSheetBgOffset,
-                showBottomSheet =showBottomSheet,
+                showBottomSheet = showBottomSheet,
+                onTrainStopClick = onTrainStopClick
             )
         }
     }

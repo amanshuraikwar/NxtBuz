@@ -2,6 +2,25 @@ package io.github.amanshuraikwar.nsapi.model
 
 import kotlinx.serialization.Serializable
 
+internal sealed class TrainInfoResponseDto {
+    @Serializable
+    data class Error(val errors: List<TrainInfoErrorDto>) : TrainInfoResponseDto()
+
+    @Serializable
+    data class Success(val info: List<TrainInfoDto>) : TrainInfoResponseDto()
+}
+
+@Serializable
+internal data class TrainInfoErrorResponseDto(
+    val errors: List<TrainInfoErrorDto>
+)
+
+@Serializable
+internal data class TrainInfoErrorDto(
+    val message: String,
+    val code: Int
+)
+
 @Serializable
 internal data class TrainInfoDto(
     // source

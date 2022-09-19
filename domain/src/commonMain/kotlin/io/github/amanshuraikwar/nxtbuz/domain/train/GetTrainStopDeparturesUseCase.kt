@@ -8,9 +8,9 @@ open class GetTrainStopDeparturesUseCase constructor(
 ) {
     suspend operator fun invoke(trainStopCode: String): List<TrainDeparture> {
         for (repo in trainStopRepositories) {
-            if (repo.containsStop(code = trainStopCode)) {
+//            if (repo.containsStop(code = trainStopCode)) {
                 return repo.getTrainDepartures(trainStopCode = trainStopCode)
-            }
+//            }
         }
         return emptyList()
     }

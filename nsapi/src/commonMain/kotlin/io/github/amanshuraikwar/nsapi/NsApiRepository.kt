@@ -4,6 +4,7 @@ import com.russhwolf.settings.Settings
 import com.russhwolf.settings.set
 import io.github.amanshuraikwar.nsapi.db.NsApiDb
 import io.github.amanshuraikwar.nsapi.db.NsTrainStationEntity
+import io.github.amanshuraikwar.nsapi.model.TrainInfoResponseDto
 import io.github.amanshuraikwar.nsapi.model.TrainJourneyDetailsStopArrivalDto
 import io.github.amanshuraikwar.nsapi.model.TrainJourneyDetailsStopDepartureDto
 import io.github.amanshuraikwar.nsapi.model.TrainJourneyDetailsStopDto
@@ -96,7 +97,12 @@ internal class NsApiRepository(
     }
 
     override suspend fun getTrainDepartures(trainStopCode: String): List<TrainDeparture> {
-        val trainStationCode = trainStopCode.drop(TRAIN_STOP_CODE_PREFIX.length)
+        val trainStationCode = if (trainStopCode.startsWith(TRAIN_STOP_CODE_PREFIX)) {
+            trainStopCode.drop(TRAIN_STOP_CODE_PREFIX.length)
+        } else {
+            trainStopCode
+        }
+
         return withContext(dispatcherProvider.io) {
             val departures = mutableListOf<TrainDeparture>()
 
@@ -176,7 +182,13 @@ internal class NsApiRepository(
         return withContext(dispatcherProvider.io) {
             nsApiDb
                 .nsTrainStationEntityQueries
-                .findByCode(code = code.drop(TRAIN_STOP_CODE_PREFIX.length))
+                .findByCode(
+                    code = if (code.startsWith(TRAIN_STOP_CODE_PREFIX)) {
+                        code.drop(TRAIN_STOP_CODE_PREFIX.length)
+                    } else {
+                        code
+                    }
+                )
                 .executeAsList()
                 .getOrNull(0)
                 ?.toTrainStop()
@@ -202,7 +214,15 @@ internal class NsApiRepository(
                 nsApi.getTrainJourneyDetails(trainCode = trainCode)
             }
 
-            val trainInfo = trainInfoDeferred.await()[0]
+            val trainInfo = when (val response = trainInfoDeferred.await()) {
+                is TrainInfoResponseDto.Error -> {
+                    throw IllegalArgumentException(
+                        response.errors.getOrNull(0)?.message
+                            ?: "Error while getting details of train $trainCode"
+                    )
+                }
+                is TrainInfoResponseDto.Success -> response.info[0]
+            }
             val trainJourneyDetails = trainJourneyDetailsInfoDefered.await().payload
 
             // TODO: assuming train always as departure info

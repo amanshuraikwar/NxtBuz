@@ -33,7 +33,6 @@ internal fun TrainStopHeaderView(
 ) {
     Box(
         modifier = modifier
-            .background(MaterialTheme.colors.surface)
             .fillMaxWidth(),
     ) {
         Icon(

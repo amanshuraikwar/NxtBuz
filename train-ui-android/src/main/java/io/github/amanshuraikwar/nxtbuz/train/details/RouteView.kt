@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.train.details
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -54,13 +55,22 @@ internal fun RouteView(
                     )
                 }
                 is ListItemData.RouteNodeOrigin -> {
-                    RouteNodeOriginView(data = item)
+                    RouteNodeOriginView(
+                        modifier = Modifier.clickable { onTrainRouteNodeClick(item.trainStopCode) },
+                        data = item
+                    )
                 }
                 is ListItemData.RouteNodeDestination -> {
-                    RouteNodeDestinationView(data = item)
+                    RouteNodeDestinationView(
+                        modifier = Modifier.clickable { onTrainRouteNodeClick(item.trainStopCode) },
+                        data = item
+                    )
                 }
                 is ListItemData.RouteNodeMiddle -> {
-                    RouteNodeMiddleView(data = item)
+                    RouteNodeMiddleView(
+                        modifier = Modifier.clickable { onTrainRouteNodeClick(item.trainStopCode) },
+                        data = item
+                    )
                 }
             }
         }

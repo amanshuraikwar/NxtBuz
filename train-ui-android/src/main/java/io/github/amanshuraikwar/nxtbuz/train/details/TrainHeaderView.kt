@@ -45,7 +45,6 @@ internal fun TrainHeaderView(
     Column {
         Text(
             modifier = modifier
-                .background(MaterialTheme.colors.surface)
                 .fillMaxWidth()
                 .padding(top = 16.dp)
                 .padding(horizontal = 16.dp),

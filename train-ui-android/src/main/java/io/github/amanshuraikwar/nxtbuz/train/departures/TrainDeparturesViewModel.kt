@@ -32,6 +32,7 @@ class TrainDeparturesViewModel @Inject constructor(
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
         FirebaseCrashlytics.getInstance().recordException(th)
+
     }
     private val coroutineContext = errorHandler + dispatcherProvider.computation
 
@@ -67,12 +68,6 @@ class TrainDeparturesViewModel @Inject constructor(
                     )
                 )
             }
-        }
-    }
-
-    fun onTrainClick(trainCode: String) {
-        viewModelScope.launch(coroutineContext) {
-            Log.i(TAG, "onTrainClick: ${getTrainDetailsUseCase(trainCode)}")
         }
     }
 

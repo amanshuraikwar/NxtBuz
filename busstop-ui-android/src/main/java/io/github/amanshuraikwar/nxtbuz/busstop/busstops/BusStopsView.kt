@@ -41,7 +41,9 @@ fun BusStopsView(
         }
         is BusStopsScreenState.NearbyBusStops -> {
             Column(
-                Modifier.fillMaxWidth()
+                Modifier
+                    .fillMaxWidth()
+                    .padding(paddingValues = padding)
             ) {
                 StopsFilterView(
                     filter = state.filter,
@@ -54,8 +56,7 @@ fun BusStopsView(
                     is BusStopsScreenState.NearbyBusStops.Fetching -> {
                         FetchingView(
                             Modifier
-                                .fillMaxWidth()
-                                .padding(paddingValues = padding),
+                                .fillMaxWidth(),
                             "Fetching nearby bus stops..."
                         )
                     }
@@ -81,7 +82,6 @@ fun BusStopsView(
                         } else {
                             NearbyBusStopsView(
                                 state.listItems,
-                                padding,
                                 onBusStopClick,
                                 onBusStopStarToggle,
                                 onTrainStopClick
@@ -120,7 +120,6 @@ fun BusStopsView(
             } else {
                 NearbyBusStopsView(
                     state.listItems,
-                    padding,
                     onBusStopClick,
                     onBusStopStarToggle,
                     onTrainStopClick
@@ -140,7 +139,6 @@ fun BusStopsView(
             } else {
                 NearbyBusStopsView(
                     state.listItems,
-                    padding,
                     onBusStopClick,
                     onBusStopStarToggle,
                     onTrainStopClick

@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun NearbyBusStopsView(
     listItems: List<BusStopsItemData>,
-    padding: PaddingValues,
     onBusStopClick: (busStopCode: String) -> Unit,
     onBusStopStarToggle: (busStopCode: String, newStarState: Boolean) -> Unit,
     onTrainStopClick: (trainsStopCode: String) -> Unit
@@ -34,7 +33,6 @@ fun NearbyBusStopsView(
     LazyColumn(
         contentPadding = PaddingValues(
             bottom = 128.dp,
-            top = padding.calculateTopPadding()
         ),
         state = lazyListState,
     ) {
