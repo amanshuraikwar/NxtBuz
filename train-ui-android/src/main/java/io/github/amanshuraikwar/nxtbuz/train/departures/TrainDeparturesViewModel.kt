@@ -27,7 +27,6 @@ class TrainDeparturesViewModel @Inject constructor(
     private val dispatcherProvider: CoroutinesDispatcherProvider,
     private val getTrainStopUseCase: GetTrainStopUseCase,
     private val getTrainStopDeparturesUseCase: GetTrainStopDeparturesUseCase,
-    private val getTrainDetailsUseCase: GetTrainDetailsUseCase,
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)

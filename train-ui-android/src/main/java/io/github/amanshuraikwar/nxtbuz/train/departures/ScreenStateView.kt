@@ -3,8 +3,10 @@ package io.github.amanshuraikwar.nxtbuz.train.departures
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,34 +19,32 @@ internal fun ScreenStateView(
     backgroundColor: Color,
     onTrainClick: (trainCode: String) -> Unit,
 ) {
-    when (screenState) {
-        ScreenState.Fetching -> {
-            Column(
-                modifier = Modifier
-                    .padding(top = padding.calculateTopPadding())
-                    .background(color = backgroundColor)
-            ) {
+    Column(
+        modifier = Modifier
+            .padding(top = padding.calculateTopPadding())
+            .background(color = backgroundColor)
+            .fillMaxHeight()
+    ) {
+        when (screenState) {
+            ScreenState.Fetching -> {
+                TrainStopHeaderView()
                 Divider()
-
                 FetchingView()
             }
-        }
-        is ScreenState.Success -> {
-            Column(
-                modifier = Modifier
-                    .padding(top = padding.calculateTopPadding())
-                    .background(color = backgroundColor)
-            ) {
+
+            is ScreenState.Success -> {
                 TrainStopHeaderView(
                     data = screenState.header
                 )
-
                 Divider()
-
                 DeparturesView(
                     listItems = screenState.listItems,
                     onTrainClick = onTrainClick
                 )
+            }
+
+            is ScreenState.Error -> {
+                Text(screenState.message)
             }
         }
     }

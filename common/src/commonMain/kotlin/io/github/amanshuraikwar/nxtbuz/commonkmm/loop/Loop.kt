@@ -1,9 +1,15 @@
 package io.github.amanshuraikwar.nxtbuz.commonkmm.loop
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 private const val REFRESH_DELAY = 10000L
@@ -11,6 +17,7 @@ private const val REFRESH_DELAY = 10000L
 abstract class Loop<T>(
     private val coroutineScope: CoroutineScope,
     private val dispatcher: CoroutineDispatcher,
+    private val refreshDelay: Long = REFRESH_DELAY
 ) {
     private val sharedFlow = MutableSharedFlow<T>(replay = 1)
     private var producerCoroutineJob: Job? = null
@@ -53,7 +60,7 @@ abstract class Loop<T>(
     private fun startLoopDelayed() {
         producerCoroutineJob?.cancel()
         producerCoroutineJob = null
-        producerCoroutineJob = launchCoroutine(REFRESH_DELAY)
+        producerCoroutineJob = launchCoroutine(refreshDelay)
     }
 
     private fun startLoop() {
@@ -69,7 +76,7 @@ abstract class Loop<T>(
             delay(initialDelay)
             while (isActive) {
                 sharedFlow.tryEmit(getData())
-                delay(REFRESH_DELAY)
+                delay(refreshDelay)
             }
         }
     }
@@ -87,5 +94,24 @@ abstract class Loop<T>(
         producerCoroutineJob = null
         collectorCoroutineJob?.cancel()
         collectorCoroutineJob = null
+    }
+
+    companion object {
+        operator fun <T> invoke(
+            coroutineScope: CoroutineScope,
+            dispatcher: CoroutineDispatcher,
+            refreshDelay: Long = REFRESH_DELAY,
+            getData: suspend () -> T
+        ): Loop<T> {
+            return object : Loop<T>(
+                coroutineScope = coroutineScope,
+                dispatcher = dispatcher,
+                refreshDelay = refreshDelay
+            ) {
+                override suspend fun getData(): T {
+                    return getData()
+                }
+            }
+        }
     }
 }

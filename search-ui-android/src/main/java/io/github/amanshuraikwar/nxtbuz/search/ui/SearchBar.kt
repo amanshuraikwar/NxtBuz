@@ -78,8 +78,8 @@ fun SearchBar(
                         .padding(horizontal = 72.dp, vertical = 12.dp),
                     color = MaterialTheme.colors.onSurface.medium,
                     style = MaterialTheme.typography.subtitle1,
-
-                    )
+                    maxLines = 1
+                )
             }
 
             BasicTextField(
@@ -107,7 +107,7 @@ fun SearchBar(
                     onSearch = {
                         onSearch(searchString)
                     }
-                )
+                ),
             ) { innerTextField ->
                 Box(
                     modifier = Modifier
@@ -203,6 +203,7 @@ fun SearchBar(
                     .padding(start = textPaddingStart, end = 56.dp),
                 color = MaterialTheme.colors.onSurface.medium,
                 style = MaterialTheme.typography.subtitle1,
+                maxLines = 1
             )
 
             Icon(
