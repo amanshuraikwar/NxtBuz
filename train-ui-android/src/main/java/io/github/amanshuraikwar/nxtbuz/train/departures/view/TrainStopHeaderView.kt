@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.train.departures
+package io.github.amanshuraikwar.nxtbuz.train.departures.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -23,9 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.StarDirectionsView
 import io.github.amanshuraikwar.nxtbuz.common.compose.StarIndicatorView
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled
+import io.github.amanshuraikwar.nxtbuz.common.compose.loading
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
+import io.github.amanshuraikwar.nxtbuz.train.departures.TrainStopHeader
 import java.util.Locale
 
 @Composable
@@ -143,12 +143,6 @@ internal fun TrainStopHeaderView(
 }
 
 @Composable
-fun Modifier.loading() = this.background(
-    color = MaterialTheme.colors.onSurface.disabled,
-    shape = RoundedCornerShape(4.dp),
-)
-
-@Composable
 internal fun TrainStopHeaderView(
     modifier: Modifier = Modifier,
 ) {
@@ -221,11 +215,7 @@ internal fun TrainStopHeaderView(
             }
 
             StarDirectionsView(
-                modifier = Modifier
-                    .padding(top = 12.dp),
-                starred = false,
-                onStarToggle = { },
-                onGoToClick = { }
+                modifier = Modifier.padding(top = 12.dp)
             )
         }
     }

@@ -2,7 +2,6 @@ package io.github.amanshuraikwar.nxtbuz.common.compose
 
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -12,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
 
 @Composable
 fun PrimaryButton(
@@ -30,7 +31,7 @@ fun PrimaryButton(
             shape = MaterialTheme.shapes.small
         ) {
             Text(
-                text = text,
+                text = text.uppercase(),
                 style = MaterialTheme.typography.button,
                 color = MaterialTheme.colors.onPrimary,
                 textAlign = TextAlign.Center,
@@ -38,6 +39,16 @@ fun PrimaryButton(
                     .clickable(onClick = onClick)
                     .padding(12.dp)
             )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PrimaryButton_Preview() {
+    PreviewSurface(darkTheme = true) {
+        PrimaryButton(text = "Button text") {
+
         }
     }
 }

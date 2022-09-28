@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.train.departures
+package io.github.amanshuraikwar.nxtbuz.train.departures.view
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -25,6 +25,7 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.onDirections
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDepartureStatus
+import io.github.amanshuraikwar.nxtbuz.train.departures.ListItemData
 import java.util.Locale
 
 // TODO-amanshuraikwar (13 Sep 2022 05:23:44 PM): show track with an icon

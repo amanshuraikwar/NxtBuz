@@ -4,6 +4,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDepartureStatus
 
 internal sealed class ScreenState {
     object Fetching : ScreenState()
+
     data class Success(
         val header: TrainStopHeader,
         val listItems: List<ListItemData>
@@ -11,7 +12,8 @@ internal sealed class ScreenState {
 
     data class Error(
         val message: String,
-        val exception: Exception
+        val exception: Exception,
+        val ableToReport: Boolean
     ) : ScreenState()
 }
 

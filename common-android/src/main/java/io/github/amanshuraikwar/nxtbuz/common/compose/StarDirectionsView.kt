@@ -65,3 +65,43 @@ fun StarDirectionsView(
         }
     }
 }
+
+@Composable
+fun StarDirectionsView(
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+    ) {
+        CompositionLocalProvider(
+            LocalIndication provides rememberRipple(color = MaterialTheme.colors.star)
+        ) {
+            HeaderButton(
+                imageVector = Icons.Rounded.Star,
+                text = "STAR",
+                onClick = { },
+                selected = true,
+                outlineColor = MaterialTheme.colors.onSurface.disabled,
+                selectedColor = MaterialTheme.colors.onSurface.disabled,
+                onSelectedColor = MaterialTheme.colors.onSurface.disabled
+            )
+        }
+
+        CompositionLocalProvider(
+            LocalIndication provides rememberRipple(
+                color = MaterialTheme.colors.directions
+            )
+        ) {
+            HeaderButton(
+                modifier = Modifier.padding(start = 12.dp),
+                imageVector = Icons.Rounded.Directions,
+                text = "DIRECTIONS",
+                onClick = { },
+                selected = true,
+                outlineColor = MaterialTheme.colors.onSurface.disabled,
+                selectedColor = MaterialTheme.colors.onSurface.disabled,
+                onSelectedColor = MaterialTheme.colors.onSurface.disabled
+            )
+        }
+    }
+}

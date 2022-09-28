@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.train.departures
+package io.github.amanshuraikwar.nxtbuz.train.departures.view
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.HeaderView
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
+import io.github.amanshuraikwar.nxtbuz.train.departures.ListItemData
 
 @Composable
 internal fun DeparturesView(
