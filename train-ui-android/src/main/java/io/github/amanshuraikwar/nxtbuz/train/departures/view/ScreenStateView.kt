@@ -33,10 +33,14 @@ internal fun ScreenStateView(
                     data = screenState.header
                 )
                 Divider()
-                DeparturesView(
-                    listItems = screenState.listItems,
-                    onTrainClick = onTrainClick
-                )
+                if (screenState.listItems.isEmpty()) {
+                    FetchingView()
+                } else {
+                    DeparturesView(
+                        listItems = screenState.listItems,
+                        onTrainClick = onTrainClick
+                    )
+                }
             }
 
             is ScreenState.Error -> {

@@ -1,12 +1,14 @@
 package io.github.amanshuraikwar.nxtbuz.train.departures
 
 import android.util.Log
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDeparture
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
 import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopDeparturesUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -51,26 +53,21 @@ class TrainDeparturesViewModel @Inject constructor(
 
     fun init(trainStopCode: String) {
         viewModelScope.launch(coroutineContext) {
-            withContext(dispatcherProvider.main) {
-                _screenState.emit(ScreenState.Fetching)
-            }
-
             val trainStop = getTrainStopUseCase(trainStopCode = trainStopCode)
             if (trainStop == null) {
-                _screenState.emit(
-                    ScreenState.Error(
-                        message = "Train stop not found!",
-                        ableToReport = true,
-                        exception = IllegalArgumentException(
-                            "No train stop found for code $trainStopCode"
+                withContext(dispatcherProvider.main) {
+                    _screenState.emit(
+                        ScreenState.Error(
+                            message = "Train stop not found!",
+                            ableToReport = true,
+                            exception = IllegalArgumentException(
+                                "No train stop found for code $trainStopCode"
+                            )
                         )
                     )
-                )
+                }
                 return@launch
             }
-
-            val departures = getTrainStopDeparturesUseCase(trainStopCode = trainStopCode)
-            val listItems = departures.map { it.toListItemData() }
 
             withContext(dispatcherProvider.main) {
                 _screenState.emit(
@@ -86,9 +83,44 @@ class TrainDeparturesViewModel @Inject constructor(
                             lng = trainStop.lng,
                             starred = trainStop.starred,
                         ),
-                        listItems = listItems
+                        listItems = SnapshotStateList()
                     )
                 )
+            }
+
+            getDepartures(trainStop = trainStop)
+        }
+    }
+
+    private suspend fun getDepartures(trainStop: TrainStop) {
+        val departures = getTrainStopDeparturesUseCase(trainStopCode = trainStop.code)
+        val newListItems =
+            departures
+                .map { it.toListItemData() }
+                .groupBy { it.id }
+                .mapValues { it.value[0] }
+                .toMutableMap()
+
+        val currentScreenState = screenState.value
+        if (currentScreenState is ScreenState.Success) {
+            val currentListItems = currentScreenState.listItems
+            withContext(dispatcherProvider.main) {
+                var i = 0
+                for (item in currentListItems) {
+                    if (item is ListItemData.Departure) {
+                        val newListItem = newListItems[item.id]
+                        if (newListItem != null) {
+                            currentListItems[i] = newListItem
+                            newListItems.remove(item.id)
+                        } else {
+                            currentListItems.removeAt(i)
+                        }
+                        i++
+                    }
+                }
+                for (item in newListItems) {
+                    currentListItems.add(item.value)
+                }
             }
         }
     }
@@ -121,5 +153,15 @@ class TrainDeparturesViewModel @Inject constructor(
             body = "Error occurred in $appVersionInfo.\n\nMessage = ${exception.message}"
         )
         FirebaseCrashlytics.getInstance().recordException(exception)
+    }
+
+    fun goingToTrainStop(trainStopCode: String) {
+//        viewModelScope.launch(dispatcherProvider.main) {
+//            if (trainStopCode != currentTrainStop?.code) {
+//                _screenState.emit(
+//                    ScreenState.Fetching
+//                )
+//            }
+//        }
     }
 }
