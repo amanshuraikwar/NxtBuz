@@ -3,7 +3,7 @@
 package io.github.amanshuraikwar.nxtbuz.buildSrc
 
 object Libs {
-    const val compileSdk = 31
+    const val compileSdk = 33
     const val minSdk = 23
     const val targetSdk = 31
 
@@ -87,8 +87,8 @@ object Libs {
         }
 
         object Compose {
-            const val compilerVersion = "1.3.0-rc02"
-            const val version = "1.3.0-alpha02"
+            const val compilerVersion = "1.3.1"
+            const val version = "1.3.0-beta03"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"

@@ -1,6 +1,5 @@
 package io.github.amanshuraikwar.nxtbuz.train.departures
 
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDepartureStatus
 
 internal sealed class ScreenState {
@@ -8,7 +7,7 @@ internal sealed class ScreenState {
 
     data class Success(
         val header: TrainStopHeader,
-        val listItems: SnapshotStateList<ListItemData>
+        val listItems: List<ListItemData>
     ) : ScreenState()
 
     data class Error(

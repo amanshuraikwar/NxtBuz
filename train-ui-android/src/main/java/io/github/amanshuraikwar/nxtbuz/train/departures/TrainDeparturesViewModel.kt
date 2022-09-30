@@ -1,7 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.train.departures
 
 import android.util.Log
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -51,8 +50,15 @@ class TrainDeparturesViewModel @Inject constructor(
     @Named("appVersionInfo")
     lateinit var appVersionInfo: String
 
+    private var currentTrainStop: TrainStop? = null
+
     fun init(trainStopCode: String) {
         viewModelScope.launch(coroutineContext) {
+            if (currentTrainStop?.code == trainStopCode) {
+                getDepartures(currentTrainStop ?: return@launch)
+                return@launch
+            }
+
             val trainStop = getTrainStopUseCase(trainStopCode = trainStopCode)
             if (trainStop == null) {
                 withContext(dispatcherProvider.main) {
@@ -83,7 +89,7 @@ class TrainDeparturesViewModel @Inject constructor(
                             lng = trainStop.lng,
                             starred = trainStop.starred,
                         ),
-                        listItems = SnapshotStateList()
+                        listItems = emptyList()
                     )
                 )
             }
@@ -93,34 +99,19 @@ class TrainDeparturesViewModel @Inject constructor(
     }
 
     private suspend fun getDepartures(trainStop: TrainStop) {
-        val departures = getTrainStopDeparturesUseCase(trainStopCode = trainStop.code)
-        val newListItems =
-            departures
+        val listItems =
+            getTrainStopDeparturesUseCase(trainStopCode = trainStop.code)
                 .map { it.toListItemData() }
-                .groupBy { it.id }
-                .mapValues { it.value[0] }
-                .toMutableMap()
-
         val currentScreenState = screenState.value
         if (currentScreenState is ScreenState.Success) {
-            val currentListItems = currentScreenState.listItems
             withContext(dispatcherProvider.main) {
-                var i = 0
-                for (item in currentListItems) {
-                    if (item is ListItemData.Departure) {
-                        val newListItem = newListItems[item.id]
-                        if (newListItem != null) {
-                            currentListItems[i] = newListItem
-                            newListItems.remove(item.id)
-                        } else {
-                            currentListItems.removeAt(i)
-                        }
-                        i++
-                    }
-                }
-                for (item in newListItems) {
-                    currentListItems.add(item.value)
-                }
+                currentTrainStop = trainStop
+
+                _screenState.emit(
+                    currentScreenState.copy(
+                        listItems = listItems
+                    )
+                )
             }
         }
     }
@@ -156,12 +147,5 @@ class TrainDeparturesViewModel @Inject constructor(
     }
 
     fun goingToTrainStop(trainStopCode: String) {
-//        viewModelScope.launch(dispatcherProvider.main) {
-//            if (trainStopCode != currentTrainStop?.code) {
-//                _screenState.emit(
-//                    ScreenState.Fetching
-//                )
-//            }
-//        }
     }
 }

@@ -35,7 +35,7 @@ abstract class ConfigPlugin : Plugin<Project> {
 
     private fun AppPlugin.configure(project: Project) {
         with(project.extensions.getByType(AppExtension::class.java)) {
-            compileSdkVersion(32)
+            compileSdkVersion(33)
             if (File("src/androidMain/AndroidManifest.xml").exists()) {
                 sourceSets.get("main").manifest.srcFile("src/androidMain/AndroidManifest.xml")
             }
@@ -48,7 +48,7 @@ abstract class ConfigPlugin : Plugin<Project> {
 
     private fun LibraryPlugin.configure(project: Project) {
         with(project.extensions.getByType(LibraryExtension::class.java)) {
-            compileSdk = 32
+            compileSdk = 33
             if (File("${project.projectDir.absolutePath}/src/androidMain/AndroidManifest.xml").exists()) {
                 sourceSets.get("main").manifest.srcFile("src/androidMain/AndroidManifest.xml")
             }
