@@ -11,7 +11,7 @@ object Libs {
     const val appHomePage = "https://amanshuraikwar.github.io/nextbus"
     const val kmmLibVersion = "1.0"
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.1.2"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.3.0"
     const val coreLibDesugaring = "com.android.tools:desugar_jdk_libs:1.1.5"
 
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"

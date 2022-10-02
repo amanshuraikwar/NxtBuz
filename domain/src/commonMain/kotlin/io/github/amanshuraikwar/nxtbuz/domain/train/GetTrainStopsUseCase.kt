@@ -15,8 +15,8 @@ open class GetTrainStopsUseCase constructor(
                     repo.getCloseTrainStops(
                         lat = lat,
                         lng = lon,
-                        maxStops = 1000,
-                        maxDistanceMetres = 100_000_000
+                        maxStops = limit,
+                        maxDistanceMetres = 20_000
                     )
                 )
             }

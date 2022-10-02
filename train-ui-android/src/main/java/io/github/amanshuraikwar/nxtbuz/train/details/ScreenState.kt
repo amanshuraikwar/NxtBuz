@@ -10,6 +10,12 @@ internal sealed class ScreenState {
         val header: TrainHeader,
         val listItems: List<ListItemData>
     ) : ScreenState()
+
+    data class Error(
+        val message: String,
+        val exception: Exception,
+        val ableToReport: Boolean
+    ) : ScreenState()
 }
 
 internal data class TrainHeader(

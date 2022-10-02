@@ -1,5 +1,6 @@
-package io.github.amanshuraikwar.nxtbuz.train.details
+package io.github.amanshuraikwar.nxtbuz.train.details.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
@@ -29,12 +30,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import io.github.amanshuraikwar.nxtbuz.common.compose.loading
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
+import io.github.amanshuraikwar.nxtbuz.common.compose.util.PreviewSurface
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainFacility
+import io.github.amanshuraikwar.nxtbuz.train.details.TrainHeader
 import java.util.Locale
 
 @Composable
@@ -42,9 +48,9 @@ internal fun TrainHeaderView(
     modifier: Modifier = Modifier,
     data: TrainHeader
 ) {
-    Column {
+    Column(modifier) {
         Text(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp)
                 .padding(horizontal = 16.dp),
@@ -148,3 +154,133 @@ internal fun TrainHeaderView(
         }
     }
 }
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, name = "Light theme")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark theme")
+fun TrainHeaderView_Preview() {
+    PreviewSurface {
+        TrainHeaderView(
+            data = TrainHeader(
+                trainCode = "1234",
+                trainCategoryName = "Intercity",
+                sourceTrainStopName = "Amsterdam Centraal",
+                destinationTrainStopName = "Haarlem",
+                facilities = TrainFacility.values().asList(),
+                rollingStockImages = emptyList(),
+                length = 1,
+                lengthInMeters = 100,
+            )
+        )
+    }
+}
+
+@Composable
+internal fun TrainHeaderView(
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier) {
+        Text(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .padding(horizontal = 16.dp)
+                .loading(),
+            text =
+            "                  ".uppercase(Locale.ROOT),
+            style = MaterialTheme.typography.body2,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colors.primary
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(top = 14.dp)
+                .padding(horizontal = 16.dp)
+                .loading(),
+            text = "          ",
+            style = MaterialTheme.typography.h6Bold,
+            color = MaterialTheme.colors.onSurface
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(top = 4.dp)
+                .padding(horizontal = 16.dp)
+                .loading(),
+            text = "                                     ",
+            style = MaterialTheme.typography.body2,
+            color = MaterialTheme.colors.onSurface.medium
+        )
+
+        Row(
+            Modifier
+                .padding(top = 16.dp)
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            for (i in 0..2) {
+                Text(
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .background(
+                            MaterialTheme.colors.onSurface.disabled,
+                            shape = RoundedCornerShape(6.dp),
+                        )
+                        .padding(2.dp)
+                        .size(18.dp),
+                    text = ""
+                )
+            }
+        }
+
+
+        Divider(Modifier.padding(top = 16.dp))
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState()),
+        ) {
+            Column {
+                Row {
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    for (i in 0..3) {
+                        Spacer(
+                            modifier = Modifier
+                                .height(48.dp)
+                                .width(128.dp)
+                                .padding(end = 4.dp, top = 16.dp, bottom = 8.dp)
+                                .loading(),
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(16.dp))
+                }
+
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .loading(),
+                    text = "                        "
+                        .uppercase(Locale.ROOT),
+                    style = MaterialTheme.typography.overline,
+                    color = MaterialTheme.colors.onSurface.medium
+                )
+
+            }
+        }
+
+        Divider(Modifier.padding(top = 12.dp))
+    }
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, name = "Light theme")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark theme")
+fun TrainHeaderViewLoading_Preview() {
+    PreviewSurface {
+        TrainHeaderView()
+    }
+}
+

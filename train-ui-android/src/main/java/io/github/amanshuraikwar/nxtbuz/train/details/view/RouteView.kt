@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.train.details
+package io.github.amanshuraikwar.nxtbuz.train.details.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.HeaderView
 import io.github.amanshuraikwar.nxtbuz.common.compose.util.itemsIndexedSafe
+import io.github.amanshuraikwar.nxtbuz.train.details.ListItemData
 
 @Composable
 internal fun RouteView(

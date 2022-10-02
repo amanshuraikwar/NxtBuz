@@ -1,6 +1,8 @@
 package io.github.amanshuraikwar.nxtbuz.train.details
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -9,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.layout.ScreenLayoutView
+import io.github.amanshuraikwar.nxtbuz.train.details.view.ScreenStateView
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -35,10 +38,12 @@ fun TrainDetailsScreenView(
         onBottomSheetInit = {},
     ) { state, padding, backgroundColor ->
         ScreenStateView(
+            modifier = Modifier
+                .padding(top = padding.calculateTopPadding())
+                .background(color = backgroundColor),
             screenState = state,
-            padding = padding,
-            backgroundColor = backgroundColor,
-            onTrainRouteNodeClick = onTrainStopClick
+            onTrainRouteNodeClick = onTrainStopClick,
+            onReportErrorClick = vm::onReportErrorClick
         )
     }
 }

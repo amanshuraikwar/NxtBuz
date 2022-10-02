@@ -49,6 +49,8 @@ jobs:
           echo "keystore.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
           echo "keystore.key.alias=${{ secrets.RELEASE_KEYSTORE_KEY_ALIAS }}" >> local.properties
           echo "keystore.key.password=${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}" >> local.properties
+          echo "nsapi.subscription.key.release=${{ secrets.NS_API_SUBSCRIPTION_KEY_RELEASE }}" >> local.properties
+          echo "nsapi.subscription.key.debug=${{ secrets.NS_API_SUBSCRIPTION_KEY_DEBUG }}" >> local.properties
           ./gradlew bundleRelease
 
       - name: Decode Service Account JSON

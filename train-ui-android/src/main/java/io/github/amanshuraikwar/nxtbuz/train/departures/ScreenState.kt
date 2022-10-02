@@ -34,6 +34,7 @@ internal sealed class ListItemData {
         val plannedDeparture: String,
         val actualDeparture: String?,
         val delayedByMinutes: Int,
+        val viaStations: String?
     ) : ListItemData()
 }
 

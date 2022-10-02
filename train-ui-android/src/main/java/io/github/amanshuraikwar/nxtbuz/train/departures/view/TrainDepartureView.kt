@@ -3,8 +3,6 @@ package io.github.amanshuraikwar.nxtbuz.train.departures.view
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,12 +11,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.directions
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h6Bold
@@ -36,16 +36,15 @@ internal fun TrainDepartureView(
     infiniteAnimatingAlpha: Float,
     onClick: (trainCode: String) -> Unit
 ) {
-    Row(
-        Modifier
+    TrainDepartureView(
+        modifier = Modifier
             .clickable {
                 onClick(data.id)
             }
             .fillMaxWidth()
             .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column {
+        viaStationsVisible = data.viaStations != null,
+        destinationView = {
             Text(
                 text = data.destinationTrainStopName,
                 style = MaterialTheme.typography.subtitle1,
@@ -57,56 +56,39 @@ internal fun TrainDepartureView(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-
-            Row(
+        },
+        infoView = {
+            Text(
                 modifier = Modifier.padding(top = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val track = data.track
-                if (track != null) {
-                    Text(
-                        modifier = Modifier
-                            .background(
-                                color = if (data.departureStatus == TrainDepartureStatus.CANCELLED) {
-                                    MaterialTheme.colors.onSurface.medium
-                                } else {
-                                    MaterialTheme.colors.primary
-                                },
-                                shape = RoundedCornerShape(4.dp)
-                            )
-                            .padding(horizontal = 4.dp, vertical = 1.dp),
-                        text = track.uppercase(Locale.ROOT),
-                        style = MaterialTheme.typography.body2.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
-                        color = if (data.departureStatus == TrainDepartureStatus.CANCELLED) {
-                            MaterialTheme.colors.surface.medium
-                        } else {
-                            MaterialTheme.colors.onPrimary
-                        },
-                    )
-                }
-
+                text = "${data.trainCategoryName} • ${data.id}".uppercase(Locale.ROOT),
+                style = MaterialTheme.typography.overline,
+                color = MaterialTheme.colors.onSurface.medium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
+        viaStationsView = {
+            if (data.viaStations != null) {
                 Text(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = "${data.trainCategoryName} • ${data.id}".uppercase(Locale.ROOT),
-                    style = MaterialTheme.typography.overline,
-                    color = MaterialTheme.colors.onSurface.medium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(top = 4.dp),
+                    text = data.viaStations,
+                    style = MaterialTheme.typography.body2,
+                    color = if (data.departureStatus == TrainDepartureStatus.CANCELLED) {
+                        MaterialTheme.colors.onSurface.medium
+                    } else {
+                        MaterialTheme.colors.onSurface
+                    },
                 )
             }
-        }
-
-        Column(
-            horizontalAlignment = Alignment.End
-        ) {
+        },
+        departureTimeView = {
             DepartureTimeView(
                 delayByMinutes = data.delayedByMinutes,
                 departureTime = data.actualDeparture ?: data.plannedDeparture,
                 isCancelled = data.departureStatus == TrainDepartureStatus.CANCELLED
             )
-
+        },
+        arrivalTimeView = {
             ArrivalTimeView(
                 modifier = Modifier
                     .let {
@@ -123,8 +105,32 @@ internal fun TrainDepartureView(
                 plannedArrivalTime = data.plannedArrival,
                 trainDepartureStatus = data.departureStatus
             )
+        },
+        trackView = {
+            Text(
+                modifier = Modifier
+                    .padding(top = 4.dp)
+                    .background(
+                        color = if (data.departureStatus == TrainDepartureStatus.CANCELLED) {
+                            MaterialTheme.colors.onSurface.medium
+                        } else {
+                            MaterialTheme.colors.primary
+                        },
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(horizontal = 4.dp, vertical = 1.dp),
+                text = data.track?.uppercase(Locale.ROOT) ?: "^-^",
+                style = MaterialTheme.typography.body2.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = if (data.departureStatus == TrainDepartureStatus.CANCELLED) {
+                    MaterialTheme.colors.surface.medium
+                } else {
+                    MaterialTheme.colors.onPrimary
+                },
+            )
         }
-    }
+    )
 }
 
 @Composable
@@ -180,6 +186,7 @@ fun ArrivalTimeView(
                 }
             }
         }
+
         TrainDepartureStatus.UNKNOWN -> {
             if (plannedArrivalTime != null) {
                 Row(modifier) {
@@ -225,6 +232,7 @@ fun ArrivalTimeView(
                 }
             }
         }
+
         TrainDepartureStatus.ON_STATION -> {
             Text(
                 modifier = modifier
@@ -238,6 +246,7 @@ fun ArrivalTimeView(
                 color = MaterialTheme.colors.onDirections
             )
         }
+
         TrainDepartureStatus.CANCELLED -> {
             Text(
                 modifier = modifier
@@ -265,9 +274,11 @@ fun DepartureTimeView(
             isCancelled -> {
                 MaterialTheme.colors.onSurface.medium
             }
+
             delayByMinutes == 0 -> {
                 MaterialTheme.colors.onSurface
             }
+
             else -> {
                 MaterialTheme.colors.error
             }
@@ -286,4 +297,87 @@ fun DepartureTimeView(
         },
         color = textColor,
     )
+}
+
+@Composable
+private fun TrainDepartureView(
+    modifier: Modifier = Modifier,
+    viaStationsVisible: Boolean,
+    destinationView: @Composable () -> Unit,
+    infoView: @Composable () -> Unit,
+    viaStationsView: @Composable () -> Unit,
+    departureTimeView: @Composable () -> Unit,
+    arrivalTimeView: @Composable () -> Unit,
+    trackView: @Composable () -> Unit,
+) {
+    Layout(
+        modifier = modifier,
+        content = {
+            destinationView()
+            if (viaStationsVisible) {
+                viaStationsView()
+            }
+            infoView()
+
+            departureTimeView()
+            arrivalTimeView()
+            trackView()
+        }
+    ) { measurables, constraints ->
+        var timingsWidth = 0
+        var timingsHeight = 0
+        val timingsPlaceables = mutableListOf<Placeable>()
+        for (i in measurables.size - 3 until measurables.size) {
+            val placeable = measurables[i].measure(constraints.copy(minWidth = 0))
+            timingsHeight += placeable.height
+            timingsWidth = timingsWidth.coerceAtLeast(placeable.width)
+            timingsPlaceables.add(placeable)
+        }
+
+        var height = timingsHeight
+
+        val infoPlaceables = mutableListOf<Placeable>()
+        var infoPlaceablesHeight = 0
+        for (i in 0..measurables.size - 4) {
+            val placeable = measurables[i].measure(
+                constraints.copy(
+                    maxWidth = constraints.maxWidth
+                            - timingsWidth
+                            - 4.dp.roundToPx(),
+                    minWidth = 0
+                )
+            )
+            infoPlaceablesHeight += placeable.height
+            infoPlaceables.add(placeable)
+        }
+
+        height = height.coerceAtLeast(infoPlaceablesHeight)
+
+        layout(
+            width = constraints.maxWidth,
+            height = height,
+        ) {
+            var dy = 0
+            for (placeable in infoPlaceables) {
+                placeable.place(
+                    IntOffset(
+                        0,
+                        dy
+                    )
+                )
+                dy += placeable.height
+            }
+
+            dy = 0
+            for (placeable in timingsPlaceables) {
+                placeable.place(
+                    IntOffset(
+                        constraints.maxWidth - placeable.width,
+                        dy
+                    )
+                )
+                dy += placeable.height
+            }
+        }
+    }
 }

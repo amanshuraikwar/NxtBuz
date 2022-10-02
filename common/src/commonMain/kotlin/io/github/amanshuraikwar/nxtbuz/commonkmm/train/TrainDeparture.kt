@@ -13,6 +13,7 @@ data class TrainDeparture(
     val actualDepartureInstant: Instant?,
     val delayedByMinutes: Int,
     val departureStatus: TrainDepartureStatus,
+    val viaStations: List<String>
 )
 
 enum class TrainDepartureStatus {

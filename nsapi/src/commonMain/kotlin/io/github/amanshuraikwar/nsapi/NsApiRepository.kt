@@ -142,12 +142,15 @@ internal class NsApiRepository(
                                 departureDto.cancelled -> {
                                     TrainDepartureStatus.CANCELLED
                                 }
+
                                 departureDto.departureStatus == "ON_STATION" -> {
                                     TrainDepartureStatus.ON_STATION
                                 }
+
                                 departureDto.departureStatus == "INCOMING" -> {
                                     TrainDepartureStatus.INCOMING
                                 }
+
                                 else -> {
                                     TrainDepartureStatus.UNKNOWN
                                 }
@@ -169,7 +172,17 @@ internal class NsApiRepository(
                                 )
                                 ?.inWholeMinutes
                                 ?.toInt()
-                                ?: 0
+                                ?: 0,
+                            viaStations =
+                            departureDto
+                                .routeStations
+                                .mapNotNull {
+                                    it.mediumName
+                                        .trim()
+                                        .ifBlank {
+                                            null
+                                        }
+                                }
                         )
                     )
                 }
@@ -221,6 +234,7 @@ internal class NsApiRepository(
                             ?: "Error while getting details of train $trainCode"
                     )
                 }
+
                 is TrainInfoResponseDto.Success -> response.info[0]
             }
             val trainJourneyDetails = trainJourneyDetailsInfoDefered.await().payload
@@ -428,20 +442,24 @@ internal class NsApiRepository(
                             departureTiming = departures.toTrainRouteNodeDepartureTiming()
                         )
                     }
+
                     "STOP" -> {
                         TrainRouteNodeType.Stop(
                             arrivalTiming = arrivals.toTrainRouteNodeArrivalTiming(),
                             departureTiming = departures.toTrainRouteNodeDepartureTiming(),
                         )
                     }
+
                     "PASSING" -> {
                         TrainRouteNodeType.Passing
                     }
+
                     "DESTINATION" -> {
                         TrainRouteNodeType.Destination(
                             arrivalTiming = arrivals.toTrainRouteNodeArrivalTiming(),
                         )
                     }
+
                     else -> {
                         throw IllegalArgumentException(
                             "Unsupported stop status $status"

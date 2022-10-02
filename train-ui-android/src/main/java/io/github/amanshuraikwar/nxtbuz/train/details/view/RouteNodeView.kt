@@ -1,4 +1,4 @@
-package io.github.amanshuraikwar.nxtbuz.train.details
+package io.github.amanshuraikwar.nxtbuz.train.details.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +29,7 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainCrowdStatus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainRouteNodeTiming
 import io.github.amanshuraikwar.nxtbuz.train.R
+import io.github.amanshuraikwar.nxtbuz.train.details.ListItemData
 
 @Composable
 internal fun RouteNodeOriginView(

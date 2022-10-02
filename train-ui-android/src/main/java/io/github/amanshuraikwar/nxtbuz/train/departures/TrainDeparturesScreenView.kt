@@ -42,10 +42,7 @@ fun TrainDeparturesScreenView(
             modifier = Modifier
                 .padding(top = padding.calculateTopPadding())
                 .background(color = backgroundColor),
-            onTrainClick = { trainStopCode ->
-                vm.goingToTrainStop(trainStopCode = trainStopCode)
-                onTrainClick(trainStopCode)
-            },
+            onTrainClick = onTrainClick,
             onReportErrorClick = vm::onReportErrorClick
         )
     }

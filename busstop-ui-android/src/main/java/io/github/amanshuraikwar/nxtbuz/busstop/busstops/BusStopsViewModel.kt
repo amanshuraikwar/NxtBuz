@@ -83,6 +83,7 @@ class BusStopsViewModel @Inject constructor(
                 LaunchBusStopsPage.NearBy -> {
                     fetchNearbyBusStops(waitForSettings = false)
                 }
+
                 LaunchBusStopsPage.Starred -> {
                     fetchStarredBusStops()
                 }
@@ -134,6 +135,7 @@ class BusStopsViewModel @Inject constructor(
                     )
                     return@launch
                 }
+
                 is LocationOutput.PermissionsNotGranted -> {
                     when (locationOutput.permissionStatus) {
                         PermissionStatus.DENIED -> {
@@ -150,9 +152,11 @@ class BusStopsViewModel @Inject constructor(
                                 filter = StopsFilter.BUS_STOPS_ONLY
                             )
                         }
+
                         PermissionStatus.GRANTED -> {
                             // do nothing
                         }
+
                         PermissionStatus.DENIED_PERMANENTLY -> {
                             _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
                                 title = "We need location permission to get nearby bus stops :)",
@@ -170,10 +174,12 @@ class BusStopsViewModel @Inject constructor(
                     }
                     return@launch
                 }
+
                 is LocationOutput.Success -> {
                     locationPermissionDeniedPermanentlyUseCase(false)
                     location = locationOutput
                 }
+
                 is LocationOutput.SettingsNotEnabled -> {
                     locationPermissionDeniedPermanentlyUseCase(false)
                     _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
@@ -275,10 +281,12 @@ class BusStopsViewModel @Inject constructor(
                 PermissionStatus.GRANTED -> {
                     locationPermissionDeniedPermanentlyUseCase(false)
                 }
+
                 PermissionStatus.DENIED_PERMANENTLY -> {
                     FirebaseCrashlytics.getInstance().log("Permission denied permanently.")
                     locationPermissionDeniedPermanentlyUseCase(true)
                 }
+
                 PermissionStatus.DENIED -> {
                     FirebaseCrashlytics.getInstance().log("Permission denied.")
                 }
@@ -338,6 +346,7 @@ class BusStopsViewModel @Inject constructor(
                                         }
                                     }
                                 }
+
                                 else -> {
                                     // do nothing
                                 }
@@ -413,6 +422,7 @@ class BusStopsViewModel @Inject constructor(
                         fetchNearbyBusStops(waitForSettings = false)
                     }
                 }
+
                 StopsFilter.TRAIN_STOPS_ONLY -> {
                     if (currentScreenState is BusStopsScreenState.NearbyBusStops) {
                         fetchNearbyTrainStops()
@@ -463,6 +473,7 @@ class BusStopsViewModel @Inject constructor(
                     )
                     return@launch
                 }
+
                 is LocationOutput.PermissionsNotGranted -> {
                     when (locationOutput.permissionStatus) {
                         PermissionStatus.DENIED -> {
@@ -479,9 +490,11 @@ class BusStopsViewModel @Inject constructor(
                                 filter = StopsFilter.TRAIN_STOPS_ONLY
                             )
                         }
+
                         PermissionStatus.GRANTED -> {
                             // do nothing
                         }
+
                         PermissionStatus.DENIED_PERMANENTLY -> {
                             _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
                                 title = "We need location permission to get nearby bus stops :)",
@@ -499,10 +512,12 @@ class BusStopsViewModel @Inject constructor(
                     }
                     return@launch
                 }
+
                 is LocationOutput.Success -> {
                     locationPermissionDeniedPermanentlyUseCase(false)
                     location = locationOutput
                 }
+
                 is LocationOutput.SettingsNotEnabled -> {
                     locationPermissionDeniedPermanentlyUseCase(false)
                     _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
@@ -533,10 +548,8 @@ class BusStopsViewModel @Inject constructor(
             }
 
             val trainStops = getTrainStopsUseCase(
-//                lat = location.lat,
-//                lon = location.lng,
-                lat = 52.3676,
-                lon = 4.9041,
+                lat = location.lat,
+                lon = location.lng,
                 limit = busStopsQueryLimitUseCase()
             )
 

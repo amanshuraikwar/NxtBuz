@@ -128,6 +128,22 @@ class TrainDeparturesViewModel @Inject constructor(
             plannedDeparture = plannedDepartureInstant.formatArrivalInstant(),
             actualDeparture = actualDepartureInstant?.formatArrivalInstant(),
             delayedByMinutes = delayedByMinutes,
+            viaStations = if (viaStations.isEmpty()) {
+                null
+            } else {
+                viaStations.let {
+                    val sb = StringBuilder("via ")
+                    for (i in it.indices) {
+                        sb.append(it[i])
+                        if (i == it.size - 2) {
+                            sb.append(" & ")
+                        } else if (i < it.size - 2) {
+                            sb.append(", ")
+                        }
+                    }
+                    sb.toString()
+                }
+            }
         )
     }
 
@@ -144,8 +160,5 @@ class TrainDeparturesViewModel @Inject constructor(
             body = "Error occurred in $appVersionInfo.\n\nMessage = ${exception.message}"
         )
         FirebaseCrashlytics.getInstance().recordException(exception)
-    }
-
-    fun goingToTrainStop(trainStopCode: String) {
     }
 }
