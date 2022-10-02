@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import java.util.*
+import java.util.Stack
 import javax.inject.Inject
 
 private const val TAG = "MainViewModel"
@@ -66,6 +66,9 @@ class MainViewModel @Inject constructor(
                                 _screenState.value = MainScreenState.Success(
                                     showMap = showMap,
                                     navigationState = NavigationState.BusStops,
+//                                    navigationState = NavigationState.TrainDetails(
+//                                        trainCode = "4610"
+//                                    ),
                                     showBackBtn = backStack.isNotEmpty()
                                 )
                             }
@@ -194,6 +197,62 @@ class MainViewModel @Inject constructor(
                 navigationState = NavigationState.Search,
                 showBackBtn = backStack.size > 1
             )
+        }
+    }
+
+    fun onTrainStopClick(trainStopCode: String, pushBackStack: Boolean = true) {
+        viewModelScope.launch(coroutineContext) {
+            mutex.withLock {
+                val currentState = _screenState.value
+                if (currentState is MainScreenState.Success) {
+                    val currentNavState = currentState.navigationState
+                    if (currentNavState is NavigationState.TrainStopDepartures) {
+                        if (currentNavState.trainStopCode == trainStopCode) {
+                            return@launch
+                        }
+                    }
+                }
+
+                if (pushBackStack) {
+                    pushBackStack()
+                }
+
+                _screenState.value = MainScreenState.Success(
+                    showMap = showMap,
+                    navigationState = NavigationState.TrainStopDepartures(
+                        trainStopCode = trainStopCode
+                    ),
+                    showBackBtn = backStack.isNotEmpty()
+                )
+            }
+        }
+    }
+
+    fun onTrainClick(trainCode: String, pushBackStack: Boolean = true) {
+        viewModelScope.launch(coroutineContext) {
+            mutex.withLock {
+                val currentState = _screenState.value
+                if (currentState is MainScreenState.Success) {
+                    val currentNavState = currentState.navigationState
+                    if (currentNavState is NavigationState.TrainDetails) {
+                        if (currentNavState.trainCode == trainCode) {
+                            return@launch
+                        }
+                    }
+                }
+
+                if (pushBackStack) {
+                    pushBackStack()
+                }
+
+                _screenState.value = MainScreenState.Success(
+                    showMap = showMap,
+                    navigationState = NavigationState.TrainDetails(
+                        trainCode = trainCode
+                    ),
+                    showBackBtn = backStack.isNotEmpty()
+                )
+            }
         }
     }
 }

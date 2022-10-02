@@ -60,4 +60,11 @@ class AppModule {
     fun provideIsReleaseBuild(): Boolean {
         return BuildConfig.BUILD_TYPE == "release"
     }
+
+    @Provides
+    @Singleton
+    @Named("nsApiSubscriptionKey")
+    fun provideNsApiSubscriptionKey(): String {
+        return BuildConfig.nsApiSubscriptionKey
+    }
 }

@@ -1,0 +1,49 @@
+package io.github.amanshuraikwar.nxtbuz.train.details
+
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import io.github.amanshuraikwar.nxtbuz.common.compose.layout.ScreenLayoutView
+import io.github.amanshuraikwar.nxtbuz.train.details.view.ScreenStateView
+
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
+@Composable
+fun TrainDetailsScreenView(
+    modifier: Modifier = Modifier,
+    trainCode: String,
+    vm: TrainDetailsViewModel,
+    bottomSheetBgOffset: Dp,
+    showBottomSheet: Boolean,
+    onTrainStopClick: (trainStopCode: String) -> Unit,
+) {
+    val screenState by vm.screenState.collectAsState()
+    DisposableEffect(key1 = trainCode) {
+        vm.init(trainCode = trainCode)
+        onDispose { }
+    }
+
+    ScreenLayoutView(
+        modifier = modifier,
+        input = screenState,
+        bottomSheetBgOffset = bottomSheetBgOffset,
+        showBottomSheet = showBottomSheet,
+        onBottomSheetInit = {},
+    ) { state, padding, backgroundColor ->
+        ScreenStateView(
+            modifier = Modifier
+                .padding(top = padding.calculateTopPadding())
+                .background(color = backgroundColor),
+            screenState = state,
+            onTrainRouteNodeClick = onTrainStopClick,
+            onReportErrorClick = vm::onReportErrorClick
+        )
+    }
+}

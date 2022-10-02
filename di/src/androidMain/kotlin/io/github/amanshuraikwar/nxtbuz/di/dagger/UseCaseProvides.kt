@@ -36,6 +36,11 @@ import io.github.amanshuraikwar.nxtbuz.domain.starred.ShouldAlertStarredBusArriv
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ShowErrorStarredBusArrivalsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleBusServiceStarUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainDeparturesUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainDetailsUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopDeparturesUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.DoSetupUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetForcedThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetHomeBusStopUseCase
@@ -58,6 +63,7 @@ import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
 import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
 import io.github.amanshuraikwar.nxtbuz.repository.SearchRepository
 import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
 import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -501,6 +507,51 @@ class UseCaseProvides {
     ): SetLaunchBusStopPageUseCase {
         return SetLaunchBusStopPageUseCase(
             userRepository = repo
+        )
+    }
+
+    @Provides
+    fun provideGetTrainStopsUseCase(
+        @Named("nsApi") nsApiTrainsStopRepository: TrainStopRepository
+    ): GetTrainStopsUseCase {
+        return GetTrainStopsUseCase(
+            trainStopRepositories = listOf(nsApiTrainsStopRepository)
+        )
+    }
+
+    @Provides
+    fun provideGetTrainDeparturesUseCase(
+        @Named("nsApi") nsApiTrainsStopRepository: TrainStopRepository
+    ): GetTrainDeparturesUseCase {
+        return GetTrainDeparturesUseCase(
+            trainStopRepositories = listOf(nsApiTrainsStopRepository)
+        )
+    }
+
+    @Provides
+    fun provideGetTrainStopUseCase(
+        @Named("nsApi") nsApiTrainsStopRepository: TrainStopRepository
+    ): GetTrainStopUseCase {
+        return GetTrainStopUseCase(
+            trainStopRepositories = listOf(nsApiTrainsStopRepository)
+        )
+    }
+
+    @Provides
+    fun provideGetTrainStopDeparturesUseCase(
+        @Named("nsApi") nsApiTrainsStopRepository: TrainStopRepository
+    ): GetTrainStopDeparturesUseCase {
+        return GetTrainStopDeparturesUseCase(
+            trainStopRepositories = listOf(nsApiTrainsStopRepository)
+        )
+    }
+
+    @Provides
+    fun provideGetTrainDetailsUseCase(
+        @Named("nsApi") nsApiTrainsStopRepository: TrainStopRepository
+    ): GetTrainDetailsUseCase {
+        return GetTrainDetailsUseCase(
+            trainStopRepositories = listOf(nsApiTrainsStopRepository)
         )
     }
 }

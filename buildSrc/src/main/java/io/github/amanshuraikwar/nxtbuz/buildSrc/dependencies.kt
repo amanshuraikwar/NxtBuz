@@ -3,7 +3,7 @@
 package io.github.amanshuraikwar.nxtbuz.buildSrc
 
 object Libs {
-    const val compileSdk = 31
+    const val compileSdk = 33
     const val minSdk = 23
     const val targetSdk = 31
 
@@ -11,7 +11,7 @@ object Libs {
     const val appHomePage = "https://amanshuraikwar.github.io/nextbus"
     const val kmmLibVersion = "1.0"
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.1.2"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.3.0"
     const val coreLibDesugaring = "com.android.tools:desugar_jdk_libs:1.1.5"
 
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
@@ -87,8 +87,8 @@ object Libs {
         }
 
         object Compose {
-            const val compilerVersion = "1.3.0-rc02"
-            const val version = "1.3.0-alpha02"
+            const val compilerVersion = "1.3.1"
+            const val version = "1.3.0-beta03"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -153,5 +153,9 @@ object Libs {
         const val clientCio = "io.ktor:ktor-client-cio:$version"
         const val clientJs = "io.ktor:ktor-client-js:$version"
         const val clientMock = "io.ktor:ktor-client-mock:$version"
+    }
+
+    object Coil {
+        const val compose = "io.coil-kt:coil-compose:2.2.1"
     }
 }

@@ -113,12 +113,17 @@ class NavigationUtil @Inject constructor(
         )
     }
 
-    fun goToEmail(address: String, subject: String) {
+    fun goToEmail(
+        address: String,
+        subject: String,
+        body: String = ""
+    ) {
         activity.get()?.startActivitySafe(
             Intent(ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:")
                 putExtra(EXTRA_EMAIL, arrayOf(address))
                 putExtra(EXTRA_SUBJECT, subject)
+                putExtra(EXTRA_TEXT, body)
                 addFlags(FLAG_ACTIVITY_NEW_TASK)
             }
         )

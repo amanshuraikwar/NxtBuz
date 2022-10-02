@@ -40,6 +40,8 @@ import io.github.amanshuraikwar.nxtbuz.search.ui.model.rememberSearchState
 import io.github.amanshuraikwar.nxtbuz.starred.DecorationType
 import io.github.amanshuraikwar.nxtbuz.starred.StarredBusArrivals
 import io.github.amanshuraikwar.nxtbuz.starred.StarredViewModel
+import io.github.amanshuraikwar.nxtbuz.train.departures.TrainDeparturesViewModel
+import io.github.amanshuraikwar.nxtbuz.train.details.TrainDetailsViewModel
 import io.github.amanshuraikwar.nxtbuz.ui.model.MainScreenState
 import io.github.amanshuraikwar.nxtbuz.ui.model.NavigationState
 
@@ -58,6 +60,8 @@ fun MainScreen(
     recenterViewModel: RecenterViewModel,
     searchViewModel: SearchViewModel,
     setupViewModel: SetupViewModel,
+    trainDeparturesViewModel: TrainDeparturesViewModel,
+    trainDetailsViewModel: TrainDetailsViewModel,
     onSettingsClick: () -> Unit,
     onBackClick: () -> Unit,
     onSetupComplete: () -> Unit,
@@ -151,6 +155,14 @@ fun MainScreen(
                         busStopsViewModel = busStopsViewModel,
                         busRouteViewModel = busRouteViewModel,
                         busStopArrivalsViewModel = busStopArrivalsViewModel,
+                        onTrainStopClick = { trainStopCode ->
+                            mainViewModel.onTrainStopClick(trainStopCode = trainStopCode)
+                        },
+                        trainDeparturesViewModel = trainDeparturesViewModel,
+                        trainDetailsViewModel = trainDetailsViewModel,
+                        onTrainClick = { trainCode ->
+                            mainViewModel.onTrainClick(trainCode = trainCode)
+                        }
                     )
 
                     if (screenState.navigationState is NavigationState.Search) {
@@ -241,6 +253,14 @@ fun MainScreen(
                                 busStopsViewModel = busStopsViewModel,
                                 busRouteViewModel = busRouteViewModel,
                                 busStopArrivalsViewModel = busStopArrivalsViewModel,
+                                onTrainStopClick = { trainStopCode ->
+                                    mainViewModel.onTrainStopClick(trainStopCode = trainStopCode)
+                                },
+                                trainDeparturesViewModel = trainDeparturesViewModel,
+                                trainDetailsViewModel = trainDetailsViewModel,
+                                onTrainClick = { trainCode ->
+                                    mainViewModel.onTrainClick(trainCode = trainCode)
+                                }
                             )
                         }
 

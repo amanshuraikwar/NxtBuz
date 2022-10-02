@@ -32,7 +32,7 @@ import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteListItemData
 import io.github.amanshuraikwar.nxtbuz.busroute.ui.model.BusRouteScreenState
 import io.github.amanshuraikwar.nxtbuz.common.compose.FailedView
 import io.github.amanshuraikwar.nxtbuz.common.compose.FetchingView
-import io.github.amanshuraikwar.nxtbuz.common.compose.Header
+import io.github.amanshuraikwar.nxtbuz.common.compose.HeaderView
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
 import io.github.amanshuraikwar.nxtbuz.common.compose.expandProgressFraction
 import io.github.amanshuraikwar.nxtbuz.common.compose.rememberNxtBuzBottomSheetState
@@ -281,7 +281,7 @@ fun BusRouteArrivalsView(
 
             when (item) {
                 is BusRouteListItemData.Header -> {
-                    Header(
+                    HeaderView(
                         title = item.title
                     )
                 }

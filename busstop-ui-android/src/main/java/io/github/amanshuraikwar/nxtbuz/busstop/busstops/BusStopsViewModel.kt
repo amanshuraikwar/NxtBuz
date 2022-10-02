@@ -8,6 +8,7 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsItemData
 import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.BusStopsScreenState
+import io.github.amanshuraikwar.nxtbuz.busstop.busstops.model.StopsFilter
 import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationOutput
 import io.github.amanshuraikwar.nxtbuz.common.model.location.LocationSettingsState
 import io.github.amanshuraikwar.nxtbuz.common.model.location.PermissionStatus
@@ -15,6 +16,7 @@ import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
 import io.github.amanshuraikwar.nxtbuz.common.util.permission.PermissionUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.BusStopsQueryLimitUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
@@ -25,6 +27,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.location.GetLastKnownLocationUseCa
 import io.github.amanshuraikwar.nxtbuz.domain.location.GetLocationSettingStateUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionDeniedPermanentlyUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.location.LocationPermissionStatusUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetLaunchBusStopPageUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -34,6 +37,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 private const val TAG = "BusStopsViewModel"
@@ -51,7 +55,8 @@ class BusStopsViewModel @Inject constructor(
     private val locationPermissionDeniedPermanentlyUseCase: LocationPermissionDeniedPermanentlyUseCase,
     private val toggleBusStopStarUseCase: ToggleBusStopStarUseCase,
     private val getLaunchBusStopPageUseCase: GetLaunchBusStopPageUseCase,
-    dispatcherProvider: CoroutinesDispatcherProvider
+    private val getTrainStopsUseCase: GetTrainStopsUseCase,
+    private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
     private val errorHandler = CoroutineExceptionHandler { _, th ->
         Log.e(TAG, "errorHandler: $th", th)
@@ -61,7 +66,6 @@ class BusStopsViewModel @Inject constructor(
     private val coroutineContext = errorHandler + dispatcherProvider.computation
 
     private var listItems = SnapshotStateList<BusStopsItemData>()
-    private val listItemsLock = Mutex()
 
     private val _screenState = MutableStateFlow<BusStopsScreenState>(BusStopsScreenState.Fetching)
     val screenState: StateFlow<BusStopsScreenState> = _screenState
@@ -75,10 +79,11 @@ class BusStopsViewModel @Inject constructor(
 
     fun init() {
         viewModelScope.launch(coroutineContext) {
-            when(getLaunchBusStopPageUseCase()) {
+            when (getLaunchBusStopPageUseCase()) {
                 LaunchBusStopsPage.NearBy -> {
                     fetchNearbyBusStops(waitForSettings = false)
                 }
+
                 LaunchBusStopsPage.Starred -> {
                     fetchStarredBusStops()
                 }
@@ -93,7 +98,13 @@ class BusStopsViewModel @Inject constructor(
         FirebaseCrashlytics.getInstance().setCustomKey("waitForSettings", waitForSettings)
 
         viewModelScope.launch(coroutineContext) {
-            _screenState.value = BusStopsScreenState.NearbyBusStops.Fetching
+            withContext(dispatcherProvider.main) {
+                _screenState.emit(
+                    BusStopsScreenState.NearbyBusStops.Fetching(
+                        filter = StopsFilter.BUS_STOPS_ONLY
+                    )
+                )
+            }
 
             if (waitForSettings) {
                 var count = 0
@@ -119,10 +130,12 @@ class BusStopsViewModel @Inject constructor(
                         secondaryButtonText = "USE DEFAULT LOCATION",
                         onSecondaryButtonClick = {
                             fetchNearDefaultLocationBusStops()
-                        }
+                        },
+                        filter = StopsFilter.BUS_STOPS_ONLY
                     )
                     return@launch
                 }
+
                 is LocationOutput.PermissionsNotGranted -> {
                     when (locationOutput.permissionStatus) {
                         PermissionStatus.DENIED -> {
@@ -135,12 +148,15 @@ class BusStopsViewModel @Inject constructor(
                                 secondaryButtonText = "USE DEFAULT LOCATION",
                                 onSecondaryButtonClick = {
                                     fetchNearDefaultLocationBusStops()
-                                }
+                                },
+                                filter = StopsFilter.BUS_STOPS_ONLY
                             )
                         }
+
                         PermissionStatus.GRANTED -> {
                             // do nothing
                         }
+
                         PermissionStatus.DENIED_PERMANENTLY -> {
                             _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
                                 title = "We need location permission to get nearby bus stops :)",
@@ -151,16 +167,19 @@ class BusStopsViewModel @Inject constructor(
                                 secondaryButtonText = "USE DEFAULT LOCATION",
                                 onSecondaryButtonClick = {
                                     fetchNearDefaultLocationBusStops()
-                                }
+                                },
+                                filter = StopsFilter.BUS_STOPS_ONLY
                             )
                         }
                     }
                     return@launch
                 }
+
                 is LocationOutput.Success -> {
                     locationPermissionDeniedPermanentlyUseCase(false)
                     location = locationOutput
                 }
+
                 is LocationOutput.SettingsNotEnabled -> {
                     locationPermissionDeniedPermanentlyUseCase(false)
                     _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
@@ -183,13 +202,14 @@ class BusStopsViewModel @Inject constructor(
                         secondaryButtonText = "USE DEFAULT LOCATION",
                         onSecondaryButtonClick = {
                             fetchNearDefaultLocationBusStops()
-                        }
+                        },
+                        filter = StopsFilter.BUS_STOPS_ONLY
                     )
                     return@launch
                 }
             }
 
-            val listItems = getListItems(
+            val busStopListItems = getListItems(
                 getBusStopsUseCase(
                     lat = location.lat,
                     lon = location.lng,
@@ -198,9 +218,16 @@ class BusStopsViewModel @Inject constructor(
                 "Bus Stops Nearby"
             )
 
-            _screenState.emit(
-                BusStopsScreenState.NearbyBusStops.Success(listItems = listItems)
-            )
+            listItems = busStopListItems
+
+            withContext(dispatcherProvider.main) {
+                _screenState.emit(
+                    BusStopsScreenState.NearbyBusStops.Success(
+                        filter = StopsFilter.BUS_STOPS_ONLY,
+                        listItems = busStopListItems
+                    )
+                )
+            }
         }
     }
 
@@ -211,10 +238,10 @@ class BusStopsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getListItems(
+    private fun getListItems(
         busStopList: List<BusStop>,
         headerTitle: String,
-    ): List<BusStopsItemData> {
+    ): SnapshotStateList<BusStopsItemData> {
         val listItems = SnapshotStateList<BusStopsItemData>()
 
         if (busStopList.isNotEmpty()) {
@@ -228,36 +255,11 @@ class BusStopsViewModel @Inject constructor(
 
         listItems.addAll(
             busStopList.map { busStop ->
-                BusStopsItemData.BusStop(
-                    id = "bus-stops-screen-${busStop.code}",
-                    busStopCode = busStop.code,
-                    busStopDescription = busStop.description,
-                    busStopInfo = "${busStop.roadName} • ${busStop.code}",
-                    operatingBuses = busStop.operatingBusList
-                        .map { it.serviceNumber }
-                        .reduceRight { next, total ->
-                            val first = when (total.length) {
-                                2 -> "$total  "
-                                3 -> "$total "
-                                else -> total
-                            }
-                            val second = when (next.length) {
-                                2 -> "$next  "
-                                3 -> "$next "
-                                else -> next
-                            }
-                            "$first  $second"
-                        },
-                    isStarred = busStop.isStarred
-                )
+                busStop.toItem()
             }
         )
 
-        listItemsLock.withLock {
-            this@BusStopsViewModel.listItems = listItems
-        }
-
-        return this@BusStopsViewModel.listItems
+        return listItems
     }
 
     private fun askForSettingsChange(exception: ResolvableApiException) {
@@ -279,10 +281,12 @@ class BusStopsViewModel @Inject constructor(
                 PermissionStatus.GRANTED -> {
                     locationPermissionDeniedPermanentlyUseCase(false)
                 }
+
                 PermissionStatus.DENIED_PERMANENTLY -> {
                     FirebaseCrashlytics.getInstance().log("Permission denied permanently.")
                     locationPermissionDeniedPermanentlyUseCase(true)
                 }
+
                 PermissionStatus.DENIED -> {
                     FirebaseCrashlytics.getInstance().log("Permission denied.")
                 }
@@ -342,6 +346,7 @@ class BusStopsViewModel @Inject constructor(
                                         }
                                     }
                                 }
+
                                 else -> {
                                     // do nothing
                                 }
@@ -406,6 +411,195 @@ class BusStopsViewModel @Inject constructor(
                 BusStopsScreenState.DefaultLocationBusStops.Success(listItems = listItems)
             )
         }
+    }
+
+    fun onStopsFilterClick(filter: StopsFilter) {
+        viewModelScope.launch(coroutineContext) {
+            val currentScreenState = _screenState.value
+            when (filter) {
+                StopsFilter.BUS_STOPS_ONLY -> {
+                    if (currentScreenState is BusStopsScreenState.NearbyBusStops) {
+                        fetchNearbyBusStops(waitForSettings = false)
+                    }
+                }
+
+                StopsFilter.TRAIN_STOPS_ONLY -> {
+                    if (currentScreenState is BusStopsScreenState.NearbyBusStops) {
+                        fetchNearbyTrainStops()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun fetchNearbyTrainStops(
+        waitForSettings: Boolean = false
+    ) {
+        viewModelScope.launch(coroutineContext) {
+            withContext(dispatcherProvider.main) {
+                _screenState.emit(
+                    BusStopsScreenState.NearbyBusStops.Fetching(
+                        filter = StopsFilter.TRAIN_STOPS_ONLY
+                    )
+                )
+            }
+
+            if (waitForSettings) {
+                var count = 0
+                while (
+                    getLocationSettingStateUseCase() !is LocationSettingsState.SettingsEnabled &&
+                    count < 10
+                ) {
+                    count++
+                    delay(300)
+                }
+            }
+
+            var location: LocationOutput.Success? = null
+
+            when (val locationOutput = getLastKnownLocationUseCase()) {
+                is LocationOutput.Error -> {
+                    _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
+                        title = "Something went wrong while getting your location :(",
+                        primaryButtonText = "RETRY",
+                        onPrimaryButtonClick = {
+                            fetchNearbyTrainStops()
+                        },
+                        secondaryButtonText = "USE DEFAULT LOCATION",
+                        onSecondaryButtonClick = {
+                            fetchNearDefaultLocationBusStops()
+                        },
+                        filter = StopsFilter.TRAIN_STOPS_ONLY
+                    )
+                    return@launch
+                }
+
+                is LocationOutput.PermissionsNotGranted -> {
+                    when (locationOutput.permissionStatus) {
+                        PermissionStatus.DENIED -> {
+                            _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
+                                title = "We need location permission to get nearby bus stops :)",
+                                primaryButtonText = "GIVE PERMISSION",
+                                onPrimaryButtonClick = {
+                                    askPermissions()
+                                },
+                                secondaryButtonText = "USE DEFAULT LOCATION",
+                                onSecondaryButtonClick = {
+                                    fetchNearDefaultLocationBusStops()
+                                },
+                                filter = StopsFilter.TRAIN_STOPS_ONLY
+                            )
+                        }
+
+                        PermissionStatus.GRANTED -> {
+                            // do nothing
+                        }
+
+                        PermissionStatus.DENIED_PERMANENTLY -> {
+                            _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
+                                title = "We need location permission to get nearby bus stops :)",
+                                primaryButtonText = "GO TO SETTINGS",
+                                onPrimaryButtonClick = {
+                                    goToAppSettings()
+                                },
+                                secondaryButtonText = "USE DEFAULT LOCATION",
+                                onSecondaryButtonClick = {
+                                    fetchNearDefaultLocationBusStops()
+                                },
+                                filter = StopsFilter.TRAIN_STOPS_ONLY
+                            )
+                        }
+                    }
+                    return@launch
+                }
+
+                is LocationOutput.Success -> {
+                    locationPermissionDeniedPermanentlyUseCase(false)
+                    location = locationOutput
+                }
+
+                is LocationOutput.SettingsNotEnabled -> {
+                    locationPermissionDeniedPermanentlyUseCase(false)
+                    _screenState.value = BusStopsScreenState.NearbyBusStops.LocationError(
+                        title = "Location is not turned on :(",
+                        primaryButtonText = if (locationOutput.settingsState?.exception != null) {
+                            "ENABLE LOCATION"
+                        } else {
+                            "RETRY"
+                        },
+                        onPrimaryButtonClick = {
+                            val ex = locationOutput.settingsState?.exception
+                            if (ex != null) {
+                                askForSettingsChange(ex)
+                            } else {
+                                fetchNearbyBusStops(
+                                    waitForSettings = true
+                                )
+                            }
+                        },
+                        secondaryButtonText = "USE DEFAULT LOCATION",
+                        onSecondaryButtonClick = {
+                            fetchNearDefaultLocationBusStops()
+                        },
+                        filter = StopsFilter.TRAIN_STOPS_ONLY
+                    )
+                    return@launch
+                }
+            }
+
+            val trainStops = getTrainStopsUseCase(
+                lat = location.lat,
+                lon = location.lng,
+                limit = busStopsQueryLimitUseCase()
+            )
+
+            val listItems = getTrainStopListItems(
+                trainStops,
+                "Nearby Train Stops"
+            )
+
+            withContext(dispatcherProvider.main) {
+                _screenState.emit(
+                    BusStopsScreenState.NearbyBusStops.Success(
+                        filter = StopsFilter.TRAIN_STOPS_ONLY,
+                        listItems = listItems
+                    )
+                )
+            }
+        }
+    }
+
+    private fun getTrainStopListItems(
+        trainStopList: List<TrainStop>,
+        headerTitle: String,
+    ): SnapshotStateList<BusStopsItemData> {
+        val listItems = SnapshotStateList<BusStopsItemData>()
+
+        if (trainStopList.isNotEmpty()) {
+            listItems.add(
+                BusStopsItemData.Header(
+                    id = "train-stops-screen-header",
+                    title = headerTitle
+                )
+            )
+        }
+
+        listItems.addAll(
+            trainStopList.map { trainStop ->
+                BusStopsItemData.TrainStop(
+                    id = "train-stops-screen-${trainStop.code}",
+                    code = trainStop.code,
+                    codeToDisplay = trainStop.codeToDisplay,
+                    name = trainStop.name,
+                    hasDepartureTimes = trainStop.hasDepartureTimes,
+                    hasTravelAssistance = trainStop.hasTravelAssistance,
+                    isStarred = trainStop.starred,
+                    hasFacilities = trainStop.hasFacilities
+                )
+            }
+        )
+
+        return listItems
     }
 }
 

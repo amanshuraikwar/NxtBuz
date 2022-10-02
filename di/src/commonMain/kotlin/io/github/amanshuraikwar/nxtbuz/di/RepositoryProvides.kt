@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.di
 
+import io.github.amanshuraikwar.nsapi.provider.NsApiFactory
 import io.github.amanshuraikwar.nxtbuz.busarrivaldata.BusArrivalRepositoryImpl
 import io.github.amanshuraikwar.nxtbuz.busroutedata.BusRouteRepositoryImpl
 import io.github.amanshuraikwar.nxtbuz.busstopdata.BusStopRepositoryImpl
@@ -8,7 +9,13 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.SystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.localdatasource.LocalDataSource
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
 import io.github.amanshuraikwar.nxtbuz.remotedatasource.RemoteDataSource
-import io.github.amanshuraikwar.nxtbuz.repository.*
+import io.github.amanshuraikwar.nxtbuz.repository.BusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusRouteRepository
+import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.repository.SearchRepository
+import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
+import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
+import io.github.amanshuraikwar.nxtbuz.repository.UserRepository
 import io.github.amanshuraikwar.nxtbuz.searchdata.SearchRepositoryImpl
 import io.github.amanshuraikwar.nxtbuz.starreddata.StarredBusArrivalRepositoryImpl
 import io.github.amanshuraikwar.nxtbuz.userdata.UserRepositoryImpl
@@ -84,5 +91,11 @@ object RepositoryProvides {
             localDataSource = localDataSource,
             dispatcherProvider = dispatcherProvider,
         )
+    }
+
+    fun provideNsApiTrainStopRepository(
+        nsApiFactory: NsApiFactory
+    ): TrainStopRepository {
+        return nsApiFactory.create()
     }
 }

@@ -1,0 +1,48 @@
+CREATE TABLE NsTrainStationEntity (
+    stationType TEXT NOT NULL,
+    code TEXT NOT NULL PRIMARY KEY,
+    evaCode TEXT NOT NULL,
+    uicCode TEXT NOT NULL,
+    hasFacilities INTEGER AS Boolean NOT NULL DEFAULT 0,
+    hasDepartureTimes INTEGER AS Boolean NOT NULL DEFAULT 0,
+    hasTravelAssistance INTEGER AS Boolean NOT NULL DEFAULT 0,
+    nameShort TEXT NOT NULL,
+    nameMedium TEXT NOT NULL,
+    nameLong TEXT NOT NULL,
+    land TEXT NOT NULL,
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL,
+    entryDate TEXT NOT NULL,
+    nearbyMeLocationType TEXT NOT NULL,
+    nearbyMeLocationValue TEXT NOT NULL,
+    starred INTEGER AS Boolean NOT NULL DEFAULT 0,
+    descriptionSearchKey TEXT NOT NULL
+);
+
+insertOrReplace:
+INSERT OR REPLACE INTO NsTrainStationEntity
+VALUES ?;
+
+deleteAll:
+DELETE FROM NsTrainStationEntity;
+
+findAll:
+SELECT * FROM NsTrainStationEntity;
+
+findByCode:
+SELECT * FROM NsTrainStationEntity WHERE code = :code;
+
+findClose:
+SELECT * FROM NsTrainStationEntity ORDER BY (((latitude-:latitude)*(latitude-:latitude))+((longitude-:longitude)*(longitude-:longitude))) ASC LIMIT :limit;
+
+findCloseDistance:
+SELECT * FROM NsTrainStationEntity WHERE (((latitude-:latitude)*(latitude-:latitude))+((longitude-:longitude)*(longitude-:longitude))) < :distance;
+
+searchLikeDescription:
+SELECT * FROM NsTrainStationEntity WHERE descriptionSearchKey LIKE '%' || :descriptionHint || '%' LIMIT :limit;
+
+findAllStarred:
+SELECT * FROM NsTrainStationEntity WHERE starred = 1;
+
+
+

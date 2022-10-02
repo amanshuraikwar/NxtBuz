@@ -30,7 +30,7 @@ import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalList
 import io.github.amanshuraikwar.nxtbuz.busstop.arrivals.model.BusStopArrivalsScreenState
 import io.github.amanshuraikwar.nxtbuz.common.compose.FailedView
 import io.github.amanshuraikwar.nxtbuz.common.compose.FetchingView
-import io.github.amanshuraikwar.nxtbuz.common.compose.Header
+import io.github.amanshuraikwar.nxtbuz.common.compose.HeaderView
 import io.github.amanshuraikwar.nxtbuz.common.compose.NxtBuzBottomSheet
 import io.github.amanshuraikwar.nxtbuz.common.compose.expandProgressFraction
 import io.github.amanshuraikwar.nxtbuz.common.compose.rememberNxtBuzBottomSheetState
@@ -305,7 +305,7 @@ fun BusStopArrivalsView(
                     )
                 }
                 is BusStopArrivalListItemData.Header -> {
-                    Header(
+                    HeaderView(
                         title = item.title
                     )
                 }

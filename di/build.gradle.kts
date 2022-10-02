@@ -20,6 +20,7 @@ kotlin {
 
                 api(project(":remotedatasource"))
                 implementation(project(":ktorremotedatasource"))
+                implementation(project(":nsapi"))
 
                 api(project(":preferencestorage"))
 

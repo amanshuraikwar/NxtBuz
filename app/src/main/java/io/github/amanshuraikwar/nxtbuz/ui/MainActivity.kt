@@ -29,6 +29,8 @@ import io.github.amanshuraikwar.nxtbuz.map.ui.recenter.RecenterViewModel
 import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupViewModel
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchViewModel
 import io.github.amanshuraikwar.nxtbuz.starred.StarredViewModel
+import io.github.amanshuraikwar.nxtbuz.train.departures.TrainDeparturesViewModel
+import io.github.amanshuraikwar.nxtbuz.train.details.TrainDetailsViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -88,6 +90,13 @@ class MainActivity : DaggerAppCompatActivity() {
         viewModelProvider(viewModelFactory)
     }
 
+    private val trainDeparturesViewModel: TrainDeparturesViewModel by lazy {
+        viewModelProvider(viewModelFactory)
+    }
+
+    private val trainDetailsViewModel: TrainDetailsViewModel by lazy {
+        viewModelProvider(viewModelFactory)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,7 +137,9 @@ class MainActivity : DaggerAppCompatActivity() {
                     onBackClick = this@MainActivity::onBackPressed,
                     onSetupComplete = {
                         mainViewModel.onInit()
-                    }
+                    },
+                    trainDeparturesViewModel = trainDeparturesViewModel,
+                    trainDetailsViewModel = trainDetailsViewModel,
                 )
             }
         }

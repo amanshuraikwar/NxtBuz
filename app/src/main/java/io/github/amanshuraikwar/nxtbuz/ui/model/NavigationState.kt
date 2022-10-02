@@ -15,4 +15,12 @@ sealed class NavigationState {
     ) : NavigationState()
 
     object Search : NavigationState()
+
+    data class TrainStopDepartures(
+        val trainStopCode: String
+    ) : NavigationState()
+
+    data class TrainDetails(
+        val trainCode: String
+    ) : NavigationState()
 }
