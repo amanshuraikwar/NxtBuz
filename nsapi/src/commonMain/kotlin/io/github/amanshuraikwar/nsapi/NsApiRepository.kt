@@ -55,14 +55,9 @@ internal class NsApiRepository(
         maxStops: Int,
         maxDistanceMetres: Int?
     ): List<TrainStop> {
+        fetchAndCacheLocally()
+
         return withContext(dispatcherProvider.io) {
-            val cachedLocally =
-                settings.getBoolean(PREF_TRAIN_STOPS_CACHED_LOCALLY, false)
-
-            if (!cachedLocally) {
-                fetchAndCacheLocally()
-            }
-
             nsApiDb
                 .nsTrainStationEntityQueries
                 .findClose(
@@ -287,8 +282,67 @@ internal class NsApiRepository(
         }
     }
 
+    @Suppress("NAME_SHADOWING")
+    override suspend fun getTrainsBetween(
+        trainStopCode1: String,
+        trainStopCode2: String
+    ): List<TrainDetails> {
+        return withContext(dispatcherProvider.computation) {
+            val trainsBetweenDetails = mutableListOf<TrainDetails>()
+
+            val trainStopCode1 = trainStopCode1.parseCode()
+            val trainStopCode2 = trainStopCode2.parseCode()
+
+            val trainDepartures = getTrainDepartures(trainStopCode1)
+            for (trainDeparture in trainDepartures) {
+                val trainDetails = getTrainDetails(trainDeparture.trainCode)
+                var stop1Found = false
+                for (node in trainDetails.route) {
+                    if (node.trainStopCode == trainStopCode1) {
+                        stop1Found = true
+                    }
+                    if (node.trainStopCode == trainStopCode2 && stop1Found) {
+                        trainsBetweenDetails.add(trainDetails)
+                        break
+                    }
+                }
+            }
+
+            trainsBetweenDetails
+        }
+    }
+
+    override suspend fun searchTrainStops(trainStopName: String): List<TrainStop> {
+        fetchAndCacheLocally()
+
+        return withContext(dispatcherProvider.io) {
+            nsApiDb
+                .nsTrainStationEntityQueries
+                .searchLikeDescription(trainStopName, 10)
+                .executeAsList()
+                .map {
+                    it.toTrainStop()
+                }
+        }
+    }
+
+    private fun String.parseCode(): String {
+        return if (startsWith(TRAIN_STOP_CODE_PREFIX)) {
+            drop(TRAIN_STOP_CODE_PREFIX.length)
+        } else {
+            this
+        }
+    }
+
     private suspend fun fetchAndCacheLocally() {
         withContext(dispatcherProvider.io) {
+            val cachedLocally =
+                settings.getBoolean(PREF_TRAIN_STOPS_CACHED_LOCALLY, false)
+
+            if (cachedLocally) {
+                return@withContext
+            }
+
             settings[PREF_TRAIN_STOPS_CACHED_LOCALLY] = false
 
             val entities = nsApi.getStations()

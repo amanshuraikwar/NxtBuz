@@ -29,6 +29,13 @@ interface TrainStopRepository {
 
     suspend fun getTrainDetails(trainCode: String): TrainDetails
 
+    suspend fun getTrainsBetween(
+        trainStopCode1: String,
+        trainStopCode2: String
+    ): List<TrainDetails>
+
+    suspend fun searchTrainStops(trainStopName: String): List<TrainStop>
+
     interface Factory {
         fun create(): TrainStopRepository
     }
