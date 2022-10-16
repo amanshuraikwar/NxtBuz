@@ -198,19 +198,20 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
         Di.get()
             .setHomeBusStopUseCase()
             .invoke(
-                busStopCode: busStopCode
-            ) { result in
-                let useCaseResult = Util.toUseCaseResult(result)
-                switch useCaseResult {
-                case .Error(let message):
-                    print(message)
-                case .Success(_):
-                    WidgetCenter.shared.reloadTimelines(
-                        ofKind: "io.github.amanshuraikwar.NxtBuz.goingHomeBusWidget"
-                    )
-                    print("set home bus stop \(busStopCode) success")
+                busStopCode: busStopCode,
+                completion: { result in
+                    let useCaseResult = Util.toUseCaseResult(result)
+                    switch useCaseResult {
+                    case .Error(let message):
+                        print(message)
+                    case .Success(_):
+                        WidgetCenter.shared.reloadTimelines(
+                            ofKind: "io.github.amanshuraikwar.NxtBuz.goingHomeBusWidget"
+                        )
+                        print("set home bus stop \(busStopCode) success")
+                    }
                 }
-            }
+            )
     }
 }
 

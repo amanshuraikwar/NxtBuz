@@ -153,16 +153,17 @@ class BusStopArrivalsViewModel : ObservableObject {
                 Di.get().getToggleBusStopStarUseCase().invoke(
                     busStopCode: busStopCode,
                     busServiceNumber: busServiceNumber,
-                    toggleTo: newValue
-                ) { result in
-                    let useCaseResult = Util.toUseCaseResult(result)
-                    switch useCaseResult {
-                    case .Success(_):
-                        WidgetCenter.shared.reloadTimelines(ofKind: "io.github.amanshuraikwar.NxtBuz.starredBusArrivalsWidget")
-                    case .Error(let message):
-                        print("Star toggle failed \(message).")
+                    toggleTo: newValue,
+                    completion: { result in
+                        let useCaseResult = Util.toUseCaseResult(result)
+                        switch useCaseResult {
+                        case .Success(_):
+                            WidgetCenter.shared.reloadTimelines(ofKind: "io.github.amanshuraikwar.NxtBuz.starredBusArrivalsWidget")
+                        case .Error(let message):
+                            print("Star toggle failed \(message).")
+                        }
                     }
-                }
+                )
             }
         default:
             break

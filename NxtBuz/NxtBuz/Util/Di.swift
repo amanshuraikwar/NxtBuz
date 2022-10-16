@@ -112,13 +112,15 @@ class Di {
         return IosDoSetupUseCase(
             userRepository: Di.userRepository,
             busStopRepository: Di.busStopRepository,
-            busRouteRepository: Di.busRouteRepository
+            busRouteRepository: Di.busRouteRepository,
+            starredBusArrivalRepository: Di.starredBusArrivalRepository
         )
     }
     
     func getBusStopsUseCase() -> IosGetBusStopsUseCase {
         return IosGetBusStopsUseCase(
-            busStopRepository: Di.busStopRepository
+            busStopRepository: Di.busStopRepository,
+            searchRepository: Di.searchRepository
         )
     }
     
@@ -129,8 +131,8 @@ class Di {
         )
     }
     
-    func getToggleBusStopStarUseCase() -> IosToggleBusStopStarUseCase {
-        return IosToggleBusStopStarUseCase(repo: Di.starredBusArrivalRepository)
+    func getToggleBusStopStarUseCase() -> IosToggleBusServiceStarUseCase {
+        return IosToggleBusServiceStarUseCase(repo: Di.starredBusArrivalRepository)
     }
     
     func getStarredBusServicesUseCase() -> GetStarredBusServicesUseCase {
