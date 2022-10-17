@@ -69,22 +69,13 @@ class Di {
         dispatcherProvider: coroutineDispatcherProvider
     )
     
+    public static let defaultTheme = DynamoThemeProvider.companion.DEFAULT_THEME
+    
     private static let dynamoThemeRepository = DynamoThemeProvider().createDynamoThemeRepository(
-        defaultTheme: DynamoTheme(
-            darkThemeColors: DynamoThemeColors(
-                primary: UIColor(.white),
-                secondary: UIColor(.gray),
-                accent: UIColor(.blue)
-            ),
-            lightThemeColors: DynamoThemeColors(
-                primary: UIColor(.black),
-                secondary: UIColor(.gray),
-                accent: UIColor(.green)
-            )
-        ),
-        enableThemeApiLogging: true,
-        themeApiUrl: "https://amanshuraikwar.github.io/api/nxtBuzTheme.json"
-    )
+            defaultTheme: DynamoThemeProvider.companion.DEFAULT_THEME,
+            enableThemeApiLogging: true,
+            themeApiUrl: "https://amanshuraikwar.github.io/api/nxtBuzTheme.json"
+        )
     
     private init() {}
     

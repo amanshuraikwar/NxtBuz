@@ -50,16 +50,5 @@ class NxtBuzTheme : ObservableObject {
         self.accentColor = isDark ? theme.darkThemeColors.accent : theme.lightThemeColors.accent
     }
     
-    public static let defaultTheme = DynamoTheme(
-        darkThemeColors: DynamoThemeColors(
-            primary: UIColor(.white),
-            secondary: UIColor(.gray),
-            accent: UIColor(.blue)
-        ),
-        lightThemeColors: DynamoThemeColors(
-            primary: UIColor(.black),
-            secondary: UIColor(.gray),
-            accent: UIColor(.green)
-        )
-    )
+    public static let defaultTheme = Di.defaultTheme
 }
