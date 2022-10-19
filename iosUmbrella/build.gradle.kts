@@ -18,6 +18,7 @@ kotlin {
             export(project(":preferencestorage"))
             export(project(":remotedatasource"))
             export(project(":dynamo"))
+            export(project(":nsapi"))
             transitiveExport = true
             isStatic = true
             linkerOpts.add("-lsqlite3")
