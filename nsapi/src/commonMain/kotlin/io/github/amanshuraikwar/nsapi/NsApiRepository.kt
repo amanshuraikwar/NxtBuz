@@ -284,14 +284,14 @@ internal class NsApiRepository(
 
     @Suppress("NAME_SHADOWING")
     override suspend fun getTrainsBetween(
-        trainStopCode1: String,
-        trainStopCode2: String
+        fromTrainStopCode: String,
+        toTrainStopCode: String
     ): List<TrainDetails> {
         return withContext(dispatcherProvider.computation) {
             val trainsBetweenDetails = mutableListOf<TrainDetails>()
 
-            val trainStopCode1 = trainStopCode1.parseCode()
-            val trainStopCode2 = trainStopCode2.parseCode()
+            val trainStopCode1 = fromTrainStopCode.parseCode()
+            val trainStopCode2 = toTrainStopCode.parseCode()
 
             val trainDepartures = getTrainDepartures(trainStopCode1)
             for (trainDeparture in trainDepartures) {

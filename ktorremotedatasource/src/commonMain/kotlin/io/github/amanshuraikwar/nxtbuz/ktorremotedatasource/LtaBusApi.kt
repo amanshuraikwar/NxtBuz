@@ -4,16 +4,21 @@ import io.github.amanshuraikwar.nxtbuz.ktorremotedatasource.model.BusArrivalsRes
 import io.github.amanshuraikwar.nxtbuz.ktorremotedatasource.model.BusRoutesResponseDto
 import io.github.amanshuraikwar.nxtbuz.ktorremotedatasource.model.BusStopsResponseDto
 import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.features.observer.ResponseObserver
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.DEFAULT
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.observer.ResponseObserver
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
-import io.ktor.http.UrlEncodingOption
-import io.ktor.utils.io.readUTF8Line
+import io.ktor.client.statement.bodyAsText
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 internal class LtaBusApi internal constructor(
@@ -30,14 +35,15 @@ internal class LtaBusApi internal constructor(
     suspend fun getBusStops(skip: Int = 0): BusStopsResponseDto {
         return client.get("$baseUrl/BusStops") {
             url {
-                parameter("\$skip", skip)
+                //parameter("\$skip", skip)
+
                 // to prevent encoding '$'
                 // weird query param names required by the api -_-
-                parameters.urlEncodingOption = UrlEncodingOption.NO_ENCODING
+                encodedParameters.append("\$skip", "$skip")
             }
 
             addLtaAccountKey()
-        }
+        }.body()
     }
 
     suspend fun getBusArrivals(
@@ -51,43 +57,36 @@ internal class LtaBusApi internal constructor(
             }
 
             addLtaAccountKey()
-        }
+        }.body()
     }
 
     suspend fun getBusRoutes(skip: Int = 0): BusRoutesResponseDto {
         return client.get("$baseUrl/BusRoutes") {
             url {
-                parameter("\$skip", skip)
+                //parameter("\$skip", skip)
+
                 // to prevent encoding '$'
                 // weird query param names required by the api -_-
-                parameters.urlEncodingOption = UrlEncodingOption.NO_ENCODING
+                encodedParameters.append("\$skip", "$skip")
             }
 
             addLtaAccountKey()
-        }
+        }.body()
     }
 
     companion object {
         private const val ENDPOINT = "http://datamall2.mytransport.sg/ltaodataservice"
 
-        private fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }
+        private fun createJson() = Json {
+            isLenient = true
+            ignoreUnknownKeys = true
+        }
 
         private fun createHttpClient(
             json: Json = createJson(),
             enableNetworkLogs: Boolean
         ) = HttpClient {
-            install(JsonFeature) {
-                serializer = KotlinxSerializer(json)
-            }
-
-            if (enableNetworkLogs) {
-                install(ResponseObserver) {
-                    onResponse { response ->
-                        println("Response: $response")
-                        println("Response: ${response.content.readUTF8Line()}")
-                    }
-                }
-            }
+            config(json = json, enableNetworkLogs = enableNetworkLogs)
         }
 
         private fun createHttpClient(
@@ -95,17 +94,29 @@ internal class LtaBusApi internal constructor(
             json: Json = createJson(),
             enableNetworkLogs: Boolean
         ) = HttpClient(engine) {
-            install(JsonFeature) {
-                serializer = KotlinxSerializer(json)
-            }
+            config(json = json, enableNetworkLogs = enableNetworkLogs)
+        }
 
+        private fun HttpClientConfig<*>.config(
+            json: Json,
+            enableNetworkLogs: Boolean,
+        ) {
             if (enableNetworkLogs) {
+                install(Logging) {
+                    logger = Logger.DEFAULT
+                    level = LogLevel.ALL
+                }
+
                 install(ResponseObserver) {
                     onResponse { response ->
                         println("Response: $response")
-                        println("Response: ${response.content.readUTF8Line()}")
+                        println("Response: ${response.bodyAsText()}")
                     }
                 }
+            }
+
+            install(ContentNegotiation) {
+                json(json)
             }
         }
 

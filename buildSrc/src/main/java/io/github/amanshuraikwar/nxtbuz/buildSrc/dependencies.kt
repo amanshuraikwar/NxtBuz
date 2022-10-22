@@ -40,7 +40,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.6.10"
+        private const val version = "1.7.20"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -49,13 +49,13 @@ object Libs {
     object KotlinX {
         // upgrading to 0.3.3 becuse of https://youtrack.jetbrains.com/issue/KT-52554
         const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.3"
-        const val serializationCore = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1"
-        const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1"
-        const val serializationGradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.10"
+        const val serializationCore = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.4.1"
+        const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+        const val serializationGradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:1.7.20"
     }
 
     object Coroutines {
-        private const val version = "1.6.0-native-mt"
+        private const val version = "1.6.1-native-mt"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         // TODO-amanshuraikwar (02 Nov 2021 04:09:19 PM): do not use this in KMM common module
@@ -143,17 +143,24 @@ object Libs {
     }
 
     object Ktor {
-        private const val version = "1.6.3"
+        private const val version = "2.1.2"
         const val clientCore = "io.ktor:ktor-client-core:$version"
-        const val clientJson = "io.ktor:ktor-client-json:$version"
+        //const val clientJson = "io.ktor:ktor-client-json:$version"
         const val clientLogging = "io.ktor:ktor-client-logging:$version"
-        const val clientSerialization = "io.ktor:ktor-client-serialization:$version"
+//        const val clientSerialization = "io.ktor:ktor-client-serialization:$version"
+
+        // engines
         const val clientAndroid = "io.ktor:ktor-client-android:$version"
-        const val clientApache = "io.ktor:ktor-client-apache:$version}"
+        const val clientApache = "io.ktor:ktor-client-apache:$version"
         const val clientIos = "io.ktor:ktor-client-ios:$version"
         const val clientCio = "io.ktor:ktor-client-cio:$version"
         const val clientJs = "io.ktor:ktor-client-js:$version"
+
         const val clientMock = "io.ktor:ktor-client-mock:$version"
+
+        // content negotiation and serialization
+        const val clientContentNegotiation = "io.ktor:ktor-client-content-negotiation:$version"
+        const val jsonSerialisation = "io.ktor:ktor-serialization-kotlinx-json:$version"
     }
 
     object Coil {

@@ -28,13 +28,13 @@ inline infix fun <T, U : Flow<T>> ((IosResult<T>) -> Unit).fromFlow(
                             "Something went wrong."
                         }
                     }
-                ).freeze()
+                )//.freeze()
             )
         }
     ) {
         predicate().collect {
             this@fromFlow(
-                IosResult.Success(it).freeze()
+                IosResult.Success(it)//.freeze()
             )
         }
     }
@@ -59,7 +59,7 @@ inline fun <T, U : Flow<T>> ((IosResult<T>) -> Unit).fromFlowCancellable(
                                 "Something went wrong."
                             }
                         }
-                    ).freeze()
+                    )//.freeze()
                 )
             }
         }
@@ -68,7 +68,7 @@ inline fun <T, U : Flow<T>> ((IosResult<T>) -> Unit).fromFlowCancellable(
             predicate().collect {
                 if (isActive) {
                     this@fromFlowCancellable(
-                        IosResult.Success(it).freeze()
+                        IosResult.Success(it)//.freeze()
                     )
                 }
             }
@@ -79,7 +79,7 @@ inline fun <T, U : Flow<T>> ((IosResult<T>) -> Unit).fromFlowCancellable(
                 override fun cancel() {
                     deferred.cancel()
                 }
-            }.freeze()
+            }//.freeze()
         )
 
         if (!deferred.isCancelled) {
@@ -108,14 +108,14 @@ inline infix fun <T> ((IosResult<T>) -> Unit).from(
                             "Something went wrong."
                         }
                     }
-                ).freeze()
+                )//.freeze()
             )
         }
     ) {
         this@from(
             IosResult.Success(
                 predicate()
-            ).freeze()
+            )//.freeze()
         )
     }
 }

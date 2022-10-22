@@ -13,11 +13,12 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":remotedatasource"))
+
                 with(Libs.Ktor) {
                     implementation(clientCore)
-                    implementation(clientJson)
                     implementation(clientLogging)
-                    implementation(clientSerialization)
+                    implementation(clientContentNegotiation)
+                    implementation(jsonSerialisation)
                 }
 
                 with(Libs.KotlinX) {

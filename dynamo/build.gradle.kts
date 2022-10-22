@@ -18,9 +18,9 @@ kotlin {
 
                 with(Libs.Ktor) {
                     implementation(clientCore)
-                    implementation(clientJson)
                     implementation(clientLogging)
-                    implementation(clientSerialization)
+                    implementation(clientContentNegotiation)
+                    implementation(jsonSerialisation)
                 }
 
                 with(Libs.KotlinX) {

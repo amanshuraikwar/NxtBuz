@@ -52,31 +52,40 @@ struct Provider: IntentTimelineProvider {
         in context: Context,
         completion: @escaping (Timeline<Entry>) -> ()
     ) {
-        DispatchQueue.global(qos: .background).async {
-            do {
-                let data = try Data(
-                    contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/virm_4.png")!
-                )
-                DispatchQueue.main.async {
-                    let entry = SimpleEntry(
-                        date: Date(),
-                        configuration: configuration,
-                        sourceTrainStopName: "Amsterdam Centraal",
-                        destinationTrainStopName: "Utrecht Centraal",
-                        trainId: "973",
-                        trainType: "Intercity",
-                        departureFromSourceTime: "5:46 PM",
-                        arrivalAtDestinationTime: "6:13 PM",
-                        journeyDuration: "28 min",
-                        rollingStockImage: UIImage.init(data: data)
-                    )
-                    completion(Timeline(entries: [entry], policy: .atEnd))
+        Di.get().getTrainBetweenStopsUseCase().invoke(
+            fromTrainStopCode: "NS-API-TRAIN-ASDZ",
+            toTrainStopCode: "NS-API-TRAIN-AMFS"
+        ) { result in
+            let useCaseResult = Util.toUseCaseResult(result)
+            switch useCaseResult {
+            case .Error(_):
+                completion(Timeline(entries: [], policy: .atEnd))
+            case .Success(let trainDetailsList):
+                DispatchQueue.global(qos: .background).async {
+                    do {
+                        let data = try Data(
+                            contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/virm_4.png")!
+                        )
+                        DispatchQueue.main.async {
+                            let entry = SimpleEntry(
+                                date: Date(),
+                                configuration: configuration,
+                                sourceTrainStopName: "Amsterdam Centraal\(trainDetailsList.count)",
+                                destinationTrainStopName: "Utrecht Centraal",
+                                trainId: "973",
+                                trainType: "Intercity",
+                                departureFromSourceTime: "5:46 PM",
+                                arrivalAtDestinationTime: "6:13 PM",
+                                journeyDuration: "28 min",
+                                rollingStockImage: UIImage.init(data: data)
+                            )
+                            completion(Timeline(entries: [entry], policy: .atEnd))
+                        }
+                    } catch { }
                 }
-            } catch { }
+            }
         }
     }
-    
-    
 }
 
 struct SimpleEntry: TimelineEntry {
