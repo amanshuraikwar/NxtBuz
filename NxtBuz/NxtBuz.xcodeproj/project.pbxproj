@@ -17,6 +17,7 @@
 		A5144DF02706DE66002274C8 /* BusStopArrivalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */; };
 		A5144DF227070030002274C8 /* WarningBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DF127070030002274C8 /* WarningBannerView.swift */; };
 		A516105D270F267E00A513FD /* BusStopArrivalsBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A516105C270F267E00A513FD /* BusStopArrivalsBottomSheetView.swift */; };
+		A52A0733290C7259003E51BC /* RollingStockImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A0732290C7259003E51BC /* RollingStockImageView.swift */; };
 		A52FEB9826F593BC00BB79DA /* BusStopItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */; };
 		A52FEB9A26F5B1C800BB79DA /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9926F5B1C800BB79DA /* Font.swift */; };
 		A52FEB9C26F5B66E00BB79DA /* BusStopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */; };
@@ -227,6 +228,7 @@
 		A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopArrivalView.swift; sourceTree = "<group>"; };
 		A5144DF127070030002274C8 /* WarningBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningBannerView.swift; sourceTree = "<group>"; };
 		A516105C270F267E00A513FD /* BusStopArrivalsBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopArrivalsBottomSheetView.swift; sourceTree = "<group>"; };
+		A52A0732290C7259003E51BC /* RollingStockImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingStockImageView.swift; sourceTree = "<group>"; };
 		A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopItemView.swift; sourceTree = "<group>"; };
 		A52FEB9926F5B1C800BB79DA /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopsView.swift; sourceTree = "<group>"; };
@@ -705,6 +707,7 @@
 				A5FFFF4B28FDCA7500B2DDBC /* NextTrainWidget.intentdefinition */,
 				A5FFFF4C28FDCA7600B2DDBC /* Assets.xcassets */,
 				A5FFFF4E28FDCA7600B2DDBC /* Info.plist */,
+				A52A0732290C7259003E51BC /* RollingStockImageView.swift */,
 			);
 			path = NextTrainWidget;
 			sourceTree = "<group>";
@@ -1310,6 +1313,7 @@
 				A5D4BF0C290073B200249A25 /* Di.swift in Sources */,
 				A5FFFF4A28FDCA7500B2DDBC /* NextTrainWidget.swift in Sources */,
 				A5D4BF0E290073C600249A25 /* UseCaseResult.swift in Sources */,
+				A52A0733290C7259003E51BC /* RollingStockImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
