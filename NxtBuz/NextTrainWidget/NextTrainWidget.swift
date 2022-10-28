@@ -310,56 +310,7 @@ struct NextTrainWidgetEntryView : View {
             nxtBuzTheme.onSystemThemeChanged(isDark: colorScheme == .dark)
         }
     }
-    
-//    func cropImage(
-//        imageToCrop: UIImage,
-//        width: CGFloat
-//    ) -> UIImage {
-//        // if the current image's width is alr smaller than the proposed cropped width
-//        // just use the current image without cropping
-//        if (CGFloat(imageToCrop.cgImage!.width) < width) {
-//            return imageToCrop
-//        }
-//
-//        let scaleX = imageToCrop.size.width / CGFloat(imageToCrop.cgImage!.width)
-//
-//        let rect = CGRect(
-//            x: 0,
-//            y: 0,
-//            width: Int(width / scaleX),
-//            height: imageToCrop.cgImage!.height
-//        )
-//        let imageRef = imageToCrop.cgImage!.cropping(to: rect)!
-//        let cropped = UIImage(cgImage: imageRef)
-//        return cropped
-//    }
 }
-
-//extension UIImage {
-//        // returns a scaled version of the image
-//        func imageScaledToSize(
-//            toHeight height: CGFloat,
-//            isOpaque: Bool = false
-//        ) -> UIImage? {
-//            let size = CGSize(
-//                width: CGFloat(ceil(height * size.width / size.height)),
-//                height: height
-//            )
-//
-//            // begin a context of the desired size
-//            UIGraphicsBeginImageContextWithOptions(size, isOpaque, 0.0)
-//
-//            // draw image in the rect with zero origin and size of the context
-//            let imageRect = CGRect(origin: CGPointZero, size: size)
-//            self.draw(in: imageRect)
-//
-//            // get the scaled image, close the context and return the image
-//            let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-//            UIGraphicsEndImageContext()
-//
-//            return scaledImage
-//       }
-//}
 
 @main
 struct NextTrainWidget: Widget {
@@ -376,20 +327,6 @@ struct NextTrainWidget: Widget {
         .configurationDisplayName("Next train")
         .description("Displays next train between two stations.")
         .supportedFamilies([.systemMedium])
-    }
-}
-
-
-
-extension Image {
-    func centerCropped() -> some View {
-        GeometryReader { geo in
-            self
-            .resizable()
-            .scaledToFill()
-            .frame(width: geo.size.width, height: geo.size.height)
-            .clipped()
-        }
     }
 }
 

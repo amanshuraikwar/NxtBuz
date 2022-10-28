@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+// scales, crops and draws the rolling stock images of a train
+// TRY NOT TO TOUCH, logic is tricky AF -_-
+
 struct RollingStockImageView: View {
     let rollingStockImages: [UIImage]
     let maximumViewportWidth: CGFloat
