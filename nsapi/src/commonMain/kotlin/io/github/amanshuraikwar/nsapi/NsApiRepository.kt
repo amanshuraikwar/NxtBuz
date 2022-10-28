@@ -11,6 +11,7 @@ import io.github.amanshuraikwar.nsapi.model.TrainJourneyDetailsStopDto
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.MapUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.toSearchDescriptionHint
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.NextTrainBetweenStopsDetails
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainCrowdStatus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDeparture
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDepartureStatus
@@ -25,6 +26,7 @@ import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -43,6 +45,10 @@ internal class NsApiRepository(
 
     // train code -> category name
     private val trainCategoryNameCache = mutableMapOf<String, String>()
+
+    init {
+
+    }
 
     override suspend fun supportsLocation(lat: Double, lng: Double): Boolean {
         // TODO-amanshuraikwar (11 Sep 2022 12:54:59 PM):
@@ -288,7 +294,6 @@ internal class NsApiRepository(
         }
     }
 
-    @Suppress("NAME_SHADOWING")
     override suspend fun getTrainsBetween(
         fromTrainStopCode: String,
         toTrainStopCode: String
@@ -326,6 +331,110 @@ internal class NsApiRepository(
             }
 
             trainsBetweenDetails
+        }
+    }
+
+    override suspend fun getNextTrainBetween(
+        fromTrainStopCode: String,
+        toTrainStopCode: String
+    ): NextTrainBetweenStopsDetails? {
+        return withContext(dispatcherProvider.computation) {
+            val trainStopCode1 = fromTrainStopCode.parseCode()
+            val trainStopCode2 = toTrainStopCode.parseCode()
+
+//            val trainStop1 =
+//                nsApiDb.nsTrainStationEntityQueries
+//                    .findByCode(
+//                        code = trainStopCode1
+//                    )
+//                    .executeAsList()
+//                    .getOrNull(0)
+//                    ?: throw IllegalArgumentException(
+//                        "Train stop with code $trainStopCode1 not found!"
+//                    )
+//
+//            val trainStop2 =
+//                nsApiDb.nsTrainStationEntityQueries
+//                    .findByCode(
+//                        code = trainStopCode2
+//                    )
+//                    .executeAsList()
+//                    .getOrNull(0)
+//                    ?: throw IllegalArgumentException(
+//                        "Train stop with code $trainStopCode2 not found!"
+//                    )
+
+            val trainDepartures = getTrainDepartures(trainStopCode1)
+
+            for (trainDeparture in trainDepartures) {
+                val trainDetails = getTrainDetails(trainDeparture.trainCode)
+                var stop1Found = false
+                var stop1Name = ""
+                for (node in trainDetails.route) {
+                    if (node.trainStopCode == trainStopCode1) {
+                        stop1Found = true
+                        stop1Name = node.trainStopName
+                        println("yoyo, stop1Name = $stop1Name")
+                    }
+                    if (node.trainStopCode == trainStopCode2
+                        && (node.type is TrainRouteNodeType.Stop
+                                || node.type is TrainRouteNodeType.Destination)
+                        && stop1Found
+                    ) {
+                        val arrivalTiming: TrainRouteNodeTiming? = when (node.type) {
+                            is TrainRouteNodeType.Stop -> {
+                                (node.type as TrainRouteNodeType.Stop).arrivalTiming
+                            }
+
+                            is TrainRouteNodeType.Destination -> {
+                                (node.type as TrainRouteNodeType.Destination).arrivalTiming
+                            }
+
+                            else -> {
+                                null
+                            }
+                        }
+
+                        return@withContext NextTrainBetweenStopsDetails(
+                            trainCode = trainDetails.trainCode,
+                            trainCategoryName = trainDetails.trainCategoryName,
+                            fromTrainStopName = stop1Name,
+                            toTrainStopName = node.trainStopName,
+                            facilities = trainDetails.facilities,
+                            rollingStockImages =
+                            trainDetails
+                                .rollingStock
+                                .mapNotNull { it.imageUrl },
+                            length = trainDetails.length,
+                            lengthInMeters = trainDetails.lengthInMeters,
+                            departureFromIntendedSource =
+                            trainDeparture
+                                .actualDepartureInstant
+                                ?.formatArrivalInstant()
+                                ?: trainDeparture
+                                    .plannedDepartureInstant
+                                    .formatArrivalInstant(),
+                            arrivalAtIntendedDestination =
+                            when (arrivalTiming) {
+                                is TrainRouteNodeTiming.Available -> {
+                                    arrivalTiming.actualTime
+                                        ?: arrivalTiming.plannedTime
+                                }
+
+                                else -> "--"
+                            },
+                            updatedAt = Clock.System.now().formatArrivalInstant()
+                        )
+                    }
+                }
+
+                // TODO-amanshuraikwar (28 Oct 2022 11:36:35 pm):
+                //  add manual delay because if we call train details api too
+                //  frequently, we hit the rate limit of the api
+                delay(500)
+            }
+
+            return@withContext null
         }
     }
 

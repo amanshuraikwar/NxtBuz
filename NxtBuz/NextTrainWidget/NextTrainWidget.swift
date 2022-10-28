@@ -25,7 +25,7 @@ struct Provider: IntentTimelineProvider {
                 sourceTrainStopName: "Amsterdam Centraal",
                 destinationTrainStopName: "Utrecht Centraal",
                 trainId: "973",
-                trainType: "Intercity",
+                trainType: "NS Intercity Direct",
                 departureFromSourceTime: "5:46 PM",
                 arrivalAtDestinationTime: "6:13 PM",
                 journeyDuration: "28 min",
@@ -70,7 +70,7 @@ struct Provider: IntentTimelineProvider {
                     sourceTrainStopName: "Amsterdam Centraal",
                     destinationTrainStopName: "Utrecht Centraal",
                     trainId: "973",
-                    trainType: "Intercity",
+                    trainType: "NS Intercity Direct",
                     departureFromSourceTime: "5:46 PM",
                     arrivalAtDestinationTime: "6:13 PM",
                     journeyDuration: "28 min",
@@ -103,13 +103,12 @@ struct Provider: IntentTimelineProvider {
         completion: @escaping (Timeline<Entry>) -> ()
     ) {
         Di.get().getTrainBetweenStopsUseCase().invoke1(
-            fromTrainStopCode: "NS-API-TRAIN-ASDZ",
-            toTrainStopCode: "NS-API-TRAIN-AMFS"
+            fromTrainStopCode: "NS-API-TRAIN-ASD",
+            toTrainStopCode: "NS-API-TRAIN-AMF"
         ) { result in
             let useCaseResult = Util.toUseCaseResult(result)
             switch useCaseResult {
             case .Error(_):
-                //completion(Timeline(entries: [], policy: .atEnd))
                 do {
                     let data = try Data(
                         contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/virm_4.png")!
@@ -130,15 +129,15 @@ struct Provider: IntentTimelineProvider {
                         completion(Timeline(entries: [entry], policy: .atEnd))
                     }
                 } catch { }
-            case .Success(let trainDetailsList):
+            case .Success(let trainDetails):
                 DispatchQueue.global(qos: .background).async {
                     do {
-                        NSLog("yoyo, \(trainDetailsList)")
-                        let trainDetails = trainDetailsList[0] as! TrainDetails
-                        let rollingStockImages = try trainDetails.rollingStock.map { rollingStockPart in
+                        NSLog("yoyo, \(trainDetails)")
+                        let trainDetails = trainDetails as NextTrainBetweenStopsDetails
+                        let rollingStockImages = try trainDetails.rollingStockImages.map { image in
                             UIImage.init(
                                 data: try Data(
-                                    contentsOf: URL(string: rollingStockPart.imageUrl!)!
+                                    contentsOf: URL(string: image)!
                                 )
                             )!
                         }
@@ -147,13 +146,13 @@ struct Provider: IntentTimelineProvider {
                             let entry = SimpleEntry(
                                 date: Date(),
                                 configuration: configuration,
-                                sourceTrainStopName: trainDetails.sourceTrainStopName,
-                                destinationTrainStopName: trainDetails.destinationTrainStopName,
+                                sourceTrainStopName: trainDetails.fromTrainStopName,
+                                destinationTrainStopName: trainDetails.toTrainStopName,
                                 trainId: trainDetails.trainCode,
                                 trainType: trainDetails.trainCategoryName,
-                                departureFromSourceTime: "5:46 PM",
-                                arrivalAtDestinationTime: "6:13 PM",
-                                journeyDuration: "28 min",
+                                departureFromSourceTime: trainDetails.departureFromIntendedSource,
+                                arrivalAtDestinationTime: trainDetails.arrivalAtIntendedDestination,
+                                journeyDuration: "--",
                                 rollingStockImages: rollingStockImages
                             )
                             completion(Timeline(entries: [entry], policy: .atEnd))
@@ -194,10 +193,11 @@ struct NextTrainWidgetEntryView : View {
                     Text(entry.sourceTrainStopName)
                         .font(NxtBuzFonts.body)
                         .fontWeight(.medium)
+                        .foregroundColor(Color(nxtBuzTheme.primaryColor))
                     
                     Spacer()
                     
-                    Text(entry.departureFromSourceTime)
+                    Text(entry.departureFromSourceTime.uppercased())
                         .font(NxtBuzFonts.bodyMonospaced)
                         .fontWeight(.black)
                         .foregroundColor(Color(nxtBuzTheme.accentColor))
@@ -216,11 +216,12 @@ struct NextTrainWidgetEntryView : View {
                     
                     Text(entry.destinationTrainStopName)
                         .font(NxtBuzFonts.callout)
+                        .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                         .padding(.leading, 4)
                     
                     Spacer()
                     
-                    Text(entry.arrivalAtDestinationTime)
+                    Text(entry.arrivalAtDestinationTime.uppercased())
                         .font(NxtBuzFonts.bodyMonospaced)
                         .fontWeight(.black)
                         .foregroundColor(Color(nxtBuzTheme.secondaryColor))

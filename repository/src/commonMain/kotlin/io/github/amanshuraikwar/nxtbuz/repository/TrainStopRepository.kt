@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.repository
 
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.NextTrainBetweenStopsDetails
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDeparture
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDetails
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
@@ -33,6 +34,11 @@ interface TrainStopRepository {
         fromTrainStopCode: String,
         toTrainStopCode: String
     ): List<TrainDetails>
+
+    suspend fun getNextTrainBetween(
+        fromTrainStopCode: String,
+        toTrainStopCode: String
+    ): NextTrainBetweenStopsDetails?
 
     suspend fun searchTrainStops(trainStopName: String): List<TrainStop>
 
