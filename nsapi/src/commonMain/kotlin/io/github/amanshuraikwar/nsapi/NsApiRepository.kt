@@ -23,6 +23,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainRouteNodeType
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
 import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
@@ -101,13 +102,16 @@ internal class NsApiRepository(
         return withContext(dispatcherProvider.io) {
             val departures = mutableListOf<TrainDeparture>()
 
+            println("yoyo, get arrivals of $trainStationCode")
             val arrivalDeferred = async {
                 nsApi.getTrainArrivals(stationCode = trainStationCode)
             }
+            println("yoyo, get depertures of $trainStationCode")
             val departuresDeferred = async {
                 nsApi.getTrainDepartures(stationCode = trainStationCode)
             }
 
+            println("yoyo, mixing ourputs")
             val arrivalsMap = arrivalDeferred.await()
                 .payload
                 .arrivals
@@ -118,14 +122,16 @@ internal class NsApiRepository(
                     it.value[0]
                 }
 
+            println("yoyo, formed arrivalsMap")
+
             departuresDeferred.await()
                 .payload
                 .departures
                 .forEach { departureDto ->
                     val arrivalDto = arrivalsMap[departureDto.product.number]
 
-                    trainCategoryNameCache[departureDto.product.number] =
-                        departureDto.product.longCategoryName
+//                    trainCategoryNameCache[departureDto.product.number] =
+//                        departureDto.product.longCategoryName
 
                     departures.add(
                         TrainDeparture(
@@ -181,7 +187,7 @@ internal class NsApiRepository(
                         )
                     )
                 }
-
+            println("yoyo, added to departures")
             departures
         }
     }
@@ -284,17 +290,23 @@ internal class NsApiRepository(
 
     @Suppress("NAME_SHADOWING")
     override suspend fun getTrainsBetween(
-        trainStopCode1: String,
-        trainStopCode2: String
+        fromTrainStopCode: String,
+        toTrainStopCode: String
     ): List<TrainDetails> {
         return withContext(dispatcherProvider.computation) {
             val trainsBetweenDetails = mutableListOf<TrainDetails>()
 
-            val trainStopCode1 = trainStopCode1.parseCode()
-            val trainStopCode2 = trainStopCode2.parseCode()
+            val trainStopCode1 = fromTrainStopCode.parseCode()
+            val trainStopCode2 = toTrainStopCode.parseCode()
+
+            println("yoyo, getting train departures for $trainStopCode1")
 
             val trainDepartures = getTrainDepartures(trainStopCode1)
+
+            println("yoyo, departures $trainDepartures")
+
             for (trainDeparture in trainDepartures) {
+                println("yoyo, getting train details for ${trainDeparture.trainCode}")
                 val trainDetails = getTrainDetails(trainDeparture.trainCode)
                 var stop1Found = false
                 for (node in trainDetails.route) {
@@ -306,6 +318,11 @@ internal class NsApiRepository(
                         break
                     }
                 }
+
+                // TODO-amanshuraikwar (28 Oct 2022 09:41:09 pm):
+                //  add manual delay because if we call train details api too
+                //  frequently, we hit the rate limit of the api
+                delay(500)
             }
 
             trainsBetweenDetails

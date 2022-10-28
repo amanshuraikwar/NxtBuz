@@ -69,6 +69,20 @@ class Di {
         dispatcherProvider: coroutineDispatcherProvider
     )
     
+    private static let nsApiRepository = RepositoryProvides.shared.provideNsApiTrainStopRepository(
+        nsApiFactory: NsApiFactory(
+            settingsSuiteName: "group.io.github.amanshuraikwar.NxtBuz",
+            dispatcherProvider: coroutineDispatcherProvider,
+            subscriptionKey: "28c5a1395bff4cd0b1ebfa3c64652393",
+            addLoggingInterceptors: true,
+            dbBasePath: FileManager.default.containerURL(
+                forSecurityApplicationGroupIdentifier: "group.io.github.amanshuraikwar.NxtBuz"
+            )!.path
+        )
+    )
+    
+    private static let trainStopRepositories = [Di.nsApiRepository]
+    
     public static let defaultTheme = DynamoThemeProvider.companion.DEFAULT_THEME
     
     private static let dynamoThemeRepository = DynamoThemeProvider().createDynamoThemeRepository(
@@ -192,6 +206,12 @@ class Di {
     func getCachedDirectBusDataUseCase() -> IosGetCachedDirectBusDataUseCase {
         return IosGetCachedDirectBusDataUseCase(
             busStopRepository: Di.busStopRepository
+        )
+    }
+    
+    func getTrainBetweenStopsUseCase() -> IosGetTrainBetweenStopsUseCase {
+        return IosGetTrainBetweenStopsUseCase(
+            trainStopRepository: Di.nsApiRepository
         )
     }
 }

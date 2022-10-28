@@ -8,6 +8,7 @@
 import WidgetKit
 import SwiftUI
 import Intents
+import iosUmbrella
 
 struct Provider: IntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
@@ -52,31 +53,62 @@ struct Provider: IntentTimelineProvider {
         in context: Context,
         completion: @escaping (Timeline<Entry>) -> ()
     ) {
-        DispatchQueue.global(qos: .background).async {
-            do {
-                let data = try Data(
-                    contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/virm_4.png")!
-                )
-                DispatchQueue.main.async {
-                    let entry = SimpleEntry(
-                        date: Date(),
-                        configuration: configuration,
-                        sourceTrainStopName: "Amsterdam Centraal",
-                        destinationTrainStopName: "Utrecht Centraal",
-                        trainId: "973",
-                        trainType: "Intercity",
-                        departureFromSourceTime: "5:46 PM",
-                        arrivalAtDestinationTime: "6:13 PM",
-                        journeyDuration: "28 min",
-                        rollingStockImage: UIImage.init(data: data)
+        Di.get().getTrainBetweenStopsUseCase().invoke1(
+            fromTrainStopCode: "NS-API-TRAIN-ASDZ",
+            toTrainStopCode: "NS-API-TRAIN-AMFS"
+        ) { result in
+            let useCaseResult = Util.toUseCaseResult(result)
+            switch useCaseResult {
+            case .Error(_):
+                //completion(Timeline(entries: [], policy: .atEnd))
+                do {
+                    let data = try Data(
+                        contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/virm_4.png")!
                     )
-                    completion(Timeline(entries: [entry], policy: .atEnd))
+                    DispatchQueue.main.async {
+                        let entry = SimpleEntry(
+                            date: Date(),
+                            configuration: configuration,
+                            sourceTrainStopName: "ERROR",
+                            destinationTrainStopName: "ERROR",
+                            trainId: "973",
+                            trainType: "Intercity",
+                            departureFromSourceTime: "5:46 PM",
+                            arrivalAtDestinationTime: "6:13 PM",
+                            journeyDuration: "28 min",
+                            rollingStockImage: UIImage.init(data: data)
+                        )
+                        completion(Timeline(entries: [entry], policy: .atEnd))
+                    }
+                } catch { }
+            case .Success(let trainDetailsList):
+                DispatchQueue.global(qos: .background).async {
+                    do {
+                        NSLog("yoyo, \(trainDetailsList)")
+                        let trainDetails = trainDetailsList[0] as! TrainDetails
+                        let data = try Data(
+                            contentsOf: URL(string: trainDetails.rollingStock[0].imageUrl!)!
+                        )
+                        DispatchQueue.main.async {
+                            let entry = SimpleEntry(
+                                date: Date(),
+                                configuration: configuration,
+                                sourceTrainStopName: trainDetails.sourceTrainStopName,
+                                destinationTrainStopName: trainDetails.destinationTrainStopName,
+                                trainId: trainDetails.trainCode,
+                                trainType: trainDetails.trainCategoryName,
+                                departureFromSourceTime: "5:46 PM",
+                                arrivalAtDestinationTime: "6:13 PM",
+                                journeyDuration: "28 min",
+                                rollingStockImage: UIImage.init(data: data)
+                            )
+                            completion(Timeline(entries: [entry], policy: .atEnd))
+                        }
+                    } catch { }
                 }
-            } catch { }
+            }
         }
     }
-    
-    
 }
 
 struct SimpleEntry: TimelineEntry {
