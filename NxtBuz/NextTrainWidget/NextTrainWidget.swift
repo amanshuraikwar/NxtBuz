@@ -274,6 +274,7 @@ struct NextTrainWidgetEntryView : View {
         .onChange(of: colorScheme) { colorScheme in
             nxtBuzTheme.onSystemThemeChanged(isDark: colorScheme == .dark)
         }
+        .widgetURL(URL(string: "nextTrainWidget://open")!)
     }
 }
 
