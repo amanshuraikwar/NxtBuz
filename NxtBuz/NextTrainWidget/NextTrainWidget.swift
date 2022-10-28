@@ -13,10 +13,10 @@ import iosUmbrella
 struct Provider: IntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
         do {
-            let data2 = try Data(
+            let engine = try Data(
                 contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/e-loc_tr25.png")!
             )
-            let data3 = try Data(
+            let coaches = try Data(
                 contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/icr_7.png")!
             )
             return SimpleEntry(
@@ -30,8 +30,8 @@ struct Provider: IntentTimelineProvider {
                 arrivalAtDestinationTime: "6:13 PM",
                 journeyDuration: "28 min",
                 rollingStockImages: [
-                    UIImage.init(data: data2)!,
-                    UIImage.init(data: data3)!
+                    UIImage.init(data: engine)!,
+                    UIImage.init(data: coaches)!
                 ]
             )
         } catch {
@@ -58,10 +58,10 @@ struct Provider: IntentTimelineProvider {
         if context.isPreview {
             let entry: SimpleEntry
             do {
-                let data2 = try Data(
+                let engine = try Data(
                     contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/e-loc_tr25.png")!
                 )
-                let data3 = try Data(
+                let coaches = try Data(
                     contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/icr_7.png")!
                 )
                 entry = SimpleEntry(
@@ -75,8 +75,8 @@ struct Provider: IntentTimelineProvider {
                     arrivalAtDestinationTime: "6:13 PM",
                     journeyDuration: "28 min",
                     rollingStockImages: [
-                        UIImage.init(data: data2)!,
-                        UIImage.init(data: data3)!
+                        UIImage.init(data: engine)!,
+                        UIImage.init(data: coaches)!
                     ]
                 )
             } catch {
@@ -135,15 +135,13 @@ struct Provider: IntentTimelineProvider {
                     do {
                         NSLog("yoyo, \(trainDetailsList)")
                         let trainDetails = trainDetailsList[0] as! TrainDetails
-                        let data = try Data(
-                            contentsOf: URL(string: trainDetails.rollingStock[0].imageUrl!)!
-                        )
-                        let data2 = try Data(
-                            contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/e-loc_tr25.png")!
-                        )
-                        let data3 = try Data(
-                            contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/icr_7.png")!
-                        )
+                        let rollingStockImages = try trainDetails.rollingStock.map { rollingStockPart in
+                            UIImage.init(
+                                data: try Data(
+                                    contentsOf: URL(string: rollingStockPart.imageUrl!)!
+                                )
+                            )!
+                        }
                         
                         DispatchQueue.main.async {
                             let entry = SimpleEntry(
@@ -156,11 +154,7 @@ struct Provider: IntentTimelineProvider {
                                 departureFromSourceTime: "5:46 PM",
                                 arrivalAtDestinationTime: "6:13 PM",
                                 journeyDuration: "28 min",
-                                //rollingStockImages: UIImage.init(data: data),
-                                rollingStockImages: [
-                                    UIImage.init(data: data2)!,
-                                    UIImage.init(data: data3)!
-                                ]
+                                rollingStockImages: rollingStockImages
                             )
                             completion(Timeline(entries: [entry], policy: .atEnd))
                         }
@@ -238,7 +232,6 @@ struct NextTrainWidgetEntryView : View {
                 Spacer()
                 
                 if !entry.rollingStockImages.isEmpty {
-                    let rollingStockImages = entry.rollingStockImages
                     HStack(
                         spacing: 0
                     ) {
@@ -264,35 +257,7 @@ struct NextTrainWidgetEntryView : View {
                             .foregroundColor(nxtBuzTheme.isDark ? Color(.systemGray6) : .white)
                             .padding(.trailing)
                     }
-                    
-//                    HStack(
-//                        spacing: 0
-//                    ) {
-//                        ForEach(rollingStockImages, id: \.self) { rollingStockImage in
-//                            // we need to resize and crop the image
-//                            // because ios wouldn't let us display a full sized image
-//                            // in a widget
-//                            let resizedImage = cropImage(
-//                                imageToCrop: rollingStockImage.imageScaledToSize(
-//                                    toHeight: 40
-//                                )!,
-//                                width: geometry.size.width
-//                            )
-//
-//                            // for some reason, the width of the resized image is
-//                            // not the same as geometry width, even if we cropped it
-//                            // to geometry width
-//                            // so we need to manually check and force the width
-//                            let width = geometry.size.width > resizedImage.size.width
-//                                            ? resizedImage.size.width : geometry.size.width
-//
-//                            Image(
-//                                uiImage: resizedImage
-//                            )
-//                            .resizable()
-//                            .frame(width: width, height: 40)
-//                        }
-//                    }
+
                     RollingStockImageView(
                         rollingStockImages: entry.rollingStockImages,
                         maximumViewportWidth: geometry.size.width
@@ -329,10 +294,3 @@ struct NextTrainWidget: Widget {
         .supportedFamilies([.systemMedium])
     }
 }
-
-//struct NextTrainWidget_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NextTrainWidgetEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent()))
-//            .previewContext(WidgetPreviewContext(family: .systemSmall))
-//    }
-//}
