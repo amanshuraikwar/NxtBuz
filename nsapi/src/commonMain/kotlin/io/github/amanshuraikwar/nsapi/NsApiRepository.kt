@@ -410,15 +410,19 @@ internal class NsApiRepository(
                             departureFromIntendedSource =
                             trainDeparture
                                 .actualDepartureInstant
-                                ?.formatArrivalInstant()
+                                ?.formatArrivalInstant(withAm = false)
                                 ?: trainDeparture
                                     .plannedDepartureInstant
-                                    .formatArrivalInstant(),
+                                    .formatArrivalInstant(withAm = false),
                             arrivalAtIntendedDestination =
                             when (arrivalTiming) {
                                 is TrainRouteNodeTiming.Available -> {
-                                    arrivalTiming.actualTime
-                                        ?: arrivalTiming.plannedTime
+                                    arrivalTiming
+                                        .actualTimeInstant
+                                        ?.formatArrivalInstant(withAm = false)
+                                        ?: arrivalTiming
+                                            .plannedTimeInstant
+                                            .formatArrivalInstant(withAm = false)
                                 }
 
                                 else -> "--"
@@ -557,8 +561,10 @@ internal class NsApiRepository(
                     TrainRouteNodeTiming.Available(
                         plannedTime =
                         departureDto.plannedTime.toAmsterdamInstant().formatArrivalInstant(),
+                        plannedTimeInstant = departureDto.plannedTime.toAmsterdamInstant(),
                         actualTime =
                         departureDto.actualTime?.toAmsterdamInstant()?.formatArrivalInstant(),
+                        actualTimeInstant = departureDto.actualTime?.toAmsterdamInstant(),
                         delayedByMinutes =
                         departureDto
                             .actualTime
@@ -585,8 +591,10 @@ internal class NsApiRepository(
                     TrainRouteNodeTiming.Available(
                         plannedTime =
                         arrivalDto.plannedTime.toAmsterdamInstant().formatArrivalInstant(),
+                        plannedTimeInstant = arrivalDto.plannedTime.toAmsterdamInstant(),
                         actualTime =
                         arrivalDto.actualTime?.toAmsterdamInstant()?.formatArrivalInstant(),
+                        actualTimeInstant = arrivalDto.actualTime?.toAmsterdamInstant(),
                         delayedByMinutes =
                         arrivalDto
                             .actualTime
@@ -659,7 +667,9 @@ internal class NsApiRepository(
             )
         }
 
-        private fun Instant.formatArrivalInstant(): String {
+        private fun Instant.formatArrivalInstant(
+            withAm: Boolean = true
+        ): String {
             val datetimeInSystemZone = toLocalDateTime(TimeZone.currentSystemDefault())
             val hour = when (datetimeInSystemZone.hour) {
                 0, 12 -> "12"
@@ -677,7 +687,11 @@ internal class NsApiRepository(
                 else -> "${datetimeInSystemZone.minute}"
             }
 
-            return "$hour:$minutes $a"
+            return if (withAm) {
+                "$hour:$minutes $a"
+            } else {
+                "$hour:$minutes"
+            }
         }
     }
 }
