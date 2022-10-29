@@ -1,7 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain.train
 
-import io.github.amanshuraikwar.nxtbuz.commonkmm.train.NextTrainBetweenStopsDetails
-import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDetails
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.NextTrainBetweenStopsOutput
 import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
 
 open class GetTrainBetweenStopsUseCase constructor(
@@ -10,15 +9,28 @@ open class GetTrainBetweenStopsUseCase constructor(
     suspend operator fun invoke(
         fromTrainStopCode: String,
         toTrainStopCode: String
-    ): NextTrainBetweenStopsDetails? {
+    ): NextTrainBetweenStopsOutput {
+        if (fromTrainStopCode == toTrainStopCode) {
+            return NextTrainBetweenStopsOutput.TrainStopsAreSame
+        }
+
         for (repo in trainStopRepositories) {
             if (repo.supportsTrain(trainCode = fromTrainStopCode)) {
-                return repo.getNextTrainBetween(
+                val trainDetails = repo.getNextTrainBetween(
                     fromTrainStopCode = fromTrainStopCode,
                     toTrainStopCode = toTrainStopCode
                 )
+
+                return if (trainDetails == null) {
+                    NextTrainBetweenStopsOutput.NoTrainFound
+                } else {
+                    NextTrainBetweenStopsOutput.TrainFound(
+                        details = trainDetails
+                    )
+                }
             }
         }
-        return null
+
+        return NextTrainBetweenStopsOutput.NoTrainFound
     }
 }

@@ -45,15 +45,18 @@ struct NextTrainWidgetEntryView : View {
                     HStack(alignment: .top, spacing: 0) {
                         Text(entry.destinationTrainStopName)
                             .font(NxtBuzFonts.body)
-                            .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                         
                         Spacer()
                         
                         Text(entry.arrivalAtDestinationTime.uppercased())
                             .font(NxtBuzFonts.bodyMonospaced)
                             .fontWeight(.bold)
-                            .foregroundColor(Color(nxtBuzTheme.secondaryColor))
                     }
+                    .foregroundColor(
+                        Color(
+                            nxtBuzTheme.isDark ? nxtBuzTheme.secondaryColor : .systemGray5
+                        )
+                    )
                     .padding(.horizontal, 16)
                     .padding(.top, 8)
                     .padding(.bottom, 8)
@@ -61,7 +64,9 @@ struct NextTrainWidgetEntryView : View {
                 .background(
                     LinearGradient(
                         gradient: Gradient(
-                            colors: [Color(.systemGray5), Color(.systemGray6)]
+                            colors: nxtBuzTheme.isDark
+                            ? [Color(.systemGray5), Color(.systemGray6)]
+                            : [Color(nxtBuzTheme.primaryColor), Color(nxtBuzTheme.secondaryColor)]
                         ),
                         startPoint: .top,
                         endPoint: .bottom
@@ -70,6 +75,7 @@ struct NextTrainWidgetEntryView : View {
                 .cornerRadius(14)
 
                 HStack(
+                    alignment: .center,
                     spacing: 0
                 ) {
                     Text("\(getTime(date: entry.date))")
@@ -103,10 +109,11 @@ struct NextTrainWidgetEntryView : View {
                         }
                         
                         if facility == TrainFacility.powerSockets {
-                            Image(systemName: "powerplug.fill")
+                            Image(systemName: "powerplug")
                                 .renderingMode(.template)
                                 .resizable()
                                 .scaledToFit()
+                                .fontWeight(.medium)
                                 .padding(1)
                                 .frame(width: 17, height: 17)
                                 .foregroundColor(Color(nxtBuzTheme.accentColor))

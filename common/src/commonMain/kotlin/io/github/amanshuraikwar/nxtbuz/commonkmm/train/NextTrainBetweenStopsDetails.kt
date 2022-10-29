@@ -1,5 +1,15 @@
 package io.github.amanshuraikwar.nxtbuz.commonkmm.train
 
+sealed class NextTrainBetweenStopsOutput {
+    data class TrainFound(
+        val details: NextTrainBetweenStopsDetails
+    ) : NextTrainBetweenStopsOutput()
+
+    object NoTrainFound : NextTrainBetweenStopsOutput()
+
+    object TrainStopsAreSame : NextTrainBetweenStopsOutput()
+}
+
 data class NextTrainBetweenStopsDetails(
     val trainCode: String,
     val trainCategoryName: String,

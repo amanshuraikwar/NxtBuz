@@ -30,54 +30,93 @@ struct Provider: IntentTimelineProvider {
         in context: Context,
         completion: @escaping (Timeline<SimpleEntry>) -> ()
     ) {
-        let fromTrainStopCode =
-        configuration.FromTrainStop?.trainStopCode ?? "NS-API-TRAIN-ASD"
-        let toTrainStopCode =
-        configuration.ToTrainStop?.trainStopCode ?? "NS-API-TRAIN-ALM"
+        let fromTrainStopCode = configuration.FromTrainStop?.trainStopCode
+        let toTrainStopCode = configuration.ToTrainStop?.trainStopCode
+        let fromTrainStopName = configuration.FromTrainStop?.trainStopName
+        let toTrainStopName = configuration.ToTrainStop?.trainStopName
         
+        if fromTrainStopCode != nil
+            && toTrainStopCode != nil
+            && fromTrainStopName != nil
+            && toTrainStopName != nil {
+            fetchTrains(
+                configuration: configuration,
+                fromTrainStopCode: fromTrainStopCode!,
+                fromTrainStopName: fromTrainStopName!,
+                toTrainStopCode: toTrainStopCode!,
+                toTrainStopName: toTrainStopName!,
+                completion: completion
+            )
+        } else {
+            DispatchQueue.main.async {
+                let entry = SimpleEntry(
+                    date: Date(),
+                    configuration: configuration,
+                    sourceTrainStopName: fromTrainStopName ?? "Not selected",
+                    destinationTrainStopName: toTrainStopName ?? "Not selected",
+                    trainId: "",
+                    trainType: "Please configure the widget",
+                    departureFromSourceTime: "--",
+                    arrivalAtDestinationTime: "--",
+                    journeyDuration: "--",
+                    rollingStockImages: [],
+                    facilities: []
+                )
+                completion(Timeline(entries: [entry], policy: .atEnd))
+            }
+        }
+    }
+    
+    private func fetchTrains(
+        configuration: NextTrainWidgetConfigurationIntent,
+        fromTrainStopCode: String,
+        fromTrainStopName: String,
+        toTrainStopCode: String,
+        toTrainStopName: String,
+        completion: @escaping (Timeline<SimpleEntry>) -> ()
+    ) {
         Di.get().getTrainBetweenStopsUseCase().invoke1(
             fromTrainStopCode: fromTrainStopCode,
             toTrainStopCode: toTrainStopCode
         ) { result in
             let useCaseResult = Util.toUseCaseResult(result)
             switch useCaseResult {
-            case .Error(_):
-                do {
-                    let data = try Data(
-                        contentsOf: URL(
-                            string: "https://vt.ns-mlab.nl/v1/images/virm_4.png"
-                        )!
+            case .Error(let message):
+                DispatchQueue.main.async {
+                    let entry = SimpleEntry(
+                        date: Date(),
+                        configuration: configuration,
+                        sourceTrainStopName: fromTrainStopName,
+                        destinationTrainStopName: toTrainStopName,
+                        trainId: "",
+                        trainType: message,
+                        departureFromSourceTime: "--",
+                        arrivalAtDestinationTime: "--",
+                        journeyDuration: "--",
+                        rollingStockImages: [],
+                        facilities: []
                     )
-                    DispatchQueue.main.async {
-                        let entry = SimpleEntry(
-                            date: Date(),
-                            configuration: configuration,
-                            sourceTrainStopName: "ERROR",
-                            destinationTrainStopName: "ERROR",
-                            trainId: "973",
-                            trainType: "Intercity",
-                            departureFromSourceTime: "5:46 PM",
-                            arrivalAtDestinationTime: "6:13 PM",
-                            journeyDuration: "28 min",
-                            rollingStockImages: [UIImage.init(data: data)!],
-                            facilities: [TrainFacility.bicycle]
-                        )
-                        completion(Timeline(entries: [entry], policy: .atEnd))
-                    }
-                } catch { }
-            case .Success(let trainDetails):
+                    completion(Timeline(entries: [entry], policy: .atEnd))
+                }
+            case .Success(let output):
                 DispatchQueue.global(qos: .background).async {
-                    do {
-                        NSLog("yoyo, \(trainDetails)")
-                        let trainDetails = trainDetails as NextTrainBetweenStopsDetails
-                        let rollingStockImages = try trainDetails.rollingStockImages.map { image in
-                            UIImage.init(
-                                data: try Data(
-                                    contentsOf: URL(string: image)!
-                                )
-                            )!
-                        }
+                    if let output = output as? NextTrainBetweenStopsOutput.TrainFound {
+                        let trainDetails = output.details
                         
+                        let rollingStockImages: [UIImage]
+                        
+                        do {
+                            rollingStockImages = try trainDetails.rollingStockImages.map { image in
+                                UIImage.init(
+                                    data: try Data(
+                                        contentsOf: URL(string: image)!
+                                    )
+                                )!
+                            }
+                        } catch {
+                            rollingStockImages = []
+                        }
+                                                        
                         DispatchQueue.main.async {
                             let entry = SimpleEntry(
                                 date: Date(),
@@ -94,7 +133,45 @@ struct Provider: IntentTimelineProvider {
                             )
                             completion(Timeline(entries: [entry], policy: .atEnd))
                         }
-                    } catch { }
+                    }
+                        
+                    if let _ = output as? NextTrainBetweenStopsOutput.NoTrainFound {
+                        DispatchQueue.main.async {
+                            let entry = SimpleEntry(
+                                date: Date(),
+                                configuration: configuration,
+                                sourceTrainStopName: fromTrainStopName,
+                                destinationTrainStopName: toTrainStopName,
+                                trainId: "",
+                                trainType: "NO TRAIN FOUND",
+                                departureFromSourceTime: "--",
+                                arrivalAtDestinationTime: "--",
+                                journeyDuration: "--",
+                                rollingStockImages: [],
+                                facilities: []
+                            )
+                            completion(Timeline(entries: [entry], policy: .atEnd))
+                        }
+                    }
+                    
+                    if let _ = output as? NextTrainBetweenStopsOutput.TrainStopsAreSame {
+                        DispatchQueue.main.async {
+                            let entry = SimpleEntry(
+                                date: Date(),
+                                configuration: configuration,
+                                sourceTrainStopName: fromTrainStopName,
+                                destinationTrainStopName: toTrainStopName,
+                                trainId: "",
+                                trainType: "STOPS SHOULD BE DIFFERENT",
+                                departureFromSourceTime: "--",
+                                arrivalAtDestinationTime: "--",
+                                journeyDuration: "--",
+                                rollingStockImages: [],
+                                facilities: []
+                            )
+                            completion(Timeline(entries: [entry], policy: .atEnd))
+                        }
+                    }
                 }
             }
         }
