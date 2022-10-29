@@ -16,7 +16,7 @@ struct Provider: IntentTimelineProvider {
     }
 
     func getSnapshot(
-        for configuration: ConfigurationIntent,
+        for configuration: NextTrainWidgetConfigurationIntent,
         in context: Context,
         completion: @escaping (SimpleEntry) -> ()
     ) {
@@ -26,7 +26,7 @@ struct Provider: IntentTimelineProvider {
     }
 
     func getTimeline(
-        for configuration: ConfigurationIntent,
+        for configuration: NextTrainWidgetConfigurationIntent,
         in context: Context,
         completion: @escaping (Timeline<SimpleEntry>) -> ()
     ) {
@@ -103,7 +103,7 @@ struct Provider: IntentTimelineProvider {
             )
             return SimpleEntry(
                 date: Date(),
-                configuration: ConfigurationIntent(),
+                configuration: NextTrainWidgetConfigurationIntent(),
                 sourceTrainStopName: "Amsterdam Centraal",
                 destinationTrainStopName: "Amersfoort Centraal",
                 trainId: "1529",
@@ -120,7 +120,7 @@ struct Provider: IntentTimelineProvider {
         } catch {
             return SimpleEntry(
                 date: Date(),
-                configuration: ConfigurationIntent(),
+                configuration: NextTrainWidgetConfigurationIntent(),
                 sourceTrainStopName: "Amsterdam Centraal",
                 destinationTrainStopName: "Amersfoort Centraal",
                 trainId: "1529",
@@ -137,7 +137,7 @@ struct Provider: IntentTimelineProvider {
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let configuration: ConfigurationIntent
+    let configuration: NextTrainWidgetConfigurationIntent
     let sourceTrainStopName: String
     let destinationTrainStopName: String
     let trainId: String
@@ -156,7 +156,7 @@ struct NextTrainWidget: Widget {
     var body: some WidgetConfiguration {
         IntentConfiguration(
             kind: kind,
-            intent: ConfigurationIntent.self,
+            intent: NextTrainWidgetConfigurationIntent.self,
             provider: Provider()
         ) { entry in
             NextTrainWidgetEntryView(entry: entry)

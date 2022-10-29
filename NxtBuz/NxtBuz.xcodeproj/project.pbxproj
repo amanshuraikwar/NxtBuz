@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C2E9B84496206C3B8F5DE67 /* Pods_GoingHomeBusWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3F8761624B8C833C2634455 /* Pods_GoingHomeBusWidgetExtension.framework */; };
-		1E45898CE66B61538F750856 /* Pods_SelectBusArrival.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4BF1578424D246D236C79B /* Pods_SelectBusArrival.framework */; };
-		40EDB6F4742347C6392D1E94 /* Pods_NxtBuz_WidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED98D923D3F52B3BD3CA7123 /* Pods_NxtBuz_WidgetExtension.framework */; };
-		5C000683B3315E03D87730EF /* Pods_NextTrainWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C621640DE15F2D7B7BADCF /* Pods_NextTrainWidgetExtension.framework */; };
+		010935E09DA8F13976377E05 /* Pods_SelectBusArrival.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9317197C2CE346C8E00C00DA /* Pods_SelectBusArrival.framework */; };
+		19C0CCC8876DC9DE3065D084 /* Pods_GoingHomeBusWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA047EE5ACDD88A6E95AD312 /* Pods_GoingHomeBusWidgetExtension.framework */; };
+		2A6F482178E488076DC11B4F /* Pods_NxtBuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC432B02F6C7028338F4CA1B /* Pods_NxtBuz.framework */; };
+		3D4924B1F202A8172ACDF577 /* Pods_NextTrainWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32E0F512CBA1CAEF65FE0642 /* Pods_NextTrainWidgetExtension.framework */; };
+		4B5C5C23A47F8FBA7397C614 /* Pods_NxtBuz_WidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B9AFBA93903C90E27C69AA0 /* Pods_NxtBuz_WidgetExtension.framework */; };
+		843E5BD52F6F7EFA16B59CE9 /* Pods_NextTrainWidgetIntentExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93A52CDB34B5580686FECF8C /* Pods_NextTrainWidgetIntentExtension.framework */; };
 		A50D830927259A1200D6B6C8 /* StarredBusStopWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50D830827259A1200D6B6C8 /* StarredBusStopWidgetView.swift */; };
 		A50D830A27259CB300D6B6C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E1E81C26F10216007470A4 /* Assets.xcassets */; };
 		A5144DEE2706C959002274C8 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DED2706C959002274C8 /* SecondaryButton.swift */; };
@@ -19,6 +21,19 @@
 		A516105D270F267E00A513FD /* BusStopArrivalsBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A516105C270F267E00A513FD /* BusStopArrivalsBottomSheetView.swift */; };
 		A52A0733290C7259003E51BC /* RollingStockImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A0732290C7259003E51BC /* RollingStockImageView.swift */; };
 		A52A0735290D0820003E51BC /* NextTrainWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A0734290D0820003E51BC /* NextTrainWidgetEntryView.swift */; };
+		A52A073B290D797F003E51BC /* NxtBuz_Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A2326FB50870095D96A /* NxtBuz_Widget.swift */; };
+		A52A0743290D7B38003E51BC /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A534608C2707495400A1C990 /* Intents.framework */; };
+		A52A0746290D7B38003E51BC /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A0745290D7B38003E51BC /* IntentHandler.swift */; };
+		A52A074D290D7B38003E51BC /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53460972707495400A1C990 /* IntentsUI.framework */; };
+		A52A0750290D7B38003E51BC /* IntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A074F290D7B38003E51BC /* IntentViewController.swift */; };
+		A52A0753290D7B38003E51BC /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52A0751290D7B38003E51BC /* MainInterface.storyboard */; };
+		A52A0757290D7B38003E51BC /* NextTrainWidgetIntentExtensionUI.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A52A074C290D7B38003E51BC /* NextTrainWidgetIntentExtensionUI.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A52A075A290D7B38003E51BC /* NextTrainWidgetIntentExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A52A0742290D7B37003E51BC /* NextTrainWidgetIntentExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A52A0761290D7C4F003E51BC /* NextTrainWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFF4B28FDCA7500B2DDBC /* NextTrainWidget.intentdefinition */; };
+		A52A0762290D7C50003E51BC /* NextTrainWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFF4B28FDCA7500B2DDBC /* NextTrainWidget.intentdefinition */; };
+		A52A0763290D7F4B003E51BC /* Di.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBA126F5C07200BB79DA /* Di.swift */; };
+		A52A0764290D7F57003E51BC /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5627228E02005A67FB /* Util.swift */; };
+		A52A0766290D8480003E51BC /* UseCaseResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E15D5427228808005A67FB /* UseCaseResult.swift */; };
 		A52FEB9826F593BC00BB79DA /* BusStopItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */; };
 		A52FEB9A26F5B1C800BB79DA /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9926F5B1C800BB79DA /* Font.swift */; };
 		A52FEB9C26F5B66E00BB79DA /* BusStopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */; };
@@ -79,7 +94,6 @@
 		A57B9A4626FD85910095D96A /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A4526FD85910095D96A /* ErrorView.swift */; };
 		A57B9A4826FD90900095D96A /* BusStopArrivalsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A4726FD90900095D96A /* BusStopArrivalsListView.swift */; };
 		A57B9A4A26FDE2B40095D96A /* StarredBusArrivalsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A4926FDE2B40095D96A /* StarredBusArrivalsViewModel.swift */; };
-		A59E5B2626FA25CE0032DC88 /* Pods_NxtBuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		A59E5B2A26FA273D0032DC88 /* iosUmbrella.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59E5B2926FA273D0032DC88 /* iosUmbrella.framework */; };
 		A5C12F1C27018FB9000729E9 /* NxtBuzNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1B27018FB9000729E9 /* NxtBuzNavigationView.swift */; };
 		A5C12F1E2701D726000729E9 /* BusServiceNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C12F1D2701D726000729E9 /* BusServiceNumberView.swift */; };
@@ -133,10 +147,24 @@
 		A5FFFF4F28FDCA7600B2DDBC /* NextTrainWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFF4B28FDCA7500B2DDBC /* NextTrainWidget.intentdefinition */; };
 		A5FFFF5028FDCA7600B2DDBC /* NextTrainWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = A5FFFF4B28FDCA7500B2DDBC /* NextTrainWidget.intentdefinition */; };
 		A5FFFF5328FDCA7600B2DDBC /* NextTrainWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A5FFFF4528FDCA7500B2DDBC /* NextTrainWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		CB5BCDD6C83F1A439E3A8EFE /* Pods_StarredBusArrivalsWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C668BE7A335792604F82FE /* Pods_StarredBusArrivalsWidgetExtension.framework */; };
+		BA9CC9585FC3A3F01F85D030 /* Pods_StarredBusArrivalsWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DFCB2FD2F08A93EA1218B2A /* Pods_StarredBusArrivalsWidgetExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A52A0755290D7B38003E51BC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5E1E80D26F10213007470A4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A52A074B290D7B38003E51BC;
+			remoteInfo = NextTrainWidgetIntentExtensionUI;
+		};
+		A52A0758290D7B38003E51BC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5E1E80D26F10213007470A4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A52A0741290D7B37003E51BC;
+			remoteInfo = NextTrainWidgetIntentExtension;
+		};
 		A53460A02707495400A1C990 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A5E1E80D26F10213007470A4 /* Project object */;
@@ -202,12 +230,14 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				A52A075A290D7B38003E51BC /* NextTrainWidgetIntentExtension.appex in Embed App Extensions */,
 				A5FFFF5328FDCA7600B2DDBC /* NextTrainWidgetExtension.appex in Embed App Extensions */,
 				A5D2A7B82727EC8B00D63B81 /* GoingHomeBusWidgetExtension.appex in Embed App Extensions */,
 				A53460A52707495400A1C990 /* SelectBusArrival.appex in Embed App Extensions */,
 				A57B9A2D26FB508B0095D96A /* NxtBuz-WidgetExtension.appex in Embed App Extensions */,
 				A53460A22707495400A1C990 /* SelectBusArrivalUI.appex in Embed App Extensions */,
 				A559FCAB27258069002B8DE6 /* StarredBusArrivalsWidgetExtension.appex in Embed App Extensions */,
+				A52A0757290D7B38003E51BC /* NextTrainWidgetIntentExtensionUI.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,15 +245,21 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1745AD13085AFEA1CA1DD517 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz-WidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
-		20C621640DE15F2D7B7BADCF /* Pods_NextTrainWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NextTrainWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2DF2BFFBBEEF1A4A7ACDF676 /* Pods-NextTrainWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NextTrainWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-NextTrainWidgetExtension/Pods-NextTrainWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
-		43C668BE7A335792604F82FE /* Pods_StarredBusArrivalsWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StarredBusArrivalsWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4483401B921C37668D13F340 /* Pods-SelectBusArrival.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelectBusArrival.debug.xcconfig"; path = "Target Support Files/Pods-SelectBusArrival/Pods-SelectBusArrival.debug.xcconfig"; sourceTree = "<group>"; };
-		470320552A22F3CC7189097C /* Pods-StarredBusArrivalsWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StarredBusArrivalsWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-StarredBusArrivalsWidgetExtension/Pods-StarredBusArrivalsWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
-		5AC7C77DDFE2984190F552C2 /* Pods-NextTrainWidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NextTrainWidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-NextTrainWidgetExtension/Pods-NextTrainWidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		8FED9166447E921CC5ECA269 /* Pods-GoingHomeBusWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoingHomeBusWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-GoingHomeBusWidgetExtension/Pods-GoingHomeBusWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
-		9C4BF1578424D246D236C79B /* Pods_SelectBusArrival.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelectBusArrival.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		110F51015A822861F3324BE4 /* Pods-NxtBuz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz.debug.xcconfig"; path = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.debug.xcconfig"; sourceTree = "<group>"; };
+		2A059506227F2D7C755568AF /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz-WidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		2C2CA84A08CA9766090034A4 /* Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-StarredBusArrivalsWidgetExtension/Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		2EC0CC6876297E49BE7E01CC /* Pods-SelectBusArrival.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelectBusArrival.debug.xcconfig"; path = "Target Support Files/Pods-SelectBusArrival/Pods-SelectBusArrival.debug.xcconfig"; sourceTree = "<group>"; };
+		32E0F512CBA1CAEF65FE0642 /* Pods_NextTrainWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NextTrainWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FAA22930DA8702353CBEA85 /* Pods-GoingHomeBusWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoingHomeBusWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-GoingHomeBusWidgetExtension/Pods-GoingHomeBusWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
+		536C8637F1ACE20E49E81824 /* Pods-SelectBusArrival.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelectBusArrival.release.xcconfig"; path = "Target Support Files/Pods-SelectBusArrival/Pods-SelectBusArrival.release.xcconfig"; sourceTree = "<group>"; };
+		54F457EF4D8E03278077D3DA /* Pods-StarredBusArrivalsWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StarredBusArrivalsWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-StarredBusArrivalsWidgetExtension/Pods-StarredBusArrivalsWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
+		6C937C63B25DE396B8765E93 /* Pods-NextTrainWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NextTrainWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-NextTrainWidgetExtension/Pods-NextTrainWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
+		6DFCB2FD2F08A93EA1218B2A /* Pods_StarredBusArrivalsWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StarredBusArrivalsWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		818A4B39D3FF8A4643BE6E3E /* Pods-NextTrainWidgetIntentExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NextTrainWidgetIntentExtension.release.xcconfig"; path = "Target Support Files/Pods-NextTrainWidgetIntentExtension/Pods-NextTrainWidgetIntentExtension.release.xcconfig"; sourceTree = "<group>"; };
+		8B9AFBA93903C90E27C69AA0 /* Pods_NxtBuz_WidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NxtBuz_WidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9317197C2CE346C8E00C00DA /* Pods_SelectBusArrival.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelectBusArrival.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		93A52CDB34B5580686FECF8C /* Pods_NextTrainWidgetIntentExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NextTrainWidgetIntentExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A22DEC078FE63333C0BC6B93 /* Pods-GoingHomeBusWidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoingHomeBusWidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-GoingHomeBusWidgetExtension/Pods-GoingHomeBusWidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A50D830827259A1200D6B6C8 /* StarredBusStopWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredBusStopWidgetView.swift; sourceTree = "<group>"; };
 		A5144DED2706C959002274C8 /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
 		A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopArrivalView.swift; sourceTree = "<group>"; };
@@ -231,6 +267,14 @@
 		A516105C270F267E00A513FD /* BusStopArrivalsBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopArrivalsBottomSheetView.swift; sourceTree = "<group>"; };
 		A52A0732290C7259003E51BC /* RollingStockImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingStockImageView.swift; sourceTree = "<group>"; };
 		A52A0734290D0820003E51BC /* NextTrainWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTrainWidgetEntryView.swift; sourceTree = "<group>"; };
+		A52A0742290D7B37003E51BC /* NextTrainWidgetIntentExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NextTrainWidgetIntentExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A52A0745290D7B38003E51BC /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		A52A0747290D7B38003E51BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A52A074C290D7B38003E51BC /* NextTrainWidgetIntentExtensionUI.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NextTrainWidgetIntentExtensionUI.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A52A074F290D7B38003E51BC /* IntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentViewController.swift; sourceTree = "<group>"; };
+		A52A0752290D7B38003E51BC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		A52A0754290D7B38003E51BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A52A0765290D811C003E51BC /* NextTrainWidgetIntentExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NextTrainWidgetIntentExtension.entitlements; sourceTree = "<group>"; };
 		A52FEB9726F593BC00BB79DA /* BusStopItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopItemView.swift; sourceTree = "<group>"; };
 		A52FEB9926F5B1C800BB79DA /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		A52FEB9B26F5B66E00BB79DA /* BusStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopsView.swift; sourceTree = "<group>"; };
@@ -326,24 +370,38 @@
 		A5FFFF4B28FDCA7500B2DDBC /* NextTrainWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = NextTrainWidget.intentdefinition; sourceTree = "<group>"; };
 		A5FFFF4C28FDCA7600B2DDBC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A5FFFF4E28FDCA7600B2DDBC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AACB50D4905E209E0EFD01A1 /* Pods-NxtBuz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz.debug.xcconfig"; path = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.debug.xcconfig"; sourceTree = "<group>"; };
-		B3B8C3EDAF9C8EA6095B5213 /* Pods-SelectBusArrival.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelectBusArrival.release.xcconfig"; path = "Target Support Files/Pods-SelectBusArrival/Pods-SelectBusArrival.release.xcconfig"; sourceTree = "<group>"; };
-		B3D756E3D85E99C0D6B8FF34 /* Pods-NxtBuz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.release.xcconfig"; sourceTree = "<group>"; };
-		B3F8761624B8C833C2634455 /* Pods_GoingHomeBusWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoingHomeBusWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B637FC6A4A02166145A04DF7 /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz-WidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		B6DDCC6A895F0FF66307D7B6 /* Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-StarredBusArrivalsWidgetExtension/Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NxtBuz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EAE6698C40A98359C8193075 /* Pods-GoingHomeBusWidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoingHomeBusWidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-GoingHomeBusWidgetExtension/Pods-GoingHomeBusWidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		ED98D923D3F52B3BD3CA7123 /* Pods_NxtBuz_WidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NxtBuz_WidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAB1542410FB5237DD4C38E5 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz-WidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
+		CC432B02F6C7028338F4CA1B /* Pods_NxtBuz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NxtBuz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D35376004C7E80A4268DDFE9 /* Pods-NextTrainWidgetIntentExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NextTrainWidgetIntentExtension.debug.xcconfig"; path = "Target Support Files/Pods-NextTrainWidgetIntentExtension/Pods-NextTrainWidgetIntentExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		DA047EE5ACDD88A6E95AD312 /* Pods_GoingHomeBusWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoingHomeBusWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5784BC6B74978DDFEB9EC9D /* Pods-NextTrainWidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NextTrainWidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-NextTrainWidgetExtension/Pods-NextTrainWidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		FA3B8810AFD9AD3EE2DA200C /* Pods-NxtBuz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz/Pods-NxtBuz.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A52A073F290D7B37003E51BC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A52A0743290D7B38003E51BC /* Intents.framework in Frameworks */,
+				843E5BD52F6F7EFA16B59CE9 /* Pods_NextTrainWidgetIntentExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A52A0749290D7B38003E51BC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A52A074D290D7B38003E51BC /* IntentsUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A53460882707495400A1C990 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				A534608D2707495400A1C990 /* Intents.framework in Frameworks */,
-				1E45898CE66B61538F750856 /* Pods_SelectBusArrival.framework in Frameworks */,
+				010935E09DA8F13976377E05 /* Pods_SelectBusArrival.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,7 +419,7 @@
 			files = (
 				A559FCA227258066002B8DE6 /* SwiftUI.framework in Frameworks */,
 				A559FCA127258066002B8DE6 /* WidgetKit.framework in Frameworks */,
-				CB5BCDD6C83F1A439E3A8EFE /* Pods_StarredBusArrivalsWidgetExtension.framework in Frameworks */,
+				BA9CC9585FC3A3F01F85D030 /* Pods_StarredBusArrivalsWidgetExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,7 +429,7 @@
 			files = (
 				A57B9A2126FB50870095D96A /* SwiftUI.framework in Frameworks */,
 				A57B9A1F26FB50870095D96A /* WidgetKit.framework in Frameworks */,
-				40EDB6F4742347C6392D1E94 /* Pods_NxtBuz_WidgetExtension.framework in Frameworks */,
+				4B5C5C23A47F8FBA7397C614 /* Pods_NxtBuz_WidgetExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,7 +439,7 @@
 			files = (
 				A5D2A7AF2727EC8800D63B81 /* SwiftUI.framework in Frameworks */,
 				A5D2A7AE2727EC8800D63B81 /* WidgetKit.framework in Frameworks */,
-				0C2E9B84496206C3B8F5DE67 /* Pods_GoingHomeBusWidgetExtension.framework in Frameworks */,
+				19C0CCC8876DC9DE3065D084 /* Pods_GoingHomeBusWidgetExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,7 +448,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A59E5B2A26FA273D0032DC88 /* iosUmbrella.framework in Frameworks */,
-				A59E5B2626FA25CE0032DC88 /* Pods_NxtBuz.framework in Frameworks */,
+				2A6F482178E488076DC11B4F /* Pods_NxtBuz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,7 +472,7 @@
 			files = (
 				A5FFFF4728FDCA7500B2DDBC /* SwiftUI.framework in Frameworks */,
 				A5FFFF4628FDCA7500B2DDBC /* WidgetKit.framework in Frameworks */,
-				5C000683B3315E03D87730EF /* Pods_NextTrainWidgetExtension.framework in Frameworks */,
+				3D4924B1F202A8172ACDF577 /* Pods_NextTrainWidgetExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,16 +483,17 @@
 			isa = PBXGroup;
 			children = (
 				A59E5B2926FA273D0032DC88 /* iosUmbrella.framework */,
-				BC32328FF816317F46B375B4 /* Pods_NxtBuz.framework */,
 				A57B9A1E26FB50870095D96A /* WidgetKit.framework */,
 				A57B9A2026FB50870095D96A /* SwiftUI.framework */,
-				ED98D923D3F52B3BD3CA7123 /* Pods_NxtBuz_WidgetExtension.framework */,
 				A534608C2707495400A1C990 /* Intents.framework */,
 				A53460972707495400A1C990 /* IntentsUI.framework */,
-				9C4BF1578424D246D236C79B /* Pods_SelectBusArrival.framework */,
-				43C668BE7A335792604F82FE /* Pods_StarredBusArrivalsWidgetExtension.framework */,
-				B3F8761624B8C833C2634455 /* Pods_GoingHomeBusWidgetExtension.framework */,
-				20C621640DE15F2D7B7BADCF /* Pods_NextTrainWidgetExtension.framework */,
+				DA047EE5ACDD88A6E95AD312 /* Pods_GoingHomeBusWidgetExtension.framework */,
+				32E0F512CBA1CAEF65FE0642 /* Pods_NextTrainWidgetExtension.framework */,
+				93A52CDB34B5580686FECF8C /* Pods_NextTrainWidgetIntentExtension.framework */,
+				CC432B02F6C7028338F4CA1B /* Pods_NxtBuz.framework */,
+				8B9AFBA93903C90E27C69AA0 /* Pods_NxtBuz_WidgetExtension.framework */,
+				9317197C2CE346C8E00C00DA /* Pods_SelectBusArrival.framework */,
+				6DFCB2FD2F08A93EA1218B2A /* Pods_StarredBusArrivalsWidgetExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -442,20 +501,42 @@
 		9F8567213E5A41566A3F5DBF /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				AACB50D4905E209E0EFD01A1 /* Pods-NxtBuz.debug.xcconfig */,
-				B3D756E3D85E99C0D6B8FF34 /* Pods-NxtBuz.release.xcconfig */,
-				B637FC6A4A02166145A04DF7 /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */,
-				1745AD13085AFEA1CA1DD517 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */,
-				4483401B921C37668D13F340 /* Pods-SelectBusArrival.debug.xcconfig */,
-				B3B8C3EDAF9C8EA6095B5213 /* Pods-SelectBusArrival.release.xcconfig */,
-				B6DDCC6A895F0FF66307D7B6 /* Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig */,
-				470320552A22F3CC7189097C /* Pods-StarredBusArrivalsWidgetExtension.release.xcconfig */,
-				EAE6698C40A98359C8193075 /* Pods-GoingHomeBusWidgetExtension.debug.xcconfig */,
-				8FED9166447E921CC5ECA269 /* Pods-GoingHomeBusWidgetExtension.release.xcconfig */,
-				5AC7C77DDFE2984190F552C2 /* Pods-NextTrainWidgetExtension.debug.xcconfig */,
-				2DF2BFFBBEEF1A4A7ACDF676 /* Pods-NextTrainWidgetExtension.release.xcconfig */,
+				A22DEC078FE63333C0BC6B93 /* Pods-GoingHomeBusWidgetExtension.debug.xcconfig */,
+				3FAA22930DA8702353CBEA85 /* Pods-GoingHomeBusWidgetExtension.release.xcconfig */,
+				E5784BC6B74978DDFEB9EC9D /* Pods-NextTrainWidgetExtension.debug.xcconfig */,
+				6C937C63B25DE396B8765E93 /* Pods-NextTrainWidgetExtension.release.xcconfig */,
+				D35376004C7E80A4268DDFE9 /* Pods-NextTrainWidgetIntentExtension.debug.xcconfig */,
+				818A4B39D3FF8A4643BE6E3E /* Pods-NextTrainWidgetIntentExtension.release.xcconfig */,
+				110F51015A822861F3324BE4 /* Pods-NxtBuz.debug.xcconfig */,
+				FA3B8810AFD9AD3EE2DA200C /* Pods-NxtBuz.release.xcconfig */,
+				2A059506227F2D7C755568AF /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */,
+				AAB1542410FB5237DD4C38E5 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */,
+				2EC0CC6876297E49BE7E01CC /* Pods-SelectBusArrival.debug.xcconfig */,
+				536C8637F1ACE20E49E81824 /* Pods-SelectBusArrival.release.xcconfig */,
+				2C2CA84A08CA9766090034A4 /* Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig */,
+				54F457EF4D8E03278077D3DA /* Pods-StarredBusArrivalsWidgetExtension.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		A52A0744290D7B38003E51BC /* NextTrainWidgetIntentExtension */ = {
+			isa = PBXGroup;
+			children = (
+				A52A0765290D811C003E51BC /* NextTrainWidgetIntentExtension.entitlements */,
+				A52A0745290D7B38003E51BC /* IntentHandler.swift */,
+				A52A0747290D7B38003E51BC /* Info.plist */,
+			);
+			path = NextTrainWidgetIntentExtension;
+			sourceTree = "<group>";
+		};
+		A52A074E290D7B38003E51BC /* NextTrainWidgetIntentExtensionUI */ = {
+			isa = PBXGroup;
+			children = (
+				A52A074F290D7B38003E51BC /* IntentViewController.swift */,
+				A52A0751290D7B38003E51BC /* MainInterface.storyboard */,
+				A52A0754290D7B38003E51BC /* Info.plist */,
+			);
+			path = NextTrainWidgetIntentExtensionUI;
 			sourceTree = "<group>";
 		};
 		A52FEBA726F8A5D800BB79DA /* BusStops */ = {
@@ -634,6 +715,8 @@
 				A559FCA327258066002B8DE6 /* StarredBusArrivalsWidget */,
 				A5D2A7B02727EC8800D63B81 /* GoingHomeBusWidget */,
 				A5FFFF4828FDCA7500B2DDBC /* NextTrainWidget */,
+				A52A0744290D7B38003E51BC /* NextTrainWidgetIntentExtension */,
+				A52A074E290D7B38003E51BC /* NextTrainWidgetIntentExtensionUI */,
 				A5E1E81626F10213007470A4 /* Products */,
 				9F8567213E5A41566A3F5DBF /* Pods */,
 				85E5C2E06476F8CE84A24F24 /* Frameworks */,
@@ -652,6 +735,8 @@
 				A559FCA027258066002B8DE6 /* StarredBusArrivalsWidgetExtension.appex */,
 				A5D2A7AD2727EC8800D63B81 /* GoingHomeBusWidgetExtension.appex */,
 				A5FFFF4528FDCA7500B2DDBC /* NextTrainWidgetExtension.appex */,
+				A52A0742290D7B37003E51BC /* NextTrainWidgetIntentExtension.appex */,
+				A52A074C290D7B38003E51BC /* NextTrainWidgetIntentExtensionUI.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -718,11 +803,46 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A52A0741290D7B37003E51BC /* NextTrainWidgetIntentExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A52A075E290D7B38003E51BC /* Build configuration list for PBXNativeTarget "NextTrainWidgetIntentExtension" */;
+			buildPhases = (
+				78BD22664DA5A05B0D649ED1 /* [CP] Check Pods Manifest.lock */,
+				A52A073E290D7B37003E51BC /* Sources */,
+				A52A073F290D7B37003E51BC /* Frameworks */,
+				A52A0740290D7B37003E51BC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NextTrainWidgetIntentExtension;
+			productName = NextTrainWidgetIntentExtension;
+			productReference = A52A0742290D7B37003E51BC /* NextTrainWidgetIntentExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		A52A074B290D7B38003E51BC /* NextTrainWidgetIntentExtensionUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A52A075B290D7B38003E51BC /* Build configuration list for PBXNativeTarget "NextTrainWidgetIntentExtensionUI" */;
+			buildPhases = (
+				A52A0748290D7B38003E51BC /* Sources */,
+				A52A0749290D7B38003E51BC /* Frameworks */,
+				A52A074A290D7B38003E51BC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NextTrainWidgetIntentExtensionUI;
+			productName = NextTrainWidgetIntentExtensionUI;
+			productReference = A52A074C290D7B38003E51BC /* NextTrainWidgetIntentExtensionUI.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		A534608A2707495400A1C990 /* SelectBusArrival */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A53460A92707495400A1C990 /* Build configuration list for PBXNativeTarget "SelectBusArrival" */;
 			buildPhases = (
-				596CC1BE00B0EDDBB3107CC6 /* [CP] Check Pods Manifest.lock */,
+				3A8FC18198830FF0A9DF280D /* [CP] Check Pods Manifest.lock */,
 				A53460872707495400A1C990 /* Sources */,
 				A53460882707495400A1C990 /* Frameworks */,
 				A53460892707495400A1C990 /* Resources */,
@@ -757,7 +877,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A559FCAE27258069002B8DE6 /* Build configuration list for PBXNativeTarget "StarredBusArrivalsWidgetExtension" */;
 			buildPhases = (
-				28B926A34DCC58BC2DF8E14F /* [CP] Check Pods Manifest.lock */,
+				252B93A36C7B5C56A601C553 /* [CP] Check Pods Manifest.lock */,
 				A559FC9C27258066002B8DE6 /* Sources */,
 				A559FC9D27258066002B8DE6 /* Frameworks */,
 				A559FC9E27258066002B8DE6 /* Resources */,
@@ -775,7 +895,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A57B9A2E26FB508B0095D96A /* Build configuration list for PBXNativeTarget "NxtBuz-WidgetExtension" */;
 			buildPhases = (
-				B0B5F959AD4F4741AB421014 /* [CP] Check Pods Manifest.lock */,
+				FB93DD6D2717E68D7258F4BE /* [CP] Check Pods Manifest.lock */,
 				A57B9A1926FB50870095D96A /* Sources */,
 				A57B9A1A26FB50870095D96A /* Frameworks */,
 				A57B9A1B26FB50870095D96A /* Resources */,
@@ -793,7 +913,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A5D2A7B92727EC8B00D63B81 /* Build configuration list for PBXNativeTarget "GoingHomeBusWidgetExtension" */;
 			buildPhases = (
-				8954157A46412292334DEAD8 /* [CP] Check Pods Manifest.lock */,
+				D5B23E434BB1AA4F6DA866DD /* [CP] Check Pods Manifest.lock */,
 				A5D2A7A92727EC8800D63B81 /* Sources */,
 				A5D2A7AA2727EC8800D63B81 /* Frameworks */,
 				A5D2A7AB2727EC8800D63B81 /* Resources */,
@@ -811,7 +931,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A5E1E83A26F10217007470A4 /* Build configuration list for PBXNativeTarget "NxtBuz" */;
 			buildPhases = (
-				F09E266CC262F56C61E93A20 /* [CP] Check Pods Manifest.lock */,
+				23864E2E85F02B23FC2CCE02 /* [CP] Check Pods Manifest.lock */,
 				A5E1E81126F10213007470A4 /* Sources */,
 				A5E1E81226F10213007470A4 /* Frameworks */,
 				A57B9A3126FB508B0095D96A /* Embed App Extensions */,
@@ -826,6 +946,8 @@
 				A559FCAA27258069002B8DE6 /* PBXTargetDependency */,
 				A5D2A7B72727EC8B00D63B81 /* PBXTargetDependency */,
 				A5FFFF5228FDCA7600B2DDBC /* PBXTargetDependency */,
+				A52A0756290D7B38003E51BC /* PBXTargetDependency */,
+				A52A0759290D7B38003E51BC /* PBXTargetDependency */,
 			);
 			name = NxtBuz;
 			productName = NxtBuz;
@@ -872,7 +994,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A5FFFF5628FDCA7600B2DDBC /* Build configuration list for PBXNativeTarget "NextTrainWidgetExtension" */;
 			buildPhases = (
-				B1FF5590BEC23B11880AC211 /* [CP] Check Pods Manifest.lock */,
+				C2E26B994D383AD311275687 /* [CP] Check Pods Manifest.lock */,
 				A5FFFF4128FDCA7500B2DDBC /* Sources */,
 				A5FFFF4228FDCA7500B2DDBC /* Frameworks */,
 				A5FFFF4328FDCA7500B2DDBC /* Resources */,
@@ -895,6 +1017,12 @@
 				LastSwiftUpdateCheck = 1400;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
+					A52A0741290D7B37003E51BC = {
+						CreatedOnToolsVersion = 14.0.1;
+					};
+					A52A074B290D7B38003E51BC = {
+						CreatedOnToolsVersion = 14.0.1;
+					};
 					A534608A2707495400A1C990 = {
 						CreatedOnToolsVersion = 13.0;
 					};
@@ -948,11 +1076,28 @@
 				A559FC9F27258066002B8DE6 /* StarredBusArrivalsWidgetExtension */,
 				A5D2A7AC2727EC8800D63B81 /* GoingHomeBusWidgetExtension */,
 				A5FFFF4428FDCA7500B2DDBC /* NextTrainWidgetExtension */,
+				A52A0741290D7B37003E51BC /* NextTrainWidgetIntentExtension */,
+				A52A074B290D7B38003E51BC /* NextTrainWidgetIntentExtensionUI */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A52A0740290D7B37003E51BC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A52A074A290D7B38003E51BC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A52A0753290D7B38003E51BC /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A53460892707495400A1C990 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1028,117 +1173,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		28B926A34DCC58BC2DF8E14F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-StarredBusArrivalsWidgetExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		596CC1BE00B0EDDBB3107CC6 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SelectBusArrival-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8954157A46412292334DEAD8 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-GoingHomeBusWidgetExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B0B5F959AD4F4741AB421014 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-NxtBuz-WidgetExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B1FF5590BEC23B11880AC211 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-NextTrainWidgetExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F09E266CC262F56C61E93A20 /* [CP] Check Pods Manifest.lock */ = {
+		23864E2E85F02B23FC2CCE02 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1160,15 +1195,169 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		252B93A36C7B5C56A601C553 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StarredBusArrivalsWidgetExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3A8FC18198830FF0A9DF280D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SelectBusArrival-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		78BD22664DA5A05B0D649ED1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NextTrainWidgetIntentExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C2E26B994D383AD311275687 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NextTrainWidgetExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D5B23E434BB1AA4F6DA866DD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GoingHomeBusWidgetExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FB93DD6D2717E68D7258F4BE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NxtBuz-WidgetExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A52A073E290D7B37003E51BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A52A0761290D7C4F003E51BC /* NextTrainWidget.intentdefinition in Sources */,
+				A52A0746290D7B38003E51BC /* IntentHandler.swift in Sources */,
+				A52A0763290D7F4B003E51BC /* Di.swift in Sources */,
+				A52A0764290D7F57003E51BC /* Util.swift in Sources */,
+				A52A0766290D8480003E51BC /* UseCaseResult.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A52A0748290D7B38003E51BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A52A0762290D7C50003E51BC /* NextTrainWidget.intentdefinition in Sources */,
+				A52A0750290D7B38003E51BC /* IntentViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A53460872707495400A1C990 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				A53460902707495400A1C990 /* IntentHandler.swift in Sources */,
 				A53460AC27074A0500A1C990 /* NxtBuz_Widget.intentdefinition in Sources */,
+				A52A073B290D797F003E51BC /* NxtBuz_Widget.swift in Sources */,
 				A5782DF527243CD200B6FE47 /* Font.swift in Sources */,
 				A53460AE270750E000A1C990 /* Di.swift in Sources */,
 				A5E15D59272299B5005A67FB /* Util.swift in Sources */,
@@ -1324,6 +1513,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A52A0756290D7B38003E51BC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A52A074B290D7B38003E51BC /* NextTrainWidgetIntentExtensionUI */;
+			targetProxy = A52A0755290D7B38003E51BC /* PBXContainerItemProxy */;
+		};
+		A52A0759290D7B38003E51BC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A52A0741290D7B37003E51BC /* NextTrainWidgetIntentExtension */;
+			targetProxy = A52A0758290D7B38003E51BC /* PBXContainerItemProxy */;
+		};
 		A53460A12707495400A1C990 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A53460952707495400A1C990 /* SelectBusArrivalUI */;
@@ -1367,6 +1566,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A52A0751290D7B38003E51BC /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A52A0752290D7B38003E51BC /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		A534609C2707495400A1C990 /* MainInterface.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1378,6 +1585,134 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		A52A075C290D7B38003E51BC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NextTrainWidgetIntentExtensionUI/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NextTrainWidgetIntentExtensionUI;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.NextTrainWidgetIntentExtensionUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A52A075D290D7B38003E51BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NextTrainWidgetIntentExtensionUI/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NextTrainWidgetIntentExtensionUI;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.NextTrainWidgetIntentExtensionUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A52A075F290D7B38003E51BC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D35376004C7E80A4268DDFE9 /* Pods-NextTrainWidgetIntentExtension.debug.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = NextTrainWidgetIntentExtension/NextTrainWidgetIntentExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NextTrainWidgetIntentExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NextTrainWidgetIntentExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-framework",
+					"\"iosUmbrella\"",
+					"-l\"sqlite3\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.debug.NextTrainWidgetIntentExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A52A0760290D7B38003E51BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 818A4B39D3FF8A4643BE6E3E /* Pods-NextTrainWidgetIntentExtension.release.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = NextTrainWidgetIntentExtension/NextTrainWidgetIntentExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NextTrainWidgetIntentExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NextTrainWidgetIntentExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-framework",
+					"\"iosUmbrella\"",
+					"-l\"sqlite3\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.NextTrainWidgetIntentExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		A53460A72707495400A1C990 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1434,7 +1769,7 @@
 		};
 		A53460AA2707495400A1C990 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4483401B921C37668D13F340 /* Pods-SelectBusArrival.debug.xcconfig */;
+			baseConfigurationReference = 2EC0CC6876297E49BE7E01CC /* Pods-SelectBusArrival.debug.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_ENTITLEMENTS = SelectBusArrival/SelectBusArrival.entitlements;
@@ -1471,7 +1806,7 @@
 		};
 		A53460AB2707495400A1C990 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B3B8C3EDAF9C8EA6095B5213 /* Pods-SelectBusArrival.release.xcconfig */;
+			baseConfigurationReference = 536C8637F1ACE20E49E81824 /* Pods-SelectBusArrival.release.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_ENTITLEMENTS = SelectBusArrival/SelectBusArrival.entitlements;
@@ -1508,7 +1843,7 @@
 		};
 		A559FCAC27258069002B8DE6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6DDCC6A895F0FF66307D7B6 /* Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig */;
+			baseConfigurationReference = 2C2CA84A08CA9766090034A4 /* Pods-StarredBusArrivalsWidgetExtension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -1547,7 +1882,7 @@
 		};
 		A559FCAD27258069002B8DE6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 470320552A22F3CC7189097C /* Pods-StarredBusArrivalsWidgetExtension.release.xcconfig */;
+			baseConfigurationReference = 54F457EF4D8E03278077D3DA /* Pods-StarredBusArrivalsWidgetExtension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -1586,7 +1921,7 @@
 		};
 		A57B9A2F26FB508B0095D96A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B637FC6A4A02166145A04DF7 /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */;
+			baseConfigurationReference = 2A059506227F2D7C755568AF /* Pods-NxtBuz-WidgetExtension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -1627,7 +1962,7 @@
 		};
 		A57B9A3026FB508B0095D96A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1745AD13085AFEA1CA1DD517 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */;
+			baseConfigurationReference = AAB1542410FB5237DD4C38E5 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -1668,7 +2003,7 @@
 		};
 		A5D2A7BA2727EC8B00D63B81 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EAE6698C40A98359C8193075 /* Pods-GoingHomeBusWidgetExtension.debug.xcconfig */;
+			baseConfigurationReference = A22DEC078FE63333C0BC6B93 /* Pods-GoingHomeBusWidgetExtension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -1707,7 +2042,7 @@
 		};
 		A5D2A7BB2727EC8B00D63B81 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8FED9166447E921CC5ECA269 /* Pods-GoingHomeBusWidgetExtension.release.xcconfig */;
+			baseConfigurationReference = 3FAA22930DA8702353CBEA85 /* Pods-GoingHomeBusWidgetExtension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -1862,7 +2197,7 @@
 		};
 		A5E1E83B26F10217007470A4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AACB50D4905E209E0EFD01A1 /* Pods-NxtBuz.debug.xcconfig */;
+			baseConfigurationReference = 110F51015A822861F3324BE4 /* Pods-NxtBuz.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = "Next Bus SG Debug";
@@ -1904,7 +2239,7 @@
 		};
 		A5E1E83C26F10217007470A4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B3D756E3D85E99C0D6B8FF34 /* Pods-NxtBuz.release.xcconfig */;
+			baseConfigurationReference = FA3B8810AFD9AD3EE2DA200C /* Pods-NxtBuz.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = "Next Bus SG";
@@ -2030,7 +2365,7 @@
 		};
 		A5FFFF5428FDCA7600B2DDBC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5AC7C77DDFE2984190F552C2 /* Pods-NextTrainWidgetExtension.debug.xcconfig */;
+			baseConfigurationReference = E5784BC6B74978DDFEB9EC9D /* Pods-NextTrainWidgetExtension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -2069,7 +2404,7 @@
 		};
 		A5FFFF5528FDCA7600B2DDBC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2DF2BFFBBEEF1A4A7ACDF676 /* Pods-NextTrainWidgetExtension.release.xcconfig */;
+			baseConfigurationReference = 6C937C63B25DE396B8765E93 /* Pods-NextTrainWidgetExtension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -2109,6 +2444,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A52A075B290D7B38003E51BC /* Build configuration list for PBXNativeTarget "NextTrainWidgetIntentExtensionUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A52A075C290D7B38003E51BC /* Debug */,
+				A52A075D290D7B38003E51BC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A52A075E290D7B38003E51BC /* Build configuration list for PBXNativeTarget "NextTrainWidgetIntentExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A52A075F290D7B38003E51BC /* Debug */,
+				A52A0760290D7B38003E51BC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A53460A62707495400A1C990 /* Build configuration list for PBXNativeTarget "SelectBusArrivalUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

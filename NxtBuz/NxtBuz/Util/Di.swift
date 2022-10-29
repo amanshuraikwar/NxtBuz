@@ -214,4 +214,10 @@ class Di {
             trainStopRepository: Di.nsApiRepository
         )
     }
+    
+    func getSearchTrainStopsUseCase() -> IosSearchTrainStopsUseCase {
+        return IosSearchTrainStopsUseCase(
+            trainStopRepository: Di.nsApiRepository
+        )
+    }
 }

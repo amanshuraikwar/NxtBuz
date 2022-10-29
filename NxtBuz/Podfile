@@ -33,3 +33,9 @@ target 'NextTrainWidgetExtension' do
   platform :ios, '14.1'
   pod 'iosUmbrella', :path => '../iosUmbrella'
 end
+
+target 'NextTrainWidgetIntentExtension' do
+  use_frameworks!
+  platform :ios, '14.1'
+  pod 'iosUmbrella', :path => '../iosUmbrella'
+end

@@ -39,6 +39,7 @@
 	<string>Next Bus SG need your location to show bus stops near you</string>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>NextTrainWidgetConfigurationIntent</string>
 		<string>SelectBusArrivalIntent</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
