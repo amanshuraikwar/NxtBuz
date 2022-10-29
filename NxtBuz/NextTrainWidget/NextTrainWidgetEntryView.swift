@@ -130,6 +130,17 @@ struct NextTrainWidgetEntryView : View {
                         maximumViewportWidth: geometry.size.width
                     )
                     .padding(.leading)
+                } else {
+                    HStack {
+                        Spacer()
+                        
+                        Text(entry.trainType.uppercased())
+                            .font(NxtBuzFonts.caption)
+                            .fontWeight(.bold)
+                            .foregroundColor(.yellow)
+                    }
+                    .padding(.trailing)
+                    .padding(.bottom)
                 }
             }
         }

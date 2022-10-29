@@ -32,7 +32,7 @@ struct Provider: IntentTimelineProvider {
     ) {
         Di.get().getTrainBetweenStopsUseCase().invoke1(
             fromTrainStopCode: "NS-API-TRAIN-ASD",
-            toTrainStopCode: "NS-API-TRAIN-BD"
+            toTrainStopCode: "NS-API-TRAIN-ALM"
         ) { result in
             let useCaseResult = Util.toUseCaseResult(result)
             switch useCaseResult {
