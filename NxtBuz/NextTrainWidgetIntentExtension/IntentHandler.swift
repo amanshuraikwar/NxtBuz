@@ -62,7 +62,37 @@ class IntentHandler: INExtension, NextTrainWidgetConfigurationIntentHandling {
         with completion:
         @escaping (INObjectCollection<TrainStopInfo>?, Error?) -> Void
     ) {
-        
+        DispatchQueue.main.sync {
+            Di.get().getSearchTrainStopsUseCase().invokeCallback(
+                trainStopName: searchTerm ?? ""
+            ) { result in
+                var trainStopsInfoList: [TrainStopInfo] = []
+                
+                let useCaseResult = Util.toUseCaseResult(result)
+                switch useCaseResult {
+                case .Success(let trainStops):
+                    let trainStops = trainStops as! [TrainStop]
+                    trainStops.forEach { trainStop in
+                        let trainStopInfo = TrainStopInfo(
+                            identifier: trainStop.code,
+                            display: trainStop.name
+                        )
+                        trainStopInfo.trainStopCode = trainStop.code
+                        trainStopInfo.trainStopName = trainStop.name
+                        trainStopsInfoList.append(
+                            trainStopInfo
+                        )
+                    }
+                case .Error(let message):
+                    print(message)
+                }
+                
+                let collection = INObjectCollection<TrainStopInfo>(
+                    items: trainStopsInfoList
+                )
+                completion(collection, nil)
+            }
+        }
     }
     
 //    func provideToTrainStopOptionsCollection(

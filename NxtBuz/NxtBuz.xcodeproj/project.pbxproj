@@ -21,7 +21,6 @@
 		A516105D270F267E00A513FD /* BusStopArrivalsBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A516105C270F267E00A513FD /* BusStopArrivalsBottomSheetView.swift */; };
 		A52A0733290C7259003E51BC /* RollingStockImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A0732290C7259003E51BC /* RollingStockImageView.swift */; };
 		A52A0735290D0820003E51BC /* NextTrainWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A0734290D0820003E51BC /* NextTrainWidgetEntryView.swift */; };
-		A52A073B290D797F003E51BC /* NxtBuz_Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57B9A2326FB50870095D96A /* NxtBuz_Widget.swift */; };
 		A52A0743290D7B38003E51BC /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A534608C2707495400A1C990 /* Intents.framework */; };
 		A52A0746290D7B38003E51BC /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A0745290D7B38003E51BC /* IntentHandler.swift */; };
 		A52A074D290D7B38003E51BC /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53460972707495400A1C990 /* IntentsUI.framework */; };
@@ -1357,7 +1356,6 @@
 			files = (
 				A53460902707495400A1C990 /* IntentHandler.swift in Sources */,
 				A53460AC27074A0500A1C990 /* NxtBuz_Widget.intentdefinition in Sources */,
-				A52A073B290D797F003E51BC /* NxtBuz_Widget.swift in Sources */,
 				A5782DF527243CD200B6FE47 /* Font.swift in Sources */,
 				A53460AE270750E000A1C990 /* Di.swift in Sources */,
 				A5E15D59272299B5005A67FB /* Util.swift in Sources */,
@@ -1603,7 +1601,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.NextTrainWidgetIntentExtensionUI;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.NxtBuz.debug.NextTrainWidgetIntentExtensionUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

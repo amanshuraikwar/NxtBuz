@@ -8,7 +8,7 @@
 		<dict>
 			<key>IntentsSupported</key>
 			<array>
-				<string>INSendMessageIntent</string>
+				<string>NextTrainWidgetConfigurationIntent</string>
 			</array>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>

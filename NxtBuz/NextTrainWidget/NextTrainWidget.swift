@@ -30,16 +30,23 @@ struct Provider: IntentTimelineProvider {
         in context: Context,
         completion: @escaping (Timeline<SimpleEntry>) -> ()
     ) {
+        let fromTrainStopCode =
+        configuration.FromTrainStop?.trainStopCode ?? "NS-API-TRAIN-ASD"
+        let toTrainStopCode =
+        configuration.ToTrainStop?.trainStopCode ?? "NS-API-TRAIN-ALM"
+        
         Di.get().getTrainBetweenStopsUseCase().invoke1(
-            fromTrainStopCode: "NS-API-TRAIN-ASD",
-            toTrainStopCode: "NS-API-TRAIN-ALM"
+            fromTrainStopCode: fromTrainStopCode,
+            toTrainStopCode: toTrainStopCode
         ) { result in
             let useCaseResult = Util.toUseCaseResult(result)
             switch useCaseResult {
             case .Error(_):
                 do {
                     let data = try Data(
-                        contentsOf: URL(string: "https://vt.ns-mlab.nl/v1/images/virm_4.png")!
+                        contentsOf: URL(
+                            string: "https://vt.ns-mlab.nl/v1/images/virm_4.png"
+                        )!
                     )
                     DispatchQueue.main.async {
                         let entry = SimpleEntry(

@@ -448,7 +448,12 @@ internal class NsApiRepository(
         return withContext(dispatcherProvider.io) {
             nsApiDb
                 .nsTrainStationEntityQueries
-                .searchLikeDescription(trainStopName, 10)
+                .searchLikeDescription(
+                    trainStopName
+                        .trim()
+                        .replace(" ", ""),
+                    10
+                )
                 .executeAsList()
                 .map {
                     it.toTrainStop()

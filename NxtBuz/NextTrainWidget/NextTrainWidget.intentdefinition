@@ -35,7 +35,7 @@
 					<key>INIntentParameterConfigurable</key>
 					<true/>
 					<key>INIntentParameterDisplayName</key>
-					<string>From Train Stop</string>
+					<string>From</string>
 					<key>INIntentParameterDisplayNameID</key>
 					<string>NECYBj</string>
 					<key>INIntentParameterDisplayPriority</key>
@@ -64,26 +64,6 @@
 							<key>INIntentParameterPromptDialogType</key>
 							<string>Primary</string>
 						</dict>
-						<dict>
-							<key>INIntentParameterPromptDialogCustom</key>
-							<true/>
-							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>There are ${count} options matching ‘${FromTrainStop}’.</string>
-							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>sPKLAp</string>
-							<key>INIntentParameterPromptDialogType</key>
-							<string>DisambiguationIntroduction</string>
-						</dict>
-						<dict>
-							<key>INIntentParameterPromptDialogCustom</key>
-							<true/>
-							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>Just to confirm, you wanted ‘${FromTrainStop}’?</string>
-							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>Jfm7sm</string>
-							<key>INIntentParameterPromptDialogType</key>
-							<string>Confirmation</string>
-						</dict>
 					</array>
 					<key>INIntentParameterSupportsDynamicEnumeration</key>
 					<true/>
@@ -98,7 +78,7 @@
 					<key>INIntentParameterConfigurable</key>
 					<true/>
 					<key>INIntentParameterDisplayName</key>
-					<string>To Train Stop</string>
+					<string>To</string>
 					<key>INIntentParameterDisplayNameID</key>
 					<string>c3UChw</string>
 					<key>INIntentParameterDisplayPriority</key>
@@ -126,26 +106,6 @@
 							<true/>
 							<key>INIntentParameterPromptDialogType</key>
 							<string>Primary</string>
-						</dict>
-						<dict>
-							<key>INIntentParameterPromptDialogCustom</key>
-							<true/>
-							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>There are ${count} options matching ‘${ToTrainStop}’.</string>
-							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>zA4d74</string>
-							<key>INIntentParameterPromptDialogType</key>
-							<string>DisambiguationIntroduction</string>
-						</dict>
-						<dict>
-							<key>INIntentParameterPromptDialogCustom</key>
-							<true/>
-							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>Just to confirm, you wanted ‘${ToTrainStop}’?</string>
-							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>4g5JK9</string>
-							<key>INIntentParameterPromptDialogType</key>
-							<string>Confirmation</string>
 						</dict>
 					</array>
 					<key>INIntentParameterRelationship</key>
