@@ -199,7 +199,7 @@ struct Provider: IntentTimelineProvider {
                     UIImage.init(data: engine)!,
                     UIImage.init(data: coaches)!
                 ],
-                facilities: [TrainFacility.bicycle]
+                facilities: [TrainFacility.powerSockets, TrainFacility.bicycle, TrainFacility.wifi]
             )
         } catch {
             return SimpleEntry(
@@ -213,7 +213,7 @@ struct Provider: IntentTimelineProvider {
                 arrivalAtDestinationTime: "09:34",
                 journeyDuration: "--",
                 rollingStockImages: [],
-                facilities: [TrainFacility.bicycle]
+                facilities: [TrainFacility.powerSockets, TrainFacility.bicycle, TrainFacility.wifi]
             )
         }
     }
