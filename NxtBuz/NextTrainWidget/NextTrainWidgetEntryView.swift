@@ -23,11 +23,22 @@ struct NextTrainWidgetEntryView : View {
                 VStack(
                     spacing: 0
                 ) {
-                    HStack(alignment: .top, spacing: 0) {
+                    HStack(alignment: .center, spacing: 0) {
                         Text(entry.sourceTrainStopName)
                             .font(NxtBuzFonts.body)
                             .fontWeight(.medium)
                         
+                        if let track = entry.sourceTrainStopTrack {
+                            Text(track.uppercased())
+                                .font(NxtBuzFonts.captionSmall)
+                                .fontWeight(.bold)
+                                .padding(.horizontal, 2)
+                                .background(nxtBuzTheme.isDark ? Color(.systemGray6) : .white)
+                                .foregroundColor(Color(nxtBuzTheme.accentColor))
+                                .cornerRadius(2)
+                                .padding(.leading, 4)
+                        }
+                         
                         Spacer()
                         
                         Text(entry.departureFromSourceTime.uppercased())

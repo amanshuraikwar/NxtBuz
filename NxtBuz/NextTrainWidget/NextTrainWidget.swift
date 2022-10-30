@@ -60,7 +60,8 @@ struct Provider: IntentTimelineProvider {
                     arrivalAtDestinationTime: "--",
                     journeyDuration: "--",
                     rollingStockImages: [],
-                    facilities: []
+                    facilities: [],
+                    sourceTrainStopTrack: nil
                 )
                 completion(Timeline(entries: [entry], policy: .atEnd))
             }
@@ -94,7 +95,8 @@ struct Provider: IntentTimelineProvider {
                         arrivalAtDestinationTime: "--",
                         journeyDuration: "--",
                         rollingStockImages: [],
-                        facilities: []
+                        facilities: [],
+                        sourceTrainStopTrack: nil
                     )
                     completion(Timeline(entries: [entry], policy: .atEnd))
                 }
@@ -129,7 +131,8 @@ struct Provider: IntentTimelineProvider {
                                 arrivalAtDestinationTime: trainDetails.arrivalAtIntendedDestination,
                                 journeyDuration: "--",
                                 rollingStockImages: rollingStockImages,
-                                facilities: trainDetails.facilities
+                                facilities: trainDetails.facilities,
+                                sourceTrainStopTrack: trainDetails.fromTrainStopTrack
                             )
                             completion(Timeline(entries: [entry], policy: .atEnd))
                         }
@@ -148,7 +151,8 @@ struct Provider: IntentTimelineProvider {
                                 arrivalAtDestinationTime: "--",
                                 journeyDuration: "--",
                                 rollingStockImages: [],
-                                facilities: []
+                                facilities: [],
+                                sourceTrainStopTrack: nil
                             )
                             completion(Timeline(entries: [entry], policy: .atEnd))
                         }
@@ -167,7 +171,8 @@ struct Provider: IntentTimelineProvider {
                                 arrivalAtDestinationTime: "--",
                                 journeyDuration: "--",
                                 rollingStockImages: [],
-                                facilities: []
+                                facilities: [],
+                                sourceTrainStopTrack: nil
                             )
                             completion(Timeline(entries: [entry], policy: .atEnd))
                         }
@@ -199,7 +204,8 @@ struct Provider: IntentTimelineProvider {
                     UIImage.init(data: engine)!,
                     UIImage.init(data: coaches)!
                 ],
-                facilities: [TrainFacility.powerSockets, TrainFacility.bicycle, TrainFacility.wifi]
+                facilities: [TrainFacility.powerSockets, TrainFacility.bicycle, TrainFacility.wifi],
+                sourceTrainStopTrack: "10b"
             )
         } catch {
             return SimpleEntry(
@@ -213,7 +219,8 @@ struct Provider: IntentTimelineProvider {
                 arrivalAtDestinationTime: "09:34",
                 journeyDuration: "--",
                 rollingStockImages: [],
-                facilities: [TrainFacility.powerSockets, TrainFacility.bicycle, TrainFacility.wifi]
+                facilities: [TrainFacility.powerSockets, TrainFacility.bicycle, TrainFacility.wifi],
+                sourceTrainStopTrack: "3"
             )
         }
     }
@@ -231,6 +238,7 @@ struct SimpleEntry: TimelineEntry {
     let journeyDuration: String
     let rollingStockImages: [UIImage]
     let facilities: [TrainFacility]
+    let sourceTrainStopTrack: String?
 }
 
 @main

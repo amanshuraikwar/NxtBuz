@@ -21,5 +21,6 @@ data class NextTrainBetweenStopsDetails(
     val lengthInMeters: Int,
     val departureFromIntendedSource: String,
     val arrivalAtIntendedDestination: String,
-    val updatedAt: String
+    val updatedAt: String,
+    val fromTrainStopTrack: String?,
 )

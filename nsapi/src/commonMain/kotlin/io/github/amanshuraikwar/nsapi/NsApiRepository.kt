@@ -403,7 +403,8 @@ internal class NsApiRepository(
 
                                     else -> "--"
                                 },
-                                updatedAt = Clock.System.now().formatArrivalInstant()
+                                updatedAt = Clock.System.now().formatArrivalInstant(),
+                                fromTrainStopTrack = trainDeparture.track
                             )
                         }
                     }
