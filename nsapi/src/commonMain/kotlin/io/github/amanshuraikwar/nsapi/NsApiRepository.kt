@@ -24,7 +24,6 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainRouteNodeType
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
 import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -221,12 +220,11 @@ internal class NsApiRepository(
         return true
     }
 
-    override suspend fun getTrainDetails(trainCode: String): TrainDetails {
+    override suspend fun getTrainDetails(trainCode: String): TrainDetails? {
         return withContext(dispatcherProvider.io) {
             val trainInfoDeferred = async {
                 nsApi.getTrainInformation(
                     trainCodes = listOf(trainCode),
-                    stationCodes = listOf()
                 )
             }
 
@@ -236,10 +234,7 @@ internal class NsApiRepository(
 
             val trainInfo = when (val response = trainInfoDeferred.await()) {
                 is TrainInfoResponseDto.Error -> {
-                    throw IllegalArgumentException(
-                        response.errors.getOrNull(0)?.message
-                            ?: "Error while getting details of train $trainCode"
-                    )
+                    return@withContext null
                 }
 
                 is TrainInfoResponseDto.Success -> response.info[0]
@@ -313,21 +308,23 @@ internal class NsApiRepository(
             for (trainDeparture in trainDepartures) {
                 println("yoyo, getting train details for ${trainDeparture.trainCode}")
                 val trainDetails = getTrainDetails(trainDeparture.trainCode)
-                var stop1Found = false
-                for (node in trainDetails.route) {
-                    if (node.trainStopCode == trainStopCode1) {
-                        stop1Found = true
-                    }
-                    if (node.trainStopCode == trainStopCode2 && stop1Found) {
-                        trainsBetweenDetails.add(trainDetails)
-                        break
+                if (trainDetails != null) {
+                    var stop1Found = false
+                    for (node in trainDetails.route) {
+                        if (node.trainStopCode == trainStopCode1) {
+                            stop1Found = true
+                        }
+                        if (node.trainStopCode == trainStopCode2 && stop1Found) {
+                            trainsBetweenDetails.add(trainDetails)
+                            break
+                        }
                     }
                 }
 
                 // TODO-amanshuraikwar (28 Oct 2022 09:41:09 pm):
                 //  add manual delay because if we call train details api too
                 //  frequently, we hit the rate limit of the api
-                delay(500)
+                //delay(500)
             }
 
             trainsBetweenDetails
@@ -342,100 +339,75 @@ internal class NsApiRepository(
             val trainStopCode1 = fromTrainStopCode.parseCode()
             val trainStopCode2 = toTrainStopCode.parseCode()
 
-//            val trainStop1 =
-//                nsApiDb.nsTrainStationEntityQueries
-//                    .findByCode(
-//                        code = trainStopCode1
-//                    )
-//                    .executeAsList()
-//                    .getOrNull(0)
-//                    ?: throw IllegalArgumentException(
-//                        "Train stop with code $trainStopCode1 not found!"
-//                    )
-//
-//            val trainStop2 =
-//                nsApiDb.nsTrainStationEntityQueries
-//                    .findByCode(
-//                        code = trainStopCode2
-//                    )
-//                    .executeAsList()
-//                    .getOrNull(0)
-//                    ?: throw IllegalArgumentException(
-//                        "Train stop with code $trainStopCode2 not found!"
-//                    )
-
             val trainDepartures = getTrainDepartures(trainStopCode1)
 
             for (trainDeparture in trainDepartures) {
                 val trainDetails = getTrainDetails(trainDeparture.trainCode)
-                var stop1Found = false
-                var stop1Name = ""
-                for (node in trainDetails.route) {
-                    if (node.trainStopCode == trainStopCode1) {
-                        stop1Found = true
-                        stop1Name = node.trainStopName
-                        println("yoyo, stop1Name = $stop1Name")
-                    }
-                    if (node.trainStopCode == trainStopCode2
-                        && (node.type is TrainRouteNodeType.Stop
-                                || node.type is TrainRouteNodeType.Destination)
-                        && stop1Found
-                    ) {
-                        val arrivalTiming: TrainRouteNodeTiming? = when (node.type) {
-                            is TrainRouteNodeType.Stop -> {
-                                (node.type as TrainRouteNodeType.Stop).arrivalTiming
-                            }
-
-                            is TrainRouteNodeType.Destination -> {
-                                (node.type as TrainRouteNodeType.Destination).arrivalTiming
-                            }
-
-                            else -> {
-                                null
-                            }
+                if (trainDetails != null) {
+                    var stop1Found = false
+                    var stop1Name = ""
+                    for (node in trainDetails.route) {
+                        if (node.trainStopCode == trainStopCode1) {
+                            stop1Found = true
+                            stop1Name = node.trainStopName
+                            println("yoyo, stop1Name = $stop1Name")
                         }
-
-                        return@withContext NextTrainBetweenStopsDetails(
-                            trainCode = trainDetails.trainCode,
-                            trainCategoryName = trainDetails.trainCategoryName,
-                            fromTrainStopName = stop1Name,
-                            toTrainStopName = node.trainStopName,
-                            facilities = trainDetails.facilities,
-                            rollingStockImages =
-                            trainDetails
-                                .rollingStock
-                                .mapNotNull { it.imageUrl },
-                            length = trainDetails.length,
-                            lengthInMeters = trainDetails.lengthInMeters,
-                            departureFromIntendedSource =
-                            trainDeparture
-                                .actualDepartureInstant
-                                ?.formatArrivalInstant(withAm = false)
-                                ?: trainDeparture
-                                    .plannedDepartureInstant
-                                    .formatArrivalInstant(withAm = false),
-                            arrivalAtIntendedDestination =
-                            when (arrivalTiming) {
-                                is TrainRouteNodeTiming.Available -> {
-                                    arrivalTiming
-                                        .actualTimeInstant
-                                        ?.formatArrivalInstant(withAm = false)
-                                        ?: arrivalTiming
-                                            .plannedTimeInstant
-                                            .formatArrivalInstant(withAm = false)
+                        if (node.trainStopCode == trainStopCode2
+                            && (node.type is TrainRouteNodeType.Stop
+                                    || node.type is TrainRouteNodeType.Destination)
+                            && stop1Found
+                        ) {
+                            val arrivalTiming: TrainRouteNodeTiming? = when (node.type) {
+                                is TrainRouteNodeType.Stop -> {
+                                    (node.type as TrainRouteNodeType.Stop).arrivalTiming
                                 }
 
-                                else -> "--"
-                            },
-                            updatedAt = Clock.System.now().formatArrivalInstant()
-                        )
+                                is TrainRouteNodeType.Destination -> {
+                                    (node.type as TrainRouteNodeType.Destination).arrivalTiming
+                                }
+
+                                else -> {
+                                    null
+                                }
+                            }
+
+                            return@withContext NextTrainBetweenStopsDetails(
+                                trainCode = trainDetails.trainCode,
+                                trainCategoryName = trainDetails.trainCategoryName,
+                                fromTrainStopName = stop1Name,
+                                toTrainStopName = node.trainStopName,
+                                facilities = trainDetails.facilities,
+                                rollingStockImages =
+                                trainDetails
+                                    .rollingStock
+                                    .mapNotNull { it.imageUrl },
+                                length = trainDetails.length,
+                                lengthInMeters = trainDetails.lengthInMeters,
+                                departureFromIntendedSource =
+                                trainDeparture
+                                    .actualDepartureInstant
+                                    ?.formatArrivalInstant(withAm = false)
+                                    ?: trainDeparture
+                                        .plannedDepartureInstant
+                                        .formatArrivalInstant(withAm = false),
+                                arrivalAtIntendedDestination =
+                                when (arrivalTiming) {
+                                    is TrainRouteNodeTiming.Available -> {
+                                        arrivalTiming
+                                            .actualTimeInstant
+                                            ?.formatArrivalInstant(withAm = false)
+                                            ?: arrivalTiming
+                                                .plannedTimeInstant
+                                                .formatArrivalInstant(withAm = false)
+                                    }
+
+                                    else -> "--"
+                                },
+                                updatedAt = Clock.System.now().formatArrivalInstant()
+                            )
+                        }
                     }
                 }
-
-                // TODO-amanshuraikwar (28 Oct 2022 11:36:35 pm):
-                //  add manual delay because if we call train details api too
-                //  frequently, we hit the rate limit of the api
-                delay(500)
             }
 
             return@withContext null

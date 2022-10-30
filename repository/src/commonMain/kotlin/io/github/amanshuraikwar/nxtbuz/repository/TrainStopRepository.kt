@@ -28,7 +28,7 @@ interface TrainStopRepository {
 
     suspend fun supportsTrain(trainCode: String): Boolean
 
-    suspend fun getTrainDetails(trainCode: String): TrainDetails
+    suspend fun getTrainDetails(trainCode: String): TrainDetails?
 
     suspend fun getTrainsBetween(
         fromTrainStopCode: String,

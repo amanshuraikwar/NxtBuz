@@ -28,7 +28,8 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
         locationManager.startUpdatingLocation()
     }
     
-    func fetchBusStops(showFetching: Bool = false) {        
+    func fetchBusStops(showFetching: Bool = false) {
+        getTrainsBetween()
         if showFetching {
             self.busStopsScreenState = .Fetching(message: "Fetching bus stops...")
             self.busesGoingHomeState = .Fetching
@@ -212,6 +213,21 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
                     }
                 }
             )
+    }
+    
+    private func getTrainsBetween() {
+        Di.get().getTrainBetweenStopsUseCase().invoke1(
+            fromTrainStopCode: "NS-API-TRAIN-EHV",
+            toTrainStopCode: "NS-API-TRAIN-AMZ"
+        ) { result in
+            let useCaseResult = Util.toUseCaseResult(result)
+            switch useCaseResult {
+            case .Error(let message):
+                NSLog("yoyoyo, \(message)")
+            case .Success(let output):
+                NSLog("yoyoyo, \(output)")
+            }
+        }
     }
 }
 

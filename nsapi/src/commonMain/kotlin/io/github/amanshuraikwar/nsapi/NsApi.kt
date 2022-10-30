@@ -4,12 +4,12 @@ import io.github.amanshuraikwar.nsapi.model.ArrivalsResponseDto
 import io.github.amanshuraikwar.nsapi.model.DeparturesResponseDto
 import io.github.amanshuraikwar.nsapi.model.StationsResponseDto
 import io.github.amanshuraikwar.nsapi.model.TrainCrowdForecastStationDto
-import io.github.amanshuraikwar.nsapi.model.TrainInfoErrorResponseDto
 import io.github.amanshuraikwar.nsapi.model.TrainInfoResponseDto
 import io.github.amanshuraikwar.nsapi.model.TrainJourneyDetailsResponseDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.receive
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.features.expectSuccess
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.features.observer.ResponseObserver
@@ -18,7 +18,9 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
+import io.ktor.utils.io.errors.IOException
 import io.ktor.utils.io.readUTF8Line
+import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 
 internal class NsApi(
@@ -39,7 +41,7 @@ internal class NsApi(
     }
 
     suspend fun getTrainDepartures(stationCode: String): DeparturesResponseDto {
-        return client.get("$baseUrl/reisinformatie-api/api/v2/departures") {
+        return client.getWithRetry("$baseUrl/reisinformatie-api/api/v2/departures") {
             addSubscriptionKey()
             url {
                 parameter("station", stationCode)
@@ -48,7 +50,7 @@ internal class NsApi(
     }
 
     suspend fun getTrainArrivals(stationCode: String): ArrivalsResponseDto {
-        return client.get("$baseUrl/reisinformatie-api/api/v2/arrivals") {
+        return client.getWithRetry("$baseUrl/reisinformatie-api/api/v2/arrivals") {
             addSubscriptionKey()
             url {
                 parameter("station", stationCode)
@@ -62,8 +64,9 @@ internal class NsApi(
      * Also known as:
      * https://apiportal.ns.nl/docs/services/virtual-train-api/operations/getTreinInfo_1/console
      */
+    @Suppress("unused")
     suspend fun getTrainCrowdForecast(trainCode: String): List<TrainCrowdForecastStationDto> {
-        return client.get("$baseUrl/virtual-train-api/api/v1/prognose/$trainCode") {
+        return client.getWithRetry("$baseUrl/virtual-train-api/api/v1/prognose/$trainCode") {
             addSubscriptionKey()
         }
     }
@@ -76,10 +79,9 @@ internal class NsApi(
      * https://apiportal.ns.nl/docs/services/virtual-train-api/operations/getTreinInformatie_2/console
      */
     suspend fun getTrainInformation(
-        trainCodes: List<String>,
-        stationCodes: List<String>
+        trainCodes: List<String>
     ): TrainInfoResponseDto {
-        val httpResponse = client.get<HttpResponse>(
+        val httpResponse = client.getWithRetry<HttpResponse>(
             "$baseUrl/virtual-train-api/api/v1/trein"
         ) {
             addSubscriptionKey()
@@ -99,9 +101,7 @@ internal class NsApi(
         }
 
         if (httpResponse.status.value == 404) {
-            return TrainInfoResponseDto.Error(
-                httpResponse.receive<TrainInfoErrorResponseDto>().errors
-            )
+            return httpResponse.receive<TrainInfoResponseDto.Error>()
         }
 
         return TrainInfoResponseDto.Success(
@@ -116,12 +116,39 @@ internal class NsApi(
      * https://apiportal.ns.nl/docs/services/reisinformatie-api/operations/getJourneyDetail/console
      */
     suspend fun getTrainJourneyDetails(trainCode: String): TrainJourneyDetailsResponseDto {
-        return client.get("$baseUrl/reisinformatie-api/api/v2/journey") {
+        return client.getWithRetry("$baseUrl/reisinformatie-api/api/v2/journey") {
             addSubscriptionKey()
             url {
                 parameter("train", trainCode)
             }
         }
+    }
+
+    private suspend inline fun <reified T> HttpClient.getWithRetry(
+        urlString: String,
+        block: HttpRequestBuilder.() -> Unit = {}
+    ): T {
+        var retryCount = 0
+        val retryCountLimit = 10
+
+        while (retryCount <= retryCountLimit) {
+            delay(100L * retryCount)
+
+            val httpResponse = get<HttpResponse>(urlString) {
+                block()
+                expectSuccess = false
+            }
+
+            // this is status code returned from ns api
+            // when api rate limit is exceeded
+            if (httpResponse.status.value == 429) {
+                retryCount++
+            } else {
+                return httpResponse.receive()
+            }
+        }
+
+        throw IOException("Rate limit exceeded after $retryCount retries to $urlString")
     }
 
     companion object {
