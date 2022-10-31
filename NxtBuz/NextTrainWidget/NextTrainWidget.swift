@@ -126,7 +126,8 @@ struct Provider: IntentTimelineProvider {
                                 sourceTrainStopName: trainDetails.fromTrainStopName,
                                 destinationTrainStopName: trainDetails.toTrainStopName,
                                 trainId: trainDetails.trainCode,
-                                trainType: trainDetails.trainCategoryName,
+                                trainType:
+                                    trainDetails.trainCategoryName ?? trainDetails.stopsToTravel,
                                 departureFromSourceTime: trainDetails.departureFromIntendedSource,
                                 arrivalAtDestinationTime: trainDetails.arrivalAtIntendedDestination,
                                 journeyDuration: "--",

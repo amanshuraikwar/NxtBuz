@@ -12,7 +12,7 @@ sealed class NextTrainBetweenStopsOutput {
 
 data class NextTrainBetweenStopsDetails(
     val trainCode: String,
-    val trainCategoryName: String,
+    val trainCategoryName: String?,
     val fromTrainStopName: String,
     val toTrainStopName: String,
     val facilities: List<TrainFacility>,
@@ -23,4 +23,5 @@ data class NextTrainBetweenStopsDetails(
     val arrivalAtIntendedDestination: String,
     val updatedAt: String,
     val fromTrainStopTrack: String?,
+    val stopsToTravel: String,
 )

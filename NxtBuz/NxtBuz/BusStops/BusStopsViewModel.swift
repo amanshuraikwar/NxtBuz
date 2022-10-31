@@ -29,7 +29,7 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
     }
     
     func fetchBusStops(showFetching: Bool = false) {
-        getTrainsBetween()
+//        getTrainsBetween()
         if showFetching {
             self.busStopsScreenState = .Fetching(message: "Fetching bus stops...")
             self.busesGoingHomeState = .Fetching
@@ -217,8 +217,8 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
     
     private func getTrainsBetween() {
         Di.get().getTrainBetweenStopsUseCase().invoke1(
-            fromTrainStopCode: "NS-API-TRAIN-EHV",
-            toTrainStopCode: "NS-API-TRAIN-AMZ"
+            fromTrainStopCode: "NS-API-TRAIN-UT",
+            toTrainStopCode: "NS-API-TRAIN-ASD"
         ) { result in
             let useCaseResult = Util.toUseCaseResult(result)
             switch useCaseResult {

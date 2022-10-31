@@ -149,7 +149,33 @@ struct NextTrainWidgetEntryView : View {
                     )
                     .padding(.leading)
                 } else {
-                    HStack {
+                    HStack(
+                        alignment: .center,
+                        spacing: 4
+                    ) {
+                        Image(systemName: "train.side.front.car")
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
+                            .foregroundColor(.yellow)
+                            .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                        
+                        Image(systemName: "train.side.middle.car")
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
+                            .foregroundColor(.yellow)
+                        
+                        Image(systemName: "train.side.rear.car")
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
+                            .foregroundColor(.yellow)
+                            .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                        
                         Spacer()
                         
                         Text(entry.trainType.uppercased())
@@ -157,7 +183,7 @@ struct NextTrainWidgetEntryView : View {
                             .fontWeight(.bold)
                             .foregroundColor(.yellow)
                     }
-                    .padding(.trailing)
+                    .padding(.horizontal)
                     .padding(.bottom)
                 }
             }

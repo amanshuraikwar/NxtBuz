@@ -249,7 +249,7 @@ internal class NsApiRepository(
                     .getOrNull(0)?.departures
                     ?.getOrNull(0)?.product?.longCategoryName
                     ?: trainCategoryNameCache[trainCode]?.let { "$it*" }
-                    ?: "Unknown Type"
+                    ?: UNKNOWN_TRAIN_TYPE
 
             val accumulatedFacilities = trainInfo
                 .materieeldelen
@@ -345,11 +345,18 @@ internal class NsApiRepository(
                 val trainDetails = getTrainDetails(trainDeparture.trainCode)
                 if (trainDetails != null) {
                     var stop1Found = false
+                    var stop1Index = 0
                     var stop1Name = ""
+
+                    var currentStopIndex = 0
                     for (node in trainDetails.route) {
+                        if (node.type !is TrainRouteNodeType.Passing) {
+                            currentStopIndex++
+                        }
                         if (node.trainStopCode == trainStopCode1) {
                             stop1Found = true
                             stop1Name = node.trainStopName
+                            stop1Index = currentStopIndex
                             println("yoyo, stop1Name = $stop1Name")
                         }
                         if (node.trainStopCode == trainStopCode2
@@ -371,9 +378,16 @@ internal class NsApiRepository(
                                 }
                             }
 
+                            val stopsToTravel = currentStopIndex - stop1Index - 1
+
                             return@withContext NextTrainBetweenStopsDetails(
                                 trainCode = trainDetails.trainCode,
-                                trainCategoryName = trainDetails.trainCategoryName,
+                                trainCategoryName =
+                                if (trainDetails.trainCategoryName == UNKNOWN_TRAIN_TYPE) {
+                                    null
+                                } else {
+                                    trainDetails.trainCategoryName
+                                },
                                 fromTrainStopName = stop1Name,
                                 toTrainStopName = node.trainStopName,
                                 facilities = trainDetails.facilities,
@@ -404,7 +418,9 @@ internal class NsApiRepository(
                                     else -> "--"
                                 },
                                 updatedAt = Clock.System.now().formatArrivalInstant(),
-                                fromTrainStopTrack = trainDeparture.track
+                                fromTrainStopTrack = trainDeparture.track,
+                                stopsToTravel =
+                                "$stopsToTravel Stop${if (stopsToTravel != 1) "s" else ""}"
                             )
                         }
                     }
@@ -495,6 +511,7 @@ internal class NsApiRepository(
     companion object {
         private const val PREF_TRAIN_STOPS_CACHED_LOCALLY = "TRAIN_STOPS_CACHED_LOCALLY"
         private const val TRAIN_STOP_CODE_PREFIX = "NS-API-TRAIN-"
+        private const val UNKNOWN_TRAIN_TYPE = "Unknown Type"
 
         private fun String.toAmsterdamInstant(): Instant {
             val (localDateTimeString, _) = split("+")
