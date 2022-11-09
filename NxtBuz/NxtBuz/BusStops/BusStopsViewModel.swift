@@ -30,6 +30,10 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
     
     func fetchBusStops(showFetching: Bool = false) {
 //        getTrainsBetween()
+        if #available(iOS 16.1, *) {
+            NextTrainLiveActivityStarter().start()
+        }
+        
         if showFetching {
             self.busStopsScreenState = .Fetching(message: "Fetching bus stops...")
             self.busesGoingHomeState = .Fetching

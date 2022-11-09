@@ -242,7 +242,6 @@ struct SimpleEntry: TimelineEntry {
     let sourceTrainStopTrack: String?
 }
 
-@main
 struct NextTrainWidget: Widget {
     let kind: String = "io.github.amanshuraikwar.NxtBuz.NextTrainWidget"
 

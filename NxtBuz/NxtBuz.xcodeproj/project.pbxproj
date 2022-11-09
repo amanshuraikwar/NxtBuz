@@ -19,6 +19,12 @@
 		A5144DF02706DE66002274C8 /* BusStopArrivalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */; };
 		A5144DF227070030002274C8 /* WarningBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5144DF127070030002274C8 /* WarningBannerView.swift */; };
 		A516105D270F267E00A513FD /* BusStopArrivalsBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A516105C270F267E00A513FD /* BusStopArrivalsBottomSheetView.swift */; };
+		A51BEF5D291AD77C00DC70DC /* NextTrainAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51BEF5C291AD77C00DC70DC /* NextTrainAttributes.swift */; };
+		A51BEF5F291AD9D000DC70DC /* NextTrainWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51BEF5E291AD9D000DC70DC /* NextTrainWidgets.swift */; };
+		A51BEF61291AE3A200DC70DC /* NextTrainLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51BEF60291AE3A200DC70DC /* NextTrainLiveActivity.swift */; };
+		A51BEF63291B93A000DC70DC /* NextTrainLiveActivityStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51BEF62291B93A000DC70DC /* NextTrainLiveActivityStarter.swift */; };
+		A51BEF64291B94D200DC70DC /* NextTrainLiveActivityStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51BEF62291B93A000DC70DC /* NextTrainLiveActivityStarter.swift */; };
+		A51BEF65291B94FE00DC70DC /* NextTrainAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51BEF5C291AD77C00DC70DC /* NextTrainAttributes.swift */; };
 		A52A0733290C7259003E51BC /* RollingStockImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A0732290C7259003E51BC /* RollingStockImageView.swift */; };
 		A52A0735290D0820003E51BC /* NextTrainWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A0734290D0820003E51BC /* NextTrainWidgetEntryView.swift */; };
 		A52A0743290D7B38003E51BC /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A534608C2707495400A1C990 /* Intents.framework */; };
@@ -264,6 +270,10 @@
 		A5144DEF2706DE65002274C8 /* BusStopArrivalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopArrivalView.swift; sourceTree = "<group>"; };
 		A5144DF127070030002274C8 /* WarningBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningBannerView.swift; sourceTree = "<group>"; };
 		A516105C270F267E00A513FD /* BusStopArrivalsBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopArrivalsBottomSheetView.swift; sourceTree = "<group>"; };
+		A51BEF5C291AD77C00DC70DC /* NextTrainAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTrainAttributes.swift; sourceTree = "<group>"; };
+		A51BEF5E291AD9D000DC70DC /* NextTrainWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTrainWidgets.swift; sourceTree = "<group>"; };
+		A51BEF60291AE3A200DC70DC /* NextTrainLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTrainLiveActivity.swift; sourceTree = "<group>"; };
+		A51BEF62291B93A000DC70DC /* NextTrainLiveActivityStarter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTrainLiveActivityStarter.swift; sourceTree = "<group>"; };
 		A52A0732290C7259003E51BC /* RollingStockImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingStockImageView.swift; sourceTree = "<group>"; };
 		A52A0734290D0820003E51BC /* NextTrainWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextTrainWidgetEntryView.swift; sourceTree = "<group>"; };
 		A52A0742290D7B37003E51BC /* NextTrainWidgetIntentExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NextTrainWidgetIntentExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -795,6 +805,10 @@
 				A5FFFF4E28FDCA7600B2DDBC /* Info.plist */,
 				A52A0732290C7259003E51BC /* RollingStockImageView.swift */,
 				A52A0734290D0820003E51BC /* NextTrainWidgetEntryView.swift */,
+				A51BEF5C291AD77C00DC70DC /* NextTrainAttributes.swift */,
+				A51BEF5E291AD9D000DC70DC /* NextTrainWidgets.swift */,
+				A51BEF60291AE3A200DC70DC /* NextTrainLiveActivity.swift */,
+				A51BEF62291B93A000DC70DC /* NextTrainLiveActivityStarter.swift */,
 			);
 			path = NextTrainWidget;
 			sourceTree = "<group>";
@@ -1458,6 +1472,7 @@
 				A5E24A9F26FE2AE600ACF274 /* StarredBusArrivalsListView.swift in Sources */,
 				A52FEBB926F9F18300BB79DA /* BusArrivalErrorView.swift in Sources */,
 				A52FEBAF26F8AEA500BB79DA /* BusStopArrivalsView.swift in Sources */,
+				A51BEF64291B94D200DC70DC /* NextTrainLiveActivityStarter.swift in Sources */,
 				A57B9A4226FC8A700095D96A /* StarredBusArrivalsView.swift in Sources */,
 				A52FEB9C26F5B66E00BB79DA /* BusStopsView.swift in Sources */,
 				A5D21834271EC6350091569E /* GoingHomeBusesView.swift in Sources */,
@@ -1466,6 +1481,7 @@
 				A5E24AA32700209300ACF274 /* StarredBusStopView.swift in Sources */,
 				A52FEB9826F593BC00BB79DA /* BusStopItemView.swift in Sources */,
 				A5E15D5727228E02005A67FB /* Util.swift in Sources */,
+				A51BEF65291B94FE00DC70DC /* NextTrainAttributes.swift in Sources */,
 				A55AACF72704B9F40035A7E5 /* NxtBuzTheme.swift in Sources */,
 				A5E15D5527228808005A67FB /* UseCaseResult.swift in Sources */,
 				A57B9A3F26FC492F0095D96A /* PrimaryButton.swift in Sources */,
@@ -1496,12 +1512,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A51BEF61291AE3A200DC70DC /* NextTrainLiveActivity.swift in Sources */,
 				A5D4BF0B2900716F00249A25 /* Font.swift in Sources */,
 				A5D4BF0D290073BB00249A25 /* Util.swift in Sources */,
 				A5FFFF4F28FDCA7600B2DDBC /* NextTrainWidget.intentdefinition in Sources */,
 				A5D4BF0A2900716900249A25 /* NxtBuzTheme.swift in Sources */,
 				A5D4BF0C290073B200249A25 /* Di.swift in Sources */,
 				A5FFFF4A28FDCA7500B2DDBC /* NextTrainWidget.swift in Sources */,
+				A51BEF63291B93A000DC70DC /* NextTrainLiveActivityStarter.swift in Sources */,
+				A51BEF5F291AD9D000DC70DC /* NextTrainWidgets.swift in Sources */,
+				A51BEF5D291AD77C00DC70DC /* NextTrainAttributes.swift in Sources */,
 				A5D4BF0E290073C600249A25 /* UseCaseResult.swift in Sources */,
 				A52A0733290C7259003E51BC /* RollingStockImageView.swift in Sources */,
 				A52A0735290D0820003E51BC /* NextTrainWidgetEntryView.swift in Sources */,
