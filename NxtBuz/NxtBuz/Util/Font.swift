@@ -38,4 +38,6 @@ struct NxtBuzFonts {
     public static var caption = Font.system(.caption, design: .rounded)
     
     public static var captionMonospaced = Font.system(.caption, design: .monospaced)
+    
+    public static var captionSmall = Font.system(size: 10, design: .rounded)
 }

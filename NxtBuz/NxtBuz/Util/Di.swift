@@ -69,22 +69,27 @@ class Di {
         dispatcherProvider: coroutineDispatcherProvider
     )
     
-    private static let dynamoThemeRepository = DynamoThemeProvider().createDynamoThemeRepository(
-        defaultTheme: DynamoTheme(
-            darkThemeColors: DynamoThemeColors(
-                primary: UIColor(.white),
-                secondary: UIColor(.gray),
-                accent: UIColor(.blue)
-            ),
-            lightThemeColors: DynamoThemeColors(
-                primary: UIColor(.black),
-                secondary: UIColor(.gray),
-                accent: UIColor(.green)
-            )
-        ),
-        enableThemeApiLogging: true,
-        themeApiUrl: "https://amanshuraikwar.github.io/api/nxtBuzTheme.json"
+    private static let nsApiRepository = RepositoryProvides.shared.provideNsApiTrainStopRepository(
+        nsApiFactory: NsApiFactory(
+            settingsSuiteName: "group.io.github.amanshuraikwar.NxtBuz",
+            dispatcherProvider: coroutineDispatcherProvider,
+            subscriptionKey: "28c5a1395bff4cd0b1ebfa3c64652393",
+            addLoggingInterceptors: true,
+            dbBasePath: FileManager.default.containerURL(
+                forSecurityApplicationGroupIdentifier: "group.io.github.amanshuraikwar.NxtBuz"
+            )!.path
+        )
     )
+    
+    private static let trainStopRepositories = [Di.nsApiRepository]
+    
+    public static let defaultTheme = DynamoThemeProvider.companion.DEFAULT_THEME
+    
+    private static let dynamoThemeRepository = DynamoThemeProvider().createDynamoThemeRepository(
+            defaultTheme: DynamoThemeProvider.companion.DEFAULT_THEME,
+            enableThemeApiLogging: true,
+            themeApiUrl: "https://amanshuraikwar.github.io/api/nxtBuzTheme.json"
+        )
     
     private init() {}
     
@@ -112,13 +117,15 @@ class Di {
         return IosDoSetupUseCase(
             userRepository: Di.userRepository,
             busStopRepository: Di.busStopRepository,
-            busRouteRepository: Di.busRouteRepository
+            busRouteRepository: Di.busRouteRepository,
+            starredBusArrivalRepository: Di.starredBusArrivalRepository
         )
     }
     
     func getBusStopsUseCase() -> IosGetBusStopsUseCase {
         return IosGetBusStopsUseCase(
-            busStopRepository: Di.busStopRepository
+            busStopRepository: Di.busStopRepository,
+            searchRepository: Di.searchRepository
         )
     }
     
@@ -129,8 +136,8 @@ class Di {
         )
     }
     
-    func getToggleBusStopStarUseCase() -> IosToggleBusStopStarUseCase {
-        return IosToggleBusStopStarUseCase(repo: Di.starredBusArrivalRepository)
+    func getToggleBusStopStarUseCase() -> IosToggleBusServiceStarUseCase {
+        return IosToggleBusServiceStarUseCase(repo: Di.starredBusArrivalRepository)
     }
     
     func getStarredBusServicesUseCase() -> GetStarredBusServicesUseCase {
@@ -199,6 +206,18 @@ class Di {
     func getCachedDirectBusDataUseCase() -> IosGetCachedDirectBusDataUseCase {
         return IosGetCachedDirectBusDataUseCase(
             busStopRepository: Di.busStopRepository
+        )
+    }
+    
+    func getTrainBetweenStopsUseCase() -> IosGetTrainBetweenStopsUseCase {
+        return IosGetTrainBetweenStopsUseCase(
+            trainStopRepository: Di.nsApiRepository
+        )
+    }
+    
+    func getSearchTrainStopsUseCase() -> IosSearchTrainStopsUseCase {
+        return IosSearchTrainStopsUseCase(
+            trainStopRepository: Di.nsApiRepository
         )
     }
 }

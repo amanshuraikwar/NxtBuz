@@ -1,6 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.domain
 
-import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleStarUpdate
+import io.github.amanshuraikwar.nxtbuz.commonkmm.starred.ToggleBusServiceStarUpdate
 import io.github.amanshuraikwar.nxtbuz.domain.model.IosResult
 import io.github.amanshuraikwar.nxtbuz.domain.starred.ToggleStarUpdateUseCase
 import io.github.amanshuraikwar.nxtbuz.repository.StarredBusArrivalRepository
@@ -11,7 +11,7 @@ class IosToggleStarUpdateUseCase constructor(
     repo = repo
 ) {
     operator fun invoke(
-        callback: (IosResult<ToggleStarUpdate>) -> Unit
+        callback: (IosResult<ToggleBusServiceStarUpdate>) -> Unit
     ) {
         callback fromFlow {
             invoke()

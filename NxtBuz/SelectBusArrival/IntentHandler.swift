@@ -18,18 +18,26 @@ import iosUmbrella
 // "Search for messages in <myApp>"
 
 class IntentHandler: INExtension, SelectBusArrivalIntentHandling {
-    func resolveBusStop(for intent: SelectBusArrivalIntent, with completion: @escaping (BusArrivalWidgetBusStopResolutionResult) -> Void) {
+    func resolveBusStop(
+        for intent: SelectBusArrivalIntent,
+        with completion:
+        @escaping (BusArrivalWidgetBusStopResolutionResult) -> Void
+    ) {
         
     }
     
-    func resolveBusServiceNumber(for intent: SelectBusArrivalIntent, with completion: @escaping (INStringResolutionResult) -> Void) {
+    func resolveBusServiceNumber(
+        for intent: SelectBusArrivalIntent,
+        with completion: @escaping (INStringResolutionResult) -> Void
+    ) {
         completion(.disambiguation(with: ["sbcdrfgh", "sefgf"]))
     }
     
     func provideBusStopOptionsCollection(
         for intent: SelectBusArrivalIntent,
         searchTerm: String?,
-        with completion: @escaping (INObjectCollection<BusArrivalWidgetBusStop>?, Error?) -> Void
+        with completion:
+        @escaping (INObjectCollection<BusArrivalWidgetBusStop>?, Error?) -> Void
     ) {
         DispatchQueue.main.sync {
             Di.get().getSearchUseCase().invoke(
@@ -56,7 +64,9 @@ class IntentHandler: INExtension, SelectBusArrivalIntentHandling {
                     completion(collection, nil)
                 case .Error(let message):
                     print(message)
-                    let collection = INObjectCollection<BusArrivalWidgetBusStop>(items: characters)
+                    let collection = INObjectCollection<BusArrivalWidgetBusStop>(
+                        items: characters
+                    )
                     completion(collection, nil)
                 }
             }

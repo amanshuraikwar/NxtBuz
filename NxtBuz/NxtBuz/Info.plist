@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -39,6 +41,7 @@
 	<string>Next Bus SG need your location to show bus stops near you</string>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>NextTrainWidgetConfigurationIntent</string>
 		<string>SelectBusArrivalIntent</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>

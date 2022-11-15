@@ -15,7 +15,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             if nxtBuzTheme.themeInit {
-                HomeView()
+                SelectRegionView()//HomeView()
                     .accentColor(Color(nxtBuzTheme.accentColor))
             } else {
                 ProgressView()

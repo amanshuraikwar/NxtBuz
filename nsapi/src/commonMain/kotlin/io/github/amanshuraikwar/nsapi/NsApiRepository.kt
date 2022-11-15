@@ -11,6 +11,7 @@ import io.github.amanshuraikwar.nsapi.model.TrainJourneyDetailsStopDto
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
 import io.github.amanshuraikwar.nxtbuz.commonkmm.MapUtil
 import io.github.amanshuraikwar.nxtbuz.commonkmm.toSearchDescriptionHint
+import io.github.amanshuraikwar.nxtbuz.commonkmm.train.NextTrainBetweenStopsDetails
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainCrowdStatus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDeparture
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainDepartureStatus
@@ -24,6 +25,7 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainStop
 import io.github.amanshuraikwar.nxtbuz.repository.TrainStopRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -43,6 +45,10 @@ internal class NsApiRepository(
     // train code -> category name
     private val trainCategoryNameCache = mutableMapOf<String, String>()
 
+    init {
+
+    }
+
     override suspend fun supportsLocation(lat: Double, lng: Double): Boolean {
         // TODO-amanshuraikwar (11 Sep 2022 12:54:59 PM):
         //  update to check if location is inside or near The Netherlands
@@ -55,14 +61,9 @@ internal class NsApiRepository(
         maxStops: Int,
         maxDistanceMetres: Int?
     ): List<TrainStop> {
+        fetchAndCacheLocally()
+
         return withContext(dispatcherProvider.io) {
-            val cachedLocally =
-                settings.getBoolean(PREF_TRAIN_STOPS_CACHED_LOCALLY, false)
-
-            if (!cachedLocally) {
-                fetchAndCacheLocally()
-            }
-
             nsApiDb
                 .nsTrainStationEntityQueries
                 .findClose(
@@ -106,13 +107,16 @@ internal class NsApiRepository(
         return withContext(dispatcherProvider.io) {
             val departures = mutableListOf<TrainDeparture>()
 
+            println("yoyo, get arrivals of $trainStationCode")
             val arrivalDeferred = async {
                 nsApi.getTrainArrivals(stationCode = trainStationCode)
             }
+            println("yoyo, get depertures of $trainStationCode")
             val departuresDeferred = async {
                 nsApi.getTrainDepartures(stationCode = trainStationCode)
             }
 
+            println("yoyo, mixing ourputs")
             val arrivalsMap = arrivalDeferred.await()
                 .payload
                 .arrivals
@@ -123,14 +127,16 @@ internal class NsApiRepository(
                     it.value[0]
                 }
 
+            println("yoyo, formed arrivalsMap")
+
             departuresDeferred.await()
                 .payload
                 .departures
                 .forEach { departureDto ->
                     val arrivalDto = arrivalsMap[departureDto.product.number]
 
-                    trainCategoryNameCache[departureDto.product.number] =
-                        departureDto.product.longCategoryName
+//                    trainCategoryNameCache[departureDto.product.number] =
+//                        departureDto.product.longCategoryName
 
                     departures.add(
                         TrainDeparture(
@@ -186,7 +192,7 @@ internal class NsApiRepository(
                         )
                     )
                 }
-
+            println("yoyo, added to departures")
             departures
         }
     }
@@ -214,12 +220,11 @@ internal class NsApiRepository(
         return true
     }
 
-    override suspend fun getTrainDetails(trainCode: String): TrainDetails {
+    override suspend fun getTrainDetails(trainCode: String): TrainDetails? {
         return withContext(dispatcherProvider.io) {
             val trainInfoDeferred = async {
                 nsApi.getTrainInformation(
                     trainCodes = listOf(trainCode),
-                    stationCodes = listOf()
                 )
             }
 
@@ -229,10 +234,7 @@ internal class NsApiRepository(
 
             val trainInfo = when (val response = trainInfoDeferred.await()) {
                 is TrainInfoResponseDto.Error -> {
-                    throw IllegalArgumentException(
-                        response.errors.getOrNull(0)?.message
-                            ?: "Error while getting details of train $trainCode"
-                    )
+                    return@withContext null
                 }
 
                 is TrainInfoResponseDto.Success -> response.info[0]
@@ -247,7 +249,7 @@ internal class NsApiRepository(
                     .getOrNull(0)?.departures
                     ?.getOrNull(0)?.product?.longCategoryName
                     ?: trainCategoryNameCache[trainCode]?.let { "$it*" }
-                    ?: "Unknown Type"
+                    ?: UNKNOWN_TRAIN_TYPE
 
             val accumulatedFacilities = trainInfo
                 .materieeldelen
@@ -287,8 +289,184 @@ internal class NsApiRepository(
         }
     }
 
+    override suspend fun getTrainsBetween(
+        fromTrainStopCode: String,
+        toTrainStopCode: String
+    ): List<TrainDetails> {
+        return withContext(dispatcherProvider.computation) {
+            val trainsBetweenDetails = mutableListOf<TrainDetails>()
+
+            val trainStopCode1 = fromTrainStopCode.parseCode()
+            val trainStopCode2 = toTrainStopCode.parseCode()
+
+            println("yoyo, getting train departures for $trainStopCode1")
+
+            val trainDepartures = getTrainDepartures(trainStopCode1)
+
+            println("yoyo, departures $trainDepartures")
+
+            for (trainDeparture in trainDepartures) {
+                println("yoyo, getting train details for ${trainDeparture.trainCode}")
+                val trainDetails = getTrainDetails(trainDeparture.trainCode)
+                if (trainDetails != null) {
+                    var stop1Found = false
+                    for (node in trainDetails.route) {
+                        if (node.trainStopCode == trainStopCode1) {
+                            stop1Found = true
+                        }
+                        if (node.trainStopCode == trainStopCode2 && stop1Found) {
+                            trainsBetweenDetails.add(trainDetails)
+                            break
+                        }
+                    }
+                }
+
+                // TODO-amanshuraikwar (28 Oct 2022 09:41:09 pm):
+                //  add manual delay because if we call train details api too
+                //  frequently, we hit the rate limit of the api
+                //delay(500)
+            }
+
+            trainsBetweenDetails
+        }
+    }
+
+    override suspend fun getNextTrainBetween(
+        fromTrainStopCode: String,
+        toTrainStopCode: String
+    ): NextTrainBetweenStopsDetails? {
+        return withContext(dispatcherProvider.computation) {
+            val trainStopCode1 = fromTrainStopCode.parseCode()
+            val trainStopCode2 = toTrainStopCode.parseCode()
+
+            val trainDepartures = getTrainDepartures(trainStopCode1)
+
+            for (trainDeparture in trainDepartures) {
+                val trainDetails = getTrainDetails(trainDeparture.trainCode)
+                if (trainDetails != null) {
+                    var stop1Found = false
+                    var stop1Index = 0
+                    var stop1Name = ""
+
+                    var currentStopIndex = 0
+                    for (node in trainDetails.route) {
+                        if (node.type !is TrainRouteNodeType.Passing) {
+                            currentStopIndex++
+                        }
+                        if (node.trainStopCode == trainStopCode1) {
+                            stop1Found = true
+                            stop1Name = node.trainStopName
+                            stop1Index = currentStopIndex
+                            println("yoyo, stop1Name = $stop1Name")
+                        }
+                        if (node.trainStopCode == trainStopCode2
+                            && (node.type is TrainRouteNodeType.Stop
+                                    || node.type is TrainRouteNodeType.Destination)
+                            && stop1Found
+                        ) {
+                            val arrivalTiming: TrainRouteNodeTiming? = when (node.type) {
+                                is TrainRouteNodeType.Stop -> {
+                                    (node.type as TrainRouteNodeType.Stop).arrivalTiming
+                                }
+
+                                is TrainRouteNodeType.Destination -> {
+                                    (node.type as TrainRouteNodeType.Destination).arrivalTiming
+                                }
+
+                                else -> {
+                                    null
+                                }
+                            }
+
+                            val stopsToTravel = currentStopIndex - stop1Index - 1
+
+                            return@withContext NextTrainBetweenStopsDetails(
+                                trainCode = trainDetails.trainCode,
+                                trainCategoryName =
+                                if (trainDetails.trainCategoryName == UNKNOWN_TRAIN_TYPE) {
+                                    null
+                                } else {
+                                    trainDetails.trainCategoryName
+                                },
+                                fromTrainStopName = stop1Name,
+                                toTrainStopName = node.trainStopName,
+                                facilities = trainDetails.facilities,
+                                rollingStockImages =
+                                trainDetails
+                                    .rollingStock
+                                    .mapNotNull { it.imageUrl },
+                                length = trainDetails.length,
+                                lengthInMeters = trainDetails.lengthInMeters,
+                                departureFromIntendedSource =
+                                trainDeparture
+                                    .actualDepartureInstant
+                                    ?.formatArrivalInstant(withAm = false)
+                                    ?: trainDeparture
+                                        .plannedDepartureInstant
+                                        .formatArrivalInstant(withAm = false),
+                                arrivalAtIntendedDestination =
+                                when (arrivalTiming) {
+                                    is TrainRouteNodeTiming.Available -> {
+                                        arrivalTiming
+                                            .actualTimeInstant
+                                            ?.formatArrivalInstant(withAm = false)
+                                            ?: arrivalTiming
+                                                .plannedTimeInstant
+                                                .formatArrivalInstant(withAm = false)
+                                    }
+
+                                    else -> "--"
+                                },
+                                updatedAt = Clock.System.now().formatArrivalInstant(),
+                                fromTrainStopTrack = trainDeparture.track,
+                                stopsToTravel =
+                                "$stopsToTravel Stop${if (stopsToTravel != 1) "s" else ""}"
+                            )
+                        }
+                    }
+                }
+            }
+
+            return@withContext null
+        }
+    }
+
+    override suspend fun searchTrainStops(trainStopName: String): List<TrainStop> {
+        fetchAndCacheLocally()
+
+        return withContext(dispatcherProvider.io) {
+            nsApiDb
+                .nsTrainStationEntityQueries
+                .searchLikeDescription(
+                    trainStopName
+                        .trim()
+                        .replace(" ", ""),
+                    10
+                )
+                .executeAsList()
+                .map {
+                    it.toTrainStop()
+                }
+        }
+    }
+
+    private fun String.parseCode(): String {
+        return if (startsWith(TRAIN_STOP_CODE_PREFIX)) {
+            drop(TRAIN_STOP_CODE_PREFIX.length)
+        } else {
+            this
+        }
+    }
+
     private suspend fun fetchAndCacheLocally() {
         withContext(dispatcherProvider.io) {
+            val cachedLocally =
+                settings.getBoolean(PREF_TRAIN_STOPS_CACHED_LOCALLY, false)
+
+            if (cachedLocally) {
+                return@withContext
+            }
+
             settings[PREF_TRAIN_STOPS_CACHED_LOCALLY] = false
 
             val entities = nsApi.getStations()
@@ -333,6 +511,7 @@ internal class NsApiRepository(
     companion object {
         private const val PREF_TRAIN_STOPS_CACHED_LOCALLY = "TRAIN_STOPS_CACHED_LOCALLY"
         private const val TRAIN_STOP_CODE_PREFIX = "NS-API-TRAIN-"
+        private const val UNKNOWN_TRAIN_TYPE = "Unknown Type"
 
         private fun String.toAmsterdamInstant(): Instant {
             val (localDateTimeString, _) = split("+")
@@ -377,8 +556,10 @@ internal class NsApiRepository(
                     TrainRouteNodeTiming.Available(
                         plannedTime =
                         departureDto.plannedTime.toAmsterdamInstant().formatArrivalInstant(),
+                        plannedTimeInstant = departureDto.plannedTime.toAmsterdamInstant(),
                         actualTime =
                         departureDto.actualTime?.toAmsterdamInstant()?.formatArrivalInstant(),
+                        actualTimeInstant = departureDto.actualTime?.toAmsterdamInstant(),
                         delayedByMinutes =
                         departureDto
                             .actualTime
@@ -405,8 +586,10 @@ internal class NsApiRepository(
                     TrainRouteNodeTiming.Available(
                         plannedTime =
                         arrivalDto.plannedTime.toAmsterdamInstant().formatArrivalInstant(),
+                        plannedTimeInstant = arrivalDto.plannedTime.toAmsterdamInstant(),
                         actualTime =
                         arrivalDto.actualTime?.toAmsterdamInstant()?.formatArrivalInstant(),
+                        actualTimeInstant = arrivalDto.actualTime?.toAmsterdamInstant(),
                         delayedByMinutes =
                         arrivalDto
                             .actualTime
@@ -479,7 +662,9 @@ internal class NsApiRepository(
             )
         }
 
-        private fun Instant.formatArrivalInstant(): String {
+        private fun Instant.formatArrivalInstant(
+            withAm: Boolean = true
+        ): String {
             val datetimeInSystemZone = toLocalDateTime(TimeZone.currentSystemDefault())
             val hour = when (datetimeInSystemZone.hour) {
                 0, 12 -> "12"
@@ -497,7 +682,11 @@ internal class NsApiRepository(
                 else -> "${datetimeInSystemZone.minute}"
             }
 
-            return "$hour:$minutes $a"
+            return if (withAm) {
+                "$hour:$minutes $a"
+            } else {
+                "$hour:$minutes"
+            }
         }
     }
 }

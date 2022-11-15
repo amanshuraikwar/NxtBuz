@@ -47,7 +47,8 @@ object Libs {
     }
 
     object KotlinX {
-        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.2"
+        // upgrading to 0.3.3 becuse of https://youtrack.jetbrains.com/issue/KT-52554
+        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.3"
         const val serializationCore = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1"
         const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1"
         const val serializationGradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.10"

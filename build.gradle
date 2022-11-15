@@ -14,7 +14,6 @@ buildscript {
         classpath Libs.androidGradlePlugin
 
         classpath Libs.Kotlin.gradlePlugin
-        classpath Libs.Kotlin.extensions
 
         classpath Libs.Google.gmsGoogleServices
         classpath Libs.Google.crashlyticsGradle
@@ -24,7 +23,6 @@ buildscript {
         classpath Libs.SqlDelight.gradlePlugin
 
         classpath Libs.KotlinX.serializationGradlePlugin
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20-Beta'
     }
 }
 

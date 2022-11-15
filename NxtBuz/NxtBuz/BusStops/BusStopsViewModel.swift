@@ -29,6 +29,11 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
     }
     
     func fetchBusStops(showFetching: Bool = false) {
+//        getTrainsBetween()
+        if #available(iOS 16.1, *) {
+            NextTrainLiveActivityStarter().start()
+        }
+        
         if showFetching {
             self.busStopsScreenState = .Fetching(message: "Fetching bus stops...")
             self.busesGoingHomeState = .Fetching
@@ -198,19 +203,35 @@ class BusStopsViewModel : NSObject, ObservableObject, CLLocationManagerDelegate 
         Di.get()
             .setHomeBusStopUseCase()
             .invoke(
-                busStopCode: busStopCode
-            ) { result in
-                let useCaseResult = Util.toUseCaseResult(result)
-                switch useCaseResult {
-                case .Error(let message):
-                    print(message)
-                case .Success(_):
-                    WidgetCenter.shared.reloadTimelines(
-                        ofKind: "io.github.amanshuraikwar.NxtBuz.goingHomeBusWidget"
-                    )
-                    print("set home bus stop \(busStopCode) success")
+                busStopCode: busStopCode,
+                completion: { result in
+                    let useCaseResult = Util.toUseCaseResult(result)
+                    switch useCaseResult {
+                    case .Error(let message):
+                        print(message)
+                    case .Success(_):
+                        WidgetCenter.shared.reloadTimelines(
+                            ofKind: "io.github.amanshuraikwar.NxtBuz.goingHomeBusWidget"
+                        )
+                        print("set home bus stop \(busStopCode) success")
+                    }
                 }
+            )
+    }
+    
+    private func getTrainsBetween() {
+        Di.get().getTrainBetweenStopsUseCase().invoke1(
+            fromTrainStopCode: "NS-API-TRAIN-UT",
+            toTrainStopCode: "NS-API-TRAIN-ASD"
+        ) { result in
+            let useCaseResult = Util.toUseCaseResult(result)
+            switch useCaseResult {
+            case .Error(let message):
+                NSLog("yoyoyo, \(message)")
+            case .Success(let output):
+                NSLog("yoyoyo, \(output)")
             }
+        }
     }
 }
 

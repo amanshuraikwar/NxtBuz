@@ -4,9 +4,11 @@ import io.github.amanshuraikwar.nxtbuz.commonkmm.BusStop
 import io.github.amanshuraikwar.nxtbuz.domain.busstop.GetBusStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.model.IosResult
 import io.github.amanshuraikwar.nxtbuz.repository.BusStopRepository
+import io.github.amanshuraikwar.nxtbuz.repository.SearchRepository
 
 class IosGetBusStopsUseCase constructor(
-    busStopRepository: BusStopRepository
+    busStopRepository: BusStopRepository,
+    private val searchRepository: SearchRepository
 ) : GetBusStopsUseCase(busStopRepository = busStopRepository) {
     operator fun invoke(
         lat: Double,
@@ -25,10 +27,10 @@ class IosGetBusStopsUseCase constructor(
         callback: (IosResult<List<BusStop>>) -> Unit
     ) {
         callback from {
-            invoke(
+            searchRepository.search(
                 query = query,
                 limit = limit
-            )
+            ).busStopList
         }
     }
 }

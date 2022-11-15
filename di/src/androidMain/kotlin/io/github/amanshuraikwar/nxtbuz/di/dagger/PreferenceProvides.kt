@@ -7,7 +7,6 @@ import io.github.amanshuraikwar.nxtbuz.common.di.ApplicationContext
 import io.github.amanshuraikwar.nxtbuz.di.PreferenceProvides
 import io.github.amanshuraikwar.nxtbuz.di.PreferenceStorageParams
 import io.github.amanshuraikwar.nxtbuz.preferencestorage.PreferenceStorage
-import io.github.amanshuraikwar.nxtbuz.preferencestorage.SettingsFactory
 import javax.inject.Singleton
 
 @Module
