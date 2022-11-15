@@ -55,6 +55,7 @@
 		A52FEBB726F9EC4300BB79DA /* BusArrivalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBB626F9EC4200BB79DA /* BusArrivalView.swift */; };
 		A52FEBB926F9F18300BB79DA /* BusArrivalErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBB826F9F18300BB79DA /* BusArrivalErrorView.swift */; };
 		A52FEBBB26F9F3DC00BB79DA /* BusDestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52FEBBA26F9F3DC00BB79DA /* BusDestinationView.swift */; };
+		A5345F222923F38600953630 /* SelectRegionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5345F212923F38600953630 /* SelectRegionView.swift */; };
 		A534608D2707495400A1C990 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A534608C2707495400A1C990 /* Intents.framework */; };
 		A53460902707495400A1C990 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A534608F2707495400A1C990 /* IntentHandler.swift */; };
 		A53460982707495400A1C990 /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53460972707495400A1C990 /* IntentsUI.framework */; };
@@ -300,6 +301,7 @@
 		A52FEBB626F9EC4200BB79DA /* BusArrivalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrivalView.swift; sourceTree = "<group>"; };
 		A52FEBB826F9F18300BB79DA /* BusArrivalErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrivalErrorView.swift; sourceTree = "<group>"; };
 		A52FEBBA26F9F3DC00BB79DA /* BusDestinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusDestinationView.swift; sourceTree = "<group>"; };
+		A5345F212923F38600953630 /* SelectRegionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRegionView.swift; sourceTree = "<group>"; };
 		A53460832707363600A1C990 /* NxtBuz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NxtBuz.entitlements; sourceTree = "<group>"; };
 		A53460842707365000A1C990 /* NxtBuz-WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "NxtBuz-WidgetExtension.entitlements"; sourceTree = "<group>"; };
 		A534608B2707495400A1C990 /* SelectBusArrival.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SelectBusArrival.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -618,6 +620,14 @@
 			path = BusStopArrivals;
 			sourceTree = "<group>";
 		};
+		A5345F202923F35E00953630 /* Region */ = {
+			isa = PBXGroup;
+			children = (
+				A5345F212923F38600953630 /* SelectRegionView.swift */,
+			);
+			path = Region;
+			sourceTree = "<group>";
+		};
 		A534608E2707495400A1C990 /* SelectBusArrival */ = {
 			isa = PBXGroup;
 			children = (
@@ -753,6 +763,7 @@
 		A5E1E81726F10213007470A4 /* NxtBuz */ = {
 			isa = PBXGroup;
 			children = (
+				A5345F202923F35E00953630 /* Region */,
 				A53460832707363600A1C990 /* NxtBuz.entitlements */,
 				A55AACF52704B7C90035A7E5 /* Theme */,
 				A57B9A4026FC8A5F0095D96A /* Starred */,
@@ -1473,6 +1484,7 @@
 				A52FEBB926F9F18300BB79DA /* BusArrivalErrorView.swift in Sources */,
 				A52FEBAF26F8AEA500BB79DA /* BusStopArrivalsView.swift in Sources */,
 				A51BEF64291B94D200DC70DC /* NextTrainLiveActivityStarter.swift in Sources */,
+				A5345F222923F38600953630 /* SelectRegionView.swift in Sources */,
 				A57B9A4226FC8A700095D96A /* StarredBusArrivalsView.swift in Sources */,
 				A52FEB9C26F5B66E00BB79DA /* BusStopsView.swift in Sources */,
 				A5D21834271EC6350091569E /* GoingHomeBusesView.swift in Sources */,
