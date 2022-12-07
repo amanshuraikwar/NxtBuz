@@ -11,39 +11,44 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.PrimaryButton
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
+import io.github.amanshuraikwar.nxtbuz.onboarding.R
 
 @Composable
-fun SetupScreen(
+fun SetupScreenView(
     vm: SetupViewModel,
     onSetupComplete: () -> Unit,
 ) {
     val screenState by vm.screenState.collectAsState()
 
-    DisposableEffect(key1 = null) {
+    LaunchedEffect(key1 = null) {
         vm.initiateSetup()
-        onDispose { }
     }
 
-    WelcomeScreen(screenState.versionName) {
+    WelcomeScreen(
+        versionName = screenState.versionName
+    ) {
         SetupProgressView(
             progressState = screenState.setupProgressState,
             onSetupComplete = onSetupComplete,
-            onRetryClick = {
-                vm.initiateSetup()
-            }
+            onRetryClick = vm::initiateSetup,
         )
     }
 }
 
 @Composable
-fun SetupProgressView(
+private fun SetupProgressView(
     progressState: SetupProgressState,
     onSetupComplete: () -> Unit,
     onRetryClick: () -> Unit,
@@ -54,7 +59,7 @@ fun SetupProgressView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
-                text = "Setting up...",
+                text = stringResource(id = R.string.on_boarding_setting_up),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.body1Bold,
                 color = MaterialTheme.colors.onSurface
@@ -66,6 +71,7 @@ fun SetupProgressView(
                     .clip(RoundedCornerShape(50)),
             )
         }
+
         is SetupProgressState.InProgress -> {
             val progress by animateIntAsState(
                 targetValue = progressState.progress,
@@ -97,6 +103,7 @@ fun SetupProgressView(
                 )
             }
         }
+
         is SetupProgressState.SetupComplete -> {
             PrimaryButton(
                 modifier = Modifier
@@ -105,6 +112,7 @@ fun SetupProgressView(
                 onClick = onSetupComplete
             )
         }
+
         is SetupProgressState.Error -> {
             Text(
                 modifier = Modifier

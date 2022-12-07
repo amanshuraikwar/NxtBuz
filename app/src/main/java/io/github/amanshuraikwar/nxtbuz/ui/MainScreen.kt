@@ -30,7 +30,7 @@ import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMap
 import io.github.amanshuraikwar.nxtbuz.map.ui.NxtBuzMapViewModel
 import io.github.amanshuraikwar.nxtbuz.map.ui.recenter.RecenterButton
 import io.github.amanshuraikwar.nxtbuz.map.ui.recenter.RecenterViewModel
-import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupScreen
+import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupScreenView
 import io.github.amanshuraikwar.nxtbuz.onboarding.setup.SetupViewModel
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchBar
 import io.github.amanshuraikwar.nxtbuz.search.ui.SearchBarDecorationType
@@ -285,7 +285,7 @@ fun MainScreen(
             }
         }
         MainScreenState.Setup -> {
-            SetupScreen(vm = setupViewModel, onSetupComplete)
+            SetupScreenView(vm = setupViewModel, onSetupComplete)
         }
     }
 }

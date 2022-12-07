@@ -42,6 +42,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopDeparturesUseCas
 import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.train.GetTrainStopsUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.DoSetupUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.GetCountryUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetForcedThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetHomeBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetLaunchBusStopPageUseCase
@@ -49,6 +50,7 @@ import io.github.amanshuraikwar.nxtbuz.domain.user.GetThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetUseSystemThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.GetUserStateUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.RefreshThemeUseCase
+import io.github.amanshuraikwar.nxtbuz.domain.user.SetCountryUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.SetForcedThemeUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.SetHomeBusStopUseCase
 import io.github.amanshuraikwar.nxtbuz.domain.user.SetLaunchBusStopPageUseCase
@@ -552,6 +554,24 @@ class UseCaseProvides {
     ): GetTrainDetailsUseCase {
         return GetTrainDetailsUseCase(
             trainStopRepositories = listOf(nsApiTrainsStopRepository)
+        )
+    }
+
+    @Provides
+    fun provideGetCountryUseCase(
+        userRepository: UserRepository
+    ): GetCountryUseCase {
+        return GetCountryUseCase(
+            userRepository = userRepository
+        )
+    }
+
+    @Provides
+    fun provideSetCountryUseCase(
+        userRepository: UserRepository
+    ): SetCountryUseCase {
+        return SetCountryUseCase(
+            userRepository = userRepository
         )
     }
 }

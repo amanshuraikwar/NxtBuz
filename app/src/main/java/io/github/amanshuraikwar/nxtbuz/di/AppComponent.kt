@@ -52,6 +52,7 @@ import javax.inject.Singleton
         LocalDataSourceProvides::class,
         CoroutineProvides::class,
         RepositoryProvides::class,
+        UseCaseProvides::class,
         MapProvides::class,
         SetupModule::class,
     ]

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="on_boarding_app_description">Vind eenvoudig de aankomsttijden van bussen en treinen</string>
+    <string name="on_boarding_select_country">Selecteer land</string>
+    <string name="on_boarding_next">Volgende</string>
+</resources>

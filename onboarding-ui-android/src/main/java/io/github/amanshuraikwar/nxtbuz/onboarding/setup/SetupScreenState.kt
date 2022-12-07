@@ -1,11 +1,11 @@
 package io.github.amanshuraikwar.nxtbuz.onboarding.setup
 
-data class SetupScreenState(
+internal data class SetupScreenState(
     val versionName: String,
     val setupProgressState: SetupProgressState
 )
 
-sealed class SetupProgressState {
+internal sealed class SetupProgressState {
     object Starting : SetupProgressState()
     object SetupComplete : SetupProgressState()
     data class Error(val message: String) : SetupProgressState()

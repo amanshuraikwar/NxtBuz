@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.userdata
 
 import io.github.amanshuraikwar.nxtbuz.commonkmm.CoroutinesDispatcherProvider
+import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzCountry
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.commonkmm.SystemThemeHelper
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
@@ -149,6 +150,18 @@ open class UserRepositoryImpl constructor(
     override suspend fun getLaunchBusStopsPage(): LaunchBusStopsPage {
         return withContext(dispatcherProvider.io) {
             preferenceStorage.launchBusStopsPage
+        }
+    }
+
+    override suspend fun getCountry(): NxtBuzCountry {
+        return withContext(dispatcherProvider.io) {
+            preferenceStorage.country
+        }
+    }
+
+    override suspend fun setCountry(country: NxtBuzCountry) {
+        withContext(dispatcherProvider.io) {
+            preferenceStorage.country = country
         }
     }
 }

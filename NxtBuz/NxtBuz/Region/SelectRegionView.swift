@@ -41,7 +41,7 @@ struct SelectRegionView: View {
             
             PrimaryButton(
                 text: "Select",
-                action: {  },
+                action: { },
                 iconSystemName: "chevron.forward"
             )
             .padding()

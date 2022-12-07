@@ -1,6 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.preferencestorage
 
 import com.russhwolf.settings.Settings
+import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzCountry
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage.Companion.toLaunchBusStopPage
@@ -111,6 +112,16 @@ internal class PreferenceStorageImpl(
         }
     )
 
+    override var country by ObjectPreference(
+        settings,
+        PREF_COUNTRY,
+        NxtBuzCountry.NL,
+        { it.toString() },
+        { str ->
+            str?.let { NxtBuzCountry.valueOf(it) }
+        }
+    )
+
     companion object {
         private const val PREF_ONBOARDING = "pref_onboarding"
         const val PREF_BUS_STOPS_QUERY_LIMIT = "pref_bus_stops_query_limit"
@@ -130,5 +141,6 @@ internal class PreferenceStorageImpl(
         const val PREF_SETUP_COMPLETE_TIME_MILLIS = "pref_setup_complete_time_millis"
         const val PREF_HOME_BUS_STOP_CODE = "pref_home_bus_stop_code"
         const val PREF_LAUNCH_BUS_STOPS_PAGE = "pref_home_bus_stop_code"
+        const val PREF_COUNTRY = "pref_country"
     }
 }

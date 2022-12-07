@@ -11,7 +11,6 @@ import io.github.amanshuraikwar.nxtbuz.onboarding.setup.worker.SetupWorkerUseCas
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -31,7 +30,7 @@ class SetupViewModel @Inject constructor(
         SetupScreenState(appVersionInfo, SetupProgressState.Starting)
     )
 
-    val screenState = _screenState.asStateFlow()
+    internal val screenState = _screenState.asStateFlow()
 
     init {
         FirebaseCrashlytics.getInstance().setCustomKey("viewModel", TAG)
@@ -48,6 +47,7 @@ class SetupViewModel @Inject constructor(
                                 SetupProgressState.Starting
                             )
                         }
+
                         WorkInfo.State.RUNNING -> {
                             _screenState.value = SetupScreenState(
                                 appVersionInfo,
@@ -56,12 +56,14 @@ class SetupViewModel @Inject constructor(
                                 )
                             )
                         }
+
                         WorkInfo.State.SUCCEEDED -> {
                             _screenState.value = SetupScreenState(
                                 appVersionInfo,
                                 SetupProgressState.SetupComplete
                             )
                         }
+
                         WorkInfo.State.FAILED,
                         WorkInfo.State.BLOCKED -> {
                             _screenState.value = SetupScreenState(
@@ -69,6 +71,7 @@ class SetupViewModel @Inject constructor(
                                 SetupProgressState.Error("Setup failed, please try again :(")
                             )
                         }
+
                         WorkInfo.State.CANCELLED -> {
                             _screenState.value = SetupScreenState(
                                 appVersionInfo,

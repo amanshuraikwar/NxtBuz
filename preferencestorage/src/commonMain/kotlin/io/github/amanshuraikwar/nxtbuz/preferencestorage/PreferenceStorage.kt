@@ -2,6 +2,7 @@ package io.github.amanshuraikwar.nxtbuz.preferencestorage
 
 import com.russhwolf.settings.Settings
 import io.github.amanshuraikwar.nxtbuz.commonkmm.AlertFrequency
+import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzCountry
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
 
@@ -25,6 +26,7 @@ interface PreferenceStorage {
     var playStoreReviewTimeMillis: Long
     var homeBusStopCode: String
     var launchBusStopsPage: LaunchBusStopsPage
+    var country: NxtBuzCountry
 
     companion object {
         fun create(settings: Settings): PreferenceStorage {

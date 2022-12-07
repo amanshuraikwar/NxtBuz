@@ -1,21 +1,27 @@
 <resources>
-    <string name="app_name">Next Bus SG</string>
-    <string name="app_name_internal">Next Bus SG INTERNAL</string>
-    <string name="app_name_debug">Next Bus SG DEBUG</string>
-    <string name="btn_txt_retry">RETRY</string>
+    <string name="app_name" translatable="false">Next Bus</string>
+    <string name="app_name_internal" translatable="false">Next Bus INTERNAL</string>
+    <string name="app_name_debug" translatable="false">Next Bus DEBUG</string>
+    <string name="btn_txt_retry" translatable="false">RETRY</string>
 
-    <string name="bus_direction_1">\u2192</string>
-    <string name="bus_direction_2">\u21ab</string>
-    <string name="origin_destination">\u21cb</string>
+    <string name="bus_direction_1" translatable="false">\u2192</string>
+    <string name="bus_direction_2" translatable="false">\u21ab</string>
+    <string name="origin_destination" translatable="false">\u21cb</string>
 
-    <string name="star">\u2605</string>
+    <string name="star" translatable="false">\u2605</string>
 
-    <string name="channel_name_bus_arrival">Bus Arrivals</string>
-    <string name="channel_description_bus_arrival">Displays buses arriving at the current bus stop.</string>
+    <string name="channel_name_bus_arrival" translatable="false">Bus Arrivals</string>
+    <string name="channel_description_bus_arrival" translatable="false">Displays buses arriving at the current bus stop.</string>
 
-    <string name="channel_name_starred_bus_arrival">Starred Bus Arrivals</string>
-    <string name="channel_description_starred_bus_arrival">Alerts if starred buses are arriving now at the current bus stop.</string>
+    <string name="channel_name_starred_bus_arrival" translatable="false">Starred Bus Arrivals</string>
+    <string name="channel_description_starred_bus_arrival" translatable="false">Alerts if starred buses are arriving now at the current bus stop.</string>
 
-    <string name="error_title_default">Something went wrong</string>
-    <string name="error_description_default">Please restart the app and try again.</string>
+    <string name="error_title_default" translatable="false">Something went wrong</string>
+    <string name="error_description_default" translatable="false">Please restart the app and try again.</string>
+
+    <string name="on_boarding_app_description">Easily find bus and train arrival timings</string>
+    <string name="on_boarding_select_country">Select country</string>
+    <string name="on_boarding_next">Next</string>
+    <string name="on_boarding_get_started">Get started</string>
+    <string name="on_boarding_setting_up">Setting up…</string>
 </resources>

@@ -1,5 +1,6 @@
 package io.github.amanshuraikwar.nxtbuz.repository
 
+import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzCountry
 import io.github.amanshuraikwar.nxtbuz.commonkmm.NxtBuzTheme
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.LaunchBusStopsPage
 import io.github.amanshuraikwar.nxtbuz.commonkmm.user.UserState
@@ -39,4 +40,8 @@ interface UserRepository {
     suspend fun setLaunchBusStopsPage(launchBusStopsPage: LaunchBusStopsPage)
 
     suspend fun getLaunchBusStopsPage(): LaunchBusStopsPage
+
+    suspend fun getCountry(): NxtBuzCountry
+
+    suspend fun setCountry(country: NxtBuzCountry)
 }
