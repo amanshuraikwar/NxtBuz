@@ -2,27 +2,40 @@ package io.github.amanshuraikwar.nxtbuz.onboarding.setup
 
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
-import io.github.amanshuraikwar.nxtbuz.common.compose.theme.*
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h4Bold
+import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.onboarding.R
 
 @Composable
-fun WelcomeScreen(
+internal fun WelcomeScreenView(
     versionName: String = "",
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -66,19 +79,6 @@ fun WelcomeScreen(
                 .fillMaxSize()
                 .statusBarsPadding()
         ) {
-            Icon(
-                painter = painterResource(
-                    id = R.drawable.ic_mbs
-                ),
-                contentDescription = "MBS Icon",
-                tint = MaterialTheme.colors.outline,
-                modifier = Modifier
-                    .alpha(alpha3)
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-            )
-
             Column {
                 Spacer(modifier = Modifier.height(128.dp))
 
@@ -109,7 +109,7 @@ fun WelcomeScreen(
                         .alpha(alpha2)
                         .fillMaxWidth()
                         .padding(horizontal = 32.dp),
-                    text = "Next Bus SG",
+                    text = stringResource(id = R.string.app_name),
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.h4Bold,
                     textAlign = TextAlign.Center
@@ -121,17 +121,7 @@ fun WelcomeScreen(
                         .fillMaxWidth()
                         .padding(top = 16.dp)
                         .padding(horizontal = 32.dp),
-                    text = buildAnnotatedString {
-                        append("Easily find bus arrival timings anywhere in ")
-                        withStyle(
-                            style = SpanStyle(
-                                color = MaterialTheme.colors.singapore,
-                                fontWeight = FontWeight.Bold
-                            )
-                        ) {
-                            append("Singapore")
-                        }
-                    },
+                    text = stringResource(id = R.string.on_boarding_app_description),
                     color = MaterialTheme.colors.onSurface.medium,
                     style = MaterialTheme.typography.h6,
                     textAlign = TextAlign.Center

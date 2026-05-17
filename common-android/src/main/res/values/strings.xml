@@ -2,8 +2,6 @@
     <string name="app_name" translatable="false">Next Bus</string>
     <string name="app_name_internal" translatable="false">Next Bus INTERNAL</string>
     <string name="app_name_debug" translatable="false">Next Bus DEBUG</string>
-    <string name="btn_txt_retry" translatable="false">RETRY</string>
-
     <string name="bus_direction_1" translatable="false">\u2192</string>
     <string name="bus_direction_2" translatable="false">\u21ab</string>
     <string name="origin_destination" translatable="false">\u21cb</string>
@@ -24,4 +22,6 @@
     <string name="on_boarding_next">Next</string>
     <string name="on_boarding_get_started">Get started</string>
     <string name="on_boarding_setting_up">Setting up…</string>
+
+    <string name="retry">Retry</string>
 </resources>

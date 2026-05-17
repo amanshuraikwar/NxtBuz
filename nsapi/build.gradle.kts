@@ -17,6 +17,7 @@ sqldelight {
     }
 }
 
+@Suppress("UNUSED_VARIABLE")
 kotlin {
     sourceSets {
         val commonMain by getting {

@@ -3,4 +3,7 @@
     <string name="on_boarding_app_description">Vind eenvoudig de aankomsttijden van bussen en treinen</string>
     <string name="on_boarding_select_country">Selecteer land</string>
     <string name="on_boarding_next">Volgende</string>
+    <string name="on_boarding_get_started">Aan de slag</string>
+    <string name="on_boarding_setting_up">Instellen…</string>
+    <string name="retry">Opnieuw proberen</string>
 </resources>

@@ -36,7 +36,7 @@ fun SetupScreenView(
         vm.initiateSetup()
     }
 
-    WelcomeScreen(
+    WelcomeScreenView(
         versionName = screenState.versionName
     ) {
         SetupProgressView(
@@ -82,7 +82,7 @@ private fun SetupProgressView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
-                text = "Setting up...",
+                text = stringResource(id = R.string.on_boarding_setting_up),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.body1Bold,
                 color = MaterialTheme.colors.onSurface
@@ -108,7 +108,7 @@ private fun SetupProgressView(
             PrimaryButton(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "GET STARTED",
+                text = stringResource(id = R.string.on_boarding_get_started).uppercase(),
                 onClick = onSetupComplete
             )
         }
@@ -133,7 +133,7 @@ private fun SetupProgressView(
                     onClick = onRetryClick,
                 ) {
                     Text(
-                        "RETRY",
+                        stringResource(id = R.string.retry).uppercase(),
                         modifier = Modifier.padding(vertical = 4.dp),
                         color = MaterialTheme.colors.error
                     )
