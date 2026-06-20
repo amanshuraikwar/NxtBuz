@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
-import io.github.amanshuraikwar.nxtbuz.search.R
+import io.github.amanshuraikwar.nxtbuz.common.R
 import io.github.amanshuraikwar.nxtbuz.search.ui.model.SearchResult
 import java.util.*
 

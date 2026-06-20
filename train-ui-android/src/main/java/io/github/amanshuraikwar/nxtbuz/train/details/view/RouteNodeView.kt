@@ -28,7 +28,7 @@ import io.github.amanshuraikwar.nxtbuz.common.compose.CircleAvatarPosition
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainCrowdStatus
 import io.github.amanshuraikwar.nxtbuz.commonkmm.train.TrainRouteNodeTiming
-import io.github.amanshuraikwar.nxtbuz.train.R
+import io.github.amanshuraikwar.nxtbuz.common.R
 import io.github.amanshuraikwar.nxtbuz.train.details.ListItemData
 
 @Composable

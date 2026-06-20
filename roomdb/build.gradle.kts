@@ -8,6 +8,7 @@ plugins {
 
 android {
     compileSdk = Libs.compileSdk
+    namespace = "io.github.amanshuraikwar.nxtbuz.roomdb"
 
     defaultConfig {
         minSdk = Libs.minSdk

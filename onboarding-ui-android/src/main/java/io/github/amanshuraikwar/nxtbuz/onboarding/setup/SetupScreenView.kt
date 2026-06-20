@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.amanshuraikwar.nxtbuz.common.compose.PrimaryButton
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.body1Bold
-import io.github.amanshuraikwar.nxtbuz.onboarding.R
+import io.github.amanshuraikwar.nxtbuz.common.R as CommonR
 
 @Composable
 fun SetupScreenView(
@@ -59,7 +59,7 @@ private fun SetupProgressView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
-                text = stringResource(id = R.string.on_boarding_setting_up),
+                text = stringResource(id = CommonR.string.on_boarding_setting_up),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.body1Bold,
                 color = MaterialTheme.colors.onSurface
@@ -82,7 +82,7 @@ private fun SetupProgressView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
-                text = stringResource(id = R.string.on_boarding_setting_up),
+                text = stringResource(id = CommonR.string.on_boarding_setting_up),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.body1Bold,
                 color = MaterialTheme.colors.onSurface
@@ -108,7 +108,7 @@ private fun SetupProgressView(
             PrimaryButton(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = stringResource(id = R.string.on_boarding_get_started).uppercase(),
+                text = stringResource(id = CommonR.string.on_boarding_get_started).uppercase(),
                 onClick = onSetupComplete
             )
         }
@@ -133,7 +133,7 @@ private fun SetupProgressView(
                     onClick = onRetryClick,
                 ) {
                     Text(
-                        stringResource(id = R.string.retry).uppercase(),
+                        stringResource(id = CommonR.string.retry).uppercase(),
                         modifier = Modifier.padding(vertical = 4.dp),
                         color = MaterialTheme.colors.error
                     )

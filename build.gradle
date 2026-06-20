@@ -1,4 +1,5 @@
 import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
+import org.gradle.api.attributes.Attribute
 
 buildscript {
     ext.names = [
@@ -27,6 +28,22 @@ buildscript {
 }
 
 allprojects {
+    def podFrameworkAttribute = Attribute.of("com.github.amanshuraikwar.kmm.podFrameworkType", String)
+
+    configurations.configureEach { configuration ->
+        if (configuration.name in ["podDebugFrameworkIos", "podReleaseFrameworkIos"]) {
+            configuration.attributes.attribute(
+                    podFrameworkAttribute,
+                    (configuration.name + "Ios").toString()
+            )
+        } else if (configuration.name in ["podDebugFrameworkIosFat", "podReleaseFrameworkIosFat"]) {
+            configuration.attributes.attribute(
+                    podFrameworkAttribute,
+                    (configuration.name + "IosFat").toString()
+            )
+        }
+    }
+
     configurations.all {
         resolutionStrategy {
             force("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")

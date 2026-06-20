@@ -11,7 +11,7 @@ object Libs {
     const val appHomePage = "https://amanshuraikwar.github.io/nextbus"
     const val kmmLibVersion = "1.0"
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.3.0"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:8.1.2"
     const val coreLibDesugaring = "com.android.tools:desugar_jdk_libs:1.1.5"
 
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.4"
@@ -29,8 +29,8 @@ object Libs {
         const val material = "com.google.android.material:material:1.6.0-alpha01"
         const val analytics = "com.google.firebase:firebase-analytics:20.0.2"
         const val crashlytics = "com.google.firebase:firebase-crashlytics:18.2.6"
-        const val crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.8.1"
-        const val gmsGoogleServices = "com.google.gms:google-services:4.3.10"
+        const val crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.9"
+        const val gmsGoogleServices = "com.google.gms:google-services:4.4.0"
         const val playServicesMap = "com.google.android.gms:play-services-maps:17.0.0"
         const val playServicesLocation = "com.google.android.gms:play-services-location:17.0.0"
         const val gmsOssLicenses = "com.google.android.gms:oss-licenses-plugin:0.10.4"
@@ -40,7 +40,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.6.10"
+        private const val version = "1.7.10"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -51,7 +51,7 @@ object Libs {
         const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.3"
         const val serializationCore = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1"
         const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1"
-        const val serializationGradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.10"
+        const val serializationGradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:1.7.10"
     }
 
     object Coroutines {

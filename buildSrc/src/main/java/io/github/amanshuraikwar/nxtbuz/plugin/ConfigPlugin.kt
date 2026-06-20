@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.KotlinCocoapodsPlugin
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.io.File
+import java.util.regex.Pattern
 
 abstract class ConfigPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -36,6 +37,7 @@ abstract class ConfigPlugin : Plugin<Project> {
     private fun AppPlugin.configure(project: Project) {
         with(project.extensions.getByType(AppExtension::class.java)) {
             compileSdkVersion(33)
+            namespace = project.findNamespace() ?: "io.github.amanshuraikwar.nxtbuz"
             if (File("src/androidMain/AndroidManifest.xml").exists()) {
                 sourceSets.get("main").manifest.srcFile("src/androidMain/AndroidManifest.xml")
             }
@@ -49,6 +51,7 @@ abstract class ConfigPlugin : Plugin<Project> {
     private fun LibraryPlugin.configure(project: Project) {
         with(project.extensions.getByType(LibraryExtension::class.java)) {
             compileSdk = 33
+            namespace = project.findNamespace() ?: "io.github.amanshuraikwar.nxtbuz"
             if (File("${project.projectDir.absolutePath}/src/androidMain/AndroidManifest.xml").exists()) {
                 sourceSets.get("main").manifest.srcFile("src/androidMain/AndroidManifest.xml")
             }
@@ -61,6 +64,30 @@ abstract class ConfigPlugin : Plugin<Project> {
                     consumerProguardFile("consumer-rules.pro")
                 }
             }
+        }
+    }
+
+    private fun Project.findNamespace(): String? {
+        val manifestPaths = listOf(
+            "src/main/AndroidManifest.xml",
+            "src/androidMain/AndroidManifest.xml",
+            "src/debug/AndroidManifest.xml",
+        )
+
+        val manifestFile = manifestPaths
+            .map { File(projectDir, it) }
+            .firstOrNull { it.exists() }
+
+        if (manifestFile == null) {
+            return null
+        }
+
+        val content = manifestFile.readText()
+        val matcher = Pattern.compile("""package\s*=\s*"([^"]+)"""").matcher(content)
+        return if (matcher.find()) {
+            matcher.group(1)
+        } else {
+            null
         }
     }
 

@@ -6,10 +6,12 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import android.graphics.Color
 import androidx.core.app.NotificationCompat
 import androidx.work.WorkManager
 import io.github.amanshuraikwar.nxtbuz.common.util.NavigationUtil
-import io.github.amanshuraikwar.nxtbuz.onboarding.R
+import io.github.amanshuraikwar.nxtbuz.common.R as CommonR
+import io.github.amanshuraikwar.nxtbuz.onboarding.R as OnboardingR
 import java.util.*
 
 class SetupWorkerNotificationHelper {
@@ -29,11 +31,11 @@ class SetupWorkerNotificationHelper {
         val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setContentTitle("Setting up Next Bus SG")
             .setTicker("Setting up Next Bus SG")
-            .setSmallIcon(R.drawable.ic_notification_small)
+            .setSmallIcon(CommonR.drawable.ic_notification_small)
             .setProgress(0, 0, true)
             .setOngoing(true)
-            .setColor(context.getColor(R.color.colorPrimary))
-            .addAction(R.drawable.ic_round_cancel_24, "Cancel", cancelWorkerIntent)
+            .setColor(Color.parseColor("#08ACFD"))
+            .addAction(OnboardingR.drawable.ic_round_cancel_24, "Cancel", cancelWorkerIntent)
             .setContentIntent(NavigationUtil.getMainActivityPendingIntent(context))
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

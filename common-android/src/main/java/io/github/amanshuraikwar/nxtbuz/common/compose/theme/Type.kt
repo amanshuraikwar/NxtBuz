@@ -22,15 +22,16 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import io.github.amanshuraikwar.nxtbuz.common.R
+import io.github.amanshuraikwar.android.nxtbuz.theme.R as ThemeR
 
 private val RubikFontFamily = FontFamily(
-    Font(R.font.rubik),
-    Font(R.font.rubik_bold, FontWeight.Bold),
-    Font(R.font.rubik_medium, FontWeight.Medium)
+    Font(ThemeR.font.rubik),
+    Font(ThemeR.font.rubik_bold, FontWeight.Bold),
+    Font(ThemeR.font.rubik_medium, FontWeight.Medium)
 )
 
 private val CabinFontFamily = FontFamily(
-    Font(R.font.cabin),
+    Font(ThemeR.font.cabin),
 )
 
 val NxtBuzTypography = Typography(

@@ -17,7 +17,7 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:7.1.2")
+    implementation("com.android.tools.build:gradle:8.1.2")
     implementation(kotlinGradlePlugin(module = "multiplatform", version = "1.7.10"))
     implementation(kotlinGradlePlugin(module = "native.cocoapods", version = "1.7.10"))
 }

@@ -1,7 +1,7 @@
 package io.github.amanshuraikwar.nxtbuz.settings.ui
 
-import io.github.amanshuraikwar.nxtbuz.settings.R
 import androidx.compose.foundation.layout.*
+import io.github.amanshuraikwar.nxtbuz.common.R
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface

@@ -36,9 +36,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.statusBarsPadding
+import io.github.amanshuraikwar.nxtbuz.common.R
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.outline
-import io.github.amanshuraikwar.nxtbuz.search.R
 
 enum class SearchBarDecorationType {
     OUTLINE,

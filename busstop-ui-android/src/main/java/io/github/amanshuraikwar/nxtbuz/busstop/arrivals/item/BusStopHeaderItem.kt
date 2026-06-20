@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import io.github.amanshuraikwar.nxtbuz.busstop.R
+import io.github.amanshuraikwar.nxtbuz.common.R
 import io.github.amanshuraikwar.nxtbuz.common.compose.StarDirectionsView
 import io.github.amanshuraikwar.nxtbuz.common.compose.StarIndicatorView
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.disabled

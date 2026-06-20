@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import io.github.amanshuraikwar.nxtbuz.common.R
+import io.github.amanshuraikwar.android.nxtbuz.theme.R as ThemeR
 import io.github.amanshuraikwar.nxtbuz.common.util.isDarkTheme
 import javax.inject.Inject
 import kotlin.math.atan2
@@ -44,9 +45,9 @@ class MapUtil @Inject constructor(
         return CircleOptions()
             .center(LatLng(lat, lng))
             .radius(radius)
-            .fillColor(ContextCompat.getColor(activity, R.color.blue))
+            .fillColor(ContextCompat.getColor(activity, ThemeR.color.blue))
             .strokeWidth(4f)
-            .strokeColor(ContextCompat.getColor(activity, R.color.white))
+            .strokeColor(ContextCompat.getColor(activity, ThemeR.color.white))
     }
 
     fun updateMapStyle(googleMap: GoogleMap, isLight: Boolean) {
@@ -61,7 +62,7 @@ class MapUtil @Inject constructor(
 
     @ColorInt
     fun getRouteLineColor(): Int {
-        return ContextCompat.getColor(activity, R.color.blue)
+        return ContextCompat.getColor(activity, ThemeR.color.blue)
     }
 
     fun getRouteLineWidth(): Float {

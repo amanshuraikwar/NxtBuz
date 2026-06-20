@@ -33,6 +33,7 @@ import com.google.accompanist.insets.statusBarsPadding
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.h4Bold
 import io.github.amanshuraikwar.nxtbuz.common.compose.theme.medium
 import io.github.amanshuraikwar.nxtbuz.onboarding.R
+import io.github.amanshuraikwar.nxtbuz.common.R as CommonR
 
 @Composable
 internal fun WelcomeScreenView(
@@ -92,7 +93,7 @@ internal fun WelcomeScreenView(
                 ) {
                     Icon(
                         painter = painterResource(
-                            id = R.drawable.ic_bus_72
+                            id = CommonR.drawable.ic_bus_72
                         ),
                         contentDescription = "App Icon",
                         tint = MaterialTheme.colors.onPrimary,
@@ -109,7 +110,7 @@ internal fun WelcomeScreenView(
                         .alpha(alpha2)
                         .fillMaxWidth()
                         .padding(horizontal = 32.dp),
-                    text = stringResource(id = R.string.app_name),
+                    text = stringResource(id = CommonR.string.app_name),
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.h4Bold,
                     textAlign = TextAlign.Center
@@ -121,7 +122,7 @@ internal fun WelcomeScreenView(
                         .fillMaxWidth()
                         .padding(top = 16.dp)
                         .padding(horizontal = 32.dp),
-                    text = stringResource(id = R.string.on_boarding_app_description),
+                    text = stringResource(id = CommonR.string.on_boarding_app_description),
                     color = MaterialTheme.colors.onSurface.medium,
                     style = MaterialTheme.typography.h6,
                     textAlign = TextAlign.Center
