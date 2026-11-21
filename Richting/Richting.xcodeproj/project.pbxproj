@@ -41,7 +41,7 @@
 		A48633F38B5F6FFE4AE49967 /* JourneyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729AA09EFF3A3B4B7904DEA9 /* JourneyViewModel.swift */; };
 		B09ACA2CA56495A2663177F7 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4439B858B03258964B39CEA6 /* Font.swift */; };
 		B24DB55E62AD8B1BCC43A570 /* JourneyCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29829DC748F8735C97F2290 /* JourneyCard.swift */; };
-		B459A93F01F5A6D6712225A9 /* TrainRoutePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249FF0C283FD14F361A86E62 /* TrainRoutePanel.swift */; };
+		B459A93F01F5A6D6712225A9 /* DepartureBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249FF0C283FD14F361A86E62 /* DepartureBoard.swift */; };
 		C55D85EC4723D0F666347EEE /* RollingStockImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952D62CEC36CCDA5336F471E /* RollingStockImageView.swift */; };
 		D65F45D6895E7DDE887DEDF7 /* NSConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71F6658CD86310590C188593 /* NSConfig.plist */; };
 		EC6AE5A0A3C64F08124FC806 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA92FFF31208604724E02BB /* Foundation.framework */; };
@@ -101,7 +101,7 @@
 		06D718F09E98B9074A13ED23 /* NearbyStation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NearbyStation.swift; sourceTree = "<group>"; };
 		169F0E6DC7FF0CDEF58FD05E /* NextTrainAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NextTrainAttributes.swift; path = ../NxtBuz/NextTrainWidget/NextTrainAttributes.swift; sourceTree = "<group>"; };
 		1F7DCC856324DE7CF74F10C3 /* RichtingApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RichtingApp.swift; sourceTree = "<group>"; };
-		249FF0C283FD14F361A86E62 /* TrainRoutePanel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrainRoutePanel.swift; path = ../NxtBuz/NextTrainWidget/TrainRoutePanel.swift; sourceTree = "<group>"; };
+		249FF0C283FD14F361A86E62 /* DepartureBoard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DepartureBoard.swift; sourceTree = "<group>"; };
 		2E9D12D168F93BE0D55538CA /* Richting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Richting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4439B858B03258964B39CEA6 /* Font.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Font.swift; path = ../NxtBuz/NxtBuz/Util/Font.swift; sourceTree = "<group>"; };
 		57DE0AA2113E15D9CC0061B7 /* HomeStationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeStationTests.swift; sourceTree = "<group>"; };
@@ -200,7 +200,6 @@
 				AECAB628E71031251B8FE299 /* App */,
 				F01FF0E64F2DA4B14F2D05BA /* Widgets */,
 				3E148241629CE971C1A091D7 /* Build Resources */,
-				249FF0C283FD14F361A86E62 /* TrainRoutePanel.swift */,
 				952D62CEC36CCDA5336F471E /* RollingStockImageView.swift */,
 				4439B858B03258964B39CEA6 /* Font.swift */,
 				A1B2EA98316ED85B5584BC01 /* Richting.entitlements */,
@@ -242,6 +241,7 @@
 		F01FF0E64F2DA4B14F2D05BA /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				249FF0C283FD14F361A86E62 /* DepartureBoard.swift */,
 				B8FBD0A1A28F1F21FA07A762 /* NextTrainWidget.swift */,
 				615B56CAE359CF6E431C5479 /* RichtingWidgets.swift */,
 				03AE8D0CF15BE4F1DE203E2D /* Info.plist */,
@@ -458,7 +458,7 @@
 				FEA1B8905B621F21FA76F9EC /* NextTrainWidget.swift in Sources */,
 				9605A2C4D3FB16F37A066D56 /* RichtingWidgets.swift in Sources */,
 				927D9AE31FBEE931AA688778 /* NearbyStation.swift in Sources */,
-				B459A93F01F5A6D6712225A9 /* TrainRoutePanel.swift in Sources */,
+				B459A93F01F5A6D6712225A9 /* DepartureBoard.swift in Sources */,
 				C55D85EC4723D0F666347EEE /* RollingStockImageView.swift in Sources */,
 				B09ACA2CA56495A2663177F7 /* Font.swift in Sources */,
 			);

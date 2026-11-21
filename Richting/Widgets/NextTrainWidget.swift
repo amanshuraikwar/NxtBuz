@@ -47,19 +47,19 @@ struct NextTrainProvider: TimelineProvider {
         do {
             let destinationID = RoutePreferences.defaults?.string(forKey: RoutePreferences.homeKey)
             guard let to = try await StationCatalog.shared.stations().first(where: { $0.id == destinationID }) else {
-                return TrainEntry(date: .now, journeys: [], message: "Open Richting to set your home station.")
+                return TrainEntry(date: .now, journeys: [], message: "Choose a station in Richting to see departures.")
             }
             let fix = try await LocationFix().current(requestPermission: false, forWidget: true)
             let from = try await StationCatalog.shared.closest(to: fix)
             guard from != to else {
-                return TrainEntry(date: .now, journeys: [], message: "Your home station is already the nearest station.")
+                return TrainEntry(date: .now, journeys: [], message: "You’re already at your selected station.")
             }
             let trains = try await TrainService.shared.upcoming(from: from, to: to)
             let images = await stockImages(for: trains)
             let now = Date()
             let upcoming = trains.filter { $0.departureDate > now }
             return TrainEntry(date: now, journeys: upcoming,
-                              message: "No rail journeys home from \(from.name).", images: images)
+                              message: "No matching journeys from \(from.name).", images: images)
         } catch {
             return TrainEntry(date: .now, journeys: [], message: error.localizedDescription)
         }
@@ -89,18 +89,14 @@ struct NextTrainProvider: TimelineProvider {
 
 struct RichtingTrainWidgetView: View {
     let entry: TrainEntry
-    @Environment(\.colorScheme) var scheme
-    private var dark: Bool { scheme == .dark }
-    private var accent: Color { dark ? Color(red: 0.11, green: 0.70, blue: 0.95) : Color(red: 0.09, green: 0.42, blue: 0.90) }
+    private let accent = Color(red: 0.30, green: 0.74, blue: 0.99)
 
     var body: some View {
         if let first = entry.journeys.first {
             GeometryReader { geometry in
                 VStack(alignment: .leading, spacing: 4) {
-                    TrainRoutePanel(from: first.from, to: "Home by",
-                        times: entry.journeys.map { .init(departure: $0.departure, arrival: $0.arrival, platform: $0.firstLeg.platform, detail: $0.transferSummary) },
-                        accent: accent, primary: Color(red: 0.15, green: 0.20, blue: 0.22),
-                        secondary: dark ? Color(.lightGray) : Color(red: 0.27, green: 0.35, blue: 0.39), isDark: dark, splitFlapDepartures: true)
+                    DepartureBoard(station: first.from, journeys: entry.journeys)
+                        .padding(.horizontal, 16).padding(.top, 10)
                     if first.transfers > 0 {
                         let legs = first.trainLegs
                         let changes = zip(legs, legs.dropFirst()).map { incoming, outgoing in
@@ -164,10 +160,12 @@ private struct TrainArtworkRow: View {
 struct RichtingNextTrainWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: "Richting.NextTrain", provider: NextTrainProvider()) { entry in
-            RichtingTrainWidgetView(entry: entry).containerBackground(.background, for: .widget)
+            RichtingTrainWidgetView(entry: entry)
+                .foregroundStyle(.white)
+                .containerBackground(.black, for: .widget)
         }
         .configurationDisplayName("Next trains")
-        .description("The next two rail journeys home from your nearest station, including connections.")
+        .description("Upcoming departures from your nearest station, including connections.")
         .supportedFamilies([.systemMedium])
         .contentMarginsDisabled()
     }
