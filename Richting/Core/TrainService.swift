@@ -10,6 +10,7 @@ struct JourneyLeg: Equatable, Sendable {
     let platform: String?
     let number: String?
     let isWalk: Bool
+    let imageURLs: [URL]
 }
 
 private extension JourneyLeg {
@@ -21,6 +22,7 @@ private extension JourneyLeg {
         service = leg.service
         platform = leg.platform
         number = leg.number
+        imageURLs = leg.images.compactMap(URL.init(string:))
         isWalk = leg.isWalk
     }
 }
@@ -31,8 +33,8 @@ struct Journey: Identifiable, Equatable, Sendable {
     let onwardLegs: [JourneyLeg]
     let transfers: Int
     let facilities: [String]
-    let imageURLs: [URL]
 
+    var trainLegs: [JourneyLeg] { [firstLeg] + onwardLegs.filter { !$0.isWalk } }
     var from: String { firstLeg.from }
     var to: String { (onwardLegs.last ?? firstLeg).to }
     var departureDate: Date { firstLeg.departure }
@@ -98,8 +100,7 @@ final class TrainService: TrainProviding {
             let legs = trip.legs.map(JourneyLeg.init)
             guard let first = legs.first else { return nil }
             return Journey(id: trip.id, firstLeg: first, onwardLegs: Array(legs.dropFirst()),
-                           transfers: Int(trip.transfers), facilities: trip.facilities,
-                           imageURLs: trip.images.compactMap(URL.init(string:)))
+                           transfers: Int(trip.transfers), facilities: trip.facilities)
         }
     }
 }

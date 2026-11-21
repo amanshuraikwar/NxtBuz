@@ -16,6 +16,7 @@ struct TrainRoutePanel: View {
     let primary: Color
     let secondary: Color
     let isDark: Bool
+    var splitFlapDepartures = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -26,7 +27,11 @@ struct TrainRoutePanel: View {
                 ForEach(times.indices, id: \.self) { i in
                     HStack(spacing: 2) {
                         if times.count > 1, let platform = times[i].platform { badge(platform) }
-                        Text(times[i].departure).font(NxtBuzFonts.bodyMonospaced).bold()
+                        if splitFlapDepartures {
+                            SplitFlapTime(time: times[i].departure)
+                        } else {
+                            Text(times[i].departure).font(NxtBuzFonts.bodyMonospaced).bold()
+                        }
                     }
                     .frame(minWidth: times.count > 1 ? 65 : nil, alignment: .trailing)
                 }
@@ -58,5 +63,34 @@ struct TrainRoutePanel: View {
             .padding(.horizontal, 2).foregroundStyle(accent)
             .background(isDark ? Color(.systemGray6) : .white, in: RoundedRectangle(cornerRadius: 2))
             .accessibilityLabel("Platform \(platform)")
+    }
+}
+
+private struct SplitFlapTime: View {
+    let time: String
+
+    var body: some View {
+        HStack(spacing: 1) {
+            ForEach(Array(time.enumerated()), id: \.offset) { _, character in
+                if character == ":" {
+                    Text(":").frame(width: 4)
+                } else {
+                    Text(String(character))
+                        .frame(width: 11, height: 21)
+                        .background(
+                            LinearGradient(colors: [Color(white: 0.23), Color(white: 0.08)],
+                                           startPoint: .top, endPoint: .bottom),
+                            in: RoundedRectangle(cornerRadius: 2)
+                        )
+                        .overlay { Rectangle().fill(.black.opacity(0.85)).frame(height: 1) }
+                }
+            }
+        }
+        .font(.system(size: 16, weight: .semibold, design: .monospaced))
+        .foregroundStyle(Color(red: 0.99, green: 0.96, blue: 0.86))
+        .padding(2)
+        .background(Color(white: 0.07), in: RoundedRectangle(cornerRadius: 3))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Departs at \(time)")
     }
 }

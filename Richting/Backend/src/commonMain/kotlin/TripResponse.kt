@@ -5,12 +5,13 @@ import kotlinx.serialization.Serializable
 
 data class BoardLeg(
     val from: String, val to: String, val service: String, val number: String?,
-    val departureSeconds: Long, val arrivalSeconds: Long, val platform: String?, val isWalk: Boolean
+    val departureSeconds: Long, val arrivalSeconds: Long, val platform: String?, val isWalk: Boolean,
+    val images: List<String> = emptyList()
 )
 
 data class BoardJourney(
     val id: String, val legs: List<BoardLeg>, val transfers: Int,
-    val images: List<String> = emptyList(), val facilities: List<String> = emptyList()
+    val facilities: List<String> = emptyList()
 )
 
 @Serializable
