@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		82EC5841D15142BC87975203 /* StationArt.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC6DF249354E4533BF7784A4 /* StationArt.xcassets */; };
 		05808DC464DC9654D3190AA3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA92FFF31208604724E02BB /* Foundation.framework */; };
 		1628C8B6C79D64DBBF080383 /* JourneyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D85A4558FBE1D5C272D3 /* JourneyView.swift */; };
 		18DA821FC8969672243A5ABB /* RichtingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7DCC856324DE7CF74F10C3 /* RichtingApp.swift */; };
@@ -97,6 +98,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BC6DF249354E4533BF7784A4 /* StationArt.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StationArt.xcassets; sourceTree = "<group>"; };
 		03AE8D0CF15BE4F1DE203E2D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06D718F09E98B9074A13ED23 /* NearbyStation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NearbyStation.swift; sourceTree = "<group>"; };
 		169F0E6DC7FF0CDEF58FD05E /* NextTrainAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NextTrainAttributes.swift; path = ../NxtBuz/NextTrainWidget/NextTrainAttributes.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				B8FBD0A1A28F1F21FA07A762 /* NextTrainWidget.swift */,
 				615B56CAE359CF6E431C5479 /* RichtingWidgets.swift */,
 				03AE8D0CF15BE4F1DE203E2D /* Info.plist */,
+				BC6DF249354E4533BF7784A4 /* StationArt.xcassets */,
 			);
 			name = Widgets;
 			path = Widgets;
@@ -357,6 +360,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3607BF5B8C468BDE738A3387 /* nsapi.db in Resources */,
+				82EC5841D15142BC87975203 /* StationArt.xcassets in Resources */,
 				58B881A8D0CD419EBFA3166B /* NSConfig.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

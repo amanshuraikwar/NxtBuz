@@ -7,6 +7,7 @@ struct TrainEntry: TimelineEntry {
     let journeys: [Journey]
     let message: String
     var images: [URL: UIImage] = [:]
+    var originCode: String?
 }
 
 struct NextTrainProvider: TimelineProvider {
@@ -19,7 +20,7 @@ struct NextTrainProvider: TimelineProvider {
             return Journey(id: String(minutes), firstLeg: leg, onwardLegs: [], transfers: 0,
                            facilities: [])
         }
-        return TrainEntry(date: .now, journeys: journeys, message: "")
+        return TrainEntry(date: .now, journeys: journeys, message: "", originCode: "ASD")
     }
 
     func getSnapshot(in context: Context, completion: @escaping (TrainEntry) -> Void) {
@@ -37,13 +38,14 @@ struct NextTrainProvider: TimelineProvider {
         for departure in Set(first.journeys.map(\.departureDate)).sorted() {
             let after = departure.addingTimeInterval(1)
             entries.append(TrainEntry(date: after, journeys: first.journeys.filter { $0.departureDate >= after },
-                                      message: "Checking for later trains…", images: first.images))
+                                      message: "Checking for later trains…", images: first.images, originCode: first.originCode))
         }
         let refresh = min(first.journeys.first?.departureDate ?? .distantFuture, Date().addingTimeInterval(300))
         return Timeline(entries: entries, policy: .after(max(refresh, Date().addingTimeInterval(60))))
     }
 
     private func entry() async -> TrainEntry {
+        var originCode: String?
         do {
             let destinationID = RoutePreferences.defaults?.string(forKey: RoutePreferences.homeKey)
             guard let to = try await StationCatalog.shared.stations().first(where: { $0.id == destinationID }) else {
@@ -51,17 +53,18 @@ struct NextTrainProvider: TimelineProvider {
             }
             let fix = try await LocationFix().current(requestPermission: false, forWidget: true)
             let from = try await StationCatalog.shared.closest(to: fix)
+            originCode = from.id
             guard from != to else {
-                return TrainEntry(date: .now, journeys: [], message: "You’re already at your selected station.")
+                return TrainEntry(date: .now, journeys: [], message: "You’re already at your selected station.", originCode: originCode)
             }
             let trains = try await TrainService.shared.upcoming(from: from, to: to)
             let images = await stockImages(for: trains)
             let now = Date()
             let upcoming = trains.filter { $0.departureDate > now }
             return TrainEntry(date: now, journeys: upcoming,
-                              message: "No matching journeys from \(from.name).", images: images)
+                              message: "No matching journeys from \(from.name).", images: images, originCode: originCode)
         } catch {
-            return TrainEntry(date: .now, journeys: [], message: error.localizedDescription)
+            return TrainEntry(date: .now, journeys: [], message: error.localizedDescription, originCode: originCode)
         }
     }
     // The second itinerary becomes the featured one after the first departure.
@@ -157,12 +160,42 @@ private struct TrainArtworkRow: View {
     }
 }
 
+private struct StationBackground: View {
+    let originCode: String?
+
+    var body: some View {
+        Color.black.overlay {
+            if let originCode,
+               let artwork = UIImage(named: "Station-" + originCode, in: .main, compatibleWith: nil) {
+                GeometryReader { geometry in
+                    Image(uiImage: artwork)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geometry.size.width, height: geometry.size.height, alignment: .trailing)
+                        .clipped()
+                        .opacity(0.75)
+                        // Keep the split-flap times and transfer counts legible over the sky.
+                        .overlay {
+                            LinearGradient(stops: [
+                                .init(color: .black.opacity(0.66), location: 0),
+                                .init(color: .black.opacity(0.64), location: 0.34),
+                                .init(color: .clear, location: 0.64),
+                                .init(color: .black.opacity(0.2), location: 1)
+                            ], startPoint: .top, endPoint: .bottom)
+                        }
+                }
+                .accessibilityHidden(true)
+            }
+        }
+    }
+}
+
 struct RichtingNextTrainWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: "Richting.NextTrain", provider: NextTrainProvider()) { entry in
             RichtingTrainWidgetView(entry: entry)
                 .foregroundStyle(.white)
-                .containerBackground(.black, for: .widget)
+                .containerBackground(for: .widget) { StationBackground(originCode: entry.originCode) }
         }
         .configurationDisplayName("Next trains")
         .description("Upcoming departures from your nearest station, including connections.")

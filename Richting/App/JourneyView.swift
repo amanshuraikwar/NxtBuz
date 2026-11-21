@@ -50,6 +50,21 @@ struct JourneyView: View {
                 Section("Home Screen widget") {
                     Label("Add Next trains to your Home Screen. It uses your location and home station automatically.",
                           systemImage: "rectangle.grid.2x2").font(.subheadline)
+                    NavigationLink("Station artwork credits") {
+                        List {
+                            Section("Abcoude") {
+                                Text("[Photograph by T Houdijk](https://commons.wikimedia.org/wiki/File:Station_Abcoude_3.jpg)")
+                                Text("[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)")
+                            }
+                            Section("Amsterdam Centraal") {
+                                Text("[Photograph by Diego Delso](https://commons.wikimedia.org/wiki/File:Estaci%C3%B3n_Central,_%C3%81msterdam,_Pa%C3%ADses_Bajos,_2016-05-30,_DD_01-03_HDR.jpg)")
+                                Text("[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)")
+                            }
+                            Text("Richting adapted each photograph with ink colours, grain, and a transparent fade. Each adaptation uses the licence of its source photograph.")
+                                .font(.footnote)
+                        }
+                        .navigationTitle("Station artwork credits")
+                    }
                 }
             }
             .navigationTitle("Richting")
