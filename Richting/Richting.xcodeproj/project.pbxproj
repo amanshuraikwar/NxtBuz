@@ -1,0 +1,886 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		D337765EC62A35C54CD4FD88 /* RichtingBackend */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 484D54BBB1A81C4728E06375 /* Build configuration list for PBXAggregateTarget "RichtingBackend" */;
+			buildPhases = (
+				648C8D49B9E991553E651C0C /* Build shared trains backend */,
+				95F456F336D10CF1B45A2254 /* Prepare station database and NS configuration */,
+			);
+			dependencies = (
+			);
+			name = RichtingBackend;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		82EC5841D15142BC87975203 /* StationArt.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC6DF249354E4533BF7784A4 /* StationArt.xcassets */; };
+		05808DC464DC9654D3190AA3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA92FFF31208604724E02BB /* Foundation.framework */; };
+		1628C8B6C79D64DBBF080383 /* JourneyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D85A4558FBE1D5C272D3 /* JourneyView.swift */; };
+		18DA821FC8969672243A5ABB /* RichtingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7DCC856324DE7CF74F10C3 /* RichtingApp.swift */; };
+		1ABD42F7887065D27F176A3A /* nsapi.db in Resources */ = {isa = PBXBuildFile; fileRef = C29CCEC0C15C62215A6AD0C3 /* nsapi.db */; };
+		26D85863B735BD555B08E97D /* HomeStationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DE0AA2113E15D9CC0061B7 /* HomeStationTests.swift */; };
+		2AD3385380D50314B937A6C7 /* NextTrainAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F0E6DC7FF0CDEF58FD05E /* NextTrainAttributes.swift */; };
+		3527E8CEC0A21AB5116DD56F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B13561EFCB8FDE185CC988C1 /* Assets.xcassets */; };
+		3607BF5B8C468BDE738A3387 /* nsapi.db in Resources */ = {isa = PBXBuildFile; fileRef = C29CCEC0C15C62215A6AD0C3 /* nsapi.db */; };
+		5287B12D5E3FB6D865C835A8 /* NextTrainAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F0E6DC7FF0CDEF58FD05E /* NextTrainAttributes.swift */; };
+		58B881A8D0CD419EBFA3166B /* NSConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71F6658CD86310590C188593 /* NSConfig.plist */; };
+		5D3510C0B74C5650FA0DA08A /* TrainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EC04366E9D7EF61325F05A /* TrainService.swift */; };
+		5D9F77518C83CE0BB03FBD50 /* TrainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EC04366E9D7EF61325F05A /* TrainService.swift */; };
+		7F90B3C5A8B3678CC0687B41 /* RichtingWidgets.appex in Embed Widget Extension */ = {isa = PBXBuildFile; fileRef = A40BE6672D453EC0922640E6 /* RichtingWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		814931A13F6C9F87C1DA293F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA92FFF31208604724E02BB /* Foundation.framework */; };
+		85BAE4117066CCDF5EC666C2 /* NearbyStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D718F09E98B9074A13ED23 /* NearbyStation.swift */; };
+		927D9AE31FBEE931AA688778 /* NearbyStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D718F09E98B9074A13ED23 /* NearbyStation.swift */; };
+		9605A2C4D3FB16F37A066D56 /* RichtingWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615B56CAE359CF6E431C5479 /* RichtingWidgets.swift */; };
+		A48633F38B5F6FFE4AE49967 /* JourneyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729AA09EFF3A3B4B7904DEA9 /* JourneyViewModel.swift */; };
+		B09ACA2CA56495A2663177F7 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4439B858B03258964B39CEA6 /* Font.swift */; };
+		B24DB55E62AD8B1BCC43A570 /* JourneyCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29829DC748F8735C97F2290 /* JourneyCard.swift */; };
+		B459A93F01F5A6D6712225A9 /* DepartureBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249FF0C283FD14F361A86E62 /* DepartureBoard.swift */; };
+		C55D85EC4723D0F666347EEE /* RollingStockImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952D62CEC36CCDA5336F471E /* RollingStockImageView.swift */; };
+		D65F45D6895E7DDE887DEDF7 /* NSConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71F6658CD86310590C188593 /* NSConfig.plist */; };
+		EC6AE5A0A3C64F08124FC806 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA92FFF31208604724E02BB /* Foundation.framework */; };
+		F1D63E175C5CECEAFBB21C3B /* StationCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BA1B9A3C6246E8956823CC /* StationCatalog.swift */; };
+		F6DA5DA59B3B79CBB62B75CC /* JourneyCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29829DC748F8735C97F2290 /* JourneyCard.swift */; };
+		FB34A0BA44E64C6EC383EEFA /* StationCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BA1B9A3C6246E8956823CC /* StationCatalog.swift */; };
+		FEA1B8905B621F21FA76F9EC /* NextTrainWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD0A1A28F1F21FA07A762 /* NextTrainWidget.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1D993F61BE532248B7A5D09D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55FBEB41CCDA9FC8C7818FCD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B0105AB4A6867A7B735C652A;
+			remoteInfo = Richting;
+		};
+		25A1798272439A5512DBEC3E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55FBEB41CCDA9FC8C7818FCD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D337765EC62A35C54CD4FD88;
+			remoteInfo = RichtingBackend;
+		};
+		85AA3D2CB9F7EE71023DF573 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55FBEB41CCDA9FC8C7818FCD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D337765EC62A35C54CD4FD88;
+			remoteInfo = RichtingBackend;
+		};
+		FCCC20C01F02114A16A30CAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55FBEB41CCDA9FC8C7818FCD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DFB5FDE4946626E508B5B0D5;
+			remoteInfo = RichtingWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0D3E8A986BF7925645C48B76 /* Embed Widget Extension */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7F90B3C5A8B3678CC0687B41 /* RichtingWidgets.appex in Embed Widget Extension */,
+			);
+			name = "Embed Widget Extension";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		BC6DF249354E4533BF7784A4 /* StationArt.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StationArt.xcassets; sourceTree = "<group>"; };
+		03AE8D0CF15BE4F1DE203E2D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		06D718F09E98B9074A13ED23 /* NearbyStation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NearbyStation.swift; sourceTree = "<group>"; };
+		169F0E6DC7FF0CDEF58FD05E /* NextTrainAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NextTrainAttributes.swift; path = ../NxtBuz/NextTrainWidget/NextTrainAttributes.swift; sourceTree = "<group>"; };
+		1F7DCC856324DE7CF74F10C3 /* RichtingApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RichtingApp.swift; sourceTree = "<group>"; };
+		249FF0C283FD14F361A86E62 /* DepartureBoard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DepartureBoard.swift; sourceTree = "<group>"; };
+		2E9D12D168F93BE0D55538CA /* Richting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Richting.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4439B858B03258964B39CEA6 /* Font.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Font.swift; path = ../NxtBuz/NxtBuz/Util/Font.swift; sourceTree = "<group>"; };
+		57DE0AA2113E15D9CC0061B7 /* HomeStationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeStationTests.swift; sourceTree = "<group>"; };
+		5D76D85A4558FBE1D5C272D3 /* JourneyView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JourneyView.swift; sourceTree = "<group>"; };
+		60BA1B9A3C6246E8956823CC /* StationCatalog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StationCatalog.swift; sourceTree = "<group>"; };
+		615B56CAE359CF6E431C5479 /* RichtingWidgets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RichtingWidgets.swift; sourceTree = "<group>"; };
+		69EC04366E9D7EF61325F05A /* TrainService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrainService.swift; sourceTree = "<group>"; };
+		70C768A99C5FCB9C57336CA3 /* build_station_catalog.py */ = {isa = PBXFileReference; includeInIndex = 1; path = build_station_catalog.py; sourceTree = "<group>"; };
+		71F6658CD86310590C188593 /* NSConfig.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = NSConfig.plist; path = RichtingResources/NSConfig.plist; sourceTree = BUILT_PRODUCTS_DIR; };
+		729AA09EFF3A3B4B7904DEA9 /* JourneyViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JourneyViewModel.swift; sourceTree = "<group>"; };
+		917C358940107D48AB142BA4 /* RichtingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RichtingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		952D62CEC36CCDA5336F471E /* RollingStockImageView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RollingStockImageView.swift; path = ../NxtBuz/NextTrainWidget/RollingStockImageView.swift; sourceTree = "<group>"; };
+		9B5B52651EEB5D89F305C5FD /* prepare_resources.py */ = {isa = PBXFileReference; includeInIndex = 1; path = prepare_resources.py; sourceTree = "<group>"; };
+		A1B2EA98316ED85B5584BC01 /* Richting.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = Richting.entitlements; sourceTree = "<group>"; };
+		A40BE6672D453EC0922640E6 /* RichtingWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RichtingWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABA92FFF31208604724E02BB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		B13561EFCB8FDE185CC988C1 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B8FBD0A1A28F1F21FA07A762 /* NextTrainWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NextTrainWidget.swift; sourceTree = "<group>"; };
+		C29CCEC0C15C62215A6AD0C3 /* nsapi.db */ = {isa = PBXFileReference; includeInIndex = 1; name = nsapi.db; path = RichtingResources/nsapi.db; sourceTree = BUILT_PRODUCTS_DIR; };
+		F29829DC748F8735C97F2290 /* JourneyCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JourneyCard.swift; sourceTree = "<group>"; };
+		F56CC9B3C4395E76EE71C655 /* build_backend.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = build_backend.sh; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5B77D162B5C11FFA2B2BF998 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				05808DC464DC9654D3190AA3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB23345F5376B746C2D71AAE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				814931A13F6C9F87C1DA293F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FEFC6F380A73E8AFB28FAD41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC6AE5A0A3C64F08124FC806 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		265182A7BD25FC7BA89DC1C4 /* Build Tools */ = {
+			isa = PBXGroup;
+			children = (
+				F56CC9B3C4395E76EE71C655 /* build_backend.sh */,
+				9B5B52651EEB5D89F305C5FD /* prepare_resources.py */,
+				70C768A99C5FCB9C57336CA3 /* build_station_catalog.py */,
+			);
+			name = "Build Tools";
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		3D23F0C50B393B15E00ACCA6 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				ABA92FFF31208604724E02BB /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		3E148241629CE971C1A091D7 /* Build Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C29CCEC0C15C62215A6AD0C3 /* nsapi.db */,
+				71F6658CD86310590C188593 /* NSConfig.plist */,
+			);
+			name = "Build Resources";
+			sourceTree = "<group>";
+		};
+		4D9795D8BCB3C8CD35FB3AFF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3D23F0C50B393B15E00ACCA6 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		80C7B7091B2781FD24D0B52E = {
+			isa = PBXGroup;
+			children = (
+				B51751236A8C8064624A98D4 /* Products */,
+				4D9795D8BCB3C8CD35FB3AFF /* Frameworks */,
+				265182A7BD25FC7BA89DC1C4 /* Build Tools */,
+				F997FBC8BB8FF789C93ED009 /* Core */,
+				169F0E6DC7FF0CDEF58FD05E /* NextTrainAttributes.swift */,
+				AECAB628E71031251B8FE299 /* App */,
+				F01FF0E64F2DA4B14F2D05BA /* Widgets */,
+				3E148241629CE971C1A091D7 /* Build Resources */,
+				952D62CEC36CCDA5336F471E /* RollingStockImageView.swift */,
+				4439B858B03258964B39CEA6 /* Font.swift */,
+				A1B2EA98316ED85B5584BC01 /* Richting.entitlements */,
+				E1E6C77747DE3526D1F75AA1 /* UITests */,
+			);
+			sourceTree = "<group>";
+		};
+		AECAB628E71031251B8FE299 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				5D76D85A4558FBE1D5C272D3 /* JourneyView.swift */,
+				729AA09EFF3A3B4B7904DEA9 /* JourneyViewModel.swift */,
+				1F7DCC856324DE7CF74F10C3 /* RichtingApp.swift */,
+				B13561EFCB8FDE185CC988C1 /* Assets.xcassets */,
+			);
+			name = App;
+			path = App;
+			sourceTree = "<group>";
+		};
+		B51751236A8C8064624A98D4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2E9D12D168F93BE0D55538CA /* Richting.app */,
+				A40BE6672D453EC0922640E6 /* RichtingWidgets.appex */,
+				917C358940107D48AB142BA4 /* RichtingUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E1E6C77747DE3526D1F75AA1 /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				57DE0AA2113E15D9CC0061B7 /* HomeStationTests.swift */,
+			);
+			name = UITests;
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		F01FF0E64F2DA4B14F2D05BA /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				249FF0C283FD14F361A86E62 /* DepartureBoard.swift */,
+				B8FBD0A1A28F1F21FA07A762 /* NextTrainWidget.swift */,
+				615B56CAE359CF6E431C5479 /* RichtingWidgets.swift */,
+				03AE8D0CF15BE4F1DE203E2D /* Info.plist */,
+				BC6DF249354E4533BF7784A4 /* StationArt.xcassets */,
+			);
+			name = Widgets;
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		F997FBC8BB8FF789C93ED009 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				F29829DC748F8735C97F2290 /* JourneyCard.swift */,
+				60BA1B9A3C6246E8956823CC /* StationCatalog.swift */,
+				69EC04366E9D7EF61325F05A /* TrainService.swift */,
+				06D718F09E98B9074A13ED23 /* NearbyStation.swift */,
+			);
+			name = Core;
+			path = Core;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		57E08C18C28C08335EA6B430 /* RichtingUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63FEC1C7265C45AB34314E7D /* Build configuration list for PBXNativeTarget "RichtingUITests" */;
+			buildPhases = (
+				485B4AAFED2DEF7D1A38F0D7 /* Sources */,
+				FEFC6F380A73E8AFB28FAD41 /* Frameworks */,
+				0A12602BE84139156A7C9A24 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F7FD52CE054AB57413765E2E /* PBXTargetDependency */,
+			);
+			name = RichtingUITests;
+			productName = RichtingUITests;
+			productReference = 917C358940107D48AB142BA4 /* RichtingUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		B0105AB4A6867A7B735C652A /* Richting */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0B6F5450C8A59C1F321DADEC /* Build configuration list for PBXNativeTarget "Richting" */;
+			buildPhases = (
+				EC9D09CB83FB3C872BCA0304 /* Sources */,
+				5B77D162B5C11FFA2B2BF998 /* Frameworks */,
+				2B8619D0A9F19DDEF98316A2 /* Resources */,
+				0D3E8A986BF7925645C48B76 /* Embed Widget Extension */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				09958EE43A9A2313EBEF3253 /* PBXTargetDependency */,
+				D0F59B7EFCBD0AC6A8672902 /* PBXTargetDependency */,
+			);
+			name = Richting;
+			productName = Richting;
+			productReference = 2E9D12D168F93BE0D55538CA /* Richting.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DFB5FDE4946626E508B5B0D5 /* RichtingWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9DCE0EE7D6442B5BC93F4C5A /* Build configuration list for PBXNativeTarget "RichtingWidgets" */;
+			buildPhases = (
+				F13C58B085CB26B9554F83D7 /* Sources */,
+				EB23345F5376B746C2D71AAE /* Frameworks */,
+				03F6D4CD9194E90FCDBCD758 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0DBCF847A7EF8BD1E53550B0 /* PBXTargetDependency */,
+			);
+			name = RichtingWidgets;
+			productName = RichtingWidgets;
+			productReference = A40BE6672D453EC0922640E6 /* RichtingWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		55FBEB41CCDA9FC8C7818FCD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+			};
+			buildConfigurationList = 292B16B9F91FC8D7B8FE14FF /* Build configuration list for PBXProject "Richting" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 80C7B7091B2781FD24D0B52E;
+			productRefGroup = B51751236A8C8064624A98D4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B0105AB4A6867A7B735C652A /* Richting */,
+				DFB5FDE4946626E508B5B0D5 /* RichtingWidgets */,
+				D337765EC62A35C54CD4FD88 /* RichtingBackend */,
+				57E08C18C28C08335EA6B430 /* RichtingUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		03F6D4CD9194E90FCDBCD758 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3607BF5B8C468BDE738A3387 /* nsapi.db in Resources */,
+				82EC5841D15142BC87975203 /* StationArt.xcassets in Resources */,
+				58B881A8D0CD419EBFA3166B /* NSConfig.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A12602BE84139156A7C9A24 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B8619D0A9F19DDEF98316A2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3527E8CEC0A21AB5116DD56F /* Assets.xcassets in Resources */,
+				1ABD42F7887065D27F176A3A /* nsapi.db in Resources */,
+				D65F45D6895E7DDE887DEDF7 /* NSConfig.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		648C8D49B9E991553E651C0C /* Build shared trains backend */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build shared trains backend";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/Tools/build_backend.sh\"";
+		};
+		95F456F336D10CF1B45A2254 /* Prepare station database and NS configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Prepare station database and NS configuration";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/RichtingResources/nsapi.db",
+				"$(BUILT_PRODUCTS_DIR)/RichtingResources/NSConfig.plist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 \"$SRCROOT/Tools/prepare_resources.py\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		485B4AAFED2DEF7D1A38F0D7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26D85863B735BD555B08E97D /* HomeStationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EC9D09CB83FB3C872BCA0304 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6DA5DA59B3B79CBB62B75CC /* JourneyCard.swift in Sources */,
+				F1D63E175C5CECEAFBB21C3B /* StationCatalog.swift in Sources */,
+				5D9F77518C83CE0BB03FBD50 /* TrainService.swift in Sources */,
+				5287B12D5E3FB6D865C835A8 /* NextTrainAttributes.swift in Sources */,
+				1628C8B6C79D64DBBF080383 /* JourneyView.swift in Sources */,
+				A48633F38B5F6FFE4AE49967 /* JourneyViewModel.swift in Sources */,
+				18DA821FC8969672243A5ABB /* RichtingApp.swift in Sources */,
+				85BAE4117066CCDF5EC666C2 /* NearbyStation.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F13C58B085CB26B9554F83D7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B24DB55E62AD8B1BCC43A570 /* JourneyCard.swift in Sources */,
+				FB34A0BA44E64C6EC383EEFA /* StationCatalog.swift in Sources */,
+				5D3510C0B74C5650FA0DA08A /* TrainService.swift in Sources */,
+				2AD3385380D50314B937A6C7 /* NextTrainAttributes.swift in Sources */,
+				FEA1B8905B621F21FA76F9EC /* NextTrainWidget.swift in Sources */,
+				9605A2C4D3FB16F37A066D56 /* RichtingWidgets.swift in Sources */,
+				927D9AE31FBEE931AA688778 /* NearbyStation.swift in Sources */,
+				B459A93F01F5A6D6712225A9 /* DepartureBoard.swift in Sources */,
+				C55D85EC4723D0F666347EEE /* RollingStockImageView.swift in Sources */,
+				B09ACA2CA56495A2663177F7 /* Font.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		09958EE43A9A2313EBEF3253 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RichtingBackend;
+			target = D337765EC62A35C54CD4FD88 /* RichtingBackend */;
+			targetProxy = 25A1798272439A5512DBEC3E /* PBXContainerItemProxy */;
+		};
+		0DBCF847A7EF8BD1E53550B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RichtingBackend;
+			target = D337765EC62A35C54CD4FD88 /* RichtingBackend */;
+			targetProxy = 85AA3D2CB9F7EE71023DF573 /* PBXContainerItemProxy */;
+		};
+		D0F59B7EFCBD0AC6A8672902 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RichtingWidgets;
+			target = DFB5FDE4946626E508B5B0D5 /* RichtingWidgets */;
+			targetProxy = FCCC20C01F02114A16A30CAB /* PBXContainerItemProxy */;
+		};
+		F7FD52CE054AB57413765E2E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Richting;
+			target = B0105AB4A6867A7B735C652A /* Richting */;
+			targetProxy = 1D993F61BE532248B7A5D09D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		044CE7DE1292760BDF6512DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Richting.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Backend/build/bin/iosArm64/$(CONFIGURATION:lower)Framework\"",
+				);
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Backend/build/bin/iosSimulatorArm64/$(CONFIGURATION:lower)Framework\"",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Widgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RichtingWidgets;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Richting uses your location to find trains from your nearest station to your home station.";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					RichtingTrains,
+					"-lsqlite3",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.Richting.Widgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0A0F358BA316DC9F0FC8686A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		37111FC63A319AA1C3BF70B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 8R42UC58VT;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		44A49E9790A409A36203F3D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.Richting.UITests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Richting;
+			};
+			name = Debug;
+		};
+		7A2CF1B17B7F540A65A484AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.Richting.UITests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Richting;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		935D089C63926112239A9952 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Richting.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Backend/build/bin/iosArm64/$(CONFIGURATION:lower)Framework\"",
+				);
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Backend/build/bin/iosSimulatorArm64/$(CONFIGURATION:lower)Framework\"",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Richting;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Richting uses your location to find trains from your nearest station to your home station.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					RichtingTrains,
+					"-lsqlite3",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.Richting;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AD90979D95D0BAC4BEE4FE0B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+			};
+			name = Release;
+		};
+		B9606439A31726D2462EB81D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Richting.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Backend/build/bin/iosArm64/$(CONFIGURATION:lower)Framework\"",
+				);
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Backend/build/bin/iosSimulatorArm64/$(CONFIGURATION:lower)Framework\"",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Richting;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Richting uses your location to find trains from your nearest station to your home station.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					RichtingTrains,
+					"-lsqlite3",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.Richting;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BBB32E520E88D5632ACFF391 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Richting.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Backend/build/bin/iosArm64/$(CONFIGURATION:lower)Framework\"",
+				);
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Backend/build/bin/iosSimulatorArm64/$(CONFIGURATION:lower)Framework\"",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Widgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RichtingWidgets;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Richting uses your location to find trains from your nearest station to your home station.";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					RichtingTrains,
+					"-lsqlite3",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.amanshuraikwar.Richting.Widgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FA61E51714EEAD0575785380 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0B6F5450C8A59C1F321DADEC /* Build configuration list for PBXNativeTarget "Richting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B9606439A31726D2462EB81D /* Release */,
+				935D089C63926112239A9952 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		292B16B9F91FC8D7B8FE14FF /* Build configuration list for PBXProject "Richting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37111FC63A319AA1C3BF70B4 /* Debug */,
+				0A0F358BA316DC9F0FC8686A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		484D54BBB1A81C4728E06375 /* Build configuration list for PBXAggregateTarget "RichtingBackend" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AD90979D95D0BAC4BEE4FE0B /* Release */,
+				FA61E51714EEAD0575785380 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		63FEC1C7265C45AB34314E7D /* Build configuration list for PBXNativeTarget "RichtingUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A2CF1B17B7F540A65A484AA /* Release */,
+				44A49E9790A409A36203F3D0 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9DCE0EE7D6442B5BC93F4C5A /* Build configuration list for PBXNativeTarget "RichtingWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBB32E520E88D5632ACFF391 /* Release */,
+				044CE7DE1292760BDF6512DA /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 55FBEB41CCDA9FC8C7818FCD /* Project object */;
+}

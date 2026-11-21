@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		010935E09DA8F13976377E05 /* Pods_SelectBusArrival.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9317197C2CE346C8E00C00DA /* Pods_SelectBusArrival.framework */; };
+		0735AE9A9E4D36D690CAF368 /* TrainRoutePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D53FB744F36F0AF6E608 /* TrainRoutePanel.swift */; };
 		19C0CCC8876DC9DE3065D084 /* Pods_GoingHomeBusWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA047EE5ACDD88A6E95AD312 /* Pods_GoingHomeBusWidgetExtension.framework */; };
 		2A6F482178E488076DC11B4F /* Pods_NxtBuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC432B02F6C7028338F4CA1B /* Pods_NxtBuz.framework */; };
 		3D4924B1F202A8172ACDF577 /* Pods_NextTrainWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32E0F512CBA1CAEF65FE0642 /* Pods_NextTrainWidgetExtension.framework */; };
@@ -382,6 +383,7 @@
 		A5FFFF4C28FDCA7600B2DDBC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A5FFFF4E28FDCA7600B2DDBC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AAB1542410FB5237DD4C38E5 /* Pods-NxtBuz-WidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NxtBuz-WidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-NxtBuz-WidgetExtension/Pods-NxtBuz-WidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
+		BF69D53FB744F36F0AF6E608 /* TrainRoutePanel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrainRoutePanel.swift; sourceTree = "<group>"; };
 		CC432B02F6C7028338F4CA1B /* Pods_NxtBuz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NxtBuz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D35376004C7E80A4268DDFE9 /* Pods-NextTrainWidgetIntentExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NextTrainWidgetIntentExtension.debug.xcconfig"; path = "Target Support Files/Pods-NextTrainWidgetIntentExtension/Pods-NextTrainWidgetIntentExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		DA047EE5ACDD88A6E95AD312 /* Pods_GoingHomeBusWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoingHomeBusWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -820,6 +822,7 @@
 				A51BEF5E291AD9D000DC70DC /* NextTrainWidgets.swift */,
 				A51BEF60291AE3A200DC70DC /* NextTrainLiveActivity.swift */,
 				A51BEF62291B93A000DC70DC /* NextTrainLiveActivityStarter.swift */,
+				BF69D53FB744F36F0AF6E608 /* TrainRoutePanel.swift */,
 			);
 			path = NextTrainWidget;
 			sourceTree = "<group>";
@@ -1537,6 +1540,7 @@
 				A5D4BF0E290073C600249A25 /* UseCaseResult.swift in Sources */,
 				A52A0733290C7259003E51BC /* RollingStockImageView.swift in Sources */,
 				A52A0735290D0820003E51BC /* NextTrainWidgetEntryView.swift in Sources */,
+				0735AE9A9E4D36D690CAF368 /* TrainRoutePanel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

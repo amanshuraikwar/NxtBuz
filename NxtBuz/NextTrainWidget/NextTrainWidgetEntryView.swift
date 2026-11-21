@@ -20,70 +20,11 @@ struct NextTrainWidgetEntryView : View {
                 alignment: .leading,
                 spacing: 0
             ) {
-                VStack(
-                    spacing: 0
-                ) {
-                    HStack(alignment: .center, spacing: 0) {
-                        Text(entry.sourceTrainStopName)
-                            .font(NxtBuzFonts.body)
-                            .fontWeight(.medium)
-                        
-                        if let track = entry.sourceTrainStopTrack {
-                            Text(track.uppercased())
-                                .font(NxtBuzFonts.captionSmall)
-                                .fontWeight(.bold)
-                                .padding(.horizontal, 2)
-                                .background(nxtBuzTheme.isDark ? Color(.systemGray6) : .white)
-                                .foregroundColor(Color(nxtBuzTheme.accentColor))
-                                .cornerRadius(2)
-                                .padding(.leading, 4)
-                        }
-                         
-                        Spacer()
-                        
-                        Text(entry.departureFromSourceTime.uppercased())
-                            .font(NxtBuzFonts.bodyMonospaced)
-                            .fontWeight(.bold)
-                    }
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 6)
-                    .background(Color(nxtBuzTheme.accentColor))
-                    .cornerRadius(14)
-                    .padding(.horizontal, 8)
-                    .padding(.top, 8)
-                    .foregroundColor(nxtBuzTheme.isDark ? Color(.systemGray6) : .white)
-                    
-                    HStack(alignment: .top, spacing: 0) {
-                        Text(entry.destinationTrainStopName)
-                            .font(NxtBuzFonts.body)
-                        
-                        Spacer()
-                        
-                        Text(entry.arrivalAtDestinationTime.uppercased())
-                            .font(NxtBuzFonts.bodyMonospaced)
-                            .fontWeight(.bold)
-                    }
-                    .foregroundColor(
-                        Color(
-                            nxtBuzTheme.isDark ? nxtBuzTheme.secondaryColor : .systemGray5
-                        )
-                    )
-                    .padding(.horizontal, 16)
-                    .padding(.top, 8)
-                    .padding(.bottom, 8)
-                }
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(
-                            colors: nxtBuzTheme.isDark
-                            ? [Color(.systemGray5), Color(.systemGray6)]
-                            : [Color(nxtBuzTheme.primaryColor), Color(nxtBuzTheme.secondaryColor)]
-                        ),
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                )
-                .cornerRadius(14)
+                TrainRoutePanel(from: entry.sourceTrainStopName, to: entry.destinationTrainStopName,
+                                times: [.init(departure: entry.departureFromSourceTime,
+                                              arrival: entry.arrivalAtDestinationTime, platform: entry.sourceTrainStopTrack)],
+                                accent: Color(nxtBuzTheme.accentColor), primary: Color(nxtBuzTheme.primaryColor),
+                                secondary: Color(nxtBuzTheme.secondaryColor), isDark: nxtBuzTheme.isDark)
 
                 HStack(
                     alignment: .center,
