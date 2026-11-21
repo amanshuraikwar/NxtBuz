@@ -4,6 +4,7 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
+import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
@@ -13,7 +14,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.KotlinCocoapodsPlugin
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.io.File
 import java.util.regex.Pattern
 
@@ -94,7 +94,15 @@ abstract class ConfigPlugin : Plugin<Project> {
     private fun KotlinMultiplatformPluginWrapper.configure(project: Project) {
         val extension = project.extensions.getByType(KotlinMultiplatformExtension::class.java)
         extension.android()
-        extension.iosTarget("ios") {}
+        val iosTargets = listOf(extension.iosArm64(), extension.iosSimulatorArm64(), extension.iosX64())
+        with(extension.sourceSets) {
+            val iosMain = create("iosMain") { dependsOn(getByName("commonMain")) }
+            val iosTest = create("iosTest") { dependsOn(getByName("commonTest")) }
+            for (target in iosTargets) {
+                target.compilations.getByName("main").defaultSourceSet.dependsOn(iosMain)
+                target.compilations.getByName("test").defaultSourceSet.dependsOn(iosTest)
+            }
+        }
 
         project.plugins.all {
             if (this is KotlinCocoapodsPlugin) {
@@ -111,26 +119,11 @@ abstract class ConfigPlugin : Plugin<Project> {
         ) {
             summary = "KMM shared module for project: ${project.name}"
             homepage = "This should be a link to the project: ${project.name}"
-            ios.deploymentTarget = "14.1"
+            ios.deploymentTarget = Libs.iosMinDeploymentTarget
             framework {
                 baseName = project.name
             }
             version = "1.0"
         }
-    }
-
-    companion object {
-        val KotlinMultiplatformExtension.iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget
-            get() = when {
-                System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> {
-                    ::iosArm64
-                }
-                System.getenv("NATIVE_ARCH")?.startsWith("arm") == true -> {
-                    ::iosSimulatorArm64
-                }
-                else -> {
-                    ::iosX64
-                }
-            }
     }
 }

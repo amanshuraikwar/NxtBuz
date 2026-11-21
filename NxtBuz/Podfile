@@ -1,41 +1,36 @@
+platform :ios, '15.0'
+
 target 'NxtBuz' do
   use_frameworks!
-  platform :ios, '14.1'
   pod 'iosUmbrella', :path => '../iosUmbrella'
 end
 
 target 'NxtBuz-WidgetExtension' do
   use_frameworks!
-  platform :ios, '14.1'
   pod 'iosUmbrella', :path => '../iosUmbrella'
 end
 
 target 'SelectBusArrival' do
   use_frameworks!
-  platform :ios, '14.1'
   pod 'iosUmbrella', :path => '../iosUmbrella'
 end
 
 target 'StarredBusArrivalsWidgetExtension' do
   use_frameworks!
-  platform :ios, '14.1'
   pod 'iosUmbrella', :path => '../iosUmbrella'
 end
 
 target 'GoingHomeBusWidgetExtension' do
   use_frameworks!
-  platform :ios, '14.1'
   pod 'iosUmbrella', :path => '../iosUmbrella'
 end
 
 target 'NextTrainWidgetExtension' do
   use_frameworks!
-  platform :ios, '14.1'
   pod 'iosUmbrella', :path => '../iosUmbrella'
 end
 
 target 'NextTrainWidgetIntentExtension' do
   use_frameworks!
-  platform :ios, '14.1'
   pod 'iosUmbrella', :path => '../iosUmbrella'
 end

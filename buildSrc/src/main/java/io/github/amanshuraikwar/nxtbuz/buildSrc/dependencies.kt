@@ -7,7 +7,7 @@ object Libs {
     const val minSdk = 23
     const val targetSdk = 31
 
-    const val iosMinDeploymentTarget = "14.1"
+    const val iosMinDeploymentTarget = "15.0"
     const val appHomePage = "https://amanshuraikwar.github.io/nextbus"
     const val kmmLibVersion = "1.0"
 
@@ -49,8 +49,9 @@ object Libs {
     object KotlinX {
         // upgrading to 0.3.3 becuse of https://youtrack.jetbrains.com/issue/KT-52554
         const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.3"
-        const val serializationCore = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1"
-        const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1"
+        private const val serializationVersion = "1.3.3"
+        const val serializationCore = "org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion"
+        const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion"
         const val serializationGradlePlugin = "org.jetbrains.kotlin:kotlin-serialization:1.7.10"
     }
 
@@ -143,7 +144,7 @@ object Libs {
     }
 
     object Ktor {
-        private const val version = "1.6.3"
+        private const val version = "1.6.8"
         const val clientCore = "io.ktor:ktor-client-core:$version"
         const val clientJson = "io.ktor:ktor-client-json:$version"
         const val clientLogging = "io.ktor:ktor-client-logging:$version"

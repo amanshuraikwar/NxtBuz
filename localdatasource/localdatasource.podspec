@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
     spec.summary                  = 'KMM shared module for project: localdatasource'
     spec.vendored_frameworks      = 'build/cocoapods/framework/localdatasource.framework'
     spec.libraries                = 'c++'
-    spec.ios.deployment_target = '14.1'
+    spec.ios.deployment_target = '15.0'
                 
                 
     spec.pod_target_xcconfig = {

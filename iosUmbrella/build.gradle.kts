@@ -1,5 +1,6 @@
 import io.github.amanshuraikwar.nxtbuz.buildSrc.Libs
-import io.github.amanshuraikwar.nxtbuz.plugin.ConfigPlugin.Companion.iosTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
@@ -9,8 +10,8 @@ plugins {
 }
 
 kotlin {
-    iosTarget("ios") {
-        binaries.withType<org.jetbrains.kotlin.gradle.plugin.mpp.Framework> {
+    targets.withType<KotlinNativeTarget>().configureEach {
+        binaries.withType<Framework>().configureEach {
             export(project(":common"))
             export(project(":domain"))
             export(project(":di"))

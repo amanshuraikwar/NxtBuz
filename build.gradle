@@ -31,16 +31,8 @@ allprojects {
     def podFrameworkAttribute = Attribute.of("com.github.amanshuraikwar.kmm.podFrameworkType", String)
 
     configurations.configureEach { configuration ->
-        if (configuration.name in ["podDebugFrameworkIos", "podReleaseFrameworkIos"]) {
-            configuration.attributes.attribute(
-                    podFrameworkAttribute,
-                    (configuration.name + "Ios").toString()
-            )
-        } else if (configuration.name in ["podDebugFrameworkIosFat", "podReleaseFrameworkIosFat"]) {
-            configuration.attributes.attribute(
-                    podFrameworkAttribute,
-                    (configuration.name + "IosFat").toString()
-            )
+        if (configuration.name.startsWith("podDebugFramework") || configuration.name.startsWith("podReleaseFramework")) {
+            configuration.attributes.attribute(podFrameworkAttribute, configuration.name)
         }
     }
 
