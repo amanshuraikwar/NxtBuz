@@ -32,11 +32,11 @@ struct JourneyView: View {
                 case .locating: ProgressView("Finding your nearest station…")
                 case .loading: ProgressView("Checking departures…")
                 case .atHome: Text("Your home station is already the nearest station.")
-                case .noTrain: Text("No upcoming direct trains home from this station.")
+                case .noTrain: Text("No upcoming rail journeys home from this station.")
                 case .failed(let message): Text(message)
                 case .loaded(let trains):
                     Section("Next trains home") {
-                        ForEach(trains, id: \.trainNumber) { journey in
+                        ForEach(trains) { journey in
                             VStack(alignment: .leading, spacing: 12) {
                                 JourneyCard(journey: journey)
                                 Button("Track on Lock Screen", systemImage: "livephoto") {

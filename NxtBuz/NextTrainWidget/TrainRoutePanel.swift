@@ -1,11 +1,12 @@
 import SwiftUI
 
-/// Each time column describes one direct service between the two station rows.
+/// Each time column describes one journey between the two station rows.
 struct TrainRoutePanel: View {
     struct Times {
         let departure: String
         let arrival: String
         let platform: String?
+        var detail: String? = nil
     }
 
     let from: String
@@ -38,8 +39,11 @@ struct TrainRoutePanel: View {
                 Text(to).font(NxtBuzFonts.body).lineLimit(1).minimumScaleFactor(0.65)
                 Spacer(minLength: 2)
                 ForEach(times.indices, id: \.self) { i in
-                    Text(times[i].arrival).font(NxtBuzFonts.bodyMonospaced).bold()
-                        .frame(minWidth: times.count > 1 ? 65 : nil, alignment: .trailing)
+                    VStack(alignment: .trailing, spacing: 0) {
+                        Text(times[i].arrival).font(NxtBuzFonts.bodyMonospaced).bold()
+                        if let detail = times[i].detail { Text(detail).font(NxtBuzFonts.captionSmall) }
+                    }
+                    .frame(minWidth: times.count > 1 ? 65 : nil, alignment: .trailing)
                 }
             }
             .foregroundStyle(isDark ? secondary : Color(.systemGray5))

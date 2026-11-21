@@ -11,9 +11,12 @@ struct TrainEntry: TimelineEntry {
 struct NextTrainProvider: TimelineProvider {
     func placeholder(in context: Context) -> TrainEntry {
         let journeys = [5, 20].map { minutes in
-            Journey(from: "Amsterdam Centraal", to: "Utrecht Centraal", departureDate: .now.addingTimeInterval(Double(minutes * 60)),
-                    arrivalDate: .now.addingTimeInterval(Double((minutes + 27) * 60)), service: "Intercity",
-                    platform: "5", trainNumber: "829", facilities: ["wifi"], imageURLs: [])
+            let leg = JourneyLeg(from: "Amsterdam Centraal", to: "Utrecht Centraal",
+                                 departure: .now.addingTimeInterval(Double(minutes * 60)),
+                                 arrival: .now.addingTimeInterval(Double((minutes + 27) * 60)),
+                                 service: "Intercity", platform: "5", number: "829", isWalk: false)
+            return Journey(id: String(minutes), firstLeg: leg, onwardLegs: [], transfers: 0,
+                           facilities: ["wifi"], imageURLs: [])
         }
         return TrainEntry(date: .now, journeys: journeys, message: "")
     }
@@ -30,8 +33,8 @@ struct NextTrainProvider: TimelineProvider {
     private func timeline() async -> Timeline<TrainEntry> {
         let first = await entry()
         var entries = [first]
-        for journey in first.journeys {
-            let after = journey.departureDate.addingTimeInterval(1)
+        for departure in Set(first.journeys.map(\.departureDate)).sorted() {
+            let after = departure.addingTimeInterval(1)
             entries.append(TrainEntry(date: after, journeys: first.journeys.filter { $0.departureDate >= after },
                                       message: "Checking for later trains…"))
         }
@@ -52,8 +55,11 @@ struct NextTrainProvider: TimelineProvider {
             }
             let trains = try await TrainService.shared.upcoming(from: from, to: to)
             let images = await stockImages(for: trains.first)
-            return TrainEntry(date: .now, journeys: trains.filter { $0.departureDate > Date() },
-                              message: "No direct trains from \(from.name) to \(to.name).", images: images)
+            let now = Date()
+            let upcoming = trains.filter { $0.departureDate > now }
+            return TrainEntry(date: now, journeys: upcoming,
+                              message: "No rail journeys from \(from.name) to \(to.name).",
+                              images: upcoming.first?.id == trains.first?.id ? images : [])
         } catch {
             return TrainEntry(date: .now, journeys: [], message: error.localizedDescription)
         }
@@ -92,14 +98,20 @@ struct RichtingTrainWidgetView: View {
             GeometryReader { geometry in
                 VStack(alignment: .leading, spacing: 4) {
                     TrainRoutePanel(from: first.from, to: first.to,
-                        times: entry.journeys.map { .init(departure: $0.departure, arrival: $0.arrival, platform: $0.platform) },
+                        times: entry.journeys.map { .init(departure: $0.departure, arrival: $0.arrival, platform: $0.firstLeg.platform, detail: $0.transferSummary) },
                         accent: accent, primary: Color(red: 0.15, green: 0.20, blue: 0.22),
                         secondary: dark ? Color(.lightGray) : Color(red: 0.27, green: 0.35, blue: 0.39), isDark: dark)
                     HStack {
-                        Text(Journey.time(entry.date)).font(NxtBuzFonts.caption)
+                        if first.transfers > 0 {
+                            let changes = first.onwardLegs.filter { !$0.isWalk }.map(\.from)
+                            Text("Via " + changes.joined(separator: " · "))
+                                .lineLimit(1).minimumScaleFactor(0.75)
+                        } else {
+                            Text(Journey.time(entry.date)).font(NxtBuzFonts.caption)
+                        }
                         Spacer()
                         ForEach(first.facilities, id: \.self) { Image(systemName: $0) }
-                        Text(first.trainNumber).bold()
+                        if let number = first.firstLeg.number { Text(number).bold() }
                     }
                     .font(NxtBuzFonts.caption).foregroundStyle(accent).padding(.horizontal)
                     Spacer(minLength: 0)
@@ -109,7 +121,7 @@ struct RichtingTrainWidgetView: View {
                             Image(systemName: "train.side.middle.car")
                             Image(systemName: "train.side.rear.car")
                             Spacer()
-                            Text(first.service.uppercased()).font(NxtBuzFonts.caption).bold()
+                            Text(first.firstLeg.service.uppercased()).font(NxtBuzFonts.caption).bold()
                         }.foregroundStyle(.yellow).padding(.horizontal)
                     } else {
                         RollingStockImageView(rollingStockImages: entry.images, maximumViewportWidth: geometry.size.width)
@@ -131,7 +143,7 @@ struct RichtingNextTrainWidget: Widget {
             RichtingTrainWidgetView(entry: entry).containerBackground(.background, for: .widget)
         }
         .configurationDisplayName("Next trains")
-        .description("The next two direct trains from your nearest station to your home station.")
+        .description("The next two rail journeys home from your nearest station, including connections.")
         .supportedFamilies([.systemMedium])
         .contentMarginsDisabled()
     }

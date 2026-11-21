@@ -7,12 +7,21 @@ struct JourneyCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text(journey.service).font(.caption.weight(.semibold))
+                Text(journey.firstLeg.service + " · " + journey.transferSummary).font(.caption.weight(.semibold))
                 Spacer()
-                if let platform = journey.platform { Text("Platform " + platform).font(.caption) }
+                if let platform = journey.firstLeg.platform { Text("Platform " + platform).font(.caption) }
             }
             .foregroundStyle(.secondary)
             row(journey.departure, journey.from, symbol: "circle")
+            ForEach(journey.onwardLegs.indices, id: \.self) { index in
+                let leg = journey.onwardLegs[index]
+                VStack(alignment: .leading, spacing: 2) {
+                    row(Journey.time(leg.departure), leg.from, symbol: leg.isWalk ? "figure.walk" : "arrow.left.arrow.right")
+                    let service = [leg.service, leg.number].compactMap { $0 }.joined(separator: " ")
+                    Text([service, leg.platform.map { "Platform " + $0 }].compactMap { $0 }.joined(separator: " · "))
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+            }
             row(journey.arrival, journey.to, symbol: "circle.fill")
             HStack {
                 if let stockImage {
@@ -20,7 +29,7 @@ struct JourneyCard: View {
                 } else {
                     Image(systemName: "tram.fill")
                 }
-                Text(journey.trainNumber)
+                if let number = journey.firstLeg.number { Text(number) }
                 Spacer()
                 ForEach(journey.facilities, id: \.self) { Image(systemName: $0) }
             }

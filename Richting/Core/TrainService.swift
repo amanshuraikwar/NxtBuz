@@ -1,19 +1,50 @@
 import Foundation
 import RichtingTrains
 
-struct Journey: Equatable, Sendable {
+struct JourneyLeg: Equatable, Sendable {
     let from: String
     let to: String
-    let departureDate: Date
-    let arrivalDate: Date?
+    let departure: Date
+    let arrival: Date
     let service: String
     let platform: String?
-    let trainNumber: String
+    let number: String?
+    let isWalk: Bool
+}
+
+private extension JourneyLeg {
+    init(_ leg: BoardLeg) {
+        from = leg.from
+        to = leg.to
+        departure = Date(timeIntervalSince1970: Double(leg.departureSeconds))
+        arrival = Date(timeIntervalSince1970: Double(leg.arrivalSeconds))
+        service = leg.service
+        platform = leg.platform
+        number = leg.number
+        isWalk = leg.isWalk
+    }
+}
+
+struct Journey: Identifiable, Equatable, Sendable {
+    let id: String
+    let firstLeg: JourneyLeg
+    let onwardLegs: [JourneyLeg]
+    let transfers: Int
     let facilities: [String]
     let imageURLs: [URL]
 
+    var from: String { firstLeg.from }
+    var to: String { (onwardLegs.last ?? firstLeg).to }
+    var departureDate: Date { firstLeg.departure }
     var departure: String { Self.time(departureDate) }
-    var arrival: String { arrivalDate.map(Self.time) ?? "—" }
+    var arrival: String { Self.time((onwardLegs.last ?? firstLeg).arrival) }
+    var transferSummary: String {
+        switch transfers {
+        case 0: "Direct"
+        case 1: "1 change"
+        default: "\(transfers) changes"
+        }
+    }
 
     static func time(_ date: Date) -> String {
         date.formatted(Date.VerbatimFormatStyle(format: "\(hour: .twoDigits(clock: .twentyFourHour, hourCycle: .zeroBased)):\(minute: .twoDigits)",
@@ -57,22 +88,18 @@ final class TrainService: TrainProviding {
     func upcoming(from: Station, to: Station) async throws -> [Journey] {
         let board = try stationBoard()
         // Kotlin/Native 1.7 requires the exported suspend entry point to be called on the main thread.
-        let trains: [BoardTrain] = try await withCheckedThrowingContinuation { continuation in
-            board.departures(from: from.id, to: to.id) { trains, error in
-                if let trains, error == nil { continuation.resume(returning: trains) }
+        let trips: [BoardJourney] = try await withCheckedThrowingContinuation { continuation in
+            board.journeys(from: from.id, to: to.id) { trips, error in
+                if let trips, error == nil { continuation.resume(returning: trips) }
                 else { continuation.resume(throwing: TrainError.unavailable) }
             }
         }
-        return trains.map { train in
-            var facilities: [String] = []
-            if train.hasWifi { facilities.append("wifi") }
-            if train.hasBicycleSpace { facilities.append("bicycle") }
-            if train.hasPower { facilities.append("powerplug") }
-            return Journey(from: from.name, to: to.name,
-                departureDate: Date(timeIntervalSince1970: Double(train.departureSeconds)),
-                arrivalDate: train.arrivalSeconds.map { Date(timeIntervalSince1970: $0.doubleValue) },
-                service: train.service, platform: train.platform, trainNumber: train.number,
-                facilities: facilities, imageURLs: train.images.compactMap(URL.init(string:)))
+        return trips.compactMap { trip in
+            let legs = trip.legs.map(JourneyLeg.init)
+            guard let first = legs.first else { return nil }
+            return Journey(id: trip.id, firstLeg: first, onwardLegs: Array(legs.dropFirst()),
+                           transfers: Int(trip.transfers), facilities: trip.facilities,
+                           imageURLs: trip.images.compactMap(URL.init(string:)))
         }
     }
 }
