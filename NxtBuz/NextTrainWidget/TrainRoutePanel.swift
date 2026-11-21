@@ -18,6 +18,8 @@ struct TrainRoutePanel: View {
     let isDark: Bool
     var splitFlapDepartures = false
 
+    private var columnWidth: CGFloat? { times.count > 1 ? (splitFlapDepartures ? 83 : 65) : nil }
+
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 4) {
@@ -33,7 +35,7 @@ struct TrainRoutePanel: View {
                             Text(times[i].departure).font(NxtBuzFonts.bodyMonospaced).bold()
                         }
                     }
-                    .frame(minWidth: times.count > 1 ? 65 : nil, alignment: .trailing)
+                    .frame(minWidth: columnWidth, alignment: .trailing)
                 }
             }
             .padding(.horizontal, 8).padding(.vertical, 6)
@@ -48,7 +50,7 @@ struct TrainRoutePanel: View {
                         Text(times[i].arrival).font(NxtBuzFonts.bodyMonospaced).bold()
                         if let detail = times[i].detail { Text(detail).font(NxtBuzFonts.captionSmall) }
                     }
-                    .frame(minWidth: times.count > 1 ? 65 : nil, alignment: .trailing)
+                    .frame(minWidth: columnWidth, alignment: .trailing)
                 }
             }
             .foregroundStyle(isDark ? secondary : Color(.systemGray5))
@@ -73,24 +75,55 @@ private struct SplitFlapTime: View {
         HStack(spacing: 1) {
             ForEach(Array(time.enumerated()), id: \.offset) { _, character in
                 if character == ":" {
-                    Text(":").frame(width: 4)
+                    VStack(spacing: 4) {
+                        Circle().frame(width: 2, height: 2)
+                        Circle().frame(width: 2, height: 2)
+                    }
+                    .foregroundStyle(Color(white: 0.85))
+                    .frame(width: 3)
                 } else {
-                    Text(String(character))
-                        .frame(width: 11, height: 21)
-                        .background(
-                            LinearGradient(colors: [Color(white: 0.23), Color(white: 0.08)],
-                                           startPoint: .top, endPoint: .bottom),
-                            in: RoundedRectangle(cornerRadius: 2)
-                        )
-                        .overlay { Rectangle().fill(.black.opacity(0.85)).frame(height: 1) }
+                    FlapDigit(character: character)
                 }
             }
         }
-        .font(.system(size: 16, weight: .semibold, design: .monospaced))
-        .foregroundStyle(Color(red: 0.99, green: 0.96, blue: 0.86))
         .padding(2)
-        .background(Color(white: 0.07), in: RoundedRectangle(cornerRadius: 3))
+        .background(Color(white: 0.055), in: RoundedRectangle(cornerRadius: 3))
+        .overlay {
+            RoundedRectangle(cornerRadius: 3).strokeBorder(.white.opacity(0.19), lineWidth: 0.5)
+        }
+        .shadow(color: .black.opacity(0.28), radius: 0.6, y: 0.6)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Departs at \(time)")
+    }
+}
+
+private struct FlapDigit: View {
+    let character: Character
+    private let height: CGFloat = 24
+
+    var body: some View {
+        // Crop the same printed numeral onto both leaves so it registers across the hinge.
+        VStack(spacing: 0.75) {
+            leaf(upper: true)
+            leaf(upper: false)
+        }
+        .frame(width: 13, height: height)
+        .clipShape(RoundedRectangle(cornerRadius: 1.25))
+    }
+
+    private func leaf(upper: Bool) -> some View {
+        let ink = Color(white: upper ? 0.98 : 0.89)
+        let surface = upper ? [Color(white: 0.26), Color(white: 0.14)]
+                            : [Color(white: 0.19), Color(white: 0.10)]
+        return Text(String(character))
+            .font(.custom("HelveticaNeue-CondensedBold", fixedSize: 23))
+            .foregroundStyle(ink)
+            .frame(width: 13, height: height)
+            .frame(height: (height - 0.75) / 2, alignment: upper ? .top : .bottom)
+            .clipped()
+            .background(LinearGradient(colors: surface, startPoint: .top, endPoint: .bottom))
+            .overlay(alignment: .top) {
+                Rectangle().fill(.white.opacity(upper ? 0.13 : 0.20)).frame(height: 0.4)
+            }
     }
 }
