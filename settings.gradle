@@ -32,3 +32,6 @@ include ':test-util'
 include ':roomdb'
 include ':nsapi'
 include ':train-ui-android'
+
+include ':richtingTrains'
+project(':richtingTrains').projectDir = file('Richting/Backend')
